@@ -1,3 +1,5 @@
+package be.ac.umons.slay.g03.entity;
+
 public class Boat {
 
     private int t;
@@ -14,7 +16,7 @@ public class Boat {
 
     }
 
-    private Cell checkLand(){
+   private Cell checkLand(){
 
     }
 
