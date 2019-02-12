@@ -1,0 +1,19 @@
+<world name="test map" map="test.tmx">
+
+    <items>
+        <item type="capital" money="20" x="0" y="0" playerId="1" />
+    </items>
+
+    <units>
+        <unit type="soldier" level="0" x="1" y="1" playerId="1" />
+        <unit type="soldier" level="0" x="2" y="2" playerId="1" />
+        <unit type="soldier" level="0" x="2" y="1" playerId="2" />
+        <unit type="soldier" level="0" x="64" y="64" playerId="1" />
+    </units>
+
+    <infrastructures>
+        <infrastructure type="boat" distmax="3" x="0" y="1" playerId="1" />
+        <infrastructure type="boat" distmax="3" x="0" y="2" playerId="1" />
+    </infrastructures>
+
+</world>
