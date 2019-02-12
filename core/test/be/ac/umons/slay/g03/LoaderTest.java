@@ -11,7 +11,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
-public class LoaderTest extends GameTest  {
+public class LoaderTest extends GameStageTest {
     String tmxFileCorrect = "test.tmx";
     String tmxFileIncorrect = "g4858.tmx";
     Loader loader = new Loader(tmxFileCorrect, "unneeded");
@@ -25,20 +25,6 @@ public class LoaderTest extends GameTest  {
         loader.loadFromTmxFile(map);
         Cell elem00 = map.cells.get(0);
         Assert.assertEquals(elem00.getX() , 0);
-        /*Assert.assertEquals(elem00.getY() , 0);
-        Assert.assertEquals(elem00.getElementOn(), null);
-        Assert.assertEquals(elem00.isWater() , false);
-        Cell elem01 = map.cells.get(1);
-        Assert.assertEquals(elem01.getX() , 0);
-        Assert.assertEquals(elem01.getY() , 1);
-        Assert.assertEquals(elem01.getElementOn(), null);
-        Assert.assertEquals(elem00.isWater() , true);
-
-        Cell elem22 = map.cells.get(7);
-        Assert.assertEquals(elem22.getX() , 2);
-        Assert.assertEquals(elem22.getY() , 2);
-        Assert.assertEquals(elem01.getElementOn(), null);
-        Assert.assertEquals(elem00.isWater() , true);*/
     }
 
 }
