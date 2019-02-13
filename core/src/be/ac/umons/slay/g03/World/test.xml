@@ -1,7 +1,7 @@
 <world name="test map" map="test.tmx">
 
     <items>
-        <item type="capital" money="20" x="0" y="0" playerId="1" />
+        <item type="capital" money="10" x="0" y="0" playerId="1" />
     </items>
 
     <units>

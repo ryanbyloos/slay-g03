@@ -24,6 +24,26 @@ public class Soldier extends MapElement implements Controlable {
     private void checkNewTerritory(){
 
     }
+    public int getLevel() {
+        return level;
+    }
+
+    public boolean isHasMoved() {
+        return hasMoved;
+    }
+
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof Soldier)) {
+            return false;
+        }
+        Soldier that = (Soldier) other;
+        return this.getCreationCost() == (that.getCreationCost())
+                && this.getMaintenanceCost() == (that.getMaintenanceCost())
+                && this.getLevel() == that.getLevel()
+                && this.getOwner().equals(that.getOwner());
+    }
 
 
     @Override
@@ -45,4 +65,6 @@ public class Soldier extends MapElement implements Controlable {
     public void select() {
 
     }
+
+
 }

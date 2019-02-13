@@ -2,7 +2,12 @@ package be.ac.umons.slay.g03.GameHandler;
 
 import be.ac.umons.slay.g03.Core.Cell;
 import be.ac.umons.slay.g03.Core.Map;
-import be.ac.umons.slay.g03.Entity.MapElement;
+import be.ac.umons.slay.g03.Core.Player;
+import be.ac.umons.slay.g03.Entity.Boat;
+import be.ac.umons.slay.g03.Entity.Capital;
+import be.ac.umons.slay.g03.Entity.Infrastructure;
+import be.ac.umons.slay.g03.Entity.Soldier;
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -18,6 +23,7 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -33,21 +39,27 @@ public class Loader {
 
     }
 
-    public void loadFromXmlFile(Map map){
+    public void loadFromXmlFile(Map map)  {
+
         String path = Gdx.files.internal(xmlFile).file().getAbsolutePath();
         String absolutePath = path.substring(0, path.length()-xmlFile.length()).concat("src"+File.separator+"be"+File.separator+"ac"+File.separator+"umons"+File.separator+"slay"+File.separator+"g03"+File.separator+"World"+File.separator).concat(xmlFile);
         File file = new File(absolutePath);
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         try {
+
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(file);
+            doc.getDocumentElement().normalize();
             ArrayList<Node> all = new ArrayList<Node>();
-            NodeList items = doc.getElementsByTagName("items");
-            NodeList units = doc.getElementsByTagName("units");
-            NodeList infrastructures = doc.getElementsByTagName("infrastructures");
+            NodeList items = doc.getElementsByTagName("item");
+            NodeList units = doc.getElementsByTagName("unit");
+            NodeList infrastructures = doc.getElementsByTagName("infrastructure");
             for (int i = 0; i < items.getLength(); i++) {
                 Node node= items.item(i);
-                all.add(node);
+                if(node.getNodeType() == Node.ELEMENT_NODE){
+                    all.add(node);
+                }
+
             }
             for (int i = 0; i < units.getLength(); i++) {
                 Node node= units.item(i);
@@ -63,37 +75,102 @@ public class Loader {
                 }
             }
             for (int i = 0; i < all.size(); i++) {
-                Element element = (Element)all.get(i);
-                String type = element.getElementsByTagName("type").item(0).getTextContent();
+                Node node = all.get(i);
+                String type = node.getAttributes().getNamedItem("type").getTextContent();
+
+
                 if(type.equals("capital")){
-                    int x = Integer.parseInt(element.getElementsByTagName("x").item(0).getTextContent());
-                    int y = Integer.parseInt(element.getElementsByTagName("y").item(0).getTextContent());
-                    int money = Integer.parseInt(element.getElementsByTagName("money").item(0).getTextContent());
-                    int player = Integer.parseInt(element.getElementsByTagName("y").item(0).getTextContent());
+                    int x = Integer.parseInt(node.getAttributes().getNamedItem("x").getTextContent());
+                    int y = Integer.parseInt(node.getAttributes().getNamedItem("y").getTextContent());
                     Cell cell = map.findMapElement(x,y);
                     if (cell != null){
-                        // à reprendre
+                        int player = Integer.parseInt(node.getAttributes().getNamedItem("playerId").getTextContent());
+                        if(cell.getOwner().getId() == player && !cell.isWater()){
+                            Player owner;
+                            if (player == 1){
+                                owner = map.player1;
+                            }
+                            else{
+                                owner = map.player2;
+                            }
+                            int money = Integer.parseInt(node.getAttributes().getNamedItem("money").getTextContent());
+                            Capital capital = new Capital(0, 0, owner, money);
+                            cell.setElementOn(capital);
+                        }
                     }
                 }
                 else if(type.equals("soldier")){
+                    int x = Integer.parseInt(node.getAttributes().getNamedItem("x").getTextContent());
+                    int y = Integer.parseInt(node.getAttributes().getNamedItem("y").getTextContent());
+                    Cell cell = map.findMapElement(x, y);
+                    if(cell!=null){
+                        int player = Integer.parseInt(node.getAttributes().getNamedItem("playerId").getTextContent());
+                        if(!cell.isWater() && cell.getOwner().getId() == player ){
+                            Player owner;
+                            if (player == 1){
+                                owner = map.player1;
+                            }
+                            else{
+                                owner = map.player2;
+                            }
+                            int level = Integer.parseInt(node.getAttributes().getNamedItem("level").getTextContent());
+                            Soldier soldier;
+                            switch (level){
+                                case 0:
+                                    soldier = new Soldier(2, 10, owner, 0);
+                                    break;
+                                case 1:
+                                    soldier = new Soldier(5, 20, owner, 1);
+                                    break;
+                                case 2:
+                                    soldier = new Soldier(14, 40, owner, 2);
+                                    break;
+                                case 3:
+                                    soldier = new Soldier(41, 80, owner, 3);
+                                    break;
+                                default:
+                                    soldier = null;
+                                    break;
+                            }
+                            cell.setElementOn(soldier);
+                        }
+                    }
 
                 }
-                else if(type.equals("infrastructure")){
-
+                else if(type.equals("boat")){
+                    int x = Integer.parseInt(node.getAttributes().getNamedItem("x").getTextContent());
+                    int y = Integer.parseInt(node.getAttributes().getNamedItem("y").getTextContent());
+                    Cell cell = map.findMapElement(x, y);
+                    if (cell != null){
+                        int player = Integer.parseInt(node.getAttributes().getNamedItem("playerId").getTextContent());
+                        if(cell.getOwner().getId() == player && cell.isWater() && Infrastructure.isInfrastructureAvailable()){
+                            Player owner;
+                            if (player == 1){
+                                owner = map.player1;
+                            }
+                            else{
+                                owner = map.player2;
+                            }
+                            int distMax = Integer.parseInt(node.getAttributes().getNamedItem("distmax").getTextContent());
+                            Boat boat = new Boat(distMax, 0, 0, 25, owner);//Defense à determiner avec les autre, pareil pour creationCost
+                            cell.setElementOn(boat);
+                        }
+                    }
                 }
 
             }
-
-
-
-
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
+        }
+        catch (ParserConfigurationException e) {
             e.printStackTrace();
         }
+        catch (SAXException e)  {
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
 
 
     }

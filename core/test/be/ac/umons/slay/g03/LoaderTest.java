@@ -4,11 +4,14 @@ import be.ac.umons.slay.g03.Core.Cell;
 import be.ac.umons.slay.g03.Core.Map;
 import be.ac.umons.slay.g03.Core.Player;
 import be.ac.umons.slay.g03.Core.Territory;
+import be.ac.umons.slay.g03.Entity.*;
 import be.ac.umons.slay.g03.GameHandler.Loader;
 import com.badlogic.gdx.utils.SerializationException;
 import org.junit.Assert;
-import org.junit.Before;
+
 import org.junit.Test;
+
+import javax.xml.parsers.ParserConfigurationException;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -70,10 +73,6 @@ public class LoaderTest extends GameStageTest {
                 new Player("Alex", 2, 0, false, 0, new ArrayList<Territory>()));
         Loader loader = new Loader(tmxFileCorrect,xmlFileIncorrect);
         loader.loadFromXmlFile(map);
-
-
-
-
     }
     @Test
     public void loadFromXmlTestUnitLoading(){
@@ -82,6 +81,7 @@ public class LoaderTest extends GameStageTest {
         Loader loader = new Loader(tmxFileCorrect,xmlFileCorrect);
         map.cells.add(new Cell(1, 1, false, false, map.player1, null));
         loader.loadFromXmlFile(map);
+        Assert.assertEquals(new Soldier(2, 10, map.player1, 0), map.cells.get(0).getElementOn());
 
 
 
@@ -94,6 +94,7 @@ public class LoaderTest extends GameStageTest {
         Loader loader = new Loader(tmxFileCorrect,xmlFileCorrect);
         map.cells.add(new Cell(0, 0, false, false, map.player1, null));
         loader.loadFromXmlFile(map);
+        Assert.assertEquals(new Capital(0, 0, map.player1, 10), map.cells.get(0).getElementOn());
 
 
     }
@@ -103,7 +104,9 @@ public class LoaderTest extends GameStageTest {
                 new Player("Alex", 2, 0,false, 0, new ArrayList<Territory>()));
         Loader loader = new Loader(tmxFileCorrect,xmlFileCorrect);
         map.cells.add(new Cell(0, 1, false, true, map.player1, null));
+        Infrastructure.setInfrastructureAvailable(true);
         loader.loadFromXmlFile(map);
+        Assert.assertEquals(new Boat(3, 0, 0, 25, map.player1), map.cells.get(0).getElementOn());
 
 
     }
@@ -111,10 +114,11 @@ public class LoaderTest extends GameStageTest {
     public void loadFromXmlTestInfrastructureLoadingIfDisable(){
         Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0,false, 0, new ArrayList<Territory>()),
                 new Player("Alex", 2, 0,false, 0, new ArrayList<Territory>()));
+        map.cells.add(new Cell(0, 1, false, true, map.player1, null));
         Loader loader = new Loader(tmxFileCorrect,xmlFileCorrect);
-        map.cells.add(new Cell(0, 2, false, true, map.player1, null));
+        Infrastructure.setInfrastructureAvailable(false);
         loader.loadFromXmlFile(map);
-
+        Assert.assertNotEquals(new Boat(3, 0, 0, 25, map.player1), map.cells.get(0).getElementOn());
     }
     @Test
     public void loadFromXmlTestElementLoadingOnExistingWrongCell(){
@@ -123,6 +127,8 @@ public class LoaderTest extends GameStageTest {
         Loader loader = new Loader(tmxFileCorrect,xmlFileCorrect);
         map.cells.add(new Cell(2, 2, false, true, map.player1, null));
         loader.loadFromXmlFile(map);
+        Assert.assertEquals(null, map.cells.get(0).getElementOn());
+
     }
 
     @Test
@@ -132,6 +138,7 @@ public class LoaderTest extends GameStageTest {
         Loader loader = new Loader(tmxFileCorrect,xmlFileCorrect);
         map.cells.add(new Cell(2, 1, false, false, map.player1, null));
         loader.loadFromXmlFile(map);
+        Assert.assertEquals(null, map.cells.get(0).getElementOn());
     }
     @Test
     public void loadFromXmlTestElementLoadingWhenCellNotExist(){
@@ -139,6 +146,7 @@ public class LoaderTest extends GameStageTest {
                 new Player("Alex", 2, 0,false, 0, new ArrayList<Territory>()));
         Loader loader = new Loader(tmxFileCorrect,xmlFileCorrect);
         loader.loadFromXmlFile(map);
+        Assert.assertEquals(0, map.cells.size());
     }
 
 

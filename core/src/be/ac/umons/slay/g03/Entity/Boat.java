@@ -78,4 +78,17 @@ public class Boat extends Infrastructure implements Controlable {
     public void select() {
 
     }
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof Boat)) {
+            return false;
+        }
+        Boat that = (Boat) other;
+        return this.getCreationCost() == (that.getCreationCost())
+                && this.getMaintenanceCost() == (that.getMaintenanceCost())
+                && this.getT() == that.getT()
+                && this.getDefense() == that.getDefense()
+                && this.getOwner().equals(that.getOwner());
+    }
 }

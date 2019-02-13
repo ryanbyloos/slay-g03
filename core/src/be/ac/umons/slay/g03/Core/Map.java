@@ -12,7 +12,7 @@ public class Map {
     }
     public Cell findMapElement(int x, int y){
         for (int i = 0; i < cells.size(); i++) {
-            Cell cell = cells.get(0);
+            Cell cell = cells.get(i);
             if(cell.getX() == x && cell.getY() == y){
                 return cell;
             }

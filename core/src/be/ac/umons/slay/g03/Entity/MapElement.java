@@ -13,8 +13,17 @@ public abstract class MapElement {
         this.owner = owner;
     }
 
+    public int getMaintenanceCost() {
+        return maintenanceCost;
+    }
 
+    public int getCreationCost() {
+        return creationCost;
+    }
 
+    public Player getOwner() {
+        return owner;
+    }
 
 
 }
