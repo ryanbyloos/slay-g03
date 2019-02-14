@@ -35,18 +35,15 @@ public class Loader {
         this.tmxFile = tmxFile;
         this.xmlFile = xmlFile;
     }
-    public void load(Map map){
 
-    }
+    public void load(Map map){}
 
-    public void loadFromXmlFile(Map map)  {
-
-        String path = Gdx.files.internal(xmlFile).file().getAbsolutePath();
-        String absolutePath = path.substring(0, path.length()-xmlFile.length()).concat("src"+File.separator+"be"+File.separator+"ac"+File.separator+"umons"+File.separator+"slay"+File.separator+"g03"+File.separator+"World"+File.separator).concat(xmlFile);
-        File file = new File(absolutePath);
-        DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+    public void loadFromXmlFile(Map map) throws WrongFormatException/*IOException, ParserConfigurationException, SAXException*/{
         try {
-
+            String path = Gdx.files.internal(xmlFile).file().getAbsolutePath();
+            String absolutePath = path.substring(0, path.length()-xmlFile.length()).concat("src"+File.separator+"be"+File.separator+"ac"+File.separator+"umons"+File.separator+"slay"+File.separator+"g03"+File.separator+"World"+File.separator).concat(xmlFile);
+            File file = new File(absolutePath);
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(file);
             doc.getDocumentElement().normalize();
@@ -77,8 +74,6 @@ public class Loader {
             for (int i = 0; i < all.size(); i++) {
                 Node node = all.get(i);
                 String type = node.getAttributes().getNamedItem("type").getTextContent();
-
-
                 if(type.equals("capital")){
                     int x = Integer.parseInt(node.getAttributes().getNamedItem("x").getTextContent());
                     int y = Integer.parseInt(node.getAttributes().getNamedItem("y").getTextContent());
@@ -161,35 +156,29 @@ public class Loader {
             }
         }
         catch (ParserConfigurationException e) {
-            e.printStackTrace();
+            throw new WrongFormatException();
         }
         catch (SAXException e)  {
-            e.printStackTrace();
+            throw new WrongFormatException();
         }
         catch (IOException e) {
-            e.printStackTrace();
+            throw new WrongFormatException();
         }
-
-
-
-
     }
-    public void loadFromTmxFile(Map map){
+
+    public void loadFromTmxFile(Map map) throws WrongFormatException{
         try{
             String path = Gdx.files.internal(tmxFile).file().getAbsolutePath();
             String absolutePath = path.substring(0, path.length()-tmxFile.length()).concat("src"+File.separator+"be"+File.separator+"ac"+File.separator+"umons"+File.separator+"slay"+File.separator+"g03"+File.separator+"World"+File.separator).concat(tmxFile);
             TiledMap tiledMap = new TmxMapLoader().load(absolutePath);
-            TiledMapTileLayer tiledLayer = (TiledMapTileLayer)tiledMap.getLayers().get("map"); // recupère la couche map
+            TiledMapTileLayer tiledLayer = (TiledMapTileLayer)tiledMap.getLayers().get("map");
             int width = tiledLayer.getWidth();
             int heigth = tiledLayer.getHeight();
             TiledMapTileLayer.Cell cell;
-            //parcours les tuiles de la couche et soustrais les informations de chaque tuiles (available, player, ect ...)
-
             for (int i = 0; i < width; i++) {
                 for (int j = 0; j < heigth; j++) {
                     cell = tiledLayer.getCell(i, j);
                     if(cell != null){
-                        //Construis des Cells en fonctions des informations et les ajoutes dans l'arraylist de la map
                         Cell cell1;
                         Boolean available = cell.getTile().getProperties().get("available", Boolean.class);
                         if(available){
@@ -203,7 +192,6 @@ public class Loader {
                             else{
                                 cell1 = new Cell(i, j, false, false, map.player2, null);
                             }
-
                         }
                         else {
                             cell1 = new Cell(i, j, false, true, null, null);
@@ -214,7 +202,7 @@ public class Loader {
             }
         }
         catch (GdxRuntimeException e){
-            e.printStackTrace();
+            throw new WrongFormatException();
         }
     }
 }
