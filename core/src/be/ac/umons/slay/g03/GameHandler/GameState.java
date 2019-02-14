@@ -15,32 +15,36 @@ public class GameState {
         this.turnPlayed = turnPlayed;
         this.logFile = logFile;
     }
+
     public void pause(){
 
     }
+
     public void resume(){
 
     }
+
     public void undo(Player player){
 
     }
+
     public void redo(Player player){
 
     }
+
     public void quit(){
 
     }
+
     public void saveTmxFile(){
 
     }
+
     public void saveXmlFile(){
 
     }
+
     public void saveReplay(){
 
     }
-
-
-
-
 }

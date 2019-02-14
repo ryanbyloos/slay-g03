@@ -7,6 +7,7 @@ public class Tree extends MapElement {
     public Tree(int maintenanceCost, int creationCost, Player owner) {
         super(maintenanceCost, creationCost, owner);
     }
+
     public void generateTree(){
 
     }

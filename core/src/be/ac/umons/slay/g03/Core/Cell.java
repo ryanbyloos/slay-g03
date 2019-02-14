@@ -9,6 +9,7 @@ public class Cell {
     private boolean water;
     private Player owner;
     private MapElement elementOn;
+
     public Cell(int x, int y, boolean checked, boolean water, Player owner, MapElement elementOn){
         this.x = x;
         this.y = y;
@@ -33,6 +34,7 @@ public class Cell {
     public int getX() {
         return x;
     }
+
     public void setX(int x){
         this.x = x;
     }

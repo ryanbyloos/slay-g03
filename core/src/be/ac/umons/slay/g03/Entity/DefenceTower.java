@@ -12,6 +12,7 @@ public class DefenceTower extends Infrastructure {
     public void levelUp(){
 
     }
+
     public boolean belongsTo(){
         return false;
     }

@@ -9,9 +9,11 @@ public class Mine extends Infrastructure {
         super(maintenanceCost, creationCost, player);
         this.visible = visible;
     }
+
     public boolean checkExplosion(){
         return false;
     }
+
     private boolean explode(Boat boat){
         return false;
     }

@@ -21,12 +21,15 @@ public class Player {
     public void checkTerritory(){
 
     }
+
     public boolean isOver(){
         return false;
     }
+
     public void computeScore(){
 
     }
+
     public void surrend(){
 
     }

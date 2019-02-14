@@ -18,12 +18,15 @@ public class Soldier extends MapElement implements Controlable {
     private void attack(Soldier ennemySoldier){
 
     }
+
     private void merge(Soldier allySoldier){
 
     }
+
     private void checkNewTerritory(){
 
     }
+
     public int getLevel() {
         return level;
     }
@@ -31,7 +34,6 @@ public class Soldier extends MapElement implements Controlable {
     public boolean isHasMoved() {
         return hasMoved;
     }
-
 
     @Override
     public boolean equals(Object other) {
@@ -65,6 +67,4 @@ public class Soldier extends MapElement implements Controlable {
     public void select() {
 
     }
-
-
 }

@@ -15,9 +15,11 @@ public class AttackTower extends DefenceTower {
     public boolean belongsTo() {
         return super.belongsTo();
     }
+
     public ArrayList<Cell> attackAbleCells(){
         return null;
     }
+
     public void attack(Cell cell){
 
     }
