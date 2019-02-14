@@ -64,8 +64,8 @@ public class LoaderTest extends GameStageTest {
             loader.loadFromTmxFile(map);
         }
         catch(WrongFormatException e){}
-        Cell elemx0y1 = map.cells.get(3);
-        Assert.assertEquals(true, true);
+        Cell elemx0y1 = map.findCell(0,1);
+        Assert.assertTrue(elemx0y1.isWater());
     }
 
     @Test
@@ -77,8 +77,8 @@ public class LoaderTest extends GameStageTest {
             loader.loadFromTmxFile(map);
         }
         catch(WrongFormatException e){}
-        Cell elemx0y0 = map.cells.get(3);
-        Assert.assertEquals(false, elemx0y0.isWater());
+        Cell elemx0y0 = map.findCell(0, 0);
+        Assert.assertFalse(elemx0y0.isWater());
     }
 
     @Test(expected = WrongFormatException.class)
@@ -160,7 +160,7 @@ public class LoaderTest extends GameStageTest {
         }
         catch(WrongFormatException e){
         }
-        Assert.assertEquals(null, map.cells.get(0).getElementOn());
+        Assert.assertNull(map.cells.get(0).getElementOn());
 
     }
 
@@ -175,7 +175,7 @@ public class LoaderTest extends GameStageTest {
         }
         catch(WrongFormatException e){
         }
-        Assert.assertEquals(null, map.cells.get(0).getElementOn());
+        Assert.assertNull(map.cells.get(0).getElementOn());
     }
 
     @Test
