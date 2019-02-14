@@ -15,15 +15,15 @@ public class Soldier extends MapElement implements Controlable {
         hasMoved = false;
     }
 
-    private void attack(Soldier ennemySoldier){
+    private void attack(Soldier ennemySoldier) {
 
     }
 
-    private void merge(Soldier allySoldier){
+    private void merge(Soldier allySoldier) {
 
     }
 
-    private void checkNewTerritory(){
+    private void checkNewTerritory() {
 
     }
 

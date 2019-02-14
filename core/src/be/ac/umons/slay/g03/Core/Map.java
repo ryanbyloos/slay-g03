@@ -8,10 +8,12 @@ public class Map {
     public Player player2;
 
     public Map(ArrayList<Cell> cells, Player player1, Player player2) {
-        this.cells = cells; this.player1 = player1 ; this.player2 = player2;
+        this.cells = cells;
+        this.player1 = player1;
+        this.player2 = player2;
     }
 
-    public Cell findCell(int x, int y){
+    public Cell findCell(int x, int y) {
         for (Cell cell : cells) {
             if (cell.getX() == x && cell.getY() == y) {
                 return cell;
@@ -20,7 +22,7 @@ public class Map {
         return null;
     }
 
-    public static int getWaterTilesNumber(){
+    public static int getWaterTilesNumber() {
         return 0;
     }
 }

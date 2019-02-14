@@ -9,7 +9,6 @@ import be.ac.umons.slay.g03.GameHandler.Loader;
 import be.ac.umons.slay.g03.GameHandler.WrongFormatException;
 import com.badlogic.gdx.utils.SerializationException;
 import org.junit.Assert;
-
 import org.junit.Test;
 import java.util.ArrayList;
 

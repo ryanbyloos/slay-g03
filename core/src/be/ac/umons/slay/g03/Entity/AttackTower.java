@@ -16,11 +16,11 @@ public class AttackTower extends DefenceTower {
         return super.belongsTo();
     }
 
-    public ArrayList<Cell> attackAbleCells(){
+    public ArrayList<Cell> attackAbleCells() {
         return null;
     }
 
-    public void attack(Cell cell){
+    public void attack(Cell cell) {
 
     }
 }

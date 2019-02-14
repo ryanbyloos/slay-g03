@@ -6,7 +6,10 @@ import java.util.ArrayList;
 
 public interface Controlable {
     boolean belongsTo();
+
     void move(Cell cell);
+
     ArrayList<Cell> accessibleCell();
+
     void select();
 }

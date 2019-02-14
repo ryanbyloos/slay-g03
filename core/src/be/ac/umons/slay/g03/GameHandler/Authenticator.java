@@ -13,19 +13,19 @@ public class Authenticator {
         this.loginFile = loginFile;
     }
 
-    public boolean login(String name, String pwd){
+    public boolean login(String name, String pwd) {
         return false;
     }
 
-    public boolean register(String name, String pwd){
+    public boolean register(String name, String pwd) {
         return false;
     }
 
-    public boolean addScore(Player player){
+    public boolean addScore(Player player) {
         return false;
     }
 
-    public boolean start(String xmlFile, String tmxFile){
+    public boolean start(String xmlFile, String tmxFile) {
         return false;
     }
 }

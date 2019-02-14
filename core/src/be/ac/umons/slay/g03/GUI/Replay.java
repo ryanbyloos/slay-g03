@@ -8,19 +8,24 @@ public class Replay {
         this.turnNumber = turnNumber;
         this.replayFileName = replayFileName;
     }
-    public void jump(int turn){
+
+    public void jump(int turn) {
 
     }
-    public void nextTurn(){
+
+    public void nextTurn() {
 
     }
-    public void previousTurn(){
+
+    public void previousTurn() {
 
     }
-    public void autoDisplay(){
+
+    public void autoDisplay() {
 
     }
-    public void previous(){
+
+    public void previous() {
 
     }
 }

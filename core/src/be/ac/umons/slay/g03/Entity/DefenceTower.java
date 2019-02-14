@@ -9,11 +9,11 @@ public class DefenceTower extends Infrastructure {
         super(maintenanceCost, creationCost, player);
     }
 
-    public void levelUp(){
+    public void levelUp() {
 
     }
 
-    public boolean belongsTo(){
+    public boolean belongsTo() {
         return false;
     }
 }

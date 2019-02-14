@@ -18,19 +18,20 @@ public class Player {
         this.territories = territories;
         this.id = id;
     }
-    public void checkTerritory(){
+
+    public void checkTerritory() {
 
     }
 
-    public boolean isOver(){
+    public boolean isOver() {
         return false;
     }
 
-    public void computeScore(){
+    public void computeScore() {
 
     }
 
-    public void surrend(){
+    public void surrend() {
 
     }
 

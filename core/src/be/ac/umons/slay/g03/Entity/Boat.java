@@ -19,15 +19,15 @@ public class Boat extends Infrastructure implements Controlable {
 
     }
 
-    public boolean deploy(){
+    public boolean deploy() {
         return false;
     }
 
-    private ArrayList<Cell> checkLand(){
+    private ArrayList<Cell> checkLand() {
         return null;
     }
 
-    private void setDefenceLevel(){
+    private void setDefenceLevel() {
 
     }
 

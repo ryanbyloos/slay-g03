@@ -10,7 +10,7 @@ public class Cell {
     private Player owner;
     private MapElement elementOn;
 
-    public Cell(int x, int y, boolean checked, boolean water, Player owner, MapElement elementOn){
+    public Cell(int x, int y, boolean checked, boolean water, Player owner, MapElement elementOn) {
         this.x = x;
         this.y = y;
         this.checked = checked;
@@ -19,7 +19,7 @@ public class Cell {
         this.elementOn = elementOn;
     }
 
-    public void kill(){
+    public void kill() {
 
     }
 
@@ -35,7 +35,7 @@ public class Cell {
         return x;
     }
 
-    public void setX(int x){
+    public void setX(int x) {
         this.x = x;
     }
 

@@ -4,12 +4,13 @@ import be.ac.umons.slay.g03.Core.Player;
 
 public class Capital extends MapElement {
     private int money;
+
     public Capital(int maintenanceCost, int creationCost, Player owner, int money) {
         super(maintenanceCost, creationCost, owner);
         this.money = money;
     }
 
-    public void addMoney(int gain){
+    public void addMoney(int gain) {
 
     }
 

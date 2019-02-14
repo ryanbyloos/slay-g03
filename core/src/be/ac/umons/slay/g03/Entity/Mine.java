@@ -10,11 +10,11 @@ public class Mine extends Infrastructure {
         this.visible = visible;
     }
 
-    public boolean checkExplosion(){
+    public boolean checkExplosion() {
         return false;
     }
 
-    private boolean explode(Boat boat){
+    private boolean explode(Boat boat) {
         return false;
     }
 }

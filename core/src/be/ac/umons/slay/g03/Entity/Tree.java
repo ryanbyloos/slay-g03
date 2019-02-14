@@ -8,7 +8,7 @@ public class Tree extends MapElement {
         super(maintenanceCost, creationCost, owner);
     }
 
-    public void generateTree(){
+    public void generateTree() {
 
     }
 }
