@@ -7,14 +7,12 @@ import be.ac.umons.slay.g03.Entity.Boat;
 import be.ac.umons.slay.g03.Entity.Capital;
 import be.ac.umons.slay.g03.Entity.Infrastructure;
 import be.ac.umons.slay.g03.Entity.Soldier;
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -23,7 +21,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -38,7 +35,7 @@ public class Loader {
 
     public void load(Map map){}
 
-    public void loadFromXmlFile(Map map) throws WrongFormatException/*IOException, ParserConfigurationException, SAXException*/{
+    public void loadFromXmlFile(Map map) throws WrongFormatException{
         try {
             String path = Gdx.files.internal(xmlFile).file().getAbsolutePath();
             String absolutePath = path.substring(0, path.length()-xmlFile.length()).concat("src"+File.separator+"be"+File.separator+"ac"+File.separator+"umons"+File.separator+"slay"+File.separator+"g03"+File.separator+"World"+File.separator).concat(xmlFile);
@@ -77,7 +74,7 @@ public class Loader {
                 if(type.equals("capital")){
                     int x = Integer.parseInt(node.getAttributes().getNamedItem("x").getTextContent());
                     int y = Integer.parseInt(node.getAttributes().getNamedItem("y").getTextContent());
-                    Cell cell = map.findMapElement(x,y);
+                    Cell cell = map.findCell(x,y);
                     if (cell != null){
                         int player = Integer.parseInt(node.getAttributes().getNamedItem("playerId").getTextContent());
                         if(cell.getOwner().getId() == player && !cell.isWater()){
@@ -97,7 +94,7 @@ public class Loader {
                 else if(type.equals("soldier")){
                     int x = Integer.parseInt(node.getAttributes().getNamedItem("x").getTextContent());
                     int y = Integer.parseInt(node.getAttributes().getNamedItem("y").getTextContent());
-                    Cell cell = map.findMapElement(x, y);
+                    Cell cell = map.findCell(x, y);
                     if(cell!=null){
                         int player = Integer.parseInt(node.getAttributes().getNamedItem("playerId").getTextContent());
                         if(!cell.isWater() && cell.getOwner().getId() == player ){
@@ -135,7 +132,7 @@ public class Loader {
                 else if(type.equals("boat")){
                     int x = Integer.parseInt(node.getAttributes().getNamedItem("x").getTextContent());
                     int y = Integer.parseInt(node.getAttributes().getNamedItem("y").getTextContent());
-                    Cell cell = map.findMapElement(x, y);
+                    Cell cell = map.findCell(x, y);
                     if (cell != null){
                         int player = Integer.parseInt(node.getAttributes().getNamedItem("playerId").getTextContent());
                         if(cell.getOwner().getId() == player && cell.isWater() && Infrastructure.isInfrastructureAvailable()){

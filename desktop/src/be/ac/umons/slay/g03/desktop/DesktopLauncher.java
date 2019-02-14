@@ -2,11 +2,11 @@ package be.ac.umons.slay.g03.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import be.ac.umons.slay.g03.Main;
+//import be.ac.umons.slay.g03.Main;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		new LwjglApplication(new Main(), config);
+		//new LwjglApplication(new Main(), config);
 	}
 }
