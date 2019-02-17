@@ -1,4 +1,4 @@
-package be.ac.umons.slay.g03;
+
 
 import be.ac.umons.slay.g03.Core.Cell;
 import be.ac.umons.slay.g03.Core.Map;
@@ -98,6 +98,7 @@ public class LoaderTest extends GameStageTest {
             loader.loadFromXmlFile(map);
         }
         catch(WrongFormatException e){
+
         }
         Assert.assertEquals(new Soldier(2, 10, map.player1, 0), map.cells.get(0).getElementOn());
     }

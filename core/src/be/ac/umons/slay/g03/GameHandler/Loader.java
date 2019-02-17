@@ -38,9 +38,9 @@ public class Loader {
 
     public void loadFromXmlFile(Map map) throws WrongFormatException {
         try {
-            String path = Gdx.files.internal(xmlFile).file().getAbsolutePath();
-            String absolutePath = path.substring(0, path.length() - xmlFile.length()).concat("src" + File.separator + "be" + File.separator + "ac" + File.separator + "umons" + File.separator + "slay" + File.separator + "g03" + File.separator + "World" + File.separator).concat(xmlFile);
-            File file = new File(absolutePath);
+
+            String path = Gdx.files.getLocalStoragePath().concat("assets/World/").concat(xmlFile);
+            File file = new File(path);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(file);
@@ -158,12 +158,13 @@ public class Loader {
 
     public void loadFromTmxFile(Map map) throws WrongFormatException {
         try {
-            String path = Gdx.files.internal(tmxFile).file().getAbsolutePath();
-            String absolutePath = path.substring(0, path.length() - tmxFile.length()).concat("src" + File.separator + "be" + File.separator + "ac" + File.separator + "umons" + File.separator + "slay" + File.separator + "g03" + File.separator + "World" + File.separator).concat(tmxFile);
-            TiledMap tiledMap = new TmxMapLoader().load(absolutePath);
-            TiledMapTileLayer tiledLayer = (TiledMapTileLayer) tiledMap.getLayers().get("map");
+            String path = Gdx.files.getLocalStoragePath().concat("assets/World/").concat(tmxFile);
+            TiledMap tiledMap = new TmxMapLoader().load(path);
+            TiledMapTileLayer tiledLayer = (TiledMapTileLayer)tiledMap.getLayers().get("map");
             int width = tiledLayer.getWidth();
             int heigth = tiledLayer.getHeight();
+            map.heigth =heigth;
+            map.width = width;
             TiledMapTileLayer.Cell cell;
             for (int i = 0; i < width; i++) {
                 for (int j = 0; j < heigth; j++) {

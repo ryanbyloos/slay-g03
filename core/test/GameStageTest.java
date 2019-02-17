@@ -1,4 +1,4 @@
-package be.ac.umons.slay.g03;
+
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.headless.HeadlessApplication;

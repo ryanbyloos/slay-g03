@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.2" tiledversion="1.2.2" orientation="hexagonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" infinite="0" hexsidelength="16" staggeraxis="y" staggerindex="even" nextlayerid="6" nextobjectid="1">
+<map version="1.2" tiledversion="1.2.2" orientation="hexagonal" renderorder="right-down" width="20" height="20" tilewidth="32" tileheight="32" infinite="0" hexsidelength="16" staggeraxis="y" staggerindex="odd" nextlayerid="6" nextobjectid="1">
  <tileset firstgid="1" source="g3_blue.tsx"/>
  <tileset firstgid="2" source="g3_green.tsx"/>
  <layer id="1" name="map" width="20" height="20">
