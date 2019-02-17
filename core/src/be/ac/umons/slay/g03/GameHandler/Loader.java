@@ -163,8 +163,8 @@ public class Loader {
             TiledMapTileLayer tiledLayer = (TiledMapTileLayer)tiledMap.getLayers().get("map");
             int width = tiledLayer.getWidth();
             int heigth = tiledLayer.getHeight();
-            map.heigth =heigth;
-            map.width = width;
+            map.setHeigth(heigth);
+            map.setWidth(width);
             TiledMapTileLayer.Cell cell;
             for (int i = 0; i < width; i++) {
                 for (int j = 0; j < heigth; j++) {
