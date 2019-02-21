@@ -45,16 +45,14 @@ public class Main extends ApplicationAdapter {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 112, 80);
         batch = new SpriteBatch();
-        map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0,false, 0, new ArrayList<Territory>()),
-                new Player("Alex", 2,0, false, 0, new ArrayList<Territory>()));
+        map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, 0, new ArrayList<Territory>()),
+                new Player("Alex", 2, 0, false, 0, new ArrayList<Territory>()));
         Loader loader = new Loader("test.tmx", "test.xml", "testIsland");
         Infrastructure.setInfrastructureAvailable(true);
         try {
             loader.loadFromTmxFile(map, false);
             loader.loadFromXmlFile(map);
-        }
-
-        catch (WrongFormatException e){
+        } catch (WrongFormatException e) {
             e.printStackTrace();
         }
 
@@ -74,63 +72,60 @@ public class Main extends ApplicationAdapter {
 
     @Override
     public void render() {
-        Gdx.gl.glClearColor(145/255f, 145/255f, 145/255f, 1);
+        Gdx.gl.glClearColor(145 / 255f, 145 / 255f, 145 / 255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         for (int i = 0; i < map.cells.size(); i++) {
             Cell cell = map.cells.get(i);
-            if(map.getHeigth() % 2 == 0){
-                if(cell.getY() % 2 == 0 ){
-                    if(cell.isWater()){
-                        batch.draw(blueImage, (cell.getX())*32+16, (cell.getY()*32)-(cell.getY()*8));
+            if (map.getHeigth() % 2 == 0) {
+                if (cell.getY() % 2 == 0) {
+                    if (cell.isWater()) {
+                        batch.draw(blueImage, (cell.getX()) * 32 + 16, (cell.getY() * 32) - (cell.getY() * 8));
+                    } else {
+                        if (cell.getOwner() == null)
+                            batch.draw(greenImage, (cell.getX()) * 32 + 16, (cell.getY() * 32) - (cell.getY() * 8));
+                        else if (cell.getOwner() == map.player1)
+                            batch.draw(yellowImage, (cell.getX()) * 32 + 16, (cell.getY() * 32) - (cell.getY() * 8));
+                        else batch.draw(redImage, (cell.getX()) * 32 + 16, (cell.getY() * 32) - (cell.getY() * 8));
                     }
-                    else{
-                        if(cell.getOwner() == null)
-                            batch.draw(greenImage, (cell.getX())*32+16, (cell.getY()*32)-(cell.getY()*8));
-                        else if(cell.getOwner() == map.player1) batch.draw(yellowImage, (cell.getX())*32+16, (cell.getY()*32)-(cell.getY()*8));
-                        else batch.draw(redImage, (cell.getX())*32+16, (cell.getY()*32)-(cell.getY()*8));
+
+                } else {
+                    if (cell.isWater()) {
+                        batch.draw(blueImage, cell.getX() * 32, (cell.getY() * 32) - (cell.getY() * 8));
+                    } else {
+                        if (cell.getOwner() == null)
+                            batch.draw(greenImage, (cell.getX()) * 32, (cell.getY() * 32) - (cell.getY() * 8));
+                        else if (cell.getOwner() == map.player1)
+                            batch.draw(yellowImage, (cell.getX()) * 32, (cell.getY() * 32) - (cell.getY() * 8));
+                        else batch.draw(redImage, (cell.getX()) * 32, (cell.getY() * 32) - (cell.getY() * 8));
+
                     }
 
                 }
-                else {
-                    if(cell.isWater()){
-                        batch.draw(blueImage, cell.getX()*32, (cell.getY()*32)-(cell.getY()*8));
-                    }
-                    else {
-                        if(cell.getOwner() == null)
-                            batch.draw(greenImage, (cell.getX())*32, (cell.getY()*32)-(cell.getY()*8));
-                        else if(cell.getOwner() == map.player1) batch.draw(yellowImage, (cell.getX())*32, (cell.getY()*32)-(cell.getY()*8));
-                        else batch.draw(redImage, (cell.getX())*32, (cell.getY()*32)-(cell.getY()*8));
+            } else {
+                if (cell.getY() % 2 == 0) {
+                    if (cell.isWater()) {
+                        batch.draw(blueImage, cell.getX() * 32, (cell.getY() * 32) - (cell.getY() * 8));
 
-                    }
-
-                }
-            }
-            else {
-                if(cell.getY() % 2 == 0 ){
-                    if(cell.isWater()){
-                        batch.draw(blueImage, cell.getX()*32, (cell.getY()*32)-(cell.getY()*8));
-
-                    }
-                    else {
-                        if(cell.getOwner() == null)
-                            batch.draw(greenImage, (cell.getX())*32, (cell.getY()*32)-(cell.getY()*8));
-                        else if(cell.getOwner() == map.player1) batch.draw(yellowImage, (cell.getX())*32, (cell.getY()*32)-(cell.getY()*8));
-                        else batch.draw(redImage, (cell.getX())*32, (cell.getY()*32)-(cell.getY()*8));
+                    } else {
+                        if (cell.getOwner() == null)
+                            batch.draw(greenImage, (cell.getX()) * 32, (cell.getY() * 32) - (cell.getY() * 8));
+                        else if (cell.getOwner() == map.player1)
+                            batch.draw(yellowImage, (cell.getX()) * 32, (cell.getY() * 32) - (cell.getY() * 8));
+                        else batch.draw(redImage, (cell.getX()) * 32, (cell.getY() * 32) - (cell.getY() * 8));
                     }
 
-                }
-                else {
-                    if(cell.isWater()){
-                        batch.draw(blueImage, (cell.getX())*32+16, (cell.getY()*32)-(cell.getY()*8));
-                    }
-                    else{
-                        if(cell.getOwner() == null)
-                            batch.draw(greenImage, (cell.getX())*32+16, (cell.getY()*32)-(cell.getY()*8));
-                        else if(cell.getOwner() == map.player1) batch.draw(yellowImage, (cell.getX())*32+16, (cell.getY()*32)-(cell.getY()*8));
-                        else batch.draw(redImage, (cell.getX())*32+16, (cell.getY()*32)-(cell.getY()*8));
+                } else {
+                    if (cell.isWater()) {
+                        batch.draw(blueImage, (cell.getX()) * 32 + 16, (cell.getY() * 32) - (cell.getY() * 8));
+                    } else {
+                        if (cell.getOwner() == null)
+                            batch.draw(greenImage, (cell.getX()) * 32 + 16, (cell.getY() * 32) - (cell.getY() * 8));
+                        else if (cell.getOwner() == map.player1)
+                            batch.draw(yellowImage, (cell.getX()) * 32 + 16, (cell.getY() * 32) - (cell.getY() * 8));
+                        else batch.draw(redImage, (cell.getX()) * 32 + 16, (cell.getY() * 32) - (cell.getY() * 8));
                     }
 
                 }

@@ -75,17 +75,16 @@ public class Loader {
                 Cell cell = map.findCell(x, y);
                 if (type.equals("capital") && cell != null) {
                     int player = Integer.parseInt(node.getAttributes().getNamedItem("playerId").getTextContent());
-                    if (cell.getOwner()!=null && cell.getOwner().getId() == player && !cell.isWater()) {
+                    if (cell.getOwner() != null && cell.getOwner().getId() == player && !cell.isWater()) {
                         Player owner = cell.getOwner();
                         int money = Integer.parseInt(node.getAttributes().getNamedItem("money").getTextContent());
                         Capital capital = new Capital(0, 0, owner, money);
                         cell.setElementOn(capital);
                     }
 
-                }
-                else if (type.equals("soldier") && cell != null) {
+                } else if (type.equals("soldier") && cell != null) {
                     int player = Integer.parseInt(node.getAttributes().getNamedItem("playerId").getTextContent());
-                    if (cell.getOwner()!=null && !cell.isWater() && cell.getOwner().getId() == player) {
+                    if (cell.getOwner() != null && !cell.isWater() && cell.getOwner().getId() == player) {
                         Player owner = cell.getOwner();
                         int level = Integer.parseInt(node.getAttributes().getNamedItem("level").getTextContent());
                         Soldier soldier;
@@ -93,7 +92,8 @@ public class Loader {
                             case 0:
                                 soldier = new Soldier(2, 10, owner, 0);
                                 break;
-                            case 1: soldier = new Soldier(5, 20, owner, 1);
+                            case 1:
+                                soldier = new Soldier(5, 20, owner, 1);
                                 break;
                             case 2:
                                 soldier = new Soldier(14, 40, owner, 2);
@@ -108,29 +108,26 @@ public class Loader {
                         cell.setElementOn(soldier);
                     }
 
-                }
-                else if (type.equals("boat") && cell != null) {
+                } else if (type.equals("boat") && cell != null) {
                     int player = Integer.parseInt(node.getAttributes().getNamedItem("playerId").getTextContent());
                     if (cell.isWater() && Infrastructure.isInfrastructureAvailable()) {
                         Player owner;
-                        if (player == 1){
+                        if (player == 1) {
                             owner = map.player1;
-                        }
-                        else {
+                        } else {
                             owner = map.player2;
                         }
                         int distMax = Integer.parseInt(node.getAttributes().getNamedItem("distmax").getTextContent());
                         Boat boat = new Boat(distMax, 0, 0, 25, owner);//Defense à determiner avec les autre, pareil pour creationCost
                         cell.setElementOn(boat);
                     }
-                }
-                else if(type.equals("attacktower") && cell != null){
+                } else if (type.equals("attacktower") && cell != null) {
                     int player = Integer.parseInt(node.getAttributes().getNamedItem("playerId").getTextContent());
-                    if(Infrastructure.isInfrastructureAvailable() && !cell.isWater() && cell.getOwner() != null && cell.getOwner().getId() == player){
+                    if (Infrastructure.isInfrastructureAvailable() && !cell.isWater() && cell.getOwner() != null && cell.getOwner().getId() == player) {
                         Player owner = cell.getOwner();
                         int level = Integer.parseInt(node.getAttributes().getNamedItem("level").getTextContent());
                         AttackTower attackTower;
-                        switch (level){
+                        switch (level) {
                             case 0:
                                 attackTower = new AttackTower(2, 5, owner, 0);
                                 break;
@@ -150,14 +147,13 @@ public class Loader {
                         cell.setElementOn(attackTower);
                     }
 
-                }
-                else if(type.equals("defencetower") && cell != null){
+                } else if (type.equals("defencetower") && cell != null) {
                     int player = Integer.parseInt(node.getAttributes().getNamedItem("playerId").getTextContent());
-                    if(Infrastructure.isInfrastructureAvailable() && !cell.isWater() && cell.getOwner() != null && cell.getOwner().getId() == player){
+                    if (Infrastructure.isInfrastructureAvailable() && !cell.isWater() && cell.getOwner() != null && cell.getOwner().getId() == player) {
                         Player owner = cell.getOwner();
                         int level = Integer.parseInt(node.getAttributes().getNamedItem("level").getTextContent());
                         DefenceTower defenceTower;
-                        switch (level){
+                        switch (level) {
                             case 0:
                                 defenceTower = new DefenceTower(2, 5, owner, 0);
                                 break;
@@ -177,28 +173,24 @@ public class Loader {
                         cell.setElementOn(defenceTower);
                     }
 
-                }
-                else if(type.equals("grave") && cell != null){
-                    if (!cell.isWater()){
+                } else if (type.equals("grave") && cell != null) {
+                    if (!cell.isWater()) {
                         cell.setElementOn(new Grave(0, 0, null));
                     }
-                }
-                else if(type.equals("mine") && cell != null){
+                } else if (type.equals("mine") && cell != null) {
                     int player = Integer.parseInt(node.getAttributes().getNamedItem("playerId").getTextContent());
                     Boolean visible = Boolean.parseBoolean(node.getAttributes().getNamedItem("visible").getTextContent());
-                    if(Infrastructure.isInfrastructureAvailable() && cell.isWater()){
+                    if (Infrastructure.isInfrastructureAvailable() && cell.isWater()) {
                         Player owner;
-                        if (player == 1){
+                        if (player == 1) {
                             owner = map.player1;
-                        }
-                        else {
+                        } else {
                             owner = map.player2;
                         }
-                        cell.setElementOn(new Mine(visible, 0, 10 , owner));
+                        cell.setElementOn(new Mine(visible, 0, 10, owner));
                     }
-                }
-                else if(type.equals("tree") && cell != null){
-                    if (!cell.isWater()){
+                } else if (type.equals("tree") && cell != null) {
+                    if (!cell.isWater()) {
                         cell.setElementOn(new Tree(0, 0, null));
                     }
                 }
@@ -216,15 +208,14 @@ public class Loader {
     public void loadFromTmxFile(Map map, boolean save) throws WrongFormatException {
         try {
             String path;
-            if(save){
+            if (save) {
                 path = Gdx.files.getLocalStoragePath().concat("assets/Saves/").concat(tmxFile);
-            }
-            else {
+            } else {
                 path = Gdx.files.getLocalStoragePath().concat("assets/World/").concat(tmxFile);
             }
 
             TiledMap tiledMap = new TmxMapLoader().load(path);
-            TiledMapTileLayer tiledLayer = (TiledMapTileLayer)tiledMap.getLayers().get("map");
+            TiledMapTileLayer tiledLayer = (TiledMapTileLayer) tiledMap.getLayers().get("map");
             int width = tiledLayer.getWidth();
             int heigth = tiledLayer.getHeight();
             map.setHeigth(heigth);

@@ -74,6 +74,7 @@ public class Boat extends Infrastructure implements Controlable {
         return null;
     }
 
+
     @Override
     public void select() {
 
