@@ -38,4 +38,42 @@ public class Player {
     public int getId() {
         return id;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public int getNumberOfActions() {
+        return numberOfActions;
+    }
+
+    public boolean isGuest() {
+        return guest;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public ArrayList<Territory> getTerritories() {
+        return territories;
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof Player)) {
+            return false;
+        }
+        Player that = (Player) other;
+        return this.getName().equals(that.getName())
+                && this.getId() == that.getId()
+                && this.getNumberOfActions() == that.getNumberOfActions()
+                && this.isGuest() == that.isGuest()
+                && this.getScore() == that.getScore()
+                && this.getTerritories() == that.getTerritories();
+    }
 }

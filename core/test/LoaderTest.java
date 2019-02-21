@@ -22,9 +22,9 @@ public class LoaderTest extends GameStageTest {
     public void loadFromTmxTestExceptionHandler(){
         Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0,false, 0, new ArrayList<Territory>()),
                 new Player("Alex", 2, 0,false, 0, new ArrayList<Territory>()));
-        Loader loader = new Loader(tmxFileIncorrect, "unneeded");
+        Loader loader = new Loader(tmxFileIncorrect, "unneeded", "");
         try{
-            loader.loadFromTmxFile(map);
+            loader.loadFromTmxFile(map, false);
         }
         catch(WrongFormatException e){}
     }
@@ -33,9 +33,9 @@ public class LoaderTest extends GameStageTest {
     public void loadFromTmxTestAllElementAvailable(){
         Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0,false, 0, new ArrayList<Territory>()),
                   new Player("Alex", 2,0, false, 0, new ArrayList<Territory>()));
-        Loader loader = new Loader(tmxFileCorrect, "unneeded");
+        Loader loader = new Loader(tmxFileCorrect, "unneeded", "");
         try{
-            loader.loadFromTmxFile(map);
+            loader.loadFromTmxFile(map, false);
         }
         catch(WrongFormatException e){}
         Assert.assertEquals(8, map.cells.size());
@@ -45,9 +45,9 @@ public class LoaderTest extends GameStageTest {
     public void loadFromTmxTestPosXOfCell(){
         Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, 0, new ArrayList<Territory>()),
                   new Player("Alex", 2, 0, false, 0, new ArrayList<Territory>()));
-        Loader loader = new Loader(tmxFileCorrect, "unneeded");
+        Loader loader = new Loader(tmxFileCorrect, "unneeded", "");
         try{
-            loader.loadFromTmxFile(map);
+            loader.loadFromTmxFile(map, false);
         }
         catch(WrongFormatException e){}
         Cell elemx0y0 = map.cells.get(0);
@@ -58,9 +58,9 @@ public class LoaderTest extends GameStageTest {
     public void loadFromTmxTestLoadingWaterCell(){
         Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, 0, new ArrayList<Territory>()),
                 new Player("Alex", 2, 0, false, 0, new ArrayList<Territory>()));
-        Loader loader = new Loader(tmxFileCorrect, "unneeded");
+        Loader loader = new Loader(tmxFileCorrect, "unneeded", "");
         try{
-            loader.loadFromTmxFile(map);
+            loader.loadFromTmxFile(map, false);
         }
         catch(WrongFormatException e){}
         Cell elemx0y1 = map.findCell(0,1);
@@ -71,9 +71,9 @@ public class LoaderTest extends GameStageTest {
     public void loadFromTmxTestLoadingLandCell(){
         Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, 0, new ArrayList<Territory>()),
                 new Player("Alex", 2, 0, false, 0, new ArrayList<Territory>()));
-        Loader loader = new Loader(tmxFileCorrect, "unneeded");
+        Loader loader = new Loader(tmxFileCorrect, "unneeded", "");
         try{
-            loader.loadFromTmxFile(map);
+            loader.loadFromTmxFile(map, false);
         }
         catch(WrongFormatException e){}
         Cell elemx0y0 = map.findCell(0, 0);
@@ -84,7 +84,7 @@ public class LoaderTest extends GameStageTest {
     public void loadFromXmlTestExceptionHandler() throws WrongFormatException{
         Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, 0, new ArrayList<Territory>()),
                 new Player("Alex", 2, 0, false, 0, new ArrayList<Territory>()));
-        Loader loader = new Loader(tmxFileCorrect,xmlFileIncorrect);
+        Loader loader = new Loader(tmxFileCorrect,xmlFileIncorrect, "");
         loader.loadFromXmlFile(map);
     }
 
@@ -92,7 +92,7 @@ public class LoaderTest extends GameStageTest {
     public void loadFromXmlTestUnitLoading(){
         Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0,false, 0, new ArrayList<Territory>()),
                 new Player("Alex", 2, 0,false, 0, new ArrayList<Territory>()));
-        Loader loader = new Loader(tmxFileCorrect,xmlFileCorrect);
+        Loader loader = new Loader(tmxFileCorrect,xmlFileCorrect, "");
         map.cells.add(new Cell(1, 1, false, false, map.player1, null));
         try{
             loader.loadFromXmlFile(map);
@@ -107,7 +107,7 @@ public class LoaderTest extends GameStageTest {
     public void loadFromXmlTestItemLoading(){
         Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0,false, 0, new ArrayList<Territory>()),
                 new Player("Alex", 2, 0,false, 0, new ArrayList<Territory>()));
-        Loader loader = new Loader(tmxFileCorrect,xmlFileCorrect);
+        Loader loader = new Loader(tmxFileCorrect,xmlFileCorrect, "");
         map.cells.add(new Cell(0, 0, false, false, map.player1, null));
         try{
             loader.loadFromXmlFile(map);
@@ -121,7 +121,7 @@ public class LoaderTest extends GameStageTest {
     public void loadFromXmlTestInfrastructureLoadingIfAvailable(){
         Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0,false, 0, new ArrayList<Territory>()),
                 new Player("Alex", 2, 0,false, 0, new ArrayList<Territory>()));
-        Loader loader = new Loader(tmxFileCorrect,xmlFileCorrect);
+        Loader loader = new Loader(tmxFileCorrect,xmlFileCorrect, "");
         map.cells.add(new Cell(0, 1, false, true, map.player1, null));
         Infrastructure.setInfrastructureAvailable(true);
         try{
@@ -139,7 +139,7 @@ public class LoaderTest extends GameStageTest {
         Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0,false, 0, new ArrayList<Territory>()),
                 new Player("Alex", 2, 0,false, 0, new ArrayList<Territory>()));
         map.cells.add(new Cell(0, 1, false, true, map.player1, null));
-        Loader loader = new Loader(tmxFileCorrect,xmlFileCorrect);
+        Loader loader = new Loader(tmxFileCorrect,xmlFileCorrect, "");
         Infrastructure.setInfrastructureAvailable(false);
         try{
             loader.loadFromXmlFile(map);
@@ -153,7 +153,7 @@ public class LoaderTest extends GameStageTest {
     public void loadFromXmlTestElementLoadingOnExistingWrongCell(){
         Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0,false, 0, new ArrayList<Territory>()),
                 new Player("Alex", 2, 0,false, 0, new ArrayList<Territory>()));
-        Loader loader = new Loader(tmxFileCorrect,xmlFileCorrect);
+        Loader loader = new Loader(tmxFileCorrect,xmlFileCorrect, "");
         map.cells.add(new Cell(2, 2, false, true, map.player1, null));
         try{
             loader.loadFromXmlFile(map);
@@ -168,7 +168,7 @@ public class LoaderTest extends GameStageTest {
     public void loadFromXmlTestElementLoadingWhenWrongPlayer(){
         Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0,false, 0, new ArrayList<Territory>()),
                 new Player("Alex", 2, 0,false, 0, new ArrayList<Territory>()));
-        Loader loader = new Loader(tmxFileCorrect,xmlFileCorrect);
+        Loader loader = new Loader(tmxFileCorrect,xmlFileCorrect, "");
         map.cells.add(new Cell(2, 1, false, false, map.player1, null));
         try{
             loader.loadFromXmlFile(map);
@@ -182,7 +182,7 @@ public class LoaderTest extends GameStageTest {
     public void loadFromXmlTestElementLoadingWhenCellNotExist(){
         Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0,false, 0, new ArrayList<Territory>()),
                 new Player("Alex", 2, 0,false, 0, new ArrayList<Territory>()));
-        Loader loader = new Loader(tmxFileCorrect,xmlFileCorrect);
+        Loader loader = new Loader(tmxFileCorrect,xmlFileCorrect, "");
         try{
             loader.loadFromXmlFile(map);
         }

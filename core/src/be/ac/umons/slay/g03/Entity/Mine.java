@@ -17,4 +17,8 @@ public class Mine extends Infrastructure {
     private boolean explode(Boat boat) {
         return false;
     }
+
+    public boolean isVisible() {
+        return visible;
+    }
 }
