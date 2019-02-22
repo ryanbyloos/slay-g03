@@ -21,7 +21,13 @@ public class AttackTower extends DefenceTower {
     }
 
     public void attack(Cell cell) {
-
+        if (cell.getElementOn() instanceof Soldier) {
+            if ((((Soldier) cell.getElementOn()).getLevel() < this.getLevel()
+                    || this.getLevel() == 4 && ((Soldier) cell.getElementOn()).getLevel() == 4)
+                    && !cell.getElementOn().getOwner().equals(this.getOwner())) {
+                cell.setElementOn(null);
+            }
+        }
     }
 
 }

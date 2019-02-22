@@ -11,7 +11,8 @@ public class DefenceTower extends Infrastructure {
     }
 
     public void levelUp() {
-
+        if (this.level >= 0 && this.level < 3)
+            level++;
     }
 
     public boolean belongsTo() {
@@ -19,6 +20,6 @@ public class DefenceTower extends Infrastructure {
     }
 
     public int getLevel() {
-        return level;
+        return this.level;
     }
 }
