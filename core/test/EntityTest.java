@@ -12,11 +12,13 @@ public class EntityTest {
 
     @Test
     public void towerAttack() {
-        Player player = new Player("Danial", 1, 0, false, 0, new ArrayList<Territory>());
+        Player player0 = new Player("Danial", 1, 0, false, 0, new ArrayList<Territory>());
         Player player1 = new Player("Alex", 2, 0, false, 0, new ArrayList<Territory>());
-        Cell c = new Cell(0, 0, false, false, player, new Soldier(100, 100, player, 4));
+        Cell c = new Cell(0, 0, false, false, player0, new Soldier(100, 100, player0, 4));
         AttackTower attackTower = new AttackTower(100, 100, player1, 4);
         attackTower.attack(c);
         Assert.assertNull(c.getElementOn());
     }
+
+
 }

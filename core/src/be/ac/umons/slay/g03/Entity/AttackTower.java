@@ -16,7 +16,7 @@ public class AttackTower extends DefenceTower {
         return super.belongsTo();
     }
 
-    public ArrayList<Cell> attackAbleCells() {
+    public ArrayList<Cell> reachableCells() {
         return null;
     }
 
