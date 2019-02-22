@@ -14,15 +14,19 @@ public abstract class MapElement {
     }
 
     public int getMaintenanceCost() {
-        return maintenanceCost;
+        return this.maintenanceCost;
     }
 
     public int getCreationCost() {
-        return creationCost;
+        return this.creationCost;
     }
 
     public Player getOwner() {
-        return owner;
+        return this.owner;
+    }
+
+    public void setOwner(Player newOwner) {
+        this.owner = newOwner;
     }
 
 

@@ -11,6 +11,8 @@ public class Boat extends Infrastructure implements Controlable {
     private int defense;
     private boolean hasMoved;
 
+    private ArrayList<Soldier> soldiers;
+
     public Boat(int t, int defense, int maintenanceCost, int creationCost, Player player) {
         super(maintenanceCost, creationCost, player);
         this.t = t;
@@ -32,7 +34,9 @@ public class Boat extends Infrastructure implements Controlable {
     }
 
     public void capture(Soldier soldier) {
-
+        this.setOwner(soldier.getOwner());
+        this.soldiers = new ArrayList<Soldier>();
+        this.soldiers.add(soldier);
     }
 
     public int getT() {
@@ -57,6 +61,14 @@ public class Boat extends Infrastructure implements Controlable {
 
     public void setHasMoved(boolean hasMoved) {
         this.hasMoved = hasMoved;
+    }
+
+    public ArrayList<Soldier> getSoldiers() {
+        return soldiers;
+    }
+
+    public void setSoldiers(ArrayList<Soldier> soldiers) {
+        this.soldiers = soldiers;
     }
 
     @Override
