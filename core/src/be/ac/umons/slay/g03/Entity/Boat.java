@@ -34,6 +34,7 @@ public class Boat extends Infrastructure implements Controlable {
     }
 
     public void capture(Soldier soldier) {
+        // TODO : verify the levels.
         this.setOwner(soldier.getOwner());
         this.soldiers = new ArrayList<Soldier>();
         this.soldiers.add(soldier);
