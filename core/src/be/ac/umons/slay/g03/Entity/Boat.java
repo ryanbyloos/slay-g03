@@ -44,16 +44,12 @@ public class Boat extends Infrastructure implements Controlable {
         return t;
     }
 
-    public void setT(int t) {
-        this.t = t;
-    }
-
     public int getDefense() {
-        return defense;
-    }
-
-    public void setDefense(int defense) {
-        this.defense = defense;
+        if (soldiers != null && soldiers.size() != 0)
+            for (Soldier soldier : soldiers)
+                if (soldier.getLevel() >= this.defense)
+                    this.defense = soldier.getLevel();
+        return this.defense;
     }
 
     public boolean isHasMoved() {
