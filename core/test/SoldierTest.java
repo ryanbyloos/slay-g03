@@ -1,4 +1,4 @@
-package be.ac.umons.slay.g03;
+
 
 import be.ac.umons.slay.g03.Core.Cell;
 import be.ac.umons.slay.g03.Core.Map;
@@ -6,51 +6,58 @@ import be.ac.umons.slay.g03.Core.Player;
 import be.ac.umons.slay.g03.Core.Territory;
 import be.ac.umons.slay.g03.Entity.*;
 import org.junit.Assert;
+import org.junit.BeforeClass;
 import org.junit.Test;
+import java.util.ArrayList;
 
 public class SoldierTest{
-    @beforeClass
-    public static void init(){
-        SPlayer player1 = new Player("P1", 1, 0, false, 0, new ArrayList<Territory>());
-        Player player2 = new Player("P2", 2, 0, false, 0, new ArrayList<Territory>());
-    }
 
-    @test
+
+
+    @Test
     public void attackLowerSoldier(){
-        Soldier soldierLow = new Soldier(0,0, player1, 2);
-        Soldier soldierHigh = new Soldier(0,0, player1, 3);
-        soldierHigh.attack(soldierHigh,soldierLow);
-        Assert.assertNull(soldierLow);
-        Assert.assertNotNull(soldierHigh);
+        Soldier soldierLow = new Soldier(0,0, null, 1);
+        Soldier soldierHigh = new Soldier(0,0, null, 2);
+        Cell cell1 = new Cell(0,0,false,false,null, soldierLow);
+        Cell cell2 = new Cell(0,0,false,false,null, soldierHigh);
+        soldierHigh.attack(cell2,cell1);
+        Assert.assertEquals(soldierHigh, cell2.getElementOn());
+        Assert.assertNotEquals(soldierLow,cell1.getElementOn());
 
     }
 
-    @test
+    @Test
     public void attackHigherSoldier(){
-        Soldier soldierLow = new Soldier(0,0, player1, 2);
-        Soldier soldierHigh = new Soldier(0,0, player1, 3);
-        soldierLow.attack(soldierLow,soldierHigh);
-        Assert.assertNotNull(soldierLow);
-        Assert.assertNotNull(soldierHigh);
+        Soldier soldierLow = new Soldier(0,0, null, 1);
+        Soldier soldierHigh = new Soldier(0,0, null, 2);
+        Cell cell1 = new Cell(0,0,false,false,null, soldierLow);
+        Cell cell2 = new Cell(0,0,false,false,null, soldierHigh);
+        soldierLow.attack(cell1,cell2);
+        Assert.assertEquals(soldierLow, cell1.getElementOn());
+        Assert.assertEquals(soldierHigh, cell2.getElementOn());
 
     }
 
-    @test
+    @Test
     public void attackEqualSoldier(){
-        Soldier soldier1 = new Soldier(0,0, player1, 3);
-        Soldier soldier2 = new Soldier(0,0, player1, 3);
-        soldier1.attack(soldier1,soldier2);
-        Assert.assertNotNull(soldier1);
-        Assert.assertNotNull(soldier2);
+        Soldier soldier1 = new Soldier(0,0, null, 1);
+        Soldier soldier2 = new Soldier(0,0, null, 1);
+        Cell cell1 = new Cell(0,0,false,false,null, soldier1);
+        Cell cell2 = new Cell(0,0,false,false,null, soldier2);
+        soldier1.attack(cell1,cell2);
+        Assert.assertEquals(soldier1, cell1.getElementOn());
+        Assert.assertEquals(soldier2, cell2.getElementOn());
     }
 
-     @test
+     @Test
     public void attackEqualHighSoldier(){
-         Soldier soldier1 = new Soldier(0,0, player1, 4);
-         Soldier soldier2 = new Soldier(0,0, player1, 4);
-         soldier1.attack(soldier1,soldier2);
-         Assert.assertNull(soldier1);
-         Assert.assertNull(soldier2);
+         Soldier soldier1 = new Soldier(0,0, null, 3);
+         Soldier soldier2 = new Soldier(0,0, null, 3);
+         Cell cell1 = new Cell(0,0,false,false,null, soldier1);
+         Cell cell2 = new Cell(0,0,false,false,null, soldier2);
+         soldier1.attack(cell1,cell2);
+         Assert.assertNotEquals(soldier1,cell1.getElementOn());
+         Assert.assertNotEquals(soldier2, cell2.getElementOn());
      }
 
 

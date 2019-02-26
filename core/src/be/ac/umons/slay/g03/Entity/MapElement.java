@@ -29,5 +29,9 @@ public abstract class MapElement {
         this.owner = newOwner;
     }
 
+    public int getLevel(){
+        return -1;
+    }
+
 
 }

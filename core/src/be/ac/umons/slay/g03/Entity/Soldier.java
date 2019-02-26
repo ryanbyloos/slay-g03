@@ -15,22 +15,27 @@ public class Soldier extends MapElement implements Controlable {
         hasMoved = false;
     }
 
-    private boolean attack(Soldier attackerSoldier, Soldier ennemySoldier) {
-        if (this.level != 4) {
-            if (this.level > ennemySoldier.getLevel()){
-                ennemySoldier = null;
+    public boolean attack(Cell cellAttacker, Cell cellDefender) {
+        int levelAttacker = cellAttacker.getElementOn().getLevel();
+        int levelDefender = cellDefender.getElementOn().getLevel();
+
+
+        if (levelAttacker != 3) {
+            if (levelAttacker > levelDefender){
+                cellDefender.setElementOn(null);
                 return true;
             }
         }
-        else if (ennemySoldier.getLevel() == 4){
-             attackerSoldier = null;
-            ennemySoldier = null;
+        else if (levelDefender == 3){
+            cellAttacker.setElementOn(null);
+            cellDefender.setElementOn(null);
+
             return false;
 
         }
 
         else {
-            ennemySoldier =null;
+            cellDefender.setElementOn(null);
             return true;
         }
         return false;
@@ -43,25 +48,13 @@ public class Soldier extends MapElement implements Controlable {
     private void checkNewTerritory() {
 
     }
-
+    @Override
     public int getLevel() {
         return level;
     }
 
     public boolean isHasMoved() {
         return hasMoved;
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        if (!(other instanceof Soldier)) {
-            return false;
-        }
-        Soldier that = (Soldier) other;
-        return this.getCreationCost() == (that.getCreationCost())
-                && this.getMaintenanceCost() == (that.getMaintenanceCost())
-                && this.getLevel() == that.getLevel()
-                && this.getOwner().equals(that.getOwner());
     }
 
 
