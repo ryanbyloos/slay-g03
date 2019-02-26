@@ -1,14 +1,11 @@
 
 
 import be.ac.umons.slay.g03.Core.Cell;
-import be.ac.umons.slay.g03.Core.Map;
-import be.ac.umons.slay.g03.Core.Player;
-import be.ac.umons.slay.g03.Core.Territory;
 import be.ac.umons.slay.g03.Entity.*;
 import org.junit.Assert;
-import org.junit.BeforeClass;
+
 import org.junit.Test;
-import java.util.ArrayList;
+
 
 public class SoldierTest{
 
@@ -21,8 +18,8 @@ public class SoldierTest{
         Cell cell1 = new Cell(0,0,false,false,null, soldierLow);
         Cell cell2 = new Cell(0,0,false,false,null, soldierHigh);
         soldierHigh.attack(cell2,cell1);
-        Assert.assertEquals(soldierHigh, cell2.getElementOn());
-        Assert.assertNotEquals(soldierLow,cell1.getElementOn());
+        Assert.assertSame(soldierHigh, cell2.getElementOn());
+        Assert.assertNotSame(soldierLow,cell1.getElementOn());
 
     }
 
@@ -33,8 +30,8 @@ public class SoldierTest{
         Cell cell1 = new Cell(0,0,false,false,null, soldierLow);
         Cell cell2 = new Cell(0,0,false,false,null, soldierHigh);
         soldierLow.attack(cell1,cell2);
-        Assert.assertEquals(soldierLow, cell1.getElementOn());
-        Assert.assertEquals(soldierHigh, cell2.getElementOn());
+        Assert.assertSame(soldierLow, cell1.getElementOn());
+        Assert.assertSame(soldierHigh, cell2.getElementOn());
 
     }
 
@@ -45,8 +42,8 @@ public class SoldierTest{
         Cell cell1 = new Cell(0,0,false,false,null, soldier1);
         Cell cell2 = new Cell(0,0,false,false,null, soldier2);
         soldier1.attack(cell1,cell2);
-        Assert.assertEquals(soldier1, cell1.getElementOn());
-        Assert.assertEquals(soldier2, cell2.getElementOn());
+        Assert.assertSame(soldier1, cell1.getElementOn());
+        Assert.assertSame(soldier2, cell2.getElementOn());
     }
 
      @Test

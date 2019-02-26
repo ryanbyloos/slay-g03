@@ -75,8 +75,22 @@ public class Soldier extends MapElement implements Controlable {
         return null;
     }
 
+
     @Override
     public void select() {
 
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof Soldier)) {
+            return false;
+        }
+        Soldier that = (Soldier) other;
+        return this.getMaintenanceCost()==that.getMaintenanceCost()
+                && this.getCreationCost() == that.getCreationCost()
+                && this.getLevel() == that.getLevel()
+                && this.getOwner().equals(that.getOwner())
+                && this.isHasMoved() == that.isHasMoved();
     }
 }
