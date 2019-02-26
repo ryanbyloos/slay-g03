@@ -15,14 +15,25 @@ public class Soldier extends MapElement implements Controlable {
         hasMoved = false;
     }
 
-    private void attack(Soldier ennemySoldier) {
+    private boolean attack(Soldier attackerSoldier, Soldier ennemySoldier) {
         if (this.level != 4) {
-            if (ennemySoldier.getLevel() < this.getLevel()) {
-                // kill the ennemy
-            } else if (ennemySoldier.getLevel() == 4 && this.getLevel() == 4) {
-                // kill the ennemy
+            if (this.level > ennemySoldier.getLevel()){
+                ennemySoldier = null;
+                return true;
             }
         }
+        else if (ennemySoldier.getLevel() == 4){
+             attackerSoldier = null;
+            ennemySoldier = null;
+            return false;
+
+        }
+
+        else {
+            ennemySoldier =null;
+            return true;
+        }
+        return false;
     }
 
     private void merge(Soldier allySoldier) {
@@ -61,9 +72,9 @@ public class Soldier extends MapElement implements Controlable {
 
     @Override
     public void move(Cell cell) {
-        if (cell.getElementOn().getClass() == Soldier.class) {
+        /*if (cell.getElementOn().getClass() == Soldier.class) {
             attack((Soldier) cell.getElementOn());
-        }
+        }*/
     }
 
     @Override
