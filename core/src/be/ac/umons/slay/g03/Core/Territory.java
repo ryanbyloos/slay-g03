@@ -3,15 +3,14 @@ package be.ac.umons.slay.g03.Core;
 import java.util.ArrayList;
 
 public class Territory {
-    private Cell capitalCell;
     private ArrayList<Cell> cells;
 
     public int gain() {
         return 0;
     }
 
-    public Territory(Cell capitalCell, ArrayList<Cell> cells) {
-        this.capitalCell = capitalCell;
+    public Territory(ArrayList<Cell> cells) {
+
         this.cells = cells;
     }
 
@@ -41,14 +40,6 @@ public class Territory {
 
     public boolean addCell(Cell cell) {
         return false;
-    }
-
-    public Cell getCapitalCell() {
-        return capitalCell;
-    }
-
-    public void setCapitalCell(Cell capitalCell) {
-        this.capitalCell = capitalCell;
     }
 
     public ArrayList<Cell> getCells() {

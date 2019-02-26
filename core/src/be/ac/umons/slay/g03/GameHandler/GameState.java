@@ -130,9 +130,11 @@ public class GameState {
         Element items = document.createElement("items");
         Element units = document.createElement("units");
         Element infrastructures = document.createElement("infrastructures");
+        Element territories = document.createElement("territories");
         root.appendChild(items);
         root.appendChild(units);
         root.appendChild(infrastructures);
+        root.appendChild(territories);
         for (int i = 0; i < map.cells.size(); i++) {
             Cell cell = map.cells.get(i);
             MapElement entity;
@@ -207,6 +209,30 @@ public class GameState {
                     items.appendChild(element);
                 }
             }
+        }
+        for (int i = 0; i < map.player1.getTerritories().size(); i++) {
+            Element territory = document.createElement("territory");
+            territory.setAttribute("playerId", "1");
+            for (int j = 0; j < map.player1.getTerritories().get(i).getCells().size() ; j++) {
+                Cell cellL = map.player1.getTerritories().get(i).getCells().get(j);
+                Element cell = document.createElement("cell");
+                cell.setAttribute("x", Integer.toString(cellL.getX()));
+                cell.setAttribute("y", Integer.toString(cellL.getY()));
+                territory.appendChild(cell);
+            }
+            territories.appendChild(territory);
+        }
+        for (int i = 0; i < map.player2.getTerritories().size(); i++) {
+            Element territory = document.createElement("territory");
+            territory.setAttribute("playerId", "2");
+            for (int j = 0; j < map.player2.getTerritories().get(i).getCells().size() ; j++) {
+                Cell cellL = map.player2.getTerritories().get(i).getCells().get(j);
+                Element cell = document.createElement("cell");
+                cell.setAttribute("x", Integer.toString(cellL.getX()));
+                cell.setAttribute("y", Integer.toString(cellL.getY()));
+                territory.appendChild(cell);
+            }
+            territories.appendChild(territory);
         }
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();

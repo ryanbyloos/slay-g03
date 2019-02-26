@@ -3,6 +3,16 @@
     <items>
         <item type="capital" money="10" x="0" y="0" playerId="1" />
     </items>
+    <territories>
+        <territory playerId="1">
+            <cell x="0" y="3" />
+            <cell x="1" y="3" />
+        </territory>
+        <territory playerId="2">
+            <cell x="2" y="3" />
+            <cell x="0" y="4" />
+        </territory>
+    </territories>
 
     <units>
         <unit type="soldier" level="0" x="1" y="1" playerId="1" />
@@ -15,5 +25,6 @@
         <infrastructure type="boat" distmax="3" x="0" y="1" playerId="1" />
         <infrastructure type="boat" distmax="3" x="0" y="2" playerId="1" />
     </infrastructures>
+
 
 </world>

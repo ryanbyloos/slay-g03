@@ -86,7 +86,7 @@ public class LoaderTest extends GameStageTest {
         Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, 0, new ArrayList<Territory>()),
                 new Player("Alex", 2, 0, false, 0, new ArrayList<Territory>()));
         Loader loader = new Loader(tmxFileCorrect, xmlFileIncorrect, "");
-        loader.loadFromXmlFile(map);
+        loader.loadFromXmlFile(map, false);
     }
 
     @Test
@@ -96,7 +96,7 @@ public class LoaderTest extends GameStageTest {
         Loader loader = new Loader(tmxFileCorrect, xmlFileCorrect, "");
         map.cells.add(new Cell(1, 1, false, false, map.player1, null));
         try {
-            loader.loadFromXmlFile(map);
+            loader.loadFromXmlFile(map, false);
         } catch (WrongFormatException e) {
 
         }
@@ -110,7 +110,7 @@ public class LoaderTest extends GameStageTest {
         Loader loader = new Loader(tmxFileCorrect, xmlFileCorrect, "");
         map.cells.add(new Cell(0, 0, false, false, map.player1, null));
         try {
-            loader.loadFromXmlFile(map);
+            loader.loadFromXmlFile(map, false);
         } catch (WrongFormatException e) {
         }
         Assert.assertEquals(new Capital(0, 0, map.player1, 10), map.cells.get(0).getElementOn());
@@ -124,7 +124,7 @@ public class LoaderTest extends GameStageTest {
         map.cells.add(new Cell(0, 1, false, true, map.player1, null));
         Infrastructure.setInfrastructureAvailable(true);
         try {
-            loader.loadFromXmlFile(map);
+            loader.loadFromXmlFile(map, false);
         } catch (WrongFormatException e) {
         }
         Assert.assertEquals(new Boat(3, 0, 0, 25, map.player1), map.cells.get(0).getElementOn());
@@ -140,7 +140,7 @@ public class LoaderTest extends GameStageTest {
         Loader loader = new Loader(tmxFileCorrect, xmlFileCorrect, "");
         Infrastructure.setInfrastructureAvailable(false);
         try {
-            loader.loadFromXmlFile(map);
+            loader.loadFromXmlFile(map, false);
         } catch (WrongFormatException e) {
         }
         Assert.assertNotEquals(new Boat(3, 0, 0, 25, map.player1), map.cells.get(0).getElementOn());
@@ -153,7 +153,7 @@ public class LoaderTest extends GameStageTest {
         Loader loader = new Loader(tmxFileCorrect, xmlFileCorrect, "");
         map.cells.add(new Cell(2, 2, false, true, map.player1, null));
         try {
-            loader.loadFromXmlFile(map);
+            loader.loadFromXmlFile(map, false);
         } catch (WrongFormatException e) {
         }
         Assert.assertNull(map.cells.get(0).getElementOn());
@@ -167,7 +167,7 @@ public class LoaderTest extends GameStageTest {
         Loader loader = new Loader(tmxFileCorrect, xmlFileCorrect, "");
         map.cells.add(new Cell(2, 1, false, false, map.player1, null));
         try {
-            loader.loadFromXmlFile(map);
+            loader.loadFromXmlFile(map, false);
         } catch (WrongFormatException e) {
         }
         Assert.assertNull(map.cells.get(0).getElementOn());
@@ -179,7 +179,7 @@ public class LoaderTest extends GameStageTest {
                 new Player("Alex", 2, 0, false, 0, new ArrayList<Territory>()));
         Loader loader = new Loader(tmxFileCorrect, xmlFileCorrect, "");
         try {
-            loader.loadFromXmlFile(map);
+            loader.loadFromXmlFile(map, false);
         } catch (WrongFormatException e) {
         }
         Assert.assertEquals(0, map.cells.size());

@@ -3,6 +3,7 @@ package be.ac.umons.slay.g03.GameHandler;
 import be.ac.umons.slay.g03.Core.Cell;
 import be.ac.umons.slay.g03.Core.Map;
 import be.ac.umons.slay.g03.Core.Player;
+import be.ac.umons.slay.g03.Core.Territory;
 import be.ac.umons.slay.g03.Entity.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -35,9 +37,14 @@ public class Loader {
     public void load(Map map) {
     }
 
-    public void loadFromXmlFile(Map map) throws WrongFormatException {
+    public void loadFromXmlFile(Map map, boolean save) throws WrongFormatException {
         try {
-            String path = Gdx.files.getLocalStoragePath().concat("assets/World/").concat(xmlFile);
+            String path;
+            if (save) {
+                path = Gdx.files.getLocalStoragePath().concat("assets/Saves/").concat(xmlFile);
+            } else {
+                path = Gdx.files.getLocalStoragePath().concat("assets/World/").concat(xmlFile);
+            }
             File file = new File(path);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
@@ -47,14 +54,50 @@ public class Loader {
             NodeList items = doc.getElementsByTagName("item");
             NodeList units = doc.getElementsByTagName("unit");
             NodeList infrastructures = doc.getElementsByTagName("infrastructure");
+            NodeList territories = doc.getElementsByTagName("territory");
+
+            for (int i = 0; i < territories.getLength(); i++) {
+                Territory territory;
+                ArrayList<Cell> cells = new ArrayList<Cell>();
+                Node node = territories.item(i);
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    Element element = (Element) node;
+                    int playerId = Integer.parseInt(element.getAttribute("playerId"));
+                    int size = element.getElementsByTagName("cell").getLength();
+                    int x, y;
+                    for (int j = 0; j < size; j++) {
+                        x = Integer.parseInt(element.getElementsByTagName("cell").item(j).getAttributes().getNamedItem("x").getTextContent());
+                        y = Integer.parseInt(element.getElementsByTagName("cell").item(j).getAttributes().getNamedItem("y").getTextContent());
+                        Cell cell = map.findCell(x, y);
+                        if (cell != null && !cell.isWater() && cell.getOwner().getId() == playerId) {
+                            cells.add(cell);
+                        }
+                    }
+                    if (cells.size() > 1) {
+                        territory = new Territory(cells);
+                        switch (playerId) {
+                            case 1:
+                                map.player1.getTerritories().add(territory);
+                                break;
+                            case 2:
+                                map.player2.getTerritories().add(territory);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }
+            }
             for (int i = 0; i < items.getLength(); i++) {
                 Node node = items.item(i);
+
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     all.add(node);
                 }
 
             }
             for (int i = 0; i < units.getLength(); i++) {
+
                 Node node = units.item(i);
                 if (node.getNodeType() == Node.ELEMENT_NODE) {
                     all.add(node);
@@ -69,6 +112,8 @@ public class Loader {
             }
             for (int i = 0; i < all.size(); i++) {
                 Node node = all.get(i);
+
+
                 String type = node.getAttributes().getNamedItem("type").getTextContent();
                 int x = Integer.parseInt(node.getAttributes().getNamedItem("x").getTextContent());
                 int y = Integer.parseInt(node.getAttributes().getNamedItem("y").getTextContent());
@@ -83,8 +128,8 @@ public class Loader {
                     }
 
                 } else if (type.equals("soldier") && cell != null) {
-                    int player = Integer.parseInt(node.getAttributes().getNamedItem("playerId").getTextContent());
-                    if (cell.getOwner() != null && !cell.isWater() && cell.getOwner().getId() == player) {
+                    int playerId = Integer.parseInt(node.getAttributes().getNamedItem("playerId").getTextContent());
+                    if (cell.getOwner() != null && !cell.isWater() && cell.getOwner().getId() == playerId) {
                         Player owner = cell.getOwner();
                         int level = Integer.parseInt(node.getAttributes().getNamedItem("level").getTextContent());
                         Soldier soldier;
@@ -109,10 +154,10 @@ public class Loader {
                     }
 
                 } else if (type.equals("boat") && cell != null) {
-                    int player = Integer.parseInt(node.getAttributes().getNamedItem("playerId").getTextContent());
+                    int playerId = Integer.parseInt(node.getAttributes().getNamedItem("playerId").getTextContent());
                     if (cell.isWater() && Infrastructure.isInfrastructureAvailable()) {
                         Player owner;
-                        if (player == 1) {
+                        if (playerId == 1) {
                             owner = map.player1;
                         } else {
                             owner = map.player2;
@@ -122,8 +167,8 @@ public class Loader {
                         cell.setElementOn(boat);
                     }
                 } else if (type.equals("attacktower") && cell != null) {
-                    int player = Integer.parseInt(node.getAttributes().getNamedItem("playerId").getTextContent());
-                    if (Infrastructure.isInfrastructureAvailable() && !cell.isWater() && cell.getOwner() != null && cell.getOwner().getId() == player) {
+                    int playerId = Integer.parseInt(node.getAttributes().getNamedItem("playerId").getTextContent());
+                    if (Infrastructure.isInfrastructureAvailable() && !cell.isWater() && cell.getOwner() != null && cell.getOwner().getId() == playerId) {
                         Player owner = cell.getOwner();
                         int level = Integer.parseInt(node.getAttributes().getNamedItem("level").getTextContent());
                         AttackTower attackTower;
@@ -148,8 +193,8 @@ public class Loader {
                     }
 
                 } else if (type.equals("defencetower") && cell != null) {
-                    int player = Integer.parseInt(node.getAttributes().getNamedItem("playerId").getTextContent());
-                    if (Infrastructure.isInfrastructureAvailable() && !cell.isWater() && cell.getOwner() != null && cell.getOwner().getId() == player) {
+                    int playerId = Integer.parseInt(node.getAttributes().getNamedItem("playerId").getTextContent());
+                    if (Infrastructure.isInfrastructureAvailable() && !cell.isWater() && cell.getOwner() != null && cell.getOwner().getId() == playerId) {
                         Player owner = cell.getOwner();
                         int level = Integer.parseInt(node.getAttributes().getNamedItem("level").getTextContent());
                         DefenceTower defenceTower;
@@ -178,11 +223,11 @@ public class Loader {
                         cell.setElementOn(new Grave(0, 0, null));
                     }
                 } else if (type.equals("mine") && cell != null) {
-                    int player = Integer.parseInt(node.getAttributes().getNamedItem("playerId").getTextContent());
+                    int playerId = Integer.parseInt(node.getAttributes().getNamedItem("playerId").getTextContent());
                     Boolean visible = Boolean.parseBoolean(node.getAttributes().getNamedItem("visible").getTextContent());
                     if (Infrastructure.isInfrastructureAvailable() && cell.isWater()) {
                         Player owner;
-                        if (player == 1) {
+                        if (playerId == 1) {
                             owner = map.player1;
                         } else {
                             owner = map.player2;
