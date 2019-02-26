@@ -11,9 +11,9 @@ public class Infrastructure extends MapElement {
 
     public Infrastructure(int maintenanceCost, int creationCost, Player player) {
         super(maintenanceCost, creationCost, player);
-    }
+             }
 
-    public static void setInfrastructureAvailable(boolean infrastructureAvailable) {
+public static void setInfrastructureAvailable(boolean infrastructureAvailable) {
         InfrastructureAvailable = infrastructureAvailable;
-    }
-}
+        }
+        }
