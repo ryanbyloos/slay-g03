@@ -14,11 +14,12 @@ import com.badlogic.gdx.utils.viewport.FillViewport;
 public class Menu implements Screen {
 
     Stage stage;
-    TextButton playButton;
-    TextButton optionsButton;
-    TextButton quitButton;
+    TextButton resumeButton;
+    TextButton newGameButton;
+    TextButton settingsButton;
+    TextButton replayButton;
     TextButton hofButton;
-    TextButton loadButton;
+    TextButton quitButton;
     BitmapFont font;
     Main main;
 
@@ -28,19 +29,34 @@ public class Menu implements Screen {
 
     @Override
     public void show() {
+        int centerWidth = (main.WIDTH - main.BUTTON_WIDTH) / 2;
+        int unitHeight = (int) (1.5 * main.BUTTON_HEIGHT);
+
         stage = new Stage(new FillViewport(Main.WIDTH, Main.HEIGHT));
         Gdx.input.setInputProcessor(stage);
         font = main.skin.getFont("default-font");
         main.skin.addRegions(main.skin.getAtlas());
 
-        playButton = new TextButton("PLAY", main.skin);
-        playButton.setSize(Main.BUTTON_WIDTH, Main.BUTTON_HEIGHT);
-        playButton.setPosition((Main.WIDTH - Main.BUTTON_WIDTH) / 2, Main.HEIGHT / 2 + 2 * Main.BUTTON_HEIGHT);
+        resumeButton = new TextButton("RESUME", main.skin);
+        resumeButton.setSize(Main.BUTTON_WIDTH, Main.BUTTON_HEIGHT);
+        resumeButton.setPosition(centerWidth, 7 * unitHeight);
 
-        optionsButton = new TextButton("OPTIONS", main.skin);
-        optionsButton.setSize(Main.BUTTON_WIDTH, Main.BUTTON_HEIGHT);
-        optionsButton.setPosition((Main.WIDTH - Main.BUTTON_WIDTH) / 2, (Main.HEIGHT + Main.BUTTON_HEIGHT) / 2);
-        optionsButton.addListener(new ChangeListener() {
+        newGameButton = new TextButton("NEW GAME", main.skin);
+        newGameButton.setSize(Main.BUTTON_WIDTH, Main.BUTTON_HEIGHT);
+        newGameButton.setPosition(centerWidth, 6 * unitHeight);
+
+        replayButton = new TextButton("REPLAY", main.skin);
+        replayButton.setSize(Main.BUTTON_WIDTH, Main.BUTTON_HEIGHT);
+        replayButton.setPosition(centerWidth, 5 * unitHeight);
+
+        hofButton = new TextButton("HALL OF FAME", main.skin);
+        hofButton.setSize(Main.BUTTON_WIDTH, Main.BUTTON_HEIGHT);
+        hofButton.setPosition(centerWidth, 4 * unitHeight);
+
+        settingsButton = new TextButton("SETTINGS", main.skin);
+        settingsButton.setSize(Main.BUTTON_WIDTH, Main.BUTTON_HEIGHT);
+        settingsButton.setPosition(centerWidth, 3 * unitHeight);
+        settingsButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 main.setScreen(new Options(main));
@@ -49,7 +65,7 @@ public class Menu implements Screen {
 
         quitButton = new TextButton("QUIT", main.skin);
         quitButton.setSize(Main.BUTTON_WIDTH, Main.BUTTON_HEIGHT);
-        quitButton.setPosition((Main.WIDTH - Main.BUTTON_WIDTH) / 2, Main.HEIGHT / 2 - Main.BUTTON_HEIGHT);
+        quitButton.setPosition(centerWidth, 2 * unitHeight);
         quitButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -57,8 +73,11 @@ public class Menu implements Screen {
             }
         });
 
-        stage.addActor(playButton);
-        stage.addActor(optionsButton);
+        stage.addActor(resumeButton);
+        stage.addActor(newGameButton);
+        stage.addActor(replayButton);
+        stage.addActor(hofButton);
+        stage.addActor(settingsButton);
         stage.addActor(quitButton);
     }
 
