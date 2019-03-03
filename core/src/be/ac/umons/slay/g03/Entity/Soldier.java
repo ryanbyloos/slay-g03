@@ -7,12 +7,12 @@ import java.util.ArrayList;
 
 public class Soldier extends MapElement implements Controlable {
     private int level;
-    private boolean hasMoved;
+    private boolean hasMoved = false;
 
-    public Soldier(int maintenanceCost, int creationCost, Player owner, int level) {
+    public Soldier(int maintenanceCost, int creationCost, Player owner, int level, boolean hasMoved) {
         super(maintenanceCost, creationCost, owner);
         this.level = level;
-        hasMoved = false;
+        this.hasMoved = hasMoved;
     }
 
     public boolean attack(Cell cellAttacker, Cell cellDefender) {

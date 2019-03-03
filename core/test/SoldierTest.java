@@ -13,8 +13,8 @@ public class SoldierTest{
 
     @Test
     public void attackLowerSoldier(){
-        Soldier soldierLow = new Soldier(0,0, null, 1);
-        Soldier soldierHigh = new Soldier(0,0, null, 2);
+        Soldier soldierLow = new Soldier(0,0, null, 1, false);
+        Soldier soldierHigh = new Soldier(0,0, null, 2, false);
         Cell cell1 = new Cell(0,0,false,false,null, soldierLow);
         Cell cell2 = new Cell(0,0,false,false,null, soldierHigh);
         soldierHigh.attack(cell2,cell1);
@@ -25,8 +25,8 @@ public class SoldierTest{
 
     @Test
     public void attackHigherSoldier(){
-        Soldier soldierLow = new Soldier(0,0, null, 1);
-        Soldier soldierHigh = new Soldier(0,0, null, 2);
+        Soldier soldierLow = new Soldier(0,0, null, 1, false);
+        Soldier soldierHigh = new Soldier(0,0, null, 2, false);
         Cell cell1 = new Cell(0,0,false,false,null, soldierLow);
         Cell cell2 = new Cell(0,0,false,false,null, soldierHigh);
         soldierLow.attack(cell1,cell2);
@@ -37,8 +37,8 @@ public class SoldierTest{
 
     @Test
     public void attackEqualSoldier(){
-        Soldier soldier1 = new Soldier(0,0, null, 1);
-        Soldier soldier2 = new Soldier(0,0, null, 1);
+        Soldier soldier1 = new Soldier(0,0, null, 1, false);
+        Soldier soldier2 = new Soldier(0,0, null, 1, false);
         Cell cell1 = new Cell(0,0,false,false,null, soldier1);
         Cell cell2 = new Cell(0,0,false,false,null, soldier2);
         soldier1.attack(cell1,cell2);
@@ -48,8 +48,8 @@ public class SoldierTest{
 
      @Test
     public void attackEqualHighSoldier(){
-         Soldier soldier1 = new Soldier(0,0, null, 3);
-         Soldier soldier2 = new Soldier(0,0, null, 3);
+         Soldier soldier1 = new Soldier(0,0, null, 3, false);
+         Soldier soldier2 = new Soldier(0,0, null, 3, false);
          Cell cell1 = new Cell(0,0,false,false,null, soldier1);
          Cell cell2 = new Cell(0,0,false,false,null, soldier2);
          soldier1.attack(cell1,cell2);

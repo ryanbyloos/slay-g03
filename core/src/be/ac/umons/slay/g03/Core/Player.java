@@ -5,14 +5,16 @@ import java.util.ArrayList;
 public class Player {
     private String name;
     private int id;
-    private int numberOfActions;
+    private int moveNumber;
+    private int maxMoveNumber;
     private boolean guest;
     private int score = 0;
+    private boolean turn;
     private ArrayList<Territory> territories;
 
-    public Player(String name, int id, int numberOfActions, boolean guest, int score, ArrayList<Territory> territories) {
+    public Player(String name, int id, int moveNumber, boolean guest, int score, ArrayList<Territory> territories) {
         this.name = name;
-        this.numberOfActions = numberOfActions;
+        this.moveNumber = moveNumber;
         this.guest = guest;
         this.score = score;
         this.territories = territories;
@@ -47,8 +49,12 @@ public class Player {
         this.name = name;
     }
 
-    public int getNumberOfActions() {
-        return numberOfActions;
+    public int getMoveNumber() {
+        return moveNumber;
+    }
+
+    public void setMoveNumber(int moveNumber) {
+        this.moveNumber = moveNumber;
     }
 
     public boolean isGuest() {
@@ -63,6 +69,14 @@ public class Player {
         return territories;
     }
 
+    public boolean isTurn() {
+        return turn;
+    }
+
+    public void setTurn(boolean turn) {
+        this.turn = turn;
+    }
+
     @Override
     public boolean equals(Object other) {
         if (!(other instanceof Player)) {
@@ -71,9 +85,17 @@ public class Player {
         Player that = (Player) other;
         return this.getName().equals(that.getName())
                 && this.getId() == that.getId()
-                && this.getNumberOfActions() == that.getNumberOfActions()
+                && this.getMoveNumber() == that.getMoveNumber()
                 && this.isGuest() == that.isGuest()
                 && this.getScore() == that.getScore()
-                && this.getTerritories() == that.getTerritories();
+                && this.getTerritories().equals(that.getTerritories());
+    }
+
+    public int getMaxMoveNumber() {
+        return maxMoveNumber;
+    }
+
+    public void setMaxMoveNumber(int maxMoveNumber) {
+        this.maxMoveNumber = maxMoveNumber;
     }
 }

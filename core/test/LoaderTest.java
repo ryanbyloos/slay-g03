@@ -100,7 +100,7 @@ public class LoaderTest extends GameStageTest {
         } catch (WrongFormatException e) {
 
         }
-        Assert.assertEquals(new Soldier(2, 10, map.player1, 0), map.cells.get(0).getElementOn());
+        Assert.assertEquals(new Soldier(2, 10, map.player1, 0, false), map.cells.get(0).getElementOn());
     }
 
     @Test
@@ -127,7 +127,11 @@ public class LoaderTest extends GameStageTest {
             loader.loadFromXmlFile(map, false);
         } catch (WrongFormatException e) {
         }
-        Assert.assertEquals(new Boat(3, 0, 0, 25, map.player1), map.cells.get(0).getElementOn());
+        Boat boat = new Boat(3, 0, 0, 25, map.player1, false);
+        ArrayList<Soldier> soldiers = new ArrayList<Soldier>();
+        soldiers.add(new Soldier(5, 20, map.player1, 1, false));
+        boat.setSoldiers(soldiers);
+        Assert.assertEquals(boat, map.cells.get(0).getElementOn());
 
 
     }
@@ -143,7 +147,7 @@ public class LoaderTest extends GameStageTest {
             loader.loadFromXmlFile(map, false);
         } catch (WrongFormatException e) {
         }
-        Assert.assertNotEquals(new Boat(3, 0, 0, 25, map.player1), map.cells.get(0).getElementOn());
+        Assert.assertNotEquals(new Boat(3, 0, 0, 25, map.player1, false), map.cells.get(0).getElementOn());
     }
 
     @Test

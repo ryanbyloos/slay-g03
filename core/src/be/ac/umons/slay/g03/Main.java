@@ -7,6 +7,7 @@ import be.ac.umons.slay.g03.Core.Territory;
 import be.ac.umons.slay.g03.Entity.Infrastructure;
 import be.ac.umons.slay.g03.GameHandler.GameState;
 import be.ac.umons.slay.g03.GameHandler.Loader;
+import be.ac.umons.slay.g03.GameHandler.ReplayParserException;
 import be.ac.umons.slay.g03.GameHandler.WrongFormatException;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -15,10 +16,12 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Main extends ApplicationAdapter {
@@ -43,28 +46,35 @@ public class Main extends ApplicationAdapter {
         yellowImage = atlas.findRegion("sprite-1");
 
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, 112, 80);
+        camera.setToOrtho(false, 112, 136);
         batch = new SpriteBatch();
         map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, 0, new ArrayList<Territory>()),
                 new Player("Alex", 2, 0, false, 0, new ArrayList<Territory>()));
-        Loader loader = new Loader("test.tmx", "test.xml", "testIsland");
+        Loader loader = new Loader("test1.tmx", "test.xml", "testIsland");
         Infrastructure.setInfrastructureAvailable(true);
+        GameState gameState = new GameState(map, loader, 0, null);
+
         try {
             loader.loadFromTmxFile(map, false);
-            loader.loadFromXmlFile(map);
+            loader.loadFromXmlFile(map, false);
         } catch (WrongFormatException e) {
             e.printStackTrace();
         }
 
-        GameState gameState = new GameState(map, loader, 0, "smth");
-
-        try {
-            gameState.saveXmlFile();
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (TransformerException e) {
+        try{
+            gameState.saveReplay();
+            gameState.nextTurn();
+            gameState.storeMove(map.player1);
+            map.player1.setMoveNumber(map.player1.getMoveNumber()+1);
+            gameState.storeMove(map.player1);
+            gameState.nextTurn();
+            map.player1.setMoveNumber(0);
+            gameState.storeMove(map.player1);
+        } catch (ReplayParserException e) {
             e.printStackTrace();
         }
+
+
 
 
     }

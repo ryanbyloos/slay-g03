@@ -9,15 +9,15 @@ public class Boat extends Infrastructure implements Controlable {
 
     private int t;
     private int defense;
-    private boolean hasMoved;
+    private boolean hasMoved = false;
 
     private ArrayList<Soldier> soldiers;
 
-    public Boat(int t, int defense, int maintenanceCost, int creationCost, Player player) {
+    public Boat(int t, int defense, int maintenanceCost, int creationCost, Player player, boolean hasMoved) {
         super(maintenanceCost, creationCost, player);
         this.t = t;
         this.defense = defense;
-        hasMoved = false;
+        this.hasMoved = hasMoved;
 
     }
 
@@ -99,6 +99,8 @@ public class Boat extends Infrastructure implements Controlable {
                 && this.getMaintenanceCost() == (that.getMaintenanceCost())
                 && this.getT() == that.getT()
                 && this.getDefense() == that.getDefense()
-                && this.getOwner().equals(that.getOwner());
+                && this.getOwner().equals(that.getOwner())
+                && this.isHasMoved() == that.isHasMoved()
+                && this.getSoldiers().equals(that.getSoldiers());
     }
 }

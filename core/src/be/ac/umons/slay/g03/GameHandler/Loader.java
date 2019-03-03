@@ -28,6 +28,7 @@ public class Loader {
     private String tmxFile;
     private String xmlFile;
 
+
     public Loader(String tmxFile, String xmlFile, String name) {
         this.tmxFile = tmxFile;
         this.xmlFile = xmlFile;
@@ -112,8 +113,6 @@ public class Loader {
             }
             for (int i = 0; i < all.size(); i++) {
                 Node node = all.get(i);
-
-
                 String type = node.getAttributes().getNamedItem("type").getTextContent();
                 int x = Integer.parseInt(node.getAttributes().getNamedItem("x").getTextContent());
                 int y = Integer.parseInt(node.getAttributes().getNamedItem("y").getTextContent());
@@ -132,29 +131,34 @@ public class Loader {
                     if (cell.getOwner() != null && !cell.isWater() && cell.getOwner().getId() == playerId) {
                         Player owner = cell.getOwner();
                         int level = Integer.parseInt(node.getAttributes().getNamedItem("level").getTextContent());
+                        boolean hasMoved = Boolean.parseBoolean(node.getAttributes().getNamedItem("hasmoved").getTextContent());
                         Soldier soldier;
                         switch (level) {
                             case 0:
-                                soldier = new Soldier(2, 10, owner, 0);
+                                soldier = new Soldier(2, 10, owner, 0, hasMoved);
                                 break;
                             case 1:
-                                soldier = new Soldier(5, 20, owner, 1);
+                                soldier = new Soldier(5, 20, owner, 1, hasMoved);
                                 break;
                             case 2:
-                                soldier = new Soldier(14, 40, owner, 2);
+                                soldier = new Soldier(14, 40, owner, 2, hasMoved);
                                 break;
                             case 3:
-                                soldier = new Soldier(41, 80, owner, 3);
+                                soldier = new Soldier(41, 80, owner, 3, hasMoved);
                                 break;
                             default:
                                 soldier = null;
                                 break;
                         }
+
                         cell.setElementOn(soldier);
                     }
 
                 } else if (type.equals("boat") && cell != null) {
+                    ArrayList<Soldier> soldiers = new ArrayList<Soldier>();
+                    NodeList soldiersData = node.getChildNodes();
                     int playerId = Integer.parseInt(node.getAttributes().getNamedItem("playerId").getTextContent());
+                    boolean hasMoved = Boolean.parseBoolean(node.getAttributes().getNamedItem("hasmoved").getTextContent());
                     if (cell.isWater() && Infrastructure.isInfrastructureAvailable()) {
                         Player owner;
                         if (playerId == 1) {
@@ -163,7 +167,35 @@ public class Loader {
                             owner = map.player2;
                         }
                         int distMax = Integer.parseInt(node.getAttributes().getNamedItem("distmax").getTextContent());
-                        Boat boat = new Boat(distMax, 0, 0, 25, owner);//Defense à determiner avec les autre, pareil pour creationCost
+                        for (int j = 0; j < soldiersData.getLength(); j++) {
+                            Node soldierData = soldiersData.item(j);
+                            if(soldierData.getNodeType() == Node.ELEMENT_NODE){ ;
+                                int level =  Integer.parseInt(soldierData.getAttributes().getNamedItem("level").getTextContent());
+                                boolean soldierHasMoved = Boolean.parseBoolean(soldierData.getAttributes().getNamedItem("hasmoved").getTextContent());
+                                Soldier soldier;
+                                switch (level) {
+                                    case 0:
+                                        soldier = new Soldier(2, 10, owner, 0, soldierHasMoved);
+                                        break;
+                                    case 1:
+                                        soldier = new Soldier(5, 20, owner, 1, soldierHasMoved);
+                                        break;
+                                    case 2:
+                                        soldier = new Soldier(14, 40, owner, 2, soldierHasMoved);
+                                        break;
+                                    case 3:
+                                        soldier = new Soldier(41, 80, owner, 3, soldierHasMoved);
+                                        break;
+                                    default:
+                                        soldier = null;
+                                        break;
+                                }
+                                soldiers.add(soldier);
+                            }
+
+                        }
+                        Boat boat = new Boat(distMax, 0, 0, 25, owner, hasMoved);//Defense à determiner avec les autre, pareil pour creationCost
+                        boat.setSoldiers(soldiers);
                         cell.setElementOn(boat);
                     }
                 } else if (type.equals("attacktower") && cell != null) {
@@ -274,6 +306,7 @@ public class Loader {
                         Boolean available = cell.getTile().getProperties().get("available", Boolean.class);
                         if (available) {
                             Integer player = cell.getTile().getProperties().get("player", Integer.class);
+
                             if (player == 0) {
                                 cell1 = new Cell(i, j, false, false, null, null);
                             } else if (player == 1) {
