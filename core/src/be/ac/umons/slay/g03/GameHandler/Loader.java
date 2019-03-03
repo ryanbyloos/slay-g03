@@ -169,8 +169,9 @@ public class Loader {
                         int distMax = Integer.parseInt(node.getAttributes().getNamedItem("distmax").getTextContent());
                         for (int j = 0; j < soldiersData.getLength(); j++) {
                             Node soldierData = soldiersData.item(j);
-                            if(soldierData.getNodeType() == Node.ELEMENT_NODE){ ;
-                                int level =  Integer.parseInt(soldierData.getAttributes().getNamedItem("level").getTextContent());
+                            if (soldierData.getNodeType() == Node.ELEMENT_NODE) {
+                                ;
+                                int level = Integer.parseInt(soldierData.getAttributes().getNamedItem("level").getTextContent());
                                 boolean soldierHasMoved = Boolean.parseBoolean(soldierData.getAttributes().getNamedItem("hasmoved").getTextContent());
                                 Soldier soldier;
                                 switch (level) {

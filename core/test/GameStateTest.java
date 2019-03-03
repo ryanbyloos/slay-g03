@@ -8,16 +8,12 @@ import be.ac.umons.slay.g03.GameHandler.ReplayParserException;
 import be.ac.umons.slay.g03.GameHandler.WrongFormatException;
 import org.junit.Assert;
 import org.junit.Test;
-import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class GameStateTest extends GameStageTest {
     @Test
-    public void undoTest(){
+    public void undoTest() {
         Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, 0, new ArrayList<Territory>()),
                 new Player("Alex", 2, 0, false, 0, new ArrayList<Territory>()));
         Loader loader = new Loader("test1.tmx", "test.xml", "wow");
@@ -33,7 +29,7 @@ public class GameStateTest extends GameStageTest {
             map.findCell(1, 1).setElementOn(null);
             gameState.storeMove(map.player1);
             gameState.undo(map.player1);
-            Assert.assertNotEquals(null, gameState.getMap().findCell(1, 1).getElementOn());
+            Assert.assertNotEquals(null, map.findCell(1, 1).getElementOn());
         } catch (ReplayParserException e) {
             e.printStackTrace();
         } catch (WrongFormatException e) {

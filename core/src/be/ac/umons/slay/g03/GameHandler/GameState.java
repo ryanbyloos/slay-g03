@@ -67,8 +67,6 @@ public class GameState {
                 refreshMap(doc, turnPlayed, player.getMoveNumber());
             } catch (ParserConfigurationException e) {
                 throw new ReplayParserException();
-            } catch (TransformerException e) {
-                throw new ReplayParserException();
             } catch (IOException e) {
                 throw new ReplayParserException();
             } catch (SAXException e) {
@@ -89,8 +87,6 @@ public class GameState {
                 refreshMap(doc, turnPlayed, player.getMoveNumber());
             } catch (ParserConfigurationException e) {
                 throw new ReplayParserException();
-            } catch (TransformerException e) {
-                throw new ReplayParserException();
             } catch (IOException e) {
                 throw new ReplayParserException();
             } catch (SAXException e) {
@@ -101,13 +97,10 @@ public class GameState {
         }
     }
 
-    private void refreshMap(Document doc, int turn, int move) throws TransformerException {
-        Map newMap = new Map(new ArrayList<Cell>(), map.player1, map.player2);
-        newMap.setWidth(map.getWidth());
-        newMap.setHeigth(map.getHeigth());
+    private void refreshMap(Document doc, int turn, int move) {
+        ArrayList<Cell> newCells = new ArrayList<>();
         Element data = null;
         NodeList turns = doc.getDocumentElement().getChildNodes();
-
         for (int i = 0; i < turns.getLength(); i++) {
             Node node = turns.item(i);
             if (node.getNodeType() == Node.ELEMENT_NODE) {
@@ -141,9 +134,9 @@ public class GameState {
                     Cell cell = new Cell(x, y, checked, isWater, null, null);
                     switch (playerId) {
                         case 1:
-                            cell.setOwner(newMap.player1);
+                            cell.setOwner(map.player1);
                         case 2:
-                            cell.setOwner(newMap.player2);
+                            cell.setOwner(map.player2);
                             break;
                         default:
                             break;
@@ -259,11 +252,11 @@ public class GameState {
                     } else if (entityName.equals("tree")) {
                         cell.setElementOn(new Tree(0, 0, null));
                     }
-                    newMap.cells.add(cell);
+                    newCells.add(cell);
                 }
             }
         }
-        this.map = newMap;
+        this.map.cells = newCells;
     }
 
 
@@ -478,11 +471,9 @@ public class GameState {
         }
         try {
             storeTurn();
-        }
-        catch (ReplayParserException e) {
+        } catch (ReplayParserException e) {
             e.printStackTrace();
-        }
-        finally {
+        } finally {
             turnPlayed += 1;
         }
 
@@ -648,7 +639,7 @@ public class GameState {
     }
 
 
-    public void saveReplay() throws ReplayParserException{
+    public void saveReplay() throws ReplayParserException {
         String file = Gdx.files.getLocalStoragePath().concat("assets/Replays/").concat("test.xml"); // TODO: 02-03-19 à changer par la suite (le nom, les 2 cas possible si(la partie repris est une sauvegarde ou pas ect ..)
         logFile = file;
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -674,7 +665,4 @@ public class GameState {
 
     }
 
-    public Map getMap() {
-        return map;
-    }
 }
