@@ -48,7 +48,7 @@ public class World extends ApplicationAdapter {
         map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, 0, new ArrayList<Territory>()),
                 new Player("Alex", 2, 0, false, 0, new ArrayList<Territory>()));
         Loader loader = new Loader("test.tmx", "test.xml", "testIsland");
-        Infrastructure.setInfrastructureAvailable(true);
+        Infrastructure.setIsAvailable(true);
         try {
             loader.loadFromTmxFile(map, false);
             loader.loadFromXmlFile(map, false);

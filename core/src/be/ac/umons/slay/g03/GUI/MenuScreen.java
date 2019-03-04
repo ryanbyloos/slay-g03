@@ -10,8 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 
 public class MenuScreen implements Screen {
-
-    Stage stage;
+    public Stage stage;
 
     @Override
     public void show() {
@@ -59,5 +58,9 @@ public class MenuScreen implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
+    }
+
+    public void addActor(Actor actor) {
+        stage.addActor(actor);
     }
 }

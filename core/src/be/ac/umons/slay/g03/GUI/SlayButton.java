@@ -15,5 +15,6 @@ class SlayButton extends TextButton {
     SlayButton(String text, Skin skin) {
         super(text, skin);
         this.setSize(ScreenHandler.BUTTON_WIDTH, ScreenHandler.BUTTON_HEIGHT);
+        this.setPosition(25, 25);
     }
 }
