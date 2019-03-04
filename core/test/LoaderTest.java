@@ -122,7 +122,7 @@ public class LoaderTest extends GameStageTest {
                 new Player("Alex", 2, 0, false, 0, new ArrayList<Territory>()));
         Loader loader = new Loader(tmxFileCorrect, xmlFileCorrect, "");
         map.cells.add(new Cell(0, 1, false, true, map.player1, null));
-        Infrastructure.setInfrastructureAvailable(true);
+        Infrastructure.setIsAvailable(true);
         try {
             loader.loadFromXmlFile(map, false);
         } catch (WrongFormatException e) {
@@ -142,7 +142,7 @@ public class LoaderTest extends GameStageTest {
                 new Player("Alex", 2, 0, false, 0, new ArrayList<Territory>()));
         map.cells.add(new Cell(0, 1, false, true, map.player1, null));
         Loader loader = new Loader(tmxFileCorrect, xmlFileCorrect, "");
-        Infrastructure.setInfrastructureAvailable(false);
+        Infrastructure.setIsAvailable(false);
         try {
             loader.loadFromXmlFile(map, false);
         } catch (WrongFormatException e) {

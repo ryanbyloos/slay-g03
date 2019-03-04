@@ -159,7 +159,7 @@ public class Loader {
                     NodeList soldiersData = node.getChildNodes();
                     int playerId = Integer.parseInt(node.getAttributes().getNamedItem("playerId").getTextContent());
                     boolean hasMoved = Boolean.parseBoolean(node.getAttributes().getNamedItem("hasmoved").getTextContent());
-                    if (cell.isWater() && Infrastructure.isInfrastructureAvailable()) {
+                    if (cell.isWater() && Infrastructure.isAvailable) {
                         Player owner;
                         if (playerId == 1) {
                             owner = map.player1;
@@ -201,7 +201,7 @@ public class Loader {
                     }
                 } else if (type.equals("attacktower") && cell != null) {
                     int playerId = Integer.parseInt(node.getAttributes().getNamedItem("playerId").getTextContent());
-                    if (Infrastructure.isInfrastructureAvailable() && !cell.isWater() && cell.getOwner() != null && cell.getOwner().getId() == playerId) {
+                    if (Infrastructure.isAvailable && !cell.isWater() && cell.getOwner() != null && cell.getOwner().getId() == playerId) {
                         Player owner = cell.getOwner();
                         int level = Integer.parseInt(node.getAttributes().getNamedItem("level").getTextContent());
                         AttackTower attackTower;
@@ -227,7 +227,7 @@ public class Loader {
 
                 } else if (type.equals("defencetower") && cell != null) {
                     int playerId = Integer.parseInt(node.getAttributes().getNamedItem("playerId").getTextContent());
-                    if (Infrastructure.isInfrastructureAvailable() && !cell.isWater() && cell.getOwner() != null && cell.getOwner().getId() == playerId) {
+                    if (Infrastructure.isAvailable && !cell.isWater() && cell.getOwner() != null && cell.getOwner().getId() == playerId) {
                         Player owner = cell.getOwner();
                         int level = Integer.parseInt(node.getAttributes().getNamedItem("level").getTextContent());
                         DefenceTower defenceTower;
@@ -258,7 +258,7 @@ public class Loader {
                 } else if (type.equals("mine") && cell != null) {
                     int playerId = Integer.parseInt(node.getAttributes().getNamedItem("playerId").getTextContent());
                     Boolean visible = Boolean.parseBoolean(node.getAttributes().getNamedItem("visible").getTextContent());
-                    if (Infrastructure.isInfrastructureAvailable() && cell.isWater()) {
+                    if (Infrastructure.isAvailable && cell.isWater()) {
                         Player owner;
                         if (playerId == 1) {
                             owner = map.player1;
