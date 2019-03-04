@@ -5,10 +5,9 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 
 public class DesktopLauncher {
+    static LwjglApplicationConfiguration config;
     public static void main(String[] arg) {
-        LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-        config.width = ScreenHandler.WIDTH;
-        config.height = ScreenHandler.HEIGHT;
+        config = new LwjglApplicationConfiguration();
         new LwjglApplication(ScreenHandler.game, config);
     }
 }
