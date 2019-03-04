@@ -1,3 +1,5 @@
 .gradle
 .idea
 slay-g03.iml
+build
+out

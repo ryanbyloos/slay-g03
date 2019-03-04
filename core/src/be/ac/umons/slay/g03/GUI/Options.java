@@ -1,6 +1,6 @@
 package be.ac.umons.slay.g03.GUI;
 
-import be.ac.umons.slay.g03.Main;
+import be.ac.umons.slay.g03.GameHandler.ScreenHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -13,23 +13,17 @@ import com.badlogic.gdx.utils.viewport.FillViewport;
 public class Options implements Screen {
 
     TextButton returnButton;
-    Main main;
     Stage stage;
-
-    public Options(Main main) {
-        this.main = main;
-    }
-
     @Override
     public void show() {
-        stage = new Stage(new FillViewport(Main.WIDTH, Main.HEIGHT));
+        stage = new Stage(new FillViewport(ScreenHandler.WIDTH, ScreenHandler.HEIGHT));
         Gdx.input.setInputProcessor(stage);
-        returnButton = new TextButton("Return", main.skin);
-        returnButton.setSize(Main.BUTTON_WIDTH, Main.BUTTON_HEIGHT);
+        returnButton = new TextButton("Return", ScreenHandler.game.skin);
+        returnButton.setSize(ScreenHandler.BUTTON_WIDTH, ScreenHandler.BUTTON_HEIGHT);
         returnButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                main.setScreen(new Menu(main));
+                ScreenHandler.game.setScreen(ScreenHandler.menu);
             }
         });
         stage.addActor(returnButton);

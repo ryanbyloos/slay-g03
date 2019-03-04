@@ -1,6 +1,6 @@
 package be.ac.umons.slay.g03.GUI;
 
-import be.ac.umons.slay.g03.Main;
+import be.ac.umons.slay.g03.GameHandler.ScreenHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -21,51 +21,31 @@ public class Menu implements Screen {
     TextButton hofButton;
     TextButton quitButton;
     BitmapFont font;
-    Main main;
 
-    public Menu(Main main) {
-        this.main = main;
-    }
 
     @Override
     public void show() {
-        int centerWidth = (main.WIDTH - main.BUTTON_WIDTH) / 2;
-        int unitHeight = (int) (1.5 * main.BUTTON_HEIGHT);
 
-        stage = new Stage(new FillViewport(Main.WIDTH, Main.HEIGHT));
+        stage = new Stage(new FillViewport(ScreenHandler.WIDTH, ScreenHandler.HEIGHT));
         Gdx.input.setInputProcessor(stage);
-        font = main.skin.getFont("default-font");
-        main.skin.addRegions(main.skin.getAtlas());
+        font = ScreenHandler.game.skin.getFont("default-font");
+        ScreenHandler.game.skin.addRegions(ScreenHandler.game.skin.getAtlas());
 
-        resumeButton = new TextButton("RESUME", main.skin);
-        resumeButton.setSize(Main.BUTTON_WIDTH, Main.BUTTON_HEIGHT);
-        resumeButton.setPosition(centerWidth, 7 * unitHeight);
+        resumeButton = new SlayButton("RESUME", ScreenHandler.game.skin, 1);
+        newGameButton = new SlayButton("NEW GAME", ScreenHandler.game.skin, 2);
+        replayButton = new SlayButton("REPLAY", ScreenHandler.game.skin, 3);
+        hofButton = new SlayButton("HALL OF FAME", ScreenHandler.game.skin, 4);
+        settingsButton = new SlayButton("SETTINGS", ScreenHandler.game.skin, 5);
+        quitButton = new SlayButton("QUIT", ScreenHandler.game.skin, 6);
 
-        newGameButton = new TextButton("NEW GAME", main.skin);
-        newGameButton.setSize(Main.BUTTON_WIDTH, Main.BUTTON_HEIGHT);
-        newGameButton.setPosition(centerWidth, 6 * unitHeight);
-
-        replayButton = new TextButton("REPLAY", main.skin);
-        replayButton.setSize(Main.BUTTON_WIDTH, Main.BUTTON_HEIGHT);
-        replayButton.setPosition(centerWidth, 5 * unitHeight);
-
-        hofButton = new TextButton("HALL OF FAME", main.skin);
-        hofButton.setSize(Main.BUTTON_WIDTH, Main.BUTTON_HEIGHT);
-        hofButton.setPosition(centerWidth, 4 * unitHeight);
-
-        settingsButton = new TextButton("SETTINGS", main.skin);
-        settingsButton.setSize(Main.BUTTON_WIDTH, Main.BUTTON_HEIGHT);
-        settingsButton.setPosition(centerWidth, 3 * unitHeight);
         settingsButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                main.setScreen(new Options(main));
+                if (ScreenHandler.options == null)
+                    ScreenHandler.options = new Options();
+                ScreenHandler.setScreen(ScreenHandler.options);
             }
         });
-
-        quitButton = new TextButton("QUIT", main.skin);
-        quitButton.setSize(Main.BUTTON_WIDTH, Main.BUTTON_HEIGHT);
-        quitButton.setPosition(centerWidth, 2 * unitHeight);
         quitButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
