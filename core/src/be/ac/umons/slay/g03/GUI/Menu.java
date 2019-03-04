@@ -26,12 +26,29 @@ public class Menu implements Screen {
         SlayButton settingsButton = new SlayButton("SETTINGS", ScreenHandler.game.skin, 5);
         SlayButton quitButton = new SlayButton("QUIT", ScreenHandler.game.skin, 6);
 
+
+        replayButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if (ScreenHandler.replay == null)
+                    ScreenHandler.replay = new ReplayScreen();
+                ScreenHandler.setScreen(ScreenHandler.replay);
+            }
+        });
+        hofButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                if (ScreenHandler.hof == null)
+                    ScreenHandler.hof = new HallOfFame();
+                ScreenHandler.setScreen(ScreenHandler.hof);
+            }
+        });
         settingsButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                if (ScreenHandler.options == null)
-                    ScreenHandler.options = new Options();
-                ScreenHandler.setScreen(ScreenHandler.options);
+                if (ScreenHandler.settings == null)
+                    ScreenHandler.settings = new Settings();
+                ScreenHandler.setScreen(ScreenHandler.settings);
             }
         });
         quitButton.addListener(new ChangeListener() {

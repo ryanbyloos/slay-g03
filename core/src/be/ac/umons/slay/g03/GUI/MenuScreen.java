@@ -9,13 +9,12 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 
-public class Options implements Screen {
+public class MenuScreen implements Screen {
 
     Stage stage;
 
     @Override
     public void show() {
-
         stage = new Stage(new FillViewport(ScreenHandler.WIDTH, ScreenHandler.HEIGHT));
         Gdx.input.setInputProcessor(stage);
 

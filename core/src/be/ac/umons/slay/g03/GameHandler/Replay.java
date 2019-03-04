@@ -1,4 +1,4 @@
-package be.ac.umons.slay.g03.GUI;
+package be.ac.umons.slay.g03.GameHandler;
 
 public class Replay {
     private int turnNumber;
