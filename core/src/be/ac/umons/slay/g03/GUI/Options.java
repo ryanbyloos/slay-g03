@@ -6,24 +6,25 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 
 public class Options implements Screen {
 
-    TextButton returnButton;
     Stage stage;
+
     @Override
     public void show() {
+
         stage = new Stage(new FillViewport(ScreenHandler.WIDTH, ScreenHandler.HEIGHT));
         Gdx.input.setInputProcessor(stage);
-        returnButton = new TextButton("Return", ScreenHandler.game.skin);
+
+        SlayButton returnButton = new SlayButton("RETURN", ScreenHandler.game.skin);
         returnButton.setSize(ScreenHandler.BUTTON_WIDTH, ScreenHandler.BUTTON_HEIGHT);
         returnButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                ScreenHandler.game.setScreen(ScreenHandler.menu);
+                ScreenHandler.setScreen(ScreenHandler.menu);
             }
         });
         stage.addActor(returnButton);
@@ -32,7 +33,7 @@ public class Options implements Screen {
     @Override
     public void render(float delta) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw();
     }
 

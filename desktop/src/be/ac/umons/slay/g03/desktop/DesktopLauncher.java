@@ -9,6 +9,6 @@ public class DesktopLauncher {
         LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
         config.width = ScreenHandler.WIDTH;
         config.height = ScreenHandler.HEIGHT;
-        new LwjglApplication(be.ac.umons.slay.g03.GameHandler.ScreenHandler.game, config);
+        new LwjglApplication(ScreenHandler.game, config);
     }
 }

@@ -11,8 +11,8 @@ public class ScreenHandler {
     public static int BUTTON_WIDTH = WIDTH / 6;
     public static int BUTTON_HEIGHT = HEIGHT / 12;
 
+    public static Menu menu = new Menu();
     public static Main game = new Main();
-    public static Menu menu;
     public static Options options;
 
     public static void setScreen(Screen screen) {
