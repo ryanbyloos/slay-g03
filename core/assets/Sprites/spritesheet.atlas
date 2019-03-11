@@ -1,110 +1,110 @@
 spritesheet.png
-size: 237, 66
+size: 480, 32
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-sprite-land
-  rotate: false
-  xy: 1, 1
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-sprite-water
-  rotate: false
-  xy: 35, 1
-  size: 32, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
 sprite-1
   rotate: false
-  xy: 69, 1
+  xy: 0, 0
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
 sprite-2
   rotate: false
-  xy: 103, 1
+  xy: 32, 0
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-sprite-sl2
-  rotate: true
-  xy: 204, 1
-  size: 23, 32
-  orig: 32, 32
-  offset: 5, 0
-  index: -1
-sprite-sl4
-  rotate: true
-  xy: 103, 35
-  size: 29, 32
-  orig: 32, 32
-  offset: 0, 0
-  index: -1
-sprite-sl1
+sprite-3
   rotate: false
-  xy: 137, 1
+  xy: 64, 0
   size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-sprite-capital
+sprite-4
   rotate: false
-  xy: 171, 1
-  size: 31, 32
-  orig: 32, 32
-  offset: 1, 0
-  index: -1
-sprite-tree
-  rotate: false
-  xy: 69, 35
-  size: 32, 29
-  orig: 32, 32
-  offset: 0, 3
-  index: -1
-sprite-defense
-  rotate: false
-  xy: 137, 35
-  size: 31, 29
-  orig: 32, 32
-  offset: 0, 3
-  index: -1
-sprite-sl3
-  rotate: true
-  xy: 170, 35
-  size: 27, 32
-  orig: 32, 32
-  offset: 3, 0
-  index: -1
-sprite-attack
-  rotate: false
-  xy: 1, 35
-  size: 32, 30
+  xy: 96, 0
+  size: 32, 32
   orig: 32, 32
   offset: 0, 0
   index: -1
-sprite-boat
+sprite-5
   rotate: false
-  xy: 204, 26
-  size: 19, 19
+  xy: 128, 0
+  size: 32, 32
   orig: 32, 32
-  offset: 6, 7
+  offset: 0, 0
   index: -1
-sprite-mine
-  rotate: true
-  xy: 35, 35
-  size: 30, 32
-  orig: 32, 32
-  offset: 1, 0
-  index: -1
-sprite-grave
+sprite-6
   rotate: false
-  xy: 204, 47
-  size: 18, 18
+  xy: 160, 0
+  size: 32, 32
   orig: 32, 32
-  offset: 6, 1
+  offset: 0, 0
+  index: -1
+sprite-7
+  rotate: false
+  xy: 192, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+sprite-8
+  rotate: false
+  xy: 224, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+sprite-9
+  rotate: false
+  xy: 256, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+sprite-10
+  rotate: false
+  xy: 288, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+sprite-11
+  rotate: false
+  xy: 320, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+sprite-12
+  rotate: false
+  xy: 352, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+sprite-13
+  rotate: false
+  xy: 384, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+sprite-14
+  rotate: false
+  xy: 416, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+sprite-land
+  rotate: false
+  xy: 448, 0
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
   index: -1

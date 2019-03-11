@@ -35,7 +35,9 @@ public class Loader {
         this.name = name;
     }
 
-    public void load(Map map) {
+    public void load(Map map, boolean save) throws WrongFormatException {
+        loadFromTmxFile(map, save);
+        loadFromXmlFile(map, save);
     }
 
     public void loadFromXmlFile(Map map, boolean save) throws WrongFormatException {
