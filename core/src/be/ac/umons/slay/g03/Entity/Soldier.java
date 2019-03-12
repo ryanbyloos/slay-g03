@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class Soldier extends MapElement implements Controlable {
     private int level;
-    private boolean hasMoved = false;
+    private boolean hasMoved;
     private ArrayList<Cell> accessibleCells;
 
     public Soldier(int maintenanceCost, int creationCost, Player owner, int level, boolean hasMoved) {
@@ -81,9 +81,6 @@ public class Soldier extends MapElement implements Controlable {
 
     @Override
     public void move(Cell source, Cell destination) {
-        /*if (cell.getElementOn().getClass() == Soldier.class) {
-            attack((Soldier) cell.getElementOn());
-        }*/
         if (destination.getElementOn() == null && accessibleCells.contains(destination)) {
             destination.setElementOn(source.getElementOn());
             source.setElementOn(null);
@@ -123,26 +120,33 @@ public class Soldier extends MapElement implements Controlable {
         int y = himself.getY();
         if (map.getHeigth()%2 ==  y%2) {
 
-            adjacentCell.add(map.findCell(x,y-1));
-            adjacentCell.add(map.findCell(x+1,y-1));
-            adjacentCell.add(map.findCell(x-1,y));
-            adjacentCell.add(map.findCell(x+1,y));
-            adjacentCell.add(map.findCell(x,y+1));
-            adjacentCell.add(map.findCell(x+1,y+1));
+            addCell(adjacentCell, map.findCell(x,y-1));
+            addCell(adjacentCell,map.findCell(x+1,y-1));
+            addCell(adjacentCell,map.findCell(x-1,y));
+            addCell(adjacentCell,map.findCell(x+1,y));
+            addCell(adjacentCell,map.findCell(x,y+1));
+            addCell(adjacentCell,map.findCell(x+1,y+1));
 
         }
         else {
 
-            adjacentCell.add(map.findCell(x-1,y-1));
-            adjacentCell.add(map.findCell(x,y-1));
-            adjacentCell.add(map.findCell(x-1,y));
-            adjacentCell.add(map.findCell(x+1,y));
-            adjacentCell.add(map.findCell(x-1,y+1));
-            adjacentCell.add(map.findCell(x,y+1));
+            addCell(adjacentCell,map.findCell(x-1,y-1));
+            addCell(adjacentCell,map.findCell(x,y-1));
+            addCell(adjacentCell,map.findCell(x-1,y));
+            addCell(adjacentCell,map.findCell(x+1,y));
+            addCell(adjacentCell,map.findCell(x-1,y+1));
+            addCell(adjacentCell,map.findCell(x,y+1));
 
 
         }
         return adjacentCell;
+    }
+
+    private void addCell(ArrayList<Cell> aList,Cell cell){
+        if (cell != null && !cell.isWater()){
+            aList.add(cell);
+        }
+
     }
 
 
