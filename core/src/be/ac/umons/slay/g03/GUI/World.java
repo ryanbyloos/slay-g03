@@ -1,31 +1,24 @@
 package be.ac.umons.slay.g03.GUI;
-
 import be.ac.umons.slay.g03.Core.Cell;
 import be.ac.umons.slay.g03.Core.Map;
 import be.ac.umons.slay.g03.Core.Player;
 import be.ac.umons.slay.g03.Core.Territory;
 import be.ac.umons.slay.g03.Entity.*;
-import be.ac.umons.slay.g03.GameHandler.GameState;
 import be.ac.umons.slay.g03.GameHandler.Loader;
 import be.ac.umons.slay.g03.GameHandler.WrongFormatException;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector3;
-import javafx.scene.input.MouseButton;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-
 import java.util.ArrayList;
 
-public class World extends ApplicationAdapter {
+public class World extends ApplicationAdapter implements InputProcessor {
     private TextureAtlas.AtlasRegion blueImage;
     private TextureAtlas.AtlasRegion greenImage;
     private TextureAtlas.AtlasRegion yellowImage;
@@ -41,10 +34,17 @@ public class World extends ApplicationAdapter {
     private TextureAtlas.AtlasRegion boat;
     private TextureAtlas.AtlasRegion grave;
     private TextureAtlas.AtlasRegion mine;
+    private TextureAtlas.AtlasRegion contour;
+
     private SpriteBatch batch;
     private OrthographicCamera camera;
     private Map map;
     private TextureAtlas atlas;
+    private Cell source;
+    private Cell dest;
+    private int posX, posY;
+    private boolean selected;
+    Soldier soldier;
     private void setViewport(OrthographicCamera camera, Map map) {
 
         int width, heigth;
@@ -59,7 +59,7 @@ public class World extends ApplicationAdapter {
         camera.setToOrtho(false, width, heigth);
     }
 
-    private void drawSpriteEven(Batch batch, TextureAtlas.AtlasRegion sprite, Cell cell) {
+    private void drawSpriteEven(TextureAtlas.AtlasRegion sprite, Cell cell) {
         if (cell.getY() % 2 == 0) {
             batch.draw(sprite, (cell.getX()) * 32 + 16, (cell.getY() * 32) - (cell.getY() * 8));
         } else {
@@ -67,60 +67,69 @@ public class World extends ApplicationAdapter {
         }
     }
 
-    private void drawSpriteOdd(Batch batch, TextureAtlas.AtlasRegion sprite, Cell cell) {
+    private void drawSpriteOdd(TextureAtlas.AtlasRegion sprite, Cell cell) {
         if (cell.getY() % 2 == 0) {
             batch.draw(sprite, cell.getX() * 32, (cell.getY() * 32) - (cell.getY() * 8));
         } else {
             batch.draw(sprite, (cell.getX()) * 32 + 16, (cell.getY() * 32) - (cell.getY() * 8));
         }
     }
+    private void drawContour(ArrayList<Cell> cells){
+        for (int i = 0; i < cells.size() ; i++) {
+            if(map.getHeigth() % 2 == 0){
+                drawSpriteEven(contour, cells.get(i));
+            }
+            else {
+                drawSpriteOdd(contour, cells.get(i));
+            }
+        }
+    }
 
-
-    private void draw(Batch batch) {
+    private void draw() {
         for (int i = 0; i < map.cells.size(); i++) {
             Cell cell = map.cells.get(i);
             if (map.getHeigth() % 2 == 0) {
                 if (cell.isWater()) {
-                    drawSpriteEven(batch, blueImage, cell);
+                    drawSpriteEven(blueImage, cell);
                     if (cell.getElementOn() != null) {
                         if (cell.getElementOn() instanceof Boat) {
-                            drawSpriteEven(batch, boat, cell);
+                            drawSpriteEven(boat, cell);
                         } else if (cell.getElementOn() instanceof Mine) {
-                            drawSpriteEven(batch, mine, cell);
+                            drawSpriteEven(mine, cell);
                         }
                     }
                 } else {
-                    if (cell.getOwner() == null) drawSpriteEven(batch, greenImage, cell);
-                    else if (cell.getOwner() == map.player1) drawSpriteEven(batch, yellowImage, cell);
-                    else drawSpriteEven(batch, redImage, cell);
+                    if (cell.getOwner() == null) drawSpriteEven(greenImage, cell);
+                    else if (cell.getOwner() == map.player1) drawSpriteEven(yellowImage, cell);
+                    else drawSpriteEven(redImage, cell);
                     if (cell.getElementOn() != null) {
                         if (cell.getElementOn() instanceof Soldier) {
                             switch (cell.getElementOn().getLevel()) {
                                 case 0:
-                                    drawSpriteEven(batch, soldier0, cell);
+                                    drawSpriteEven(soldier0, cell);
                                     break;
                                 case 1:
-                                    drawSpriteEven(batch, soldier1, cell);
+                                    drawSpriteEven(soldier1, cell);
                                     break;
                                 case 2:
-                                    drawSpriteEven(batch, soldier2, cell);
+                                    drawSpriteEven(soldier2, cell);
                                     break;
                                 case 3:
-                                    drawSpriteEven(batch, soldier3, cell);
+                                    drawSpriteEven(soldier3, cell);
                                     break;
                                 default:
                                     break;
                             }
                         } else if (cell.getElementOn() instanceof Capital) {
-                            drawSpriteEven(batch, capital, cell);
+                            drawSpriteEven(capital, cell);
                         } else if (cell.getElementOn() instanceof DefenceTower) {
-                            drawSpriteEven(batch, defenceTower, cell);
+                            drawSpriteEven(defenceTower, cell);
                         } else if (cell.getElementOn() instanceof AttackTower) {
-                            drawSpriteEven(batch, attackTower, cell);
+                            drawSpriteEven(attackTower, cell);
                         } else if (cell.getElementOn() instanceof Grave) {
-                            drawSpriteEven(batch, grave, cell);
+                            drawSpriteEven(grave, cell);
                         } else if (cell.getElementOn() instanceof Tree) {
-                            drawSpriteEven(batch, tree, cell);
+                            drawSpriteEven(tree, cell);
                         }
                     }
                 }
@@ -128,93 +137,92 @@ public class World extends ApplicationAdapter {
 
             } else {
                 if (cell.isWater()) {
-                    drawSpriteOdd(batch, blueImage, cell);
+                    drawSpriteOdd(blueImage, cell);
                     if (cell.getElementOn() != null) {
                         if (cell.getElementOn() instanceof Boat) {
-                            drawSpriteOdd(batch, boat, cell);
+                            drawSpriteOdd(boat, cell);
                         } else if (cell.getElementOn() instanceof Mine) {
-                            drawSpriteOdd(batch, mine, cell);
+                            drawSpriteOdd(mine, cell);
                         }
                     }
                 } else {
                     if (cell.getOwner() == null)
-                        drawSpriteOdd(batch, greenImage, cell);
-                    else if (cell.getOwner() == map.player1) drawSpriteOdd(batch, yellowImage, cell);
-                    else drawSpriteOdd(batch, redImage, cell);
+                        drawSpriteOdd(greenImage, cell);
+                    else if (cell.getOwner() == map.player1) drawSpriteOdd(yellowImage, cell);
+                    else drawSpriteOdd(redImage, cell);
                     if (cell.getElementOn() != null) {
                         if (cell.getElementOn() instanceof Soldier) {
                             switch (cell.getElementOn().getLevel()) {
                                 case 0:
-                                    drawSpriteOdd(batch, soldier0, cell);
+                                    drawSpriteOdd(soldier0, cell);
                                     break;
                                 case 1:
-                                    drawSpriteOdd(batch, soldier1, cell);
+                                    drawSpriteOdd(soldier1, cell);
                                     break;
                                 case 2:
-                                    drawSpriteOdd(batch, soldier2, cell);
+                                    drawSpriteOdd(soldier2, cell);
                                     break;
                                 case 3:
-                                    drawSpriteOdd(batch, soldier3, cell);
+                                    drawSpriteOdd(soldier3, cell);
                                     break;
                                 default:
                                     break;
                             }
                         } else if (cell.getElementOn() instanceof Capital) {
-                            drawSpriteOdd(batch, capital, cell);
+                            drawSpriteOdd(capital, cell);
                         } else if (cell.getElementOn() instanceof DefenceTower) {
-                            drawSpriteOdd(batch, defenceTower, cell);
+                            drawSpriteOdd(defenceTower, cell);
                         } else if (cell.getElementOn() instanceof AttackTower) {
-                            drawSpriteOdd(batch, attackTower, cell);
+                            drawSpriteOdd(attackTower, cell);
                         } else if (cell.getElementOn() instanceof Grave) {
-                            drawSpriteOdd(batch, grave, cell);
+                            drawSpriteOdd(grave, cell);
                         } else if (cell.getElementOn() instanceof Tree) {
-                            drawSpriteOdd(batch, tree, cell);
+                            drawSpriteOdd(tree, cell);
                         }
                     }
                 }
             }
         }
     }
-    private Vector3 getMouseLoc(){
-        Vector3 mouseLocation = new Vector3();
-        mouseLocation.x = Gdx.input.getX();
-        mouseLocation.y = Gdx.input.getY();
-        //mouseLocation.y = Gdx.graphics.getHeight() - Gdx.input.getY()-16;
-        return camera.unproject(mouseLocation);
+    private int[] getMouseCoord(OrthographicCamera camera){
+        Vector3 vector = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+        vector.x -=32;
+        vector.y -=16;
+        double ratio = 2;
+        double x = vector.x/(16 * ratio);
+        double y = vector.y/(16 * ratio);
+        double temp = Math.floor(x + (ratio*y) + 1);
+        double r = Math.floor((Math.floor(2 * x + 1) + temp) / 3);
+        double q = Math.floor((temp + Math.floor(-x + (ratio * y) +1))/3);
+        r -= (int)q/2;
+        return new int[]{(int)r, (int)q};
     }
 
-
-    private int[] pixelToOffset(double x, double y){
-        //double q = (2./3 * x - 1./3 * y) / 32;
-        double q = (Math.sqrt(3)/3 * x - 1./3 * y) / 32;
-        double r = (2./3 * y) / 32;
-        Cube cube = new Cube(q, -q-r, r);
-        cube.round();
-        return cube.toOddCoor();
-    }
     @Override
     public void create() {
         String atlasPath = Gdx.files.getLocalStoragePath().concat("assets/Sprites/").concat("spritesheet.atlas");
         atlas = new TextureAtlas(atlasPath);
-        blueImage = atlas.findRegion("sprite-1");
-        greenImage = atlas.findRegion("sprite-land");
-        redImage = atlas.findRegion("sprite-3");
-        yellowImage = atlas.findRegion("sprite-2");
-        soldier0 = atlas.findRegion("sprite-4");
-        soldier1 = atlas.findRegion("sprite-5");
-        soldier2 = atlas.findRegion("sprite-6");
-        soldier3 = atlas.findRegion("sprite-7");
-        capital = atlas.findRegion("sprite-11");
-        tree = atlas.findRegion("sprite-13");
-        defenceTower = atlas.findRegion("sprite-8");
-        attackTower = atlas.findRegion("sprite-9");
-        boat = atlas.findRegion("sprite-10");
-        grave = atlas.findRegion("sprite-14");
-        mine = atlas.findRegion("sprite-12");
+        greenImage = atlas.findRegion("tile000");
+        blueImage = atlas.findRegion("tile001");
+        yellowImage = atlas.findRegion("tile002");
+        redImage = atlas.findRegion("tile003");
+        soldier0 = atlas.findRegion("tile004");
+        soldier1 = atlas.findRegion("tile005");
+        soldier2 = atlas.findRegion("tile006");
+        soldier3 = atlas.findRegion("tile007");
+        defenceTower = atlas.findRegion("tile008");
+        attackTower = atlas.findRegion("tile009");
+        boat = atlas.findRegion("tile010");
+        capital = atlas.findRegion("tile011");
+        mine = atlas.findRegion("tile012");
+        tree = atlas.findRegion("tile013");
+        grave = atlas.findRegion("tile014");
+        contour = atlas.findRegion("tile015");
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
         map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, 0, new ArrayList<Territory>()),
                 new Player("Alex", 2, 0, false, 0, new ArrayList<Territory>()));
+        map.player1.setTurn(true);
         Loader loader = new Loader("g3_2.tmx", "g3_3.xml", "Quicky");
         Infrastructure.setIsAvailable(true);
         try {
@@ -224,6 +232,7 @@ public class World extends ApplicationAdapter {
             e.printStackTrace();
         }
         setViewport(camera, map);
+        Gdx.input.setInputProcessor(this);
     }
 
 
@@ -234,14 +243,11 @@ public class World extends ApplicationAdapter {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
         batch.setProjectionMatrix(camera.combined);
-        if(Gdx.input.isButtonPressed(Input.Buttons.LEFT)){
-            //Vector3 vector = getMouseLoc();
-            //int pos[] = pixelToOffset( vector.x, vector.y);
-            int pos[] = pixelToOffset( Gdx.input.getX(),Gdx.input.getY());
-
-        }
         batch.begin();
-        draw(batch);
+        draw();
+        if(selected && soldier!=null){
+            drawContour(soldier.getAccessibleCells());
+        }
         batch.end();
     }
 
@@ -249,5 +255,68 @@ public class World extends ApplicationAdapter {
     @Override
     public void dispose() {
         batch.dispose();
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        if(button == Input.Buttons.LEFT){
+            if(!selected){
+                int pos[] = getMouseCoord(camera);
+                source = map.findCell(pos[0], pos[1]);
+                if(source!= null && source.getElementOn() instanceof Soldier){
+                    soldier = (Soldier) source.getElementOn();
+                    soldier.select(map, source);
+                    if(soldier.getAccessibleCells() != null) selected = true;
+
+                }
+            }
+            else{
+                int pos[] = getMouseCoord(camera);
+                dest = map.findCell(pos[0], pos[1]);
+                if(dest.getElementOn()==null){
+                    soldier.move(source, dest);
+                    selected = false;
+                }
+            }
+
+
+        }
+        return true;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+
+        return true;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(int amount) {
+        return false;
     }
 }

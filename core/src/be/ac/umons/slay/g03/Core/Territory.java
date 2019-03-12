@@ -39,7 +39,8 @@ public class Territory {
     }
 
     public boolean addCell(Cell cell) {
-        return false;
+        cells.add(cell);
+        return true;
     }
 
     public ArrayList<Cell> getCells() {

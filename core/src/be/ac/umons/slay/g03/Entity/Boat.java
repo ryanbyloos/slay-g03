@@ -1,6 +1,7 @@
 package be.ac.umons.slay.g03.Entity;
 
 import be.ac.umons.slay.g03.Core.Cell;
+import be.ac.umons.slay.g03.Core.Map;
 import be.ac.umons.slay.g03.Core.Player;
 
 import java.util.ArrayList;
@@ -74,18 +75,18 @@ public class Boat extends Infrastructure implements Controlable {
     }
 
     @Override
-    public void move(Cell cell) {
+    public void move(Cell source, Cell destination) {
 
     }
 
     @Override
-    public ArrayList<Cell> accessibleCell() {
+    public ArrayList<Cell> accessibleCell(Map map, Cell source) {
         return null;
     }
 
 
     @Override
-    public void select() {
+    public void select(Map map, Cell source) {
 
     }
 
