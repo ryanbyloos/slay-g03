@@ -41,7 +41,24 @@ public class Soldier extends MapElement implements Controlable {
         return false;
     }
 
-    private void merge(Soldier allySoldier) {
+    public boolean merge(Cell himself,Cell allySoldier) {
+
+        if ((this.level == allySoldier.getElementOn().getLevel()) && this.level != 3){
+
+            Soldier upSoldier = null;
+
+            switch (this.level){
+                case 0: upSoldier = new Soldier(5,20,this.getOwner(),1,true); break;
+                case 1: upSoldier = new Soldier(14,40,this.getOwner(),2,true); break;
+                case 2: upSoldier = new Soldier(41,80,this.getOwner(),3,true); break;
+            }
+
+            allySoldier.setElementOn(upSoldier);
+            himself.setElementOn(null);
+            return true;
+        }
+
+        return false;
 
     }
 
