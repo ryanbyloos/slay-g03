@@ -95,5 +95,38 @@ public class EntityTest {
         Assert.assertNotEquals(soldier2, cell2.getElementOn());
     }
 
+    @Test
+    public void mergesoldierSameLevel(){
+        Soldier soldier1 = new Soldier(0, 0, null, 2, false);
+        Soldier soldier2 = new Soldier(0, 0, null, 2, false);
+        Cell cell1 = new Cell(0, 0, false, false, null, soldier1);
+        Cell cell2 = new Cell(0, 0, false, false, null, soldier2);
+        soldier1.merge(cell1,cell2);
+        Assert.assertEquals(3,cell2.getElementOn().getLevel());
+        Assert.assertNull(cell1.getElementOn());
+    }
+
+    @Test
+    public void mergesoldierMaxLevel(){
+        Soldier soldier1 = new Soldier(0, 0, null, 3, false);
+        Soldier soldier2 = new Soldier(0, 0, null, 3, false);
+        Cell cell1 = new Cell(0, 0, false, false, null, soldier1);
+        Cell cell2 = new Cell(0, 0, false, false, null, soldier2);
+        soldier1.merge(cell1,cell2);
+        Assert.assertSame(soldier1, cell1.getElementOn());
+        Assert.assertSame(soldier2, cell2.getElementOn());
+
+    }@Test
+    public void mergesoldierDiffLevel(){
+        Soldier soldier1 = new Soldier(0, 0, null, 1, false);
+        Soldier soldier2 = new Soldier(0, 0, null, 2, false);
+        Cell cell1 = new Cell(0, 0, false, false, null, soldier1);
+        Cell cell2 = new Cell(0, 0, false, false, null, soldier2);
+        soldier1.merge(cell1,cell2);
+        Assert.assertSame(soldier1, cell1.getElementOn());
+        Assert.assertSame(soldier2, cell2.getElementOn());
+
+    }
+
 
 }
