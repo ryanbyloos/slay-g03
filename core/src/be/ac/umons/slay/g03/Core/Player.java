@@ -8,7 +8,7 @@ public class Player {
     private int moveNumber;
     private int maxMoveNumber;
     private boolean guest;
-    private int score = 0;
+    private int score;
     private boolean turn;
     private ArrayList<Territory> territories;
 

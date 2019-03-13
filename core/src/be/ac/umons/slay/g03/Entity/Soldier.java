@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class Soldier extends MapElement implements Controlable {
     private int level;
-   // private ArrayList<Cell> accessibleCells;
+
 
     public Soldier(int maintenanceCost, int creationCost, Player owner, int level, boolean hasMoved) {
         super(maintenanceCost, creationCost, owner);
@@ -15,7 +15,7 @@ public class Soldier extends MapElement implements Controlable {
         this.setHasMoved(hasMoved);
     }
 
-    public boolean attack(Cell cellAttacker, Cell cellDefender) {
+    private boolean attack(Cell cellAttacker, Cell cellDefender) {
         int levelAttacker = cellAttacker.getElementOn().getLevel();
         int levelDefender = cellDefender.getElementOn().getLevel();
 
@@ -38,7 +38,7 @@ public class Soldier extends MapElement implements Controlable {
         return false;
     }
 
-    public boolean merge(Cell himself,Cell allySoldier) {
+    private boolean merge(Cell himself,Cell allySoldier) {
 
         if ((this.level == allySoldier.getElementOn().getLevel()) && this.level != 3){
 
@@ -60,6 +60,7 @@ public class Soldier extends MapElement implements Controlable {
     }
 
     private void checkNewTerritory() {
+
 
     }
 
