@@ -3,6 +3,7 @@ package be.ac.umons.slay.g03.GameHandler;
 import be.ac.umons.slay.g03.Core.Cell;
 import be.ac.umons.slay.g03.Core.Map;
 import be.ac.umons.slay.g03.Core.Player;
+import be.ac.umons.slay.g03.Core.Territory;
 import be.ac.umons.slay.g03.Entity.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -272,46 +273,28 @@ public class GameState {
         TiledMapTileLayer tiledLayer = (TiledMapTileLayer) tiledMap.getLayers().get("map");
         if (file.createNewFile()) {
             copyFile(new File(source), file);
-            for (int i = 0; i < map.cells.size(); i++) {
-                Cell cell = map.cells.get(i);
-                TiledMapTileLayer.Cell cellTmx;
-                TiledMapTile tile;
-                if (cell.getOwner() != null) {
-                    cellTmx = tiledLayer.getCell(cell.getX(), cell.getY());
-                    if (cell.getOwner().equals(map.player1)) {
-                        tile = cellTmx.getTile();
-                        tile.setId(3);
-                        cellTmx.setTile(tile);
-                        tiledLayer.setCell(cell.getX(), cell.getY(), cellTmx);
-                    } else {
-                        tile = cellTmx.getTile();
-                        tile.setId(4);
-                        cellTmx.setTile(tile);
-                        tiledLayer.setCell(cell.getX(), cell.getY(), cellTmx);
-                    }
-                }
-            }
-        } else {
-            for (int i = 0; i < map.cells.size(); i++) {
-                Cell cell = map.cells.get(i);
-                TiledMapTileLayer.Cell cellTmx;
-                TiledMapTile tile;
-                if (cell.getOwner() != null) {
-                    cellTmx = tiledLayer.getCell(cell.getX(), cell.getY());
-                    if (cell.getOwner().equals(map.player1)) {
-                        tile = cellTmx.getTile();
-                        tile.setId(3);
-                        cellTmx.setTile(tile);
-                        tiledLayer.setCell(cell.getX(), cell.getY(), cellTmx);
-                    } else {
-                        tile = cellTmx.getTile();
-                        tile.setId(4);
-                        cellTmx.setTile(tile);
-                        tiledLayer.setCell(cell.getX(), cell.getY(), cellTmx);
-                    }
-                }
-            }
+
         }
+        for (int i = 0; i < map.cells.size(); i++) {
+            Cell cell = map.cells.get(i);
+            TiledMapTileLayer.Cell cellTmx;
+            TiledMapTile tile;
+            if (cell.getOwner() != null) {
+                cellTmx = tiledLayer.getCell(cell.getX(), cell.getY());
+                if (cell.getOwner().equals(map.player1)) {
+                    tile = cellTmx.getTile();
+                    tile.setId(3);
+                    cellTmx.setTile(tile);
+                    tiledLayer.setCell(cell.getX(), cell.getY(), cellTmx);
+                } else {
+                    tile = cellTmx.getTile();
+                    tile.setId(4);
+                    cellTmx.setTile(tile);
+                    tiledLayer.setCell(cell.getX(), cell.getY(), cellTmx);
+                    }
+                }
+            }
+
     }
 
     public void saveXmlFile() throws ParserConfigurationException, TransformerException {
@@ -465,19 +448,34 @@ public class GameState {
         if (map.player1.isTurn()) {
             map.player1.setTurn(false);
             map.player2.setTurn(true);
+            resetMoveableUnits(map.player2);
         } else {
-            map.player1.setTurn(true);
             map.player2.setTurn(false);
+            map.player1.setTurn(true);
+            resetMoveableUnits(map.player1);
         }
-        try {
+        /*try {
             storeTurn();
         } catch (ReplayParserException e) {
             e.printStackTrace();
         } finally {
             turnPlayed += 1;
+        }*/
+
+    }
+
+    private void resetMoveableUnits(Player player){
+        for (int i = 0; i < player.getTerritories().size(); i++) {
+            Territory territory = player.getTerritories().get(i);
+            for (int j = 0; j < territory.getCells().size(); j++) {
+                Cell cell = territory.getCells().get(j);
+                if(cell.getElementOn() instanceof Soldier ){
+                    cell.getElementOn().setHasMoved(false);
+                }else if(cell.getElementOn() instanceof Boat){
+                     cell.getElementOn().setHasMoved(false);
+                }
+            }
         }
-
-
     }
 
     public void storeMove(Player player) throws ReplayParserException {

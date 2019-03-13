@@ -4,6 +4,7 @@ import be.ac.umons.slay.g03.Core.Map;
 import be.ac.umons.slay.g03.Core.Player;
 import be.ac.umons.slay.g03.Core.Territory;
 import be.ac.umons.slay.g03.Entity.*;
+import be.ac.umons.slay.g03.GameHandler.GameState;
 import be.ac.umons.slay.g03.GameHandler.Loader;
 import be.ac.umons.slay.g03.GameHandler.WrongFormatException;
 import com.badlogic.gdx.ApplicationAdapter;
@@ -35,7 +36,7 @@ public class World extends ApplicationAdapter implements InputProcessor {
     private TextureAtlas.AtlasRegion grave;
     private TextureAtlas.AtlasRegion mine;
     private TextureAtlas.AtlasRegion contour;
-
+    private GameState gameState;
     private SpriteBatch batch;
     private OrthographicCamera camera;
     private Map map;
@@ -230,6 +231,7 @@ public class World extends ApplicationAdapter implements InputProcessor {
         catch (WrongFormatException e) {
             e.printStackTrace();
         }
+        gameState = new GameState(map, loader, 0, "osef");
         setViewport(camera, map);
         Gdx.input.setInputProcessor(this);
     }
@@ -258,7 +260,10 @@ public class World extends ApplicationAdapter implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        return false;
+        if(keycode == Input.Keys.P){
+            gameState.nextTurn();
+        }
+        return true;
     }
 
     @Override
@@ -273,6 +278,8 @@ public class World extends ApplicationAdapter implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+
+
 
         if(button == Input.Buttons.LEFT){
 
