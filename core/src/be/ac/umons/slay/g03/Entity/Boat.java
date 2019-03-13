@@ -80,12 +80,6 @@ public class Boat extends Infrastructure implements Controlable {
     }
 
     @Override
-    public ArrayList<Cell> accessibleCell(Map map, Cell source) {
-        return null;
-    }
-
-
-    @Override
     public boolean select() {
         return false;
 

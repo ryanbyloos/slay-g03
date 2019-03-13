@@ -37,6 +37,10 @@ public class Player {
 
     }
 
+    public void removeTerritory(Territory territory){
+        territories.remove(territory);
+    }
+
     public int getId() {
         return id;
     }

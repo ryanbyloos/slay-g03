@@ -1,6 +1,8 @@
 package be.ac.umons.slay.g03.Core;
 
+import be.ac.umons.slay.g03.Entity.Boat;
 import be.ac.umons.slay.g03.Entity.MapElement;
+import be.ac.umons.slay.g03.Entity.Soldier;
 
 import java.util.ArrayList;
 
@@ -35,6 +37,82 @@ public class Cell {
         }
         return null;
     }
+
+    public ArrayList<Cell> accessibleCell(Map map) {
+        if(this.getElementOn() instanceof Soldier){
+            return soldierAccessibleCell(map);
+        }
+        else if (this.getElementOn() instanceof Boat){
+            return boatAccessibleCell(map);
+        }
+        return null;
+    }
+
+    // TODO: 13/03/2019
+    private ArrayList<Cell> boatAccessibleCell(Map map){
+        return null;
+    }
+
+    private ArrayList<Cell> soldierAccessibleCell(Map map){
+        ArrayList<Cell> accessibleCell = new ArrayList<>();
+        ArrayList<Cell> adjacentCell = new ArrayList<>();
+        int dist = 3;
+        accessibleCell.addAll(adjacentCell(map, this));
+        while( dist > 0){
+            for (Cell cell: accessibleCell) {
+                if(cell.getOwner()!=null && cell.getOwner().equals(this.getOwner())){
+                    adjacentCell.addAll(adjacentCell(map, cell));
+                }
+            }
+            for (Cell cellAdj : adjacentCell) {
+                if (!accessibleCell.contains(cellAdj)){
+                    accessibleCell.add(cellAdj);
+                }
+            }
+            dist--;
+        }
+        accessibleCell.remove(this);
+        return accessibleCell;
+    }
+
+    public ArrayList<Cell> adjacentCell(Map map,Cell himself){
+        ArrayList<Cell> adjacentCell = new ArrayList<>();
+
+        int x = himself.getX();
+        int y = himself.getY();
+        if (map.getHeigth()%2 ==  y%2) {
+
+            addCell(adjacentCell, map.findCell(x,y-1));
+            addCell(adjacentCell,map.findCell(x+1,y-1));
+            addCell(adjacentCell,map.findCell(x-1,y));
+            addCell(adjacentCell,map.findCell(x+1,y));
+            addCell(adjacentCell,map.findCell(x,y+1));
+            addCell(adjacentCell,map.findCell(x+1,y+1));
+
+        }
+        else {
+
+            addCell(adjacentCell,map.findCell(x-1,y-1));
+            addCell(adjacentCell,map.findCell(x,y-1));
+            addCell(adjacentCell,map.findCell(x-1,y));
+            addCell(adjacentCell,map.findCell(x+1,y));
+            addCell(adjacentCell,map.findCell(x-1,y+1));
+            addCell(adjacentCell,map.findCell(x,y+1));
+
+
+        }
+        return adjacentCell;
+    }
+
+    private void addCell(ArrayList<Cell> aList,Cell cell){
+        if (cell != null && !cell.isWater()){
+            aList.add(cell);
+        }
+
+    }
+
+
+
     //experimental
    /* public ArrayList<Cell> soldierAdjacentsE(Map map,int distance){
         int parity;

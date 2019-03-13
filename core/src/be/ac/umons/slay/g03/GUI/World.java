@@ -13,7 +13,6 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector3;
@@ -247,7 +246,7 @@ public class World extends ApplicationAdapter implements InputProcessor {
         batch.begin();
         draw();
         if(selected && source.getElementOn()!=null){
-            drawContour(source.getElementOn().accessibleCell(map,source));
+            drawContour(source.accessibleCell(map));
         }
         batch.end();
     }
@@ -291,7 +290,7 @@ public class World extends ApplicationAdapter implements InputProcessor {
 
                     ((Soldier) source.getElementOn()).select();
 
-                    if(source.getElementOn().accessibleCell(map,source) != null && ((Soldier) source.getElementOn()).select() ) selected = true;
+                    if(source.accessibleCell(map) != null && ((Soldier) source.getElementOn()).select() ) selected = true;
 
                 }
             }

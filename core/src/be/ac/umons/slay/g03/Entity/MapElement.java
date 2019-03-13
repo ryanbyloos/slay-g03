@@ -46,7 +46,8 @@ public abstract class MapElement {
         this.hasMoved = hasMoved;
     }
 
-    public ArrayList<Cell> accessibleCell(Map map, Cell cell){
-        return null;
+
+    protected void checkNewTerritory(Map map,Cell newCell,Cell oldCell){
+
     }
 }

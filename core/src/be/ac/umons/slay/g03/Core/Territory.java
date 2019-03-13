@@ -30,13 +30,14 @@ public class Territory {
         return false;
     }
 
-    public void split() {
+    private void split() {
 
     }
 
-    public void merge(Territory territory) {
+    private void merge(Territory territory) {
 
     }
+
 
     public boolean addCell(Cell cell) {
         cells.add(cell);

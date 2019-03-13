@@ -10,7 +10,5 @@ public interface Controlable {
 
     void move(Cell source, Cell destination, Map map);
 
-    ArrayList<Cell> accessibleCell(Map map, Cell source);
-
     boolean select();
 }
