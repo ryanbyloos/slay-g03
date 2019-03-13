@@ -89,8 +89,10 @@ public class Soldier extends MapElement implements Controlable {
                     if (destination.getElementOn().getOwner().equals(this.getOwner())) {
                         merge(source, destination);
                     } else {
-                        attack(source, destination);
-                        move(source, destination, map);
+                        if (attack(source, destination)){
+                            move(source, destination, map);
+                        }
+
                     }
                 }
 
