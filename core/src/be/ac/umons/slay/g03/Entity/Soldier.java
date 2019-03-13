@@ -7,13 +7,12 @@ import java.util.ArrayList;
 
 public class Soldier extends MapElement implements Controlable {
     private int level;
-    private boolean hasMoved;
-    private ArrayList<Cell> accessibleCells;
+   // private ArrayList<Cell> accessibleCells;
 
     public Soldier(int maintenanceCost, int creationCost, Player owner, int level, boolean hasMoved) {
         super(maintenanceCost, creationCost, owner);
         this.level = level;
-        this.hasMoved = hasMoved;
+        this.setHasMoved(hasMoved);
     }
 
     public boolean attack(Cell cellAttacker, Cell cellDefender) {
@@ -46,9 +45,9 @@ public class Soldier extends MapElement implements Controlable {
             Soldier upSoldier = null;
 
             switch (this.level){
-                case 0: upSoldier = new Soldier(5,20,this.getOwner(),1,true); break;
-                case 1: upSoldier = new Soldier(14,40,this.getOwner(),2,true); break;
-                case 2: upSoldier = new Soldier(41,80,this.getOwner(),3,true); break;
+                case 0: upSoldier = new Soldier(5,20,this.getOwner(),1,false); break;
+                case 1: upSoldier = new Soldier(14,40,this.getOwner(),2,false); break;
+                case 2: upSoldier = new Soldier(41,80,this.getOwner(),3,false); break;
             }
 
             allySoldier.setElementOn(upSoldier);
@@ -69,9 +68,6 @@ public class Soldier extends MapElement implements Controlable {
         return level;
     }
 
-    public boolean isHasMoved() {
-        return hasMoved;
-    }
 
 
     @Override
@@ -80,17 +76,33 @@ public class Soldier extends MapElement implements Controlable {
     }
 
     @Override
-    public void move(Cell source, Cell destination) {
-        if (destination.getElementOn() == null && accessibleCells.contains(destination)) {
-            destination.setElementOn(source.getElementOn());
-            source.setElementOn(null);
-            destination.setOwner(getOwner());
-        }
-        if (destination.findTerritory(source.getOwner()) == null) {
-            source.findTerritory(source.getOwner()).addCell(destination);
-        }
+    public void move(Cell source, Cell destination, Map map) {
+        if (source.getElementOn().accessibleCell(map, source).contains(destination)) {
 
+            if (destination.getElementOn() != null) {
+                if (destination.getElementOn().getOwner() == null) {
+
+                    destination.setElementOn(null);
+                    move(source, destination, map);
+
+                } else if (destination.getElementOn() instanceof Soldier) {
+                    if (destination.getElementOn().getOwner().equals(this.getOwner())) {
+                        merge(source, destination);
+                    } else {
+                        attack(source, destination);
+                        move(source, destination, map);
+                    }
+                }
+
+            } else {
+                destination.setElementOn(source.getElementOn());
+                source.setElementOn(null);
+                destination.setOwner(getOwner());
+                destination.getElementOn().setHasMoved(true);
+            }
+        }
     }
+
     @Override
     public ArrayList<Cell> accessibleCell(Map map, Cell himself) {
         ArrayList<Cell> accessibleCell = new ArrayList<>();
@@ -110,6 +122,7 @@ public class Soldier extends MapElement implements Controlable {
             }
             dist--;
         }
+        accessibleCell.remove(himself);
         return accessibleCell;
     }
 
@@ -152,15 +165,13 @@ public class Soldier extends MapElement implements Controlable {
 
 
     @Override
-    public void select(Map map, Cell source) {
-        if (belongsTo() && !isHasMoved()) {
-            this.accessibleCells = accessibleCell(map, source);
-        }
+    public boolean select() {
+        if (belongsTo() && !isHasMoved()) return true;
+
+        return false;
     }
 
-    public ArrayList<Cell> getAccessibleCells() {
-        return accessibleCells;
-    }
+
 
     @Override
     public boolean equals(Object other) {

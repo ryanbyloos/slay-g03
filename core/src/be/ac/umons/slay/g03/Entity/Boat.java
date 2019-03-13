@@ -10,7 +10,7 @@ public class Boat extends Infrastructure implements Controlable {
 
     private int t;
     private int defense;
-    private boolean hasMoved = false;
+    private boolean hasMoved;
 
     private ArrayList<Soldier> soldiers;
 
@@ -37,7 +37,7 @@ public class Boat extends Infrastructure implements Controlable {
     public void capture(Soldier soldier) {
         // TODO : verify the levels.
         this.setOwner(soldier.getOwner());
-        this.soldiers = new ArrayList<Soldier>();
+        this.soldiers = new ArrayList<>();
         this.soldiers.add(soldier);
     }
 
@@ -75,7 +75,7 @@ public class Boat extends Infrastructure implements Controlable {
     }
 
     @Override
-    public void move(Cell source, Cell destination) {
+    public void move(Cell source, Cell destination, Map map) {
 
     }
 
@@ -86,7 +86,8 @@ public class Boat extends Infrastructure implements Controlable {
 
 
     @Override
-    public void select(Map map, Cell source) {
+    public boolean select() {
+        return false;
 
     }
 

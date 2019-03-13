@@ -1,11 +1,16 @@
 package be.ac.umons.slay.g03.Entity;
 
+import be.ac.umons.slay.g03.Core.Cell;
+import be.ac.umons.slay.g03.Core.Map;
 import be.ac.umons.slay.g03.Core.Player;
+
+import java.util.ArrayList;
 
 public abstract class MapElement {
     private int maintenanceCost;
     private int creationCost;
     private Player owner;
+    private boolean hasMoved;
 
     public MapElement(int maintenanceCost, int creationCost, Player owner) {
         this.maintenanceCost = maintenanceCost;
@@ -33,5 +38,15 @@ public abstract class MapElement {
         return -1;
     }
 
+    public boolean isHasMoved() {
+        return hasMoved;
+    }
 
+    public void setHasMoved(boolean hasMoved) {
+        this.hasMoved = hasMoved;
+    }
+
+    public ArrayList<Cell> accessibleCell(Map map, Cell cell){
+        return null;
+    }
 }

@@ -44,7 +44,6 @@ public class World extends ApplicationAdapter implements InputProcessor {
     private Cell dest;
     private int posX, posY;
     private boolean selected;
-    Soldier soldier;
     private void setViewport(OrthographicCamera camera, Map map) {
 
         int width, heigth;
@@ -245,8 +244,8 @@ public class World extends ApplicationAdapter implements InputProcessor {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         draw();
-        if(selected && soldier!=null){
-            drawContour(soldier.getAccessibleCells());
+        if(selected && source.getElementOn()!=null){
+            drawContour(source.getElementOn().accessibleCell(map,source));
         }
         batch.end();
     }
@@ -274,24 +273,27 @@ public class World extends ApplicationAdapter implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+
         if(button == Input.Buttons.LEFT){
+
             if(!selected){
+
                 int pos[] = getMouseCoord(camera);
                 source = map.findCell(pos[0], pos[1]);
                 if(source!= null && source.getElementOn() instanceof Soldier){
-                    soldier = (Soldier) source.getElementOn();
-                    soldier.select(map, source);
-                    if(soldier.getAccessibleCells() != null) selected = true;
+
+                    ((Soldier) source.getElementOn()).select();
+
+                    if(source.getElementOn().accessibleCell(map,source) != null && ((Soldier) source.getElementOn()).select() ) selected = true;
 
                 }
             }
             else{
                 int pos[] = getMouseCoord(camera);
                 dest = map.findCell(pos[0], pos[1]);
-                if(dest.getElementOn()==null){
-                    soldier.move(source, dest);
-                    selected = false;
-                }
+                ((Soldier)source.getElementOn()).move(source, dest, map);
+                selected = false;
+
             }
 
 

@@ -8,9 +8,9 @@ import java.util.ArrayList;
 public interface Controlable {
     boolean belongsTo();
 
-    void move(Cell source, Cell destination);
+    void move(Cell source, Cell destination, Map map);
 
     ArrayList<Cell> accessibleCell(Map map, Cell source);
 
-    void select(Map map, Cell source);
+    boolean select();
 }

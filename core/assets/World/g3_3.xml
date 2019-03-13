@@ -20,6 +20,7 @@
 
     <units>
         <unit type="soldier" level="1" x="2" y="5" playerId="1" hasmoved="false" />
+        <unit type="soldier" level="1" x="2" y="6" playerId="1" hasmoved="false" />
         <unit type="soldier" level="1" x="16" y="18" playerId="2" hasmoved="false"/>
     </units>
     <infrastructures>
