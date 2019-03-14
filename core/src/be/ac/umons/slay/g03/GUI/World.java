@@ -42,6 +42,7 @@ public class World extends ApplicationAdapter implements InputProcessor {
     private TextureAtlas atlas;
     private Cell source;
     private Cell dest;
+    private Territory territory;
     private boolean selected;
     private void setViewport(OrthographicCamera camera, Map map) {
 
@@ -195,6 +196,19 @@ public class World extends ApplicationAdapter implements InputProcessor {
         r -= (int)q/2;
         return new int[]{(int)r, (int)q};
     }
+    private int[] getMouseCoord(OrthographicCamera camera, int xPos , int yPos){
+        Vector3 vector = camera.unproject(new Vector3(xPos, yPos, 0));
+        vector.x -=32;
+        vector.y -=16;
+        double ratio = 2;
+        double x = vector.x/(16 * ratio);
+        double y = vector.y/(16 * ratio);
+        double temp = Math.floor(x + (ratio*y) + 1);
+        double r = Math.floor((Math.floor(2 * x + 1) + temp) / 3);
+        double q = Math.floor((temp + Math.floor(-x + (ratio * y) +1))/3);
+        r -= (int)q/2;
+        return new int[]{(int)r, (int)q};
+    }
 
     @Override
     public void create() {
@@ -247,6 +261,9 @@ public class World extends ApplicationAdapter implements InputProcessor {
         if(selected && source.getElementOn()!=null){
             drawContour(source.accessibleCell(map));
         }
+        if(territory != null){
+            drawContour(territory.getCells());
+        }
         batch.end();
     }
 
@@ -277,8 +294,6 @@ public class World extends ApplicationAdapter implements InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
-
-
         if(button == Input.Buttons.LEFT){
 
             if(!selected){
@@ -289,7 +304,10 @@ public class World extends ApplicationAdapter implements InputProcessor {
 
                     ((Soldier) source.getElementOn()).select();
 
-                    if(source.accessibleCell(map) != null && ((Soldier) source.getElementOn()).select() ) selected = true;
+                    if(source.accessibleCell(map) != null && ((Soldier) source.getElementOn()).select() ){
+                        selected = true;
+                        territory = null;
+                    }
 
                 }
             }
@@ -319,7 +337,18 @@ public class World extends ApplicationAdapter implements InputProcessor {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        return false;
+        if ( screenX < map.getWidth()*32 && (map.getHeigth()*32 - screenY) < map.getHeigth()*32){
+            int pos [] = getMouseCoord(camera);
+            Cell cell =map.findCell(pos[0], pos[1]);
+            if(cell!= null && cell.getOwner() != null && !selected) {
+                territory = cell.findTerritory(cell.getOwner());
+            }
+            else {
+                territory = null;
+            }
+        }
+
+        return true;
     }
 
     @Override
