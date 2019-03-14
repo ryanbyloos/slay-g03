@@ -69,29 +69,38 @@ public class Soldier extends MapElement implements Controlable {
     @Override
     protected void checkNewTerritory(Map map, Cell newCell, Cell oldCell) {
         oldCell.findTerritory(oldCell.getOwner()).addCell(newCell);
-        if (newCell.getOwner() != null) {
+        Merge(map,newCell,oldCell);
+        if (newCell.getOwner() != null && !newCell.getOwner().equals(oldCell.getOwner())) {
+            split(map,newCell,oldCell);
+        }
 
+    }
 
-            if (!newCell.getOwner().equals(oldCell.getOwner())) {
-
-            }
-        } else {
-            ArrayList<Cell> cellToTest = newCell.adjacentCell(map, newCell);
-            cellToTest.remove(oldCell);
-            for (Cell cell : cellToTest
-                    ) {
-                if ( cell.getOwner() != null && cell.getOwner().equals(newCell.getOwner())) {
-                    if (!cell.findTerritory(cell.getOwner()).equals(newCell.findTerritory(cell.getOwner()))) {
-                        for (Cell newCellTerritory : cell.findTerritory(cell.getOwner()).getCells()
-                                ) {
-                            newCell.findTerritory(newCell.getOwner()).addCell(newCellTerritory);
-                        }
-                        cell.getOwner().removeTerritory(cell.findTerritory(cell.getOwner()));
+    private void Merge(Map map, Cell newCell, Cell oldCell) {
+        ArrayList<Cell> cellToTest = newCell.adjacentCell(map, newCell);
+        cellToTest.remove(oldCell);
+        for (Cell cell : cellToTest
+                ) {
+            if (cell.getOwner() != null && cell.getOwner().equals(newCell.getOwner())) {
+                if (!cell.findTerritory(cell.getOwner()).equals(newCell.findTerritory(cell.getOwner()))) {
+                    for (Cell newCellTerritory : cell.findTerritory(cell.getOwner()).getCells()
+                            ) {
+                        newCell.findTerritory(newCell.getOwner()).addCell(newCellTerritory);
                     }
+                    cell.getOwner().removeTerritory(cell.findTerritory(cell.getOwner()));
                 }
             }
         }
+    }
 
+    private void split(Map map, Cell newCell, Cell oldCell) {
+        ArrayList<Cell> cellToTest = newCell.adjacentCell(map, newCell);
+        for (Cell cell: cellToTest
+             ) {
+            if (!cell.getOwner().equals(oldCell.getOwner())){
+
+            }
+        }
     }
 
     @Override

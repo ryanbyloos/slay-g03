@@ -22,23 +22,6 @@ public class Territory {
 
     }
 
-    public boolean checkSplit(ArrayList<Territory> territoryArray) {
-        return false;
-    }
-
-    public boolean checkMerge(ArrayList<Territory> territoryArray) {
-        return false;
-    }
-
-    private void split() {
-
-    }
-
-    private void merge(Territory territory) {
-
-    }
-
-
     public boolean addCell(Cell cell) {
         cells.add(cell);
         return true;
