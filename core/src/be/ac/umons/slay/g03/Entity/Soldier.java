@@ -3,6 +3,7 @@ package be.ac.umons.slay.g03.Entity;
 import be.ac.umons.slay.g03.Core.Cell;
 import be.ac.umons.slay.g03.Core.Map;
 import be.ac.umons.slay.g03.Core.Player;
+import be.ac.umons.slay.g03.Core.Territory;
 
 import java.util.ArrayList;
 
@@ -68,6 +69,7 @@ public class Soldier extends MapElement implements Controlable {
 
     @Override
     protected void checkNewTerritory(Map map, Cell newCell, Cell oldCell) {
+        newCell.setOwner(getOwner());
         oldCell.findTerritory(oldCell.getOwner()).addCell(newCell);
         Merge(map,newCell,oldCell);
         if (newCell.getOwner() != null && !newCell.getOwner().equals(oldCell.getOwner())) {
@@ -83,10 +85,16 @@ public class Soldier extends MapElement implements Controlable {
                 ) {
             if (cell.getOwner() != null && cell.getOwner().equals(newCell.getOwner())) {
                 if (!cell.findTerritory(cell.getOwner()).equals(newCell.findTerritory(cell.getOwner()))) {
+                    ArrayList<Cell> territory = new ArrayList<>();
                     for (Cell newCellTerritory : cell.findTerritory(cell.getOwner()).getCells()
                             ) {
+                        territory.add(newCellTerritory);
+                    }
+                    for (Cell newCellTerritory: territory
+                         ) {
                         newCell.findTerritory(newCell.getOwner()).addCell(newCellTerritory);
                     }
+
                     cell.getOwner().removeTerritory(cell.findTerritory(cell.getOwner()));
                 }
             }
@@ -139,7 +147,6 @@ public class Soldier extends MapElement implements Controlable {
                 source.getElementOn().checkNewTerritory(map, destination, source);
                 destination.setElementOn(source.getElementOn());
                 source.setElementOn(null);
-                destination.setOwner(getOwner());
                 destination.getElementOn().setHasMoved(true);
             }
         }
