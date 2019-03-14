@@ -23,7 +23,7 @@ public class AttackTower extends DefenceTower {
     public void attack(Cell cell) {
         if (cell.getElementOn() instanceof Soldier) {
             if (((cell.getElementOn()).getLevel() < this.getLevel()
-                    || this.getLevel() == 3 && ( cell.getElementOn()).getLevel() == 3)
+                    || this.getLevel() == 3 && (cell.getElementOn()).getLevel() == 3)
                     && !cell.getElementOn().getOwner().equals(this.getOwner())) {
                 cell.setElementOn(null);
             }

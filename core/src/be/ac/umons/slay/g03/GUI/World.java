@@ -1,4 +1,5 @@
 package be.ac.umons.slay.g03.GUI;
+
 import be.ac.umons.slay.g03.Core.Cell;
 import be.ac.umons.slay.g03.Core.Map;
 import be.ac.umons.slay.g03.Core.Player;
@@ -16,6 +17,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector3;
+
 import java.util.ArrayList;
 
 public class World extends ApplicationAdapter implements InputProcessor {
@@ -35,7 +37,6 @@ public class World extends ApplicationAdapter implements InputProcessor {
     private TextureAtlas.AtlasRegion grave;
     private TextureAtlas.AtlasRegion mine;
     private TextureAtlas.AtlasRegion contour;
-    private GameState gameState;
     private SpriteBatch batch;
     private OrthographicCamera camera;
     private Map map;
@@ -43,7 +44,24 @@ public class World extends ApplicationAdapter implements InputProcessor {
     private Cell source;
     private Cell dest;
     private Territory territory;
+    private GameState gameState;
+    private Loader loader;
     private boolean selected;
+
+    private int[] getMouseCoord(OrthographicCamera camera) {
+        Vector3 vector = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+        vector.x -= 32;
+        vector.y -= 16;
+        double ratio = 2;
+        double x = vector.x / (16 * ratio);
+        double y = vector.y / (16 * ratio);
+        double temp = Math.floor(x + (ratio * y) + 1);
+        double r = Math.floor((Math.floor(2 * x + 1) + temp) / 3);
+        double q = Math.floor((temp + Math.floor(-x + (ratio * y) + 1)) / 3);
+        r -= (int) q / 2;
+        return new int[]{(int) r, (int) q};
+    }
+
     private void setViewport(OrthographicCamera camera, Map map) {
 
         int width, heigth;
@@ -73,12 +91,12 @@ public class World extends ApplicationAdapter implements InputProcessor {
             batch.draw(sprite, (cell.getX()) * 32 + 16, (cell.getY() * 32) - (cell.getY() * 8));
         }
     }
-    private void drawContour(ArrayList<Cell> cells){
-        for (int i = 0; i < cells.size() ; i++) {
-            if(map.getHeigth() % 2 == 0){
+
+    private void drawContour(ArrayList<Cell> cells) {
+        for (int i = 0; i < cells.size(); i++) {
+            if (map.getHeigth() % 2 == 0) {
                 drawSpriteEven(contour, cells.get(i));
-            }
-            else {
+            } else {
                 drawSpriteOdd(contour, cells.get(i));
             }
         }
@@ -183,32 +201,7 @@ public class World extends ApplicationAdapter implements InputProcessor {
             }
         }
     }
-    private int[] getMouseCoord(OrthographicCamera camera){
-        Vector3 vector = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
-        vector.x -=32;
-        vector.y -=16;
-        double ratio = 2;
-        double x = vector.x/(16 * ratio);
-        double y = vector.y/(16 * ratio);
-        double temp = Math.floor(x + (ratio*y) + 1);
-        double r = Math.floor((Math.floor(2 * x + 1) + temp) / 3);
-        double q = Math.floor((temp + Math.floor(-x + (ratio * y) +1))/3);
-        r -= (int)q/2;
-        return new int[]{(int)r, (int)q};
-    }
-    private int[] getMouseCoord(OrthographicCamera camera, int xPos , int yPos){
-        Vector3 vector = camera.unproject(new Vector3(xPos, yPos, 0));
-        vector.x -=32;
-        vector.y -=16;
-        double ratio = 2;
-        double x = vector.x/(16 * ratio);
-        double y = vector.y/(16 * ratio);
-        double temp = Math.floor(x + (ratio*y) + 1);
-        double r = Math.floor((Math.floor(2 * x + 1) + temp) / 3);
-        double q = Math.floor((temp + Math.floor(-x + (ratio * y) +1))/3);
-        r -= (int)q/2;
-        return new int[]{(int)r, (int)q};
-    }
+
 
     @Override
     public void create() {
@@ -232,22 +225,20 @@ public class World extends ApplicationAdapter implements InputProcessor {
         contour = atlas.findRegion("tile015");
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
-        map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, 0, new ArrayList<Territory>()),
-                new Player("Alex", 2, 0, false, 0, new ArrayList<Territory>()));
+        map = new Map(new ArrayList<>(), new Player("Danial", 1, 0, false, 0, new ArrayList<>()),
+                new Player("Alex", 2, 0, false, 0, new ArrayList<>()));
         map.player1.setTurn(true);
-        Loader loader = new Loader("g3_2.tmx", "g3_3.xml", "Quicky");
+        loader = new Loader("g3_2.tmx", "g3_3.xml", "Quicky");
         Infrastructure.setIsAvailable(true);
         try {
             loader.load(map, false);
-        }
-        catch (WrongFormatException e) {
+        } catch (WrongFormatException e) {
             e.printStackTrace();
         }
         gameState = new GameState(map, loader, 0, "osef");
         setViewport(camera, map);
         Gdx.input.setInputProcessor(this);
     }
-
 
 
     @Override
@@ -258,10 +249,10 @@ public class World extends ApplicationAdapter implements InputProcessor {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         draw();
-        if(selected && source.getElementOn()!=null){
+        if (selected && source.getElementOn() != null) {
             drawContour(source.accessibleCell(map));
         }
-        if(territory != null){
+        if (territory != null) {
             drawContour(territory.getCells());
         }
         batch.end();
@@ -275,7 +266,7 @@ public class World extends ApplicationAdapter implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        if(keycode == Input.Keys.P){
+        if (keycode == Input.Keys.P) {
             gameState.nextTurn();
         }
         return true;
@@ -294,27 +285,26 @@ public class World extends ApplicationAdapter implements InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 
-        if(button == Input.Buttons.LEFT){
+        if (button == Input.Buttons.LEFT) {
 
-            if(!selected){
+            if (!selected) {
 
                 int pos[] = getMouseCoord(camera);
                 source = map.findCell(pos[0], pos[1]);
-                if(source!= null && source.getElementOn() instanceof Soldier){
+                if (source != null && source.getElementOn() instanceof Soldier) {
 
                     ((Soldier) source.getElementOn()).select();
 
-                    if(source.accessibleCell(map) != null && ((Soldier) source.getElementOn()).select() ){
+                    if (source.accessibleCell(map) != null && ((Soldier) source.getElementOn()).select()) {
                         selected = true;
                         territory = null;
                     }
 
                 }
-            }
-            else{
+            } else {
                 int pos[] = getMouseCoord(camera);
                 dest = map.findCell(pos[0], pos[1]);
-                ((Soldier)source.getElementOn()).move(source, dest, map);
+                ((Soldier) source.getElementOn()).move(source, dest, map);
                 selected = false;
 
             }
@@ -337,13 +327,12 @@ public class World extends ApplicationAdapter implements InputProcessor {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        if ( screenX < map.getWidth()*32 && (map.getHeigth()*32 - screenY) < map.getHeigth()*32){
-            int pos [] = getMouseCoord(camera);
-            Cell cell =map.findCell(pos[0], pos[1]);
-            if(cell!= null && cell.getOwner() != null && !selected) {
+        if (screenX < map.getWidth() * 32 && (map.getHeigth() * 32 - screenY) < map.getHeigth() * 32) {
+            int pos[] = getMouseCoord(camera);
+            Cell cell = map.findCell(pos[0], pos[1]);
+            if (cell != null && cell.getOwner() != null && !selected) {
                 territory = cell.findTerritory(cell.getOwner());
-            }
-            else {
+            } else {
                 territory = null;
             }
         }

@@ -37,9 +37,9 @@ public class Territory {
 
     @Override
     public String toString() {
-        String info="";
-        for (int i = 0; i < cells.size(); i++) {
-            info+=cells.get(i).toString();
+        String info = "";
+        for (Cell c: cells) {
+            info += c.toString();
         }
         return info;
     }

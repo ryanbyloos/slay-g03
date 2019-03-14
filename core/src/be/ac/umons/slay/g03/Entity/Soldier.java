@@ -71,9 +71,9 @@ public class Soldier extends MapElement implements Controlable {
     protected void checkNewTerritory(Map map, Cell newCell, Cell oldCell) {
         newCell.setOwner(getOwner());
         oldCell.findTerritory(oldCell.getOwner()).addCell(newCell);
-        Merge(map,newCell,oldCell);
+        Merge(map, newCell, oldCell);
         if (newCell.getOwner() != null && !newCell.getOwner().equals(oldCell.getOwner())) {
-            split(map,newCell,oldCell);
+            split(map, newCell, oldCell);
         }
 
     }
@@ -82,7 +82,7 @@ public class Soldier extends MapElement implements Controlable {
         ArrayList<Cell> cellToTest = newCell.adjacentCell(map, newCell);
         cellToTest.remove(oldCell);
         for (Cell cell : cellToTest
-                ) {
+        ) {
             if (cell.getOwner() != null && cell.getOwner().equals(newCell.getOwner())) {
                 if (!cell.findTerritory(cell.getOwner()).equals(newCell.findTerritory(cell.getOwner()))) {
                     Territory territoryToDelete = cell.findTerritory(cell.getOwner());
@@ -98,9 +98,9 @@ public class Soldier extends MapElement implements Controlable {
 
     private void split(Map map, Cell newCell, Cell oldCell) {
         ArrayList<Cell> cellToTest = newCell.adjacentCell(map, newCell);
-        for (Cell cell: cellToTest
-             ) {
-            if (!cell.getOwner().equals(oldCell.getOwner())){
+        for (Cell cell : cellToTest
+        ) {
+            if (!cell.getOwner().equals(oldCell.getOwner())) {
 
             }
         }

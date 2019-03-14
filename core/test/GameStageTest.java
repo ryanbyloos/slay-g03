@@ -13,7 +13,6 @@ import org.junit.*;
 import org.mockito.Mockito;
 
 
-
 public class GameStageTest {
 
     private static HeadlessApplication application;
@@ -63,7 +62,6 @@ public class GameStageTest {
         animationMock = Mockito.mock(Animation.class);
         textureMock = Mockito.mock(TextureRegion.class);
     }
-
 
 
     @AfterClass

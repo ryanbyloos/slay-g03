@@ -37,7 +37,7 @@ public class Player {
 
     }
 
-    public void removeTerritory(Territory territory){
+    public void removeTerritory(Territory territory) {
         territories.remove(territory);
     }
 

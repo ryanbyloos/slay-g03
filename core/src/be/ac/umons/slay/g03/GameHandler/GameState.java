@@ -291,9 +291,9 @@ public class GameState {
                     tile.setId(4);
                     cellTmx.setTile(tile);
                     tiledLayer.setCell(cell.getX(), cell.getY(), cellTmx);
-                    }
                 }
             }
+        }
 
     }
 
@@ -464,15 +464,15 @@ public class GameState {
 
     }
 
-    private void resetMoveableUnits(Player player){
+    private void resetMoveableUnits(Player player) {
         for (int i = 0; i < player.getTerritories().size(); i++) {
             Territory territory = player.getTerritories().get(i);
             for (int j = 0; j < territory.getCells().size(); j++) {
                 Cell cell = territory.getCells().get(j);
-                if(cell.getElementOn() instanceof Soldier ){
+                if (cell.getElementOn() instanceof Soldier) {
                     cell.getElementOn().setHasMoved(false);
-                }else if(cell.getElementOn() instanceof Boat){
-                     cell.getElementOn().setHasMoved(false);
+                } else if (cell.getElementOn() instanceof Boat) {
+                    cell.getElementOn().setHasMoved(false);
                 }
             }
         }
