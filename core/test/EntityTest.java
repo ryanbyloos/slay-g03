@@ -268,7 +268,41 @@ public class EntityTest {
         Assert.assertEquals(true,accCell.contains(cell11));
 
     }
+    @Test
+    public void mergeTerritoryTest(){
+        Player player1 = new Player("player1",0,0,false,0,new ArrayList<Territory>());
+        Soldier soldier = new Soldier(0, 0, player1, 1, false);
+        Cell cell1 = new Cell(6, 6, false, false, player1, soldier);
+        Cell cell2 = new Cell(5, 6, false, false, player1, null);
+        Cell cell3 = new Cell(7, 6, false, false, player1, null);
+        Cell cell4 = new Cell(6, 8, false, false, player1, null);
+        Cell cell5 = new Cell(5, 8, false, false, player1, null);
+        Cell cell6 = new Cell(7, 8, false, false, player1, null);
+        Cell dest = new Cell(6, 7, false, false, null, null);
+        ArrayList<Cell> mapCell = new ArrayList<Cell>();
+        mapCell.add(cell1);
+        mapCell.add(cell2);
+        mapCell.add(cell3);
+        mapCell.add(cell4);
+        mapCell.add(cell5);
+        mapCell.add(cell6);
+        mapCell.add(dest);
+        Map map = new Map(mapCell, player1,null);
+        ArrayList<Cell> territory = new ArrayList<Cell>();
+        ArrayList<Cell> territory1 = new ArrayList<Cell>();
+        territory.add(cell1);
+        territory.add(cell2);
+        territory.add(cell3);
+        territory1.add(cell4);
+        territory1.add(cell5);
+        territory1.add(cell6);
+        player1.getTerritories().add(new Territory(territory));
+        player1.getTerritories().add(new Territory(territory1));
+        soldier.move(cell1, dest, map);
+        Assert.assertEquals(1 , player1.getTerritories().size());
+        Assert.assertEquals(7, player1.getTerritories().get(0).getCells().size());
 
+    }
 
 
 

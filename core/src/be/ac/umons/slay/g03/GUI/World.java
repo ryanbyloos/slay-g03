@@ -42,7 +42,6 @@ public class World extends ApplicationAdapter implements InputProcessor {
     private TextureAtlas atlas;
     private Cell source;
     private Cell dest;
-    private int posX, posY;
     private boolean selected;
     private void setViewport(OrthographicCamera camera, Map map) {
 

@@ -261,4 +261,11 @@ public class Cell {
     public void setElementOn(MapElement elementOn) {
         this.elementOn = elementOn;
     }
+
+    @Override
+    public String toString() {
+        if(owner!=null) return "Cell[x][y][owner] : "+"["+x+"]"+"[" +y+"]"+"["+owner.getClass().getSimpleName()+"]\n";
+        else return "Cell[x][y][owner] : "+"["+x+"]"+"[" +y+"]"+"["+owner+"]";
+
+    }
 }

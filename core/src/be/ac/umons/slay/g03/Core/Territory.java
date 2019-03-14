@@ -34,4 +34,13 @@ public class Territory {
     public void setCells(ArrayList<Cell> cells) {
         this.cells = cells;
     }
+
+    @Override
+    public String toString() {
+        String info="";
+        for (int i = 0; i < cells.size(); i++) {
+            info+=cells.get(i).toString();
+        }
+        return info;
+    }
 }
