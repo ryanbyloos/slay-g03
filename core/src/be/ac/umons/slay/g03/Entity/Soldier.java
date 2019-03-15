@@ -127,15 +127,12 @@ public class Soldier extends MapElement implements Controlable {
                 }
 
 
+                }
             }
         }
 
 
-
-
     }
-
-
 
 
     @Override
@@ -176,7 +173,8 @@ public class Soldier extends MapElement implements Controlable {
                 destination.setElementOn(source.getElementOn());
                 source.setElementOn(null);
                 destination.getElementOn().setHasMoved(true);
-           }
+                destination.setChecked(source.isChecked());
+            }
         }
     }
 
