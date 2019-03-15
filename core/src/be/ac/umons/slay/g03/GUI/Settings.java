@@ -1,7 +1,6 @@
 package be.ac.umons.slay.g03.GUI;
 
 import be.ac.umons.slay.g03.Entity.Infrastructure;
-import be.ac.umons.slay.g03.GameHandler.ScreenHandler;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;

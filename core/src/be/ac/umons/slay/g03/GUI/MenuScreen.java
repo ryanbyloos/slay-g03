@@ -1,6 +1,5 @@
 package be.ac.umons.slay.g03.GUI;
 
-import be.ac.umons.slay.g03.GameHandler.ScreenHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -10,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 
 public class MenuScreen implements Screen {
-    public Stage stage;
+    Stage stage;
 
     @Override
     public void show() {

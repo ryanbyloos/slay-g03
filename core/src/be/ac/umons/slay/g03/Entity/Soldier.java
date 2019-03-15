@@ -84,16 +84,15 @@ public class Soldier extends MapElement implements Controlable {
         ArrayList<Cell> cellToTest = newCell.adjacentCell(map, newCell);
         cellToTest.remove(oldCell);
         for (Cell cell : cellToTest
-                ) {
+        ) {
             if (cell.getOwner() != null && cell.getOwner().equals(oldCell.getOwner())) {
                 if (!cell.findTerritory().equals(oldCell.findTerritory())) {
                     Territory territoryToDelete = cell.findTerritory();
-                    ArrayList<Cell> territory = new ArrayList<>();
-                    territory.addAll(cell.findTerritory().getCells());
+                    ArrayList<Cell> territory = new ArrayList<>(cell.findTerritory().getCells());
                     oldCell.findTerritory().getCells().addAll(territory);
                     cell.getOwner().removeTerritory(territoryToDelete);
                     for (Cell resetCell : cell.findTerritory().getCells()
-                            ) {
+                    ) {
                         resetCell.setChecked(true);
                     }
                 }
@@ -107,17 +106,17 @@ public class Soldier extends MapElement implements Controlable {
         for (Cell cellMark : cellToTest) {
             if (cellMark.getOwner() != null && !cellMark.getOwner().equals(newCell.getOwner())) {
                 Territory territoryMark = new Territory(new ArrayList<>());
-                territoryMark = cellMark.createTerritory(map, cellMark.isChecked(),territoryMark);
+                territoryMark = cellMark.createTerritory(map, cellMark.isChecked(), territoryMark);
                 ArrayList<Cell> lastCellToTest = newCell.adjacentCell(map, newCell);
                 lastCellToTest.remove(cellMark);
                 for (Cell cell : lastCellToTest
-                        ) {
+                ) {
 
-                    if (cell.getOwner()!=null && cell.getOwner().equals(cellMark.getOwner())) {
+                    if (cell.getOwner() != null && cell.getOwner().equals(cellMark.getOwner())) {
                         Territory territory = new Territory(new ArrayList<>());
-                        territory = cell.createTerritory(map,cell.isChecked(),territory);
+                        territory = cell.createTerritory(map, cell.isChecked(), territory);
 
-                        if (!territoryMark.equals(territory)){
+                        if (!territoryMark.equals(territory)) {
                             cellMark.getOwner().removeTerritory(cellMark.findTerritory());
                             cellMark.getOwner().getTerritories().add(territory);
                             cellMark.getOwner().getTerritories().add(territoryMark);
@@ -125,13 +124,8 @@ public class Soldier extends MapElement implements Controlable {
                         }
                     }
                 }
-
-
-                }
             }
         }
-
-
     }
 
 
@@ -181,9 +175,8 @@ public class Soldier extends MapElement implements Controlable {
 
     @Override
     public boolean select() {
-        if (belongsTo() && !isHasMoved()) return true;
+        return belongsTo() && !isHasMoved();
 
-        return false;
     }
 
 

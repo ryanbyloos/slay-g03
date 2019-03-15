@@ -1,6 +1,5 @@
 package be.ac.umons.slay.g03.GUI;
 
-import be.ac.umons.slay.g03.GameHandler.ScreenHandler;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 

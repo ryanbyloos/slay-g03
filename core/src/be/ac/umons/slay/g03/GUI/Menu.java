@@ -1,17 +1,18 @@
 package be.ac.umons.slay.g03.GUI;
 
-import be.ac.umons.slay.g03.GameHandler.ScreenHandler;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 
 public class Menu implements Screen {
 
-    Stage stage;
+    private Stage stage;
 
     @Override
     public void show() {
@@ -26,6 +27,14 @@ public class Menu implements Screen {
         SlayButton settingsButton = new SlayButton("SETTINGS", ScreenHandler.game.skin, 5);
         SlayButton quitButton = new SlayButton("QUIT", ScreenHandler.game.skin, 6);
 
+        resumeButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (ScreenHandler.worldScreen == null)
+                    ScreenHandler.worldScreen = new WorldScreen();
+                ScreenHandler.setScreen(ScreenHandler.worldScreen);
+            }
+        });
 
         replayButton.addListener(new ChangeListener() {
             @Override

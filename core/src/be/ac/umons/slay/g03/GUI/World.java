@@ -21,28 +21,15 @@ import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 
 public class World extends ApplicationAdapter implements InputProcessor {
-    private TextureAtlas.AtlasRegion blueImage;
-    private TextureAtlas.AtlasRegion greenImage;
-    private TextureAtlas.AtlasRegion yellowImage;
-    private TextureAtlas.AtlasRegion redImage;
-    private TextureAtlas.AtlasRegion soldier0;
-    private TextureAtlas.AtlasRegion soldier1;
-    private TextureAtlas.AtlasRegion soldier2;
-    private TextureAtlas.AtlasRegion soldier3;
-    private TextureAtlas.AtlasRegion capital;
-    private TextureAtlas.AtlasRegion tree;
-    private TextureAtlas.AtlasRegion defenceTower;
-    private TextureAtlas.AtlasRegion attackTower;
-    private TextureAtlas.AtlasRegion boat;
-    private TextureAtlas.AtlasRegion grave;
-    private TextureAtlas.AtlasRegion mine;
-    private TextureAtlas.AtlasRegion contour;
+    private TextureAtlas.AtlasRegion blueHex, greenHex, yellowHex, redHex;
+    private TextureAtlas.AtlasRegion soldier0, soldier1, soldier2, soldier3;
+    private TextureAtlas.AtlasRegion capital, tree, contour;
+    private TextureAtlas.AtlasRegion defenceTower, attackTower, boat, grave, mine;
     private SpriteBatch batch;
     private OrthographicCamera camera;
     private Map map;
     private TextureAtlas atlas;
-    private Cell source;
-    private Cell dest;
+    private Cell source, destination;
     private Territory territory;
     private GameState gameState;
     private Loader loader;
@@ -55,147 +42,78 @@ public class World extends ApplicationAdapter implements InputProcessor {
         double ratio = 2;
         double x = vector.x / (16 * ratio);
         double y = vector.y / (16 * ratio);
-        double temp = Math.floor(x + (ratio * y) + 1);
-        double r = Math.floor((Math.floor(2 * x + 1) + temp) / 3);
-        double q = Math.floor((temp + Math.floor(-x + (ratio * y) + 1)) / 3);
-        r -= (int) q / 2;
+        double tmp = Math.floor(x + (ratio * y) + 1);
+        double r = Math.floor((Math.floor(2 * x + 1) + tmp) / 3);
+        double q = Math.floor((tmp + Math.floor(-x + (ratio * y) + 1)) / 3);
+        r -= (int) q >> 1;
         return new int[]{(int) r, (int) q};
     }
 
     private void setViewport(OrthographicCamera camera, Map map) {
-
-        int width, heigth;
-        width = (map.getWidth() * 32) + 16;
-
-        int half = map.getHeigth() / 2;
-        if (map.getHeigth() % 2 == 0) {
-            heigth = half * 32 + half * 16 + 8;
-        } else {
-            heigth = half * 32 + half * 16 + 40;
-        }
-        camera.setToOrtho(false, width, heigth);
+        int mapH = map.getHeigth();
+        int width = (map.getWidth() * 32) + 16;
+        int height = mapH * 24 + 8 + 32 * (mapH % 2);
+        camera.setToOrtho(false, width, height);
     }
 
-    private void drawSpriteEven(TextureAtlas.AtlasRegion sprite, Cell cell) {
+    private void drawSprite(int parity, TextureAtlas.AtlasRegion sprite, Cell cell) {
+        int EVEN = 0;
+        int ODD = 1;
         if (cell.getY() % 2 == 0) {
-            batch.draw(sprite, (cell.getX()) * 32 + 16, (cell.getY() * 32) - (cell.getY() * 8));
+            batch.draw(sprite, cell.getX() * 32 + 16 * ((parity == EVEN) ? 1 : 0), cell.getY() * 24);
         } else {
-            batch.draw(sprite, cell.getX() * 32, (cell.getY() * 32) - (cell.getY() * 8));
-        }
-    }
-
-    private void drawSpriteOdd(TextureAtlas.AtlasRegion sprite, Cell cell) {
-        if (cell.getY() % 2 == 0) {
-            batch.draw(sprite, cell.getX() * 32, (cell.getY() * 32) - (cell.getY() * 8));
-        } else {
-            batch.draw(sprite, (cell.getX()) * 32 + 16, (cell.getY() * 32) - (cell.getY() * 8));
+            batch.draw(sprite, cell.getX() * 32 + 16 * ((parity == ODD) ? 1 : 0), cell.getY() * 24);
         }
     }
 
     private void drawContour(ArrayList<Cell> cells) {
-        for (int i = 0; i < cells.size(); i++) {
-            if (map.getHeigth() % 2 == 0) {
-                drawSpriteEven(contour, cells.get(i));
-            } else {
-                drawSpriteOdd(contour, cells.get(i));
-            }
-        }
+        for (Cell cell : cells)
+            drawSprite((map.getHeigth() % 2), contour, cell);
     }
 
     private void draw() {
+        int parity = map.getHeigth() % 2;
         for (int i = 0; i < map.cells.size(); i++) {
             Cell cell = map.cells.get(i);
-            if (map.getHeigth() % 2 == 0) {
-                if (cell.isWater()) {
-                    drawSpriteEven(blueImage, cell);
-                    if (cell.getElementOn() != null) {
-                        if (cell.getElementOn() instanceof Boat) {
-                            drawSpriteEven(boat, cell);
-                        } else if (cell.getElementOn() instanceof Mine) {
-                            drawSpriteEven(mine, cell);
-                        }
-                    }
-                } else {
-                    if (cell.getOwner() == null) drawSpriteEven(greenImage, cell);
-                    else if (cell.getOwner() == map.player1) drawSpriteEven(yellowImage, cell);
-                    else drawSpriteEven(redImage, cell);
-                    if (cell.getElementOn() != null) {
-                        if (cell.getElementOn() instanceof Soldier) {
-                            switch (cell.getElementOn().getLevel()) {
-                                case 0:
-                                    drawSpriteEven(soldier0, cell);
-                                    break;
-                                case 1:
-                                    drawSpriteEven(soldier1, cell);
-                                    break;
-                                case 2:
-                                    drawSpriteEven(soldier2, cell);
-                                    break;
-                                case 3:
-                                    drawSpriteEven(soldier3, cell);
-                                    break;
-                                default:
-                                    break;
-                            }
-                        } else if (cell.getElementOn() instanceof Capital) {
-                            drawSpriteEven(capital, cell);
-                        } else if (cell.getElementOn() instanceof DefenceTower) {
-                            drawSpriteEven(defenceTower, cell);
-                        } else if (cell.getElementOn() instanceof AttackTower) {
-                            drawSpriteEven(attackTower, cell);
-                        } else if (cell.getElementOn() instanceof Grave) {
-                            drawSpriteEven(grave, cell);
-                        } else if (cell.getElementOn() instanceof Tree) {
-                            drawSpriteEven(tree, cell);
-                        }
+            if (cell.isWater()) {
+                drawSprite(parity, blueHex, cell);
+                if (cell.getElementOn() != null) {
+                    if (cell.getElementOn() instanceof Boat) {
+                        drawSprite(parity, boat, cell);
+                    } else if (cell.getElementOn() instanceof Mine) {
+                        drawSprite(parity, mine, cell);
                     }
                 }
-
-
             } else {
-                if (cell.isWater()) {
-                    drawSpriteOdd(blueImage, cell);
-                    if (cell.getElementOn() != null) {
-                        if (cell.getElementOn() instanceof Boat) {
-                            drawSpriteOdd(boat, cell);
-                        } else if (cell.getElementOn() instanceof Mine) {
-                            drawSpriteOdd(mine, cell);
+                if (cell.getOwner() == null) drawSprite(parity, greenHex, cell);
+                else if (cell.getOwner() == map.player1) drawSprite(parity, yellowHex, cell);
+                else drawSprite(parity, redHex, cell);
+                if (cell.getElementOn() != null) {
+                    if (cell.getElementOn() instanceof Soldier) {
+                        switch (cell.getElementOn().getLevel()) {
+                            case 0:
+                                drawSprite(parity, soldier0, cell);
+                                break;
+                            case 1:
+                                drawSprite(parity, soldier1, cell);
+                                break;
+                            case 2:
+                                drawSprite(parity, soldier2, cell);
+                                break;
+                            case 3:
+                                drawSprite(parity, soldier3, cell);
+                                break;
                         }
-                    }
-                } else {
-                    if (cell.getOwner() == null)
-                        drawSpriteOdd(greenImage, cell);
-                    else if (cell.getOwner() == map.player1) drawSpriteOdd(yellowImage, cell);
-                    else drawSpriteOdd(redImage, cell);
-                    if (cell.getElementOn() != null) {
-                        if (cell.getElementOn() instanceof Soldier) {
-                            switch (cell.getElementOn().getLevel()) {
-                                case 0:
-                                    drawSpriteOdd(soldier0, cell);
-                                    break;
-                                case 1:
-                                    drawSpriteOdd(soldier1, cell);
-                                    break;
-                                case 2:
-                                    drawSpriteOdd(soldier2, cell);
-                                    break;
-                                case 3:
-                                    drawSpriteOdd(soldier3, cell);
-                                    break;
-                                default:
-                                    break;
-                            }
-                        } else if (cell.getElementOn() instanceof Capital) {
-                            drawSpriteOdd(capital, cell);
-                        } else if (cell.getElementOn() instanceof DefenceTower) {
-                            drawSpriteOdd(defenceTower, cell);
-                        } else if (cell.getElementOn() instanceof AttackTower) {
-                            drawSpriteOdd(attackTower, cell);
-                        } else if (cell.getElementOn() instanceof Grave) {
-                            drawSpriteOdd(grave, cell);
-                        } else if (cell.getElementOn() instanceof Tree) {
-                            drawSpriteOdd(tree, cell);
-                        }
+                    } else if (cell.getElementOn() instanceof Capital) {
+                        drawSprite(parity, capital, cell);
+                    } else if (cell.getElementOn() instanceof DefenceTower) {
+                        drawSprite(parity, defenceTower, cell);
+                    } else if (cell.getElementOn() instanceof AttackTower) {
+                        drawSprite(parity, attackTower, cell);
+                    } else if (cell.getElementOn() instanceof Grave) {
+                        drawSprite(parity, grave, cell);
+                    } else if (cell.getElementOn() instanceof Tree) {
+                        drawSprite(parity, tree, cell);
                     }
                 }
             }
@@ -207,10 +125,10 @@ public class World extends ApplicationAdapter implements InputProcessor {
     public void create() {
         String atlasPath = Gdx.files.getLocalStoragePath().concat("assets/Sprites/").concat("spritesheet.atlas");
         atlas = new TextureAtlas(atlasPath);
-        greenImage = atlas.findRegion("tile000");
-        blueImage = atlas.findRegion("tile001");
-        yellowImage = atlas.findRegion("tile002");
-        redImage = atlas.findRegion("tile003");
+        greenHex = atlas.findRegion("tile000");
+        blueHex = atlas.findRegion("tile001");
+        yellowHex = atlas.findRegion("tile002");
+        redHex = atlas.findRegion("tile003");
         soldier0 = atlas.findRegion("tile004");
         soldier1 = atlas.findRegion("tile005");
         soldier2 = atlas.findRegion("tile006");
@@ -249,12 +167,10 @@ public class World extends ApplicationAdapter implements InputProcessor {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         draw();
-        if (selected && source.getElementOn() != null) {
+        if (selected && source.getElementOn() != null)
             drawContour(source.accessibleCell(map));
-        }
-        if (territory != null) {
+        if (territory != null)
             drawContour(territory.getCells());
-        }
         batch.end();
     }
 
@@ -266,9 +182,8 @@ public class World extends ApplicationAdapter implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        if (keycode == Input.Keys.P) {
+        if (keycode == Input.Keys.P)
             gameState.nextTurn();
-        }
         return true;
     }
 
@@ -284,39 +199,29 @@ public class World extends ApplicationAdapter implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-
         if (button == Input.Buttons.LEFT) {
-
             if (!selected) {
-
-                int pos[] = getMouseCoord(camera);
+                int[] pos = getMouseCoord(camera);
                 source = map.findCell(pos[0], pos[1]);
                 if (source != null && source.getElementOn() instanceof Soldier) {
-
                     ((Soldier) source.getElementOn()).select();
-
                     if (source.accessibleCell(map) != null && ((Soldier) source.getElementOn()).select()) {
                         selected = true;
                         territory = null;
                     }
-
                 }
             } else {
-                int pos[] = getMouseCoord(camera);
-                dest = map.findCell(pos[0], pos[1]);
-                ((Soldier) source.getElementOn()).move(source, dest, map);
+                int[] pos = getMouseCoord(camera);
+                destination = map.findCell(pos[0], pos[1]);
+                ((Soldier) source.getElementOn()).move(source, destination, map);
                 selected = false;
-
             }
-
-
         }
         return true;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-
         return true;
     }
 
@@ -328,7 +233,7 @@ public class World extends ApplicationAdapter implements InputProcessor {
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
         if (screenX < map.getWidth() * 32 && (map.getHeigth() * 32 - screenY) < map.getHeigth() * 32) {
-            int pos[] = getMouseCoord(camera);
+            int[] pos = getMouseCoord(camera);
             Cell cell = map.findCell(pos[0], pos[1]);
             if (cell != null && cell.getOwner() != null && !selected) {
                 territory = cell.findTerritory();
@@ -336,12 +241,13 @@ public class World extends ApplicationAdapter implements InputProcessor {
                 territory = null;
             }
         }
-
         return true;
     }
 
     @Override
     public boolean scrolled(int amount) {
+        if ((camera.zoom > 0.2 && amount < 0) || (camera.zoom <= 1 && amount > 0))
+            camera.zoom += 0.1 * amount;
         return false;
     }
 }
