@@ -231,18 +231,20 @@ public class World extends ApplicationAdapter implements InputProcessor {
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         float x = Gdx.input.getDeltaX();
         float y = Gdx.input.getDeltaY();
+        float d = camera.zoom;
         if (camera.position.x <= 650 && camera.position.x >= 25)
-            camera.translate(-x, 0);
+            camera.translate(-x * d, 0);
         else if (camera.position.x > 650)
             camera.position.x = 650;
         else
             camera.position.x = 25;
         if (camera.position.y <= 450 && camera.position.y >= 25)
-            camera.translate(0, y);
+            camera.translate(0, y * d);
         else if (camera.position.y > 450)
             camera.position.y = 450;
         else
             camera.position.y = 25;
+        System.out.println(camera.zoom);
         return true;
     }
 
