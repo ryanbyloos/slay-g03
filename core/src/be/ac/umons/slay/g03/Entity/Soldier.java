@@ -21,7 +21,6 @@ public class Soldier extends MapElement implements Controlable {
         int levelAttacker = cellAttacker.getElementOn().getLevel();
         int levelDefender = cellDefender.getElementOn().getLevel();
 
-
         if (levelAttacker != 3) {
             if (levelAttacker > levelDefender) {
                 cellDefender.setElementOn(null);
@@ -30,7 +29,6 @@ public class Soldier extends MapElement implements Controlable {
         } else if (levelDefender == 3) {
             cellAttacker.setElementOn(null);
             cellDefender.setElementOn(null);
-
             return false;
 
         } else {
@@ -40,31 +38,28 @@ public class Soldier extends MapElement implements Controlable {
         return false;
     }
 
-    private boolean mergeSoldier(Cell himself, Cell allySoldier) {
+    private boolean mergeSoldier(Cell source, Cell destination) {
 
-        if ((this.level == allySoldier.getElementOn().getLevel()) && this.level != 3) {
+        if ((this.level == destination.getElementOn().getLevel()) && this.level != 3) {
 
-            Soldier upSoldier = null;
+            Soldier newSoldier = null;
 
             switch (this.level) {
                 case 0:
-                    upSoldier = new Soldier(5, 20, this.getOwner(), 1, false);
+                    newSoldier = new Soldier(5, 20, this.getOwner(), 1, false);
                     break;
                 case 1:
-                    upSoldier = new Soldier(14, 40, this.getOwner(), 2, false);
+                    newSoldier = new Soldier(14, 40, this.getOwner(), 2, false);
                     break;
                 case 2:
-                    upSoldier = new Soldier(41, 80, this.getOwner(), 3, false);
+                    newSoldier = new Soldier(41, 80, this.getOwner(), 3, false);
                     break;
             }
-
-            allySoldier.setElementOn(upSoldier);
-            himself.setElementOn(null);
+            destination.setElementOn(newSoldier);
+            source.setElementOn(null);
             return true;
         }
-
         return false;
-
     }
 
     @Override
@@ -83,22 +78,19 @@ public class Soldier extends MapElement implements Controlable {
     private void mergeTerritory(Map map, Cell newCell, Cell oldCell) {
         ArrayList<Cell> cellToTest = newCell.adjacentCell(map, newCell);
         cellToTest.remove(oldCell);
-        for (Cell cell : cellToTest
-        ) {
+        for (Cell cell : cellToTest) {
             if (cell.getOwner() != null && cell.getOwner().equals(oldCell.getOwner())) {
                 if (!cell.findTerritory().equals(oldCell.findTerritory())) {
                     Territory territoryToDelete = cell.findTerritory();
                     ArrayList<Cell> territory = new ArrayList<>(cell.findTerritory().getCells());
                     oldCell.findTerritory().getCells().addAll(territory);
                     cell.getOwner().removeTerritory(territoryToDelete);
-                    for (Cell resetCell : cell.findTerritory().getCells()
-                    ) {
+                    for (Cell resetCell : cell.findTerritory().getCells()) {
                         resetCell.setChecked(true);
                     }
                 }
             }
         }
-
     }
 
     private void splitTerritory(Map map, Cell newCell) {
@@ -109,13 +101,10 @@ public class Soldier extends MapElement implements Controlable {
                 territoryMark = cellMark.createTerritory(map, cellMark.isChecked(), territoryMark);
                 ArrayList<Cell> lastCellToTest = newCell.adjacentCell(map, newCell);
                 lastCellToTest.remove(cellMark);
-                for (Cell cell : lastCellToTest
-                ) {
-
+                for (Cell cell : lastCellToTest) {
                     if (cell.getOwner() != null && cell.getOwner().equals(cellMark.getOwner())) {
                         Territory territory = new Territory(new ArrayList<>());
                         territory = cell.createTerritory(map, cell.isChecked(), territory);
-
                         if (!territoryMark.equals(territory)) {
                             cellMark.getOwner().removeTerritory(cellMark.findTerritory());
                             cellMark.getOwner().getTerritories().add(territory);

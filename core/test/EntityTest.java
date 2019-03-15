@@ -6,8 +6,8 @@ import be.ac.umons.slay.g03.Entity.AttackTower;
 import be.ac.umons.slay.g03.Entity.Boat;
 import be.ac.umons.slay.g03.Entity.Soldier;
 import be.ac.umons.slay.g03.Entity.Tree;
-import org.junit.*;
-
+import org.junit.Assert;
+import org.junit.Test;
 
 import java.util.ArrayList;
 
@@ -38,17 +38,17 @@ public class EntityTest {
     public void setBoatDefence() {
         Player player0 = new Player("Danial", 1, 0, false, 0, new ArrayList<>());
         Boat boat = new Boat(0, 0, 0, 0, player0, false);
-        Assert.assertEquals(boat.getDefense(), 0);
+        Assert.assertEquals(boat.getDefence(), 0);
         boat.setSoldiers(new ArrayList<>());
-        Assert.assertEquals(boat.getDefense(), 0);
+        Assert.assertEquals(boat.getDefence(), 0);
         boat.getSoldiers().add(new Soldier(0, 0, player0, 1, false));
-        Assert.assertEquals(boat.getDefense(), 1);
+        Assert.assertEquals(boat.getDefence(), 1);
         boat.getSoldiers().add(new Soldier(0, 0, player0, 2, false));
-        Assert.assertEquals(boat.getDefense(), 2);
+        Assert.assertEquals(boat.getDefence(), 2);
         boat.getSoldiers().add(new Soldier(0, 0, player0, 3, false));
-        Assert.assertEquals(boat.getDefense(), 3);
+        Assert.assertEquals(boat.getDefence(), 3);
         boat.getSoldiers().add(new Soldier(0, 0, player0, 2, false));
-        Assert.assertEquals(boat.getDefense(), 3);
+        Assert.assertEquals(boat.getDefence(), 3);
     }
 
     @Test

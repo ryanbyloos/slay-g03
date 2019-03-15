@@ -29,5 +29,4 @@ public class AttackTower extends DefenceTower {
             }
         }
     }
-
 }

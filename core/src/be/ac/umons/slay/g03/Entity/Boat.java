@@ -9,17 +9,16 @@ import java.util.ArrayList;
 public class Boat extends Infrastructure implements Controlable {
 
     private int t;
-    private int defense;
+    private int defence;
     private boolean hasMoved;
 
     private ArrayList<Soldier> soldiers;
 
-    public Boat(int t, int defense, int maintenanceCost, int creationCost, Player player, boolean hasMoved) {
+    public Boat(int t, int defence, int maintenanceCost, int creationCost, Player player, boolean hasMoved) {
         super(maintenanceCost, creationCost, player);
         this.t = t;
-        this.defense = defense;
+        this.defence = defence;
         this.hasMoved = hasMoved;
-
     }
 
     public boolean deploy() {
@@ -45,12 +44,12 @@ public class Boat extends Infrastructure implements Controlable {
         return t;
     }
 
-    public int getDefense() {
+    public int getDefence() {
         if (soldiers != null && soldiers.size() != 0)
             for (Soldier soldier : soldiers)
-                if (soldier.getLevel() >= this.defense)
-                    this.defense = soldier.getLevel();
-        return this.defense;
+                if (soldier.getLevel() >= this.defence)
+                    this.defence = soldier.getLevel();
+        return this.defence;
     }
 
     public boolean isHasMoved() {
@@ -82,7 +81,6 @@ public class Boat extends Infrastructure implements Controlable {
     @Override
     public boolean select() {
         return false;
-
     }
 
     @Override
@@ -94,7 +92,7 @@ public class Boat extends Infrastructure implements Controlable {
         return this.getCreationCost() == (that.getCreationCost())
                 && this.getMaintenanceCost() == (that.getMaintenanceCost())
                 && this.getT() == that.getT()
-                && this.getDefense() == that.getDefense()
+                && this.getDefence() == that.getDefence()
                 && this.getOwner().equals(that.getOwner())
                 && this.isHasMoved() == that.isHasMoved()
                 && this.getSoldiers().equals(that.getSoldiers());

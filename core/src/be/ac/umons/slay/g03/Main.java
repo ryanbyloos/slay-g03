@@ -24,7 +24,8 @@ public class Main extends Game {
         ScreenHandler.BUTTON_WIDTH = ScreenHandler.WIDTH / 4;
         ScreenHandler.BUTTON_HEIGHT = ScreenHandler.HEIGHT / 12;
 
-        skin = new Skin(Gdx.files.internal("assets/flat-earth/flat-earth-ui.json"));
+//        skin = new Skin(Gdx.files.internal("assets/flat-earth/flat-earth-ui.json"));
+        skin = new Skin(Gdx.files.internal("assets/pixel-theme/skin/skin.json"));
         skin.addRegions(skin.getAtlas());
         Gdx.graphics.setWindowedMode(ScreenHandler.WIDTH, ScreenHandler.HEIGHT);
         setScreen(ScreenHandler.menu);

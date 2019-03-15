@@ -7,7 +7,7 @@ public class Map {
     public Player player1;
     public Player player2;
     private int width;
-    private int heigth;
+    private int height;
 
     public Map(ArrayList<Cell> cells, Player player1, Player player2) {
         this.cells = cells;
@@ -32,12 +32,12 @@ public class Map {
         return width;
     }
 
-    public int getHeigth() {
-        return heigth;
+    public int getHeight() {
+        return height;
     }
 
-    public void setHeigth(int heigth) {
-        this.heigth = heigth;
+    public void setHeight(int height) {
+        this.height = height;
     }
 
     public void setWidth(int width) {

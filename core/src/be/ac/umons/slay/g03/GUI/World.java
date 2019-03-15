@@ -50,7 +50,7 @@ public class World extends ApplicationAdapter implements InputProcessor {
     }
 
     private void setViewport(OrthographicCamera camera, Map map) {
-        int mapH = map.getHeigth();
+        int mapH = map.getHeight();
         int width = (map.getWidth() * 32) + 16;
         int height = mapH * 24 + 8 + 32 * (mapH % 2);
         camera.setToOrtho(false, width, height);
@@ -68,11 +68,11 @@ public class World extends ApplicationAdapter implements InputProcessor {
 
     private void drawContour(ArrayList<Cell> cells) {
         for (Cell cell : cells)
-            drawSprite((map.getHeigth() % 2), contour, cell);
+            drawSprite((map.getHeight() % 2), contour, cell);
     }
 
     private void draw() {
-        int parity = map.getHeigth() % 2;
+        int parity = map.getHeight() % 2;
         for (int i = 0; i < map.cells.size(); i++) {
             Cell cell = map.cells.get(i);
             if (cell.isWater()) {
@@ -244,13 +244,12 @@ public class World extends ApplicationAdapter implements InputProcessor {
             camera.position.y = 450;
         else
             camera.position.y = 25;
-        System.out.println(camera.zoom);
         return true;
     }
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        if (screenX < map.getWidth() * 32 && (map.getHeigth() * 32 - screenY) < map.getHeigth() * 32) {
+        if (screenX < map.getWidth() * 32 && (map.getHeight() * 32 - screenY) < map.getHeight() * 32) {
             int[] pos = getMouseCoord(camera);
             Cell cell = map.findCell(pos[0], pos[1]);
             if (cell != null && cell.getOwner() != null && !selected) {
