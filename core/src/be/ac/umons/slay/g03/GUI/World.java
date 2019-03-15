@@ -331,7 +331,7 @@ public class World extends ApplicationAdapter implements InputProcessor {
             int pos[] = getMouseCoord(camera);
             Cell cell = map.findCell(pos[0], pos[1]);
             if (cell != null && cell.getOwner() != null && !selected) {
-                territory = cell.findTerritory(cell.getOwner());
+                territory = cell.findTerritory();
             } else {
                 territory = null;
             }

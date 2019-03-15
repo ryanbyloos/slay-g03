@@ -28,12 +28,18 @@
             <cell x="2" y="3" />
             <cell x="3" y="3" />
         </territory>
+        <territory playerId="2">
+            <cell x="5" y="5" />
+            <cell x="4" y="4" />
+        </territory>
+
     </territories>
 
     <units>
         <unit type="soldier" level="1" x="2" y="5" playerId="1" hasmoved="false" />
         <unit type="soldier" level="2" x="2" y="6" playerId="1" hasmoved="false" />
         <unit type="soldier" level="3" x="16" y="18" playerId="2" hasmoved="false"/>
+        <unit type="soldier" level="3" x="5" y="5" playerId="2" hasmoved="false"/>
     </units>
     <infrastructures>
     </infrastructures>

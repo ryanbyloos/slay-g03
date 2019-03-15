@@ -18,7 +18,7 @@ public class Territory {
         return 0;
     }
 
-    private void bankrupt() {
+        private void bankrupt() {
 
     }
 
@@ -37,7 +37,7 @@ public class Territory {
 
     @Override
     public String toString() {
-        String info = "";
+        String info = "Territory : \n";
         for (Cell c: cells) {
             info += c.toString();
         }

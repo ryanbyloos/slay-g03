@@ -349,14 +349,15 @@ public class EntityTest {
         territory.add(cell2);
         territory.add(cell3);
         territory.add(cell4);
-        territory1.add(cell4);
+        territory1.add(cell7);
         territory1.add(cell5);
         territory1.add(cell6);
         player1.getTerritories().add(new Territory(territory));
         player2.getTerritories().add(new Territory(territory1));
-        soldier.move(cell1, cell5, map);
+        soldier.move(cell4, cell5, map);
         Assert.assertEquals(2, player2.getTerritories().size());
         Assert.assertEquals(1, player2.getTerritories().get(0).getCells().size());
+        Assert.assertFalse(territory1.contains(cell5));
     }
 
 

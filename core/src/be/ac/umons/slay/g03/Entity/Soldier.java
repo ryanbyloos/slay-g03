@@ -40,7 +40,7 @@ public class Soldier extends MapElement implements Controlable {
         return false;
     }
 
-    private boolean merge(Cell himself, Cell allySoldier) {
+    private boolean mergeSoldier(Cell himself, Cell allySoldier) {
 
         if ((this.level == allySoldier.getElementOn().getLevel()) && this.level != 3) {
 
@@ -69,42 +69,74 @@ public class Soldier extends MapElement implements Controlable {
 
     @Override
     protected void checkNewTerritory(Map map, Cell newCell, Cell oldCell) {
-        newCell.setOwner(getOwner());
-        oldCell.findTerritory(oldCell.getOwner()).addCell(newCell);
-        Merge(map, newCell, oldCell);
-        if (newCell.getOwner() != null && !newCell.getOwner().equals(oldCell.getOwner())) {
-            split(map, newCell, oldCell);
+        Territory oldTerritoryCell = newCell.findTerritory();
+        oldCell.findTerritory().addCell(newCell);
+        mergeTerritory(map, newCell, oldCell);
+        if (newCell.getOwner() != null && !newCell.equals(oldCell.getOwner())) {
+            oldTerritoryCell.getCells().remove(newCell);
+            newCell.setOwner(oldCell.getOwner());
+            splitTerritory(map, newCell);
         }
 
     }
 
-    private void Merge(Map map, Cell newCell, Cell oldCell) {
+    private void mergeTerritory(Map map, Cell newCell, Cell oldCell) {
         ArrayList<Cell> cellToTest = newCell.adjacentCell(map, newCell);
         cellToTest.remove(oldCell);
         for (Cell cell : cellToTest
-        ) {
-            if (cell.getOwner() != null && cell.getOwner().equals(newCell.getOwner())) {
-                if (!cell.findTerritory(cell.getOwner()).equals(newCell.findTerritory(cell.getOwner()))) {
-                    Territory territoryToDelete = cell.findTerritory(cell.getOwner());
+                ) {
+            if (cell.getOwner() != null && cell.getOwner().equals(oldCell.getOwner())) {
+                if (!cell.findTerritory().equals(oldCell.findTerritory())) {
+                    Territory territoryToDelete = cell.findTerritory();
                     ArrayList<Cell> territory = new ArrayList<>();
-                    territory.addAll(cell.findTerritory(cell.getOwner()).getCells());
-                    newCell.findTerritory(newCell.getOwner()).getCells().addAll(territory);
+                    territory.addAll(cell.findTerritory().getCells());
+                    oldCell.findTerritory().getCells().addAll(territory);
                     cell.getOwner().removeTerritory(territoryToDelete);
+                    for (Cell resetCell : cell.findTerritory().getCells()
+                            ) {
+                        resetCell.setChecked(true);
+                    }
                 }
             }
         }
 
     }
 
-    private void split(Map map, Cell newCell, Cell oldCell) {
+    private void splitTerritory(Map map, Cell newCell) {
         ArrayList<Cell> cellToTest = newCell.adjacentCell(map, newCell);
-        for (Cell cell : cellToTest
-        ) {
-            if (!cell.getOwner().equals(oldCell.getOwner())) {
+        for (Cell cellMark : cellToTest) {
+            if (cellMark.getOwner() != null && !cellMark.getOwner().equals(newCell.getOwner())) {
+                Territory territoryMark = new Territory(new ArrayList<>());
+                territoryMark = cellMark.createTerritory(map, cellMark.isChecked(),territoryMark);
+                ArrayList<Cell> lastCellToTest = newCell.adjacentCell(map, newCell);
+                lastCellToTest.remove(cellMark);
+                for (Cell cell : lastCellToTest
+                        ) {
+
+                    if (cell.getOwner()!=null && cell.getOwner().equals(cellMark.getOwner())) {
+                        Territory territory = new Territory(new ArrayList<>());
+                        territory = cell.createTerritory(map,cell.isChecked(),territory);
+
+                        if (!territoryMark.equals(territory)){
+                            cellMark.getOwner().removeTerritory(cellMark.findTerritory());
+                            cellMark.getOwner().getTerritories().add(territory);
+                            cellMark.getOwner().getTerritories().add(territoryMark);
+                            return;
+                        }
+                    }
+                }
+
 
             }
         }
+
+
+
+
     }
+
+
+
 
     @Override
     public int getLevel() {
@@ -129,7 +161,7 @@ public class Soldier extends MapElement implements Controlable {
 
                 } else if (destination.getElementOn() instanceof Soldier) {
                     if (destination.getElementOn().getOwner().equals(this.getOwner())) {
-                        merge(source, destination);
+                        mergeSoldier(source, destination);
                     } else {
                         if (attack(source, destination)) {
                             move(source, destination, map);
@@ -140,10 +172,11 @@ public class Soldier extends MapElement implements Controlable {
 
             } else {
                 source.getElementOn().checkNewTerritory(map, destination, source);
+                destination.setOwner(getOwner());
                 destination.setElementOn(source.getElementOn());
                 source.setElementOn(null);
                 destination.getElementOn().setHasMoved(true);
-            }
+           }
         }
     }
 
