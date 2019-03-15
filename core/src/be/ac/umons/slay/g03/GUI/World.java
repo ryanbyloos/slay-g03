@@ -184,6 +184,8 @@ public class World extends ApplicationAdapter implements InputProcessor {
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.P)
             gameState.nextTurn();
+        else if (keycode == Input.Keys.ESCAPE)
+            ScreenHandler.setScreen(ScreenHandler.menu);
         return true;
     }
 
@@ -227,7 +229,21 @@ public class World extends ApplicationAdapter implements InputProcessor {
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
+        float x = Gdx.input.getDeltaX();
+        float y = Gdx.input.getDeltaY();
+        if (camera.position.x <= 650 && camera.position.x >= 25)
+            camera.translate(-x, 0);
+        else if (camera.position.x > 650)
+            camera.position.x = 650;
+        else
+            camera.position.x = 25;
+        if (camera.position.y <= 450 && camera.position.y >= 25)
+            camera.translate(0, y);
+        else if (camera.position.y > 450)
+            camera.position.y = 450;
+        else
+            camera.position.y = 25;
+        return true;
     }
 
     @Override
