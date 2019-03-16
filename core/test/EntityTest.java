@@ -393,5 +393,4 @@ public class EntityTest {
         Assert.assertEquals(3, player1.getTerritories().size());
     }
 
-
 }
