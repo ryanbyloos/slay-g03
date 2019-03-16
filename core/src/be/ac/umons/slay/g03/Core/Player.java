@@ -87,12 +87,9 @@ public class Player {
             return false;
         }
         Player that = (Player) other;
-        return this.getName().equals(that.getName())
-                && this.getId() == that.getId()
-                && this.getMoveNumber() == that.getMoveNumber()
-                && this.isGuest() == that.isGuest()
-                && this.getScore() == that.getScore()
-                && this.getTerritories().equals(that.getTerritories());
+        return this.getName().equals(that.getName()) &&
+                this.getId() == that.getId();
+
     }
 
     public int getMaxMoveNumber() {

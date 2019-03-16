@@ -360,5 +360,4 @@ public class EntityTest {
         Assert.assertFalse(territory1.contains(cell5));
     }
 
-
 }
