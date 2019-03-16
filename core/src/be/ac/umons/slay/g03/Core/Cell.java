@@ -159,7 +159,7 @@ public class Cell {
 
     @Override
     public String toString() {
-        if(owner!=null) return "Cell[x][y][owner] : "+"["+x+"]"+"[" +y+"]"+"["+owner.getClass().getSimpleName()+"]\n";
-        else return "Cell[x][y][owner] : "+"["+x+"]"+"[" +y+"]"+"["+owner+"]";
+        if(owner!=null) return "Cell[x][y][owner][checked] : "+"["+x+"]"+"[" +y+"]"+"["+owner.getClass().getSimpleName()+"]"+"["+checked+"]\n";
+        else return "Cell[x][y][owner][checked] : "+"["+x+"]"+"[" +y+"]"+"["+owner+"]" +"["+ checked + "]\n";
     }
 }
