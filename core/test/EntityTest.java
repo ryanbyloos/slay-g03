@@ -325,7 +325,7 @@ public class EntityTest {
     @Test
     public void splitTerritoryTest() {
         Player player1 = new Player("player1", 0, 0, false, 0, new ArrayList<>());
-        Player player2 = new Player("player2", 0, 0, false, 0, new ArrayList<>());
+        Player player2 = new Player("player2", 1, 0, false, 0, new ArrayList<>());
         Soldier soldier = new Soldier(0, 0, player1, 1, false);
         Cell cell1 = new Cell(6, 6, false, false, player1, null);
         Cell cell2 = new Cell(5, 6, false, false, player1, null);
@@ -358,6 +358,39 @@ public class EntityTest {
         Assert.assertEquals(2, player2.getTerritories().size());
         Assert.assertEquals(1, player2.getTerritories().get(0).getCells().size());
         Assert.assertFalse(territory1.contains(cell5));
+    }
+    @Test
+    public void tripleSplitTerritoryTest() {
+        Player player1 = new Player("player1", 0, 0, false, 0, new ArrayList<>());
+        Player player2 = new Player("player2", 1, 0, false, 0, new ArrayList<>());
+        Soldier soldier = new Soldier(0, 0, player1, 1, false);
+        Cell cell1 = new Cell(1, 5, false, false, player1, null);
+        Cell dest = new Cell(2, 5, false, false, player1, null);
+        Cell cell3 = new Cell(2, 6, false, false, player1, null);
+        Cell cell4 = new Cell(2, 4, false, false, player1, null);
+        Cell source = new Cell(3, 5, false, false, player2, soldier);
+        Cell cell5 = new Cell(4, 5, false, false, player2, null);
+        ArrayList<Cell> mapCell = new ArrayList<Cell>();
+        mapCell.add(cell1);
+        mapCell.add(dest);
+        mapCell.add(cell3);
+        mapCell.add(cell4);
+        mapCell.add(source);
+        mapCell.add(cell5);
+        Map map = new Map(mapCell, player1, player2);
+        ArrayList<Cell> territory = new ArrayList<Cell>();
+        ArrayList<Cell> territory1 = new ArrayList<Cell>();
+        territory.add(cell1);
+        territory.add(dest);
+        territory.add(cell3);
+        territory.add(cell4);
+        territory1.add(source);
+        territory1.add(cell5);
+
+        player1.getTerritories().add(new Territory(territory));
+        player2.getTerritories().add(new Territory(territory1));
+        soldier.move(source, dest, map);
+        Assert.assertEquals(3, player1.getTerritories().size());
     }
 
 
