@@ -43,4 +43,18 @@ public class Territory {
         }
         return info;
     }
+    @Override
+    public boolean equals(Object other) {
+        if (!(other instanceof Territory)) {
+            return false;
+        }
+        Territory that = (Territory) other;
+        if(this.getCells().size() != that.getCells().size()) return false;
+        for (int i = 0; i < that.getCells().size() ; i++) {
+            if(!this.getCells().contains(that.getCells().get(i))){
+                return false;
+            }
+        }
+        return true;
+    }
 }
