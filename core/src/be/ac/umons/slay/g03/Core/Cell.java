@@ -26,7 +26,7 @@ public class Cell {
     }
 
     public void kill() {
-        elementOn= new Grave(owner,elementOn);
+        elementOn= new Grave(elementOn.getLevel());
 
     }
 

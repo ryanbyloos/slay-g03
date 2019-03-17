@@ -101,8 +101,7 @@ public class Soldier extends MapElement implements Controlable {
         }
 
     }
-
-    private void splitTerritory(Map map, Cell newCell) {
+         private void splitTerritory(Map map, Cell newCell) {
         ArrayList<Cell> cellToTest = newCell.adjacentCell(map, newCell);
         Cell cellAlreadyChecked = null;
         Cell oldCellMark = null;
@@ -124,7 +123,7 @@ public class Soldier extends MapElement implements Controlable {
 
                         if (!territoryMark.equals(territory)){
                             cellMark.getOwner().removeTerritory(cellMark.findTerritory());
-                            cellMark.getOwner().getTerritories().add(territory);
+                            if (!cellMark.getOwner().getTerritories().contains(territory))cellMark.getOwner().getTerritories().add(territory);
                             cellMark.getOwner().getTerritories().add(territoryMark);
                             if (cellAlreadyChecked != null) return;
                             cellAlreadyChecked = cell;
@@ -137,6 +136,7 @@ public class Soldier extends MapElement implements Controlable {
                 }
             }
         }
+
 
 
 
