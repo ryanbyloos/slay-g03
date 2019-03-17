@@ -436,5 +436,30 @@ public class EntityTest {
         Assert.assertEquals(13,capital.getMoney());
         Assert.assertEquals(soldier,cellTree.getElementOn());
     }
+    @Test
+    public void cutTreeEnnemy(){
+        Player player1 = new Player("player1", 0, 0, false, 0, new ArrayList<>());
+        Player player2 = new Player("player2", 1, 0, false, 0, new ArrayList<>());
+        Soldier soldier = new Soldier(0, 0, player1, 1, false);
+        Capital capital = new Capital(player1,10);
+        Cell cell1 = new Cell(1, 5, false, false, player1, soldier);
+        Cell cell2 = new Cell(0,5,false,false,player1,capital);
+        Cell cellTree = new Cell(2,5,false,false,player2, new Tree());
+        ArrayList<Cell> mapCell = new ArrayList<Cell>();
+        mapCell.add(cell1);
+        mapCell.add(cell2);
+        mapCell.add(cellTree);
+        Map map = new Map(mapCell, player1, player2 );
+        ArrayList<Cell> territory = new ArrayList<Cell>();
+        ArrayList<Cell> territory2 = new ArrayList<Cell>();
+        territory.add(cell1);
+        territory.add(cell2);
+        territory2.add(cellTree);
+        player1.getTerritories().add(new Territory(territory));
+        player2.getTerritories().add(new Territory(territory2));
+        soldier.move(cell1,cellTree,map);
+        Assert.assertEquals(10,capital.getMoney());
+        Assert.assertEquals(soldier,cellTree.getElementOn());
+    }
 
 }
