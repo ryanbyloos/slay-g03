@@ -1,6 +1,7 @@
 package be.ac.umons.slay.g03.Core;
 
 import be.ac.umons.slay.g03.Entity.Boat;
+import be.ac.umons.slay.g03.Entity.Grave;
 import be.ac.umons.slay.g03.Entity.MapElement;
 import be.ac.umons.slay.g03.Entity.Soldier;
 
@@ -25,6 +26,7 @@ public class Cell {
     }
 
     public void kill() {
+        elementOn= new Grave(owner,elementOn);
 
     }
 
@@ -52,6 +54,7 @@ public class Cell {
 
     // TODO: 13/03/2019
     private ArrayList<Cell> boatAccessibleCell(Map map){
+
         return null;
     }
 
