@@ -1,5 +1,7 @@
 package be.ac.umons.slay.g03.Core;
 
+import be.ac.umons.slay.g03.Entity.Capital;
+
 import java.util.ArrayList;
 
 public class Territory {
@@ -15,11 +17,21 @@ public class Territory {
     }
 
     private int checkcost() {
+
+
         return 0;
     }
 
-        private void bankrupt() {
+    private void bankrupt() {
 
+    }
+
+    public Capital findCapital(){
+        for (Cell cell: cells
+             ) {
+            if(cell.getElementOn() instanceof Capital) return (Capital)cell.getElementOn();
+        }
+        return null;
     }
 
     public boolean addCell(Cell cell) {
@@ -38,20 +50,21 @@ public class Territory {
     @Override
     public String toString() {
         String info = "Territory : \n";
-        for (Cell c: cells) {
+        for (Cell c : cells) {
             info += c.toString();
         }
         return info;
     }
+
     @Override
     public boolean equals(Object other) {
         if (!(other instanceof Territory)) {
             return false;
         }
         Territory that = (Territory) other;
-        if(this.getCells().size() != that.getCells().size()) return false;
-        for (int i = 0; i < that.getCells().size() ; i++) {
-            if(!this.getCells().contains(that.getCells().get(i))){
+        if (this.getCells().size() != that.getCells().size()) return false;
+        for (int i = 0; i < that.getCells().size(); i++) {
+            if (!this.getCells().contains(that.getCells().get(i))) {
                 return false;
             }
         }

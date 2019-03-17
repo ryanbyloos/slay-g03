@@ -146,8 +146,8 @@ public class GameState {
                     }
                 }
             }
-            map.player1.setTerritories(player1);
-            map.player2.setTerritories(player2);
+            map.getPlayer1().setTerritories(player1);
+            map.getPlayer2().setTerritories(player2);
             NodeList cells = data.getElementsByTagName("cell");
             for (int i = 0; i < cells.getLength(); i++) {
                 Node node = cells.item(i);
@@ -163,10 +163,10 @@ public class GameState {
                         Cell cell = new Cell(x, y, checked, isWater, null, null);
                         switch (playerId) {
                             case 1:
-                                cell.setOwner(map.player1);
+                                cell.setOwner(map.getPlayer1());
                                 break;
                             case 2:
-                                cell.setOwner(map.player2);
+                                cell.setOwner(map.getPlayer2());
                                 break;
                             default:
                                 break;
@@ -293,7 +293,7 @@ public class GameState {
                                 cell.setElementOn(new Mine(visible, 0, 10, cell.getOwner()));
                                 break;
                             case "tree":
-                                cell.setElementOn(new Tree(0, 0, null));
+                                cell.setElementOn(new Tree());
                                 break;
                         }
                         newCells.add(cell);
@@ -302,7 +302,7 @@ public class GameState {
                 }
             }
         }
-        this.map.cells = newCells;
+        this.map.setCells(newCells);
     }
 
 
@@ -311,7 +311,7 @@ public class GameState {
     }
 
     public void saveTmxFile() throws IOException {
-        String dest = Gdx.files.getLocalStoragePath().concat("assets/Saves/").concat(map.player1.getName() + '-' + map.player2.getName() + '-').concat(loader.getTmxFile());
+        String dest = Gdx.files.getLocalStoragePath().concat("assets/Saves/").concat(map.getPlayer1().getName() + '-' + map.getPlayer2().getName() + '-').concat(loader.getTmxFile());
         String source = Gdx.files.getLocalStoragePath().concat("assets/World/").concat(loader.getTmxFile());
         File file = new File(dest);
         TiledMap tiledMap = new TmxMapLoader().load(source);
@@ -320,13 +320,13 @@ public class GameState {
             copyFile(new File(source), file);
 
         }
-        for (int i = 0; i < map.cells.size(); i++) {
-            Cell cell = map.cells.get(i);
+        for (int i = 0; i < map.getCells().size(); i++) {
+            Cell cell = map.getCells().get(i);
             TiledMapTileLayer.Cell cellTmx;
             TiledMapTile tile;
             if (cell.getOwner() != null) {
                 cellTmx = tiledLayer.getCell(cell.getX(), cell.getY());
-                if (cell.getOwner().equals(map.player1)) {
+                if (cell.getOwner().equals(map.getPlayer1())) {
                     tile = cellTmx.getTile();
                     tile.setId(3);
                     cellTmx.setTile(tile);
@@ -343,7 +343,7 @@ public class GameState {
     }
 
     public void saveXmlFile() throws ParserConfigurationException, TransformerException {
-        String file = Gdx.files.getLocalStoragePath().concat("assets/Saves/").concat(map.player1.getName() + '-' + map.player2.getName() + '-').concat(loader.getXmlFile());
+        String file = Gdx.files.getLocalStoragePath().concat("assets/Saves/").concat(map.getPlayer1().getName() + '-' + map.getPlayer2().getName() + '-').concat(loader.getXmlFile());
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder;
 
@@ -363,8 +363,8 @@ public class GameState {
         root.appendChild(units);
         root.appendChild(infrastructures);
         root.appendChild(territories);
-        for (int i = 0; i < map.cells.size(); i++) {
-            Cell cell = map.cells.get(i);
+        for (int i = 0; i < map.getCells().size(); i++) {
+            Cell cell = map.getCells().get(i);
             MapElement entity;
             Element element;
             if ((entity = cell.getElementOn()) != null) {
@@ -447,11 +447,11 @@ public class GameState {
                 }
             }
         }
-        for (int i = 0; i < map.player1.getTerritories().size(); i++) {
+        for (int i = 0; i < map.getPlayer1().getTerritories().size(); i++) {
             Element territory = document.createElement("territory");
             territory.setAttribute("playerId", "1");
-            for (int j = 0; j < map.player1.getTerritories().get(i).getCells().size(); j++) {
-                Cell cellL = map.player1.getTerritories().get(i).getCells().get(j);
+            for (int j = 0; j < map.getPlayer1().getTerritories().get(i).getCells().size(); j++) {
+                Cell cellL = map.getPlayer1().getTerritories().get(i).getCells().get(j);
                 Element cell = document.createElement("cell");
                 cell.setAttribute("x", Integer.toString(cellL.getX()));
                 cell.setAttribute("y", Integer.toString(cellL.getY()));
@@ -459,11 +459,11 @@ public class GameState {
             }
             territories.appendChild(territory);
         }
-        for (int i = 0; i < map.player2.getTerritories().size(); i++) {
+        for (int i = 0; i < map.getPlayer2().getTerritories().size(); i++) {
             Element territory = document.createElement("territory");
             territory.setAttribute("playerId", "2");
-            for (int j = 0; j < map.player2.getTerritories().get(i).getCells().size(); j++) {
-                Cell cellL = map.player2.getTerritories().get(i).getCells().get(j);
+            for (int j = 0; j < map.getPlayer2().getTerritories().get(i).getCells().size(); j++) {
+                Cell cellL = map.getPlayer2().getTerritories().get(i).getCells().get(j);
                 Element cell = document.createElement("cell");
                 cell.setAttribute("x", Integer.toString(cellL.getX()));
                 cell.setAttribute("y", Integer.toString(cellL.getY()));
@@ -498,30 +498,30 @@ public class GameState {
             e.printStackTrace();
         }
 
-        if (map.player1.isTurn()) {
+        if (map.getPlayer1().isTurn()) {
 
-            map.player1.setTurn(false);
-            resetMoveableUnits(map.player1);
+            map.getPlayer1().setTurn(false);
+            resetMoveableUnits(map.getPlayer1());
 
-            map.player2.setTurn(true);
-            map.player1.setMoveNumber(-1);
-            map.player1.setMaxMoveNumber(-1);
+            map.getPlayer2().setTurn(true);
+            map.getPlayer1().setMoveNumber(-1);
+            map.getPlayer1().setMaxMoveNumber(-1);
 
             try {
-                storeMove(map.player2);
+                storeMove(map.getPlayer2());
             } catch (ReplayParserException e) {
                 e.printStackTrace();
             }
 
 
         } else {
-            map.player2.setTurn(false);
-            resetMoveableUnits(map.player2);
-            map.player1.setTurn(true);
-            map.player2.setMoveNumber(-1);
-            map.player2.setMaxMoveNumber(-1);
+            map.getPlayer2().setTurn(false);
+            resetMoveableUnits(map.getPlayer2());
+            map.getPlayer1().setTurn(true);
+            map.getPlayer2().setMoveNumber(-1);
+            map.getPlayer2().setMaxMoveNumber(-1);
             try {
-                storeMove(map.player1);
+                storeMove(map.getPlayer1());
             } catch (ReplayParserException e) {
                 e.printStackTrace();
             }
@@ -541,7 +541,7 @@ public class GameState {
                 if(cell.getElementOn()!=null) cell.getElementOn().setHasMoved(false);
             }
         }*/
-        for (Cell cell : map.cells
+        for (Cell cell : map.getCells()
              ) {
             if(cell.getElementOn() != null && cell.getOwner()!=null && cell.getOwner().equals(player) ){
                 cell.getElementOn().setHasMoved(false);
@@ -568,10 +568,10 @@ public class GameState {
             }
             Element move = document.createElement("move");
             move.setAttribute("j", Integer.toString(player.getMoveNumber()));
-            for (int i = 0; i < map.cells.size(); i++) {
+            for (int i = 0; i < map.getCells().size(); i++) {
                 Element element = document.createElement("cell");
                 MapElement entity;
-                Cell cell = map.cells.get(i);
+                Cell cell = map.getCells().get(i);
                 element.setAttribute("x", Integer.toString(cell.getX()));
                 element.setAttribute("y", Integer.toString(cell.getY()));
                 element.setAttribute("isWater", Boolean.toString(cell.isWater()));
@@ -633,11 +633,11 @@ public class GameState {
                 move.appendChild(element);
             }
             Element territories = document.createElement("territories");
-            for (int i = 0; i < map.player1.getTerritories().size(); i++) {
+            for (int i = 0; i < map.getPlayer1().getTerritories().size(); i++) {
                 Element territory = document.createElement("territory");
                 territory.setAttribute("playerId", "1");
-                for (int j = 0; j < map.player1.getTerritories().get(i).getCells().size(); j++) {
-                    Cell cellL = map.player1.getTerritories().get(i).getCells().get(j);
+                for (int j = 0; j < map.getPlayer1().getTerritories().get(i).getCells().size(); j++) {
+                    Cell cellL = map.getPlayer1().getTerritories().get(i).getCells().get(j);
                     Element cell = document.createElement("cell");
                     cell.setAttribute("x", Integer.toString(cellL.getX()));
                     cell.setAttribute("y", Integer.toString(cellL.getY()));
@@ -645,11 +645,11 @@ public class GameState {
                 }
                 territories.appendChild(territory);
             }
-            for (int i = 0; i < map.player2.getTerritories().size(); i++) {
+            for (int i = 0; i < map.getPlayer2().getTerritories().size(); i++) {
                 Element territory = document.createElement("territory");
                 territory.setAttribute("playerId", "2");
-                for (int j = 0; j < map.player2.getTerritories().get(i).getCells().size(); j++) {
-                    Cell cellL = map.player2.getTerritories().get(i).getCells().get(j);
+                for (int j = 0; j < map.getPlayer2().getTerritories().get(i).getCells().size(); j++) {
+                    Cell cellL = map.getPlayer2().getTerritories().get(i).getCells().get(j);
                     Element cell = document.createElement("cell");
                     cell.setAttribute("x", Integer.toString(cellL.getX()));
                     cell.setAttribute("y", Integer.toString(cellL.getY()));

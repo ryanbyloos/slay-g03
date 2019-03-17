@@ -109,22 +109,23 @@ public class Soldier extends MapElement implements Controlable {
         for (Cell cellMark : cellToTest) {
             if (cellMark.getOwner() != null && !cellMark.getOwner().equals(newCell.getOwner())) {
                 Territory territoryMark = new Territory(new ArrayList<>());
-                territoryMark = cellMark.createTerritory(map, cellMark.isChecked(),territoryMark);
+                territoryMark = cellMark.createTerritory(map, cellMark.isChecked(), territoryMark);
                 ArrayList<Cell> lastCellToTest = newCell.adjacentCell(map, newCell);
                 lastCellToTest.remove(cellMark);
-                if(cellAlreadyChecked!= null) lastCellToTest.remove(oldCellMark);
+                if (cellAlreadyChecked != null) lastCellToTest.remove(oldCellMark);
                 oldCellMark = cellMark;
                 outerloop:
                 for (Cell cell : lastCellToTest
                         ) {
 
-                    if (cell.getOwner()!=null && cell.getOwner().equals(cellMark.getOwner())) {
+                    if (cell.getOwner() != null && cell.getOwner().equals(cellMark.getOwner())) {
                         Territory territory = new Territory(new ArrayList<>());
-                        territory = cell.createTerritory(map,cell.isChecked(),territory);
+                        territory = cell.createTerritory(map, cell.isChecked(), territory);
 
-                        if (!territoryMark.equals(territory)){
+                        if (!territoryMark.equals(territory)) {
                             cellMark.getOwner().removeTerritory(cellMark.findTerritory());
-                            cellMark.getOwner().getTerritories().add(territory);
+                            if (!cellMark.getOwner().getTerritories().contains(territory))
+                                cellMark.getOwner().getTerritories().add(territory);
                             cellMark.getOwner().getTerritories().add(territoryMark);
                             if (cellAlreadyChecked != null) return;
                             cellAlreadyChecked = cell;
@@ -134,12 +135,9 @@ public class Soldier extends MapElement implements Controlable {
                 }
 
 
-                }
             }
         }
-
-
-
+    }
 
 
     @Override
@@ -159,11 +157,13 @@ public class Soldier extends MapElement implements Controlable {
 
             if (destination.getElementOn() != null) {
                 if (destination.getElementOn().getOwner() == null) {
-
+                    if (destination.getElementOn() instanceof Tree && destination.getOwner() != null && destination.getOwner().equals(source.getOwner())){
+                        source.findTerritory().findCapital().addMoney(3);
+                    }
                     destination.setElementOn(null);
                     move(source, destination, map);
-
-                } else if (destination.getElementOn() instanceof Soldier) {
+                }
+                else if (destination.getElementOn() instanceof Soldier) {
                     if (destination.getElementOn().getOwner().equals(this.getOwner())) {
                         mergeSoldier(source, destination);
                     } else {
@@ -175,15 +175,12 @@ public class Soldier extends MapElement implements Controlable {
                 }
 
             } else {
-                System.out.println(1);
                 source.getElementOn().checkNewTerritory(map, destination, source);
                 destination.setOwner(getOwner());
                 destination.setElementOn(source.getElementOn());
                 source.setElementOn(null);
                 destination.getElementOn().setHasMoved(true);
                 destination.setChecked(source.isChecked());
-                System.out.println("Player 1\n" + map.player1.getTerritories());
-                System.out.println("Player 2\n" + map.player2.getTerritories());
             }
         }
     }

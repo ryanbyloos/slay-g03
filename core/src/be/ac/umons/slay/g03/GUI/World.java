@@ -74,8 +74,8 @@ public class World extends ApplicationAdapter implements InputProcessor {
 
     private void draw() {
         int parity = map.getHeight() % 2;
-        for (int i = 0; i < map.cells.size(); i++) {
-            Cell cell = map.cells.get(i);
+        for (int i = 0; i < map.getCells().size(); i++) {
+            Cell cell = map.getCells().get(i);
             if (cell.isWater()) {
                 drawSprite(parity, blueHex, cell);
                 if (cell.getElementOn() != null) {
@@ -87,7 +87,7 @@ public class World extends ApplicationAdapter implements InputProcessor {
                 }
             } else {
                 if (cell.getOwner() == null) drawSprite(parity, greenHex, cell);
-                else if (cell.getOwner() == map.player1) drawSprite(parity, yellowHex, cell);
+                else if (cell.getOwner() == map.getPlayer1()) drawSprite(parity, yellowHex, cell);
                 else drawSprite(parity, redHex, cell);
                 if (cell.getElementOn() != null) {
                     if (cell.getElementOn() instanceof Soldier) {
@@ -146,7 +146,7 @@ public class World extends ApplicationAdapter implements InputProcessor {
         camera = new OrthographicCamera();
         map = new Map(new ArrayList<>(), new Player("Danial", 1, -1, false, 0, new ArrayList<>()),
                 new Player("Alex", 2, -1, false, 0, new ArrayList<>()));
-        map.player1.setTurn(true);
+        map.getPlayer1().setTurn(true);
         loader = new Loader("g3_2.tmx", "g3_3.xml", "Quicky");
         Infrastructure.setIsAvailable(true);
         try {
@@ -159,7 +159,7 @@ public class World extends ApplicationAdapter implements InputProcessor {
         try {
             gameState.saveReplay();
             gameState.storeTurn();
-            gameState.storeMove(map.player1);
+            gameState.storeMove(map.getPlayer1());
 
         } catch (ReplayParserException e) {
             e.printStackTrace();
@@ -200,32 +200,32 @@ public class World extends ApplicationAdapter implements InputProcessor {
         else if (keycode == Input.Keys.ESCAPE)
             ScreenHandler.setScreen(ScreenHandler.menu);
         else if(keycode == Input.Keys.J){
-            if(map.player1.isTurn()) {
+            if(map.getPlayer1().isTurn()) {
                 try {
-                    gameState.undo(map.player1);
+                    gameState.undo(map.getPlayer1());
                 } catch (ReplayParserException e) {
                     e.printStackTrace();
                 }
             }
             else {
                 try {
-                    gameState.undo(map.player2);
+                    gameState.undo(map.getPlayer2());
                 } catch (ReplayParserException e) {
                     e.printStackTrace();
                 }
             }
         }
         else if(keycode == Input.Keys.L){
-            if(map.player1.isTurn()) {
+            if(map.getPlayer1().isTurn()) {
                 try {
-                    gameState.redo(map.player1);
+                    gameState.redo(map.getPlayer1());
                 } catch (ReplayParserException e) {
                     e.printStackTrace();
                 }
             }
             else {
                 try {
-                    gameState.redo(map.player2);
+                    gameState.redo(map.getPlayer2());
                 } catch (ReplayParserException e) {
                     e.printStackTrace();
                 }
@@ -264,11 +264,11 @@ public class World extends ApplicationAdapter implements InputProcessor {
                 destination = map.findCell(pos[0], pos[1]);
                 ((Soldier) source.getElementOn()).move(source, destination, map);
                 try {
-                    if(map.player1.isTurn()){
-                        gameState.storeMove(map.player1);
+                    if(map.getPlayer1().isTurn()){
+                        gameState.storeMove(map.getPlayer1());
                     }
                     else {
-                        gameState.storeMove(map.player2);
+                        gameState.storeMove(map.getPlayer2());
                     }
 
                 } catch (ReplayParserException e) {
