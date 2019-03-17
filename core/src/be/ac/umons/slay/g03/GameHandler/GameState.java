@@ -74,7 +74,7 @@ public class GameState {
     }
 
     public void redo(Player player) throws ReplayParserException {
-        if (player.getMoveNumber() + 1 <= player.getMaxMoveNumber()) {
+        if (player.getMoveNumber() + 1 < player.getMaxMoveNumber()) {
             player.setMoveNumber(player.getMoveNumber() + 1);
             File file = new File(logFile);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -533,14 +533,6 @@ public class GameState {
     }
 
     private void resetMoveableUnits(Player player) {
-        /*for (Territory territory: player.getTerritories()
-             ) {
-            for (Cell cell:territory.getCells()
-                 ) {
-
-                if(cell.getElementOn()!=null) cell.getElementOn().setHasMoved(false);
-            }
-        }*/
         for (Cell cell : map.getCells()
              ) {
             if(cell.getElementOn() != null && cell.getOwner()!=null && cell.getOwner().equals(player) ){

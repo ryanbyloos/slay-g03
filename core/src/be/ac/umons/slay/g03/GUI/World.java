@@ -147,6 +147,8 @@ public class World extends ApplicationAdapter implements InputProcessor {
         map = new Map(new ArrayList<>(), new Player("Danial", 1, -1, false, 0, new ArrayList<>()),
                 new Player("Alex", 2, -1, false, 0, new ArrayList<>()));
         map.getPlayer1().setTurn(true);
+        map.getPlayer1().setMaxMoveNumber(-1);
+        map.getPlayer2().setMaxMoveNumber(-1);
         loader = new Loader("g3_2.tmx", "g3_3.xml", "Quicky");
         Infrastructure.setIsAvailable(true);
         try {
