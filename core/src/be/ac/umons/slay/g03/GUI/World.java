@@ -73,8 +73,8 @@ public class World extends ApplicationAdapter implements InputProcessor {
 
     private void draw() {
         int parity = map.getHeight() % 2;
-        for (int i = 0; i < map.cells.size(); i++) {
-            Cell cell = map.cells.get(i);
+        for (int i = 0; i < map.getCells().size(); i++) {
+            Cell cell = map.getCells().get(i);
             if (cell.isWater()) {
                 drawSprite(parity, blueHex, cell);
                 if (cell.getElementOn() != null) {
@@ -86,7 +86,7 @@ public class World extends ApplicationAdapter implements InputProcessor {
                 }
             } else {
                 if (cell.getOwner() == null) drawSprite(parity, greenHex, cell);
-                else if (cell.getOwner() == map.player1) drawSprite(parity, yellowHex, cell);
+                else if (cell.getOwner() == map.getPlayer1()) drawSprite(parity, yellowHex, cell);
                 else drawSprite(parity, redHex, cell);
                 if (cell.getElementOn() != null) {
                     if (cell.getElementOn() instanceof Soldier) {
@@ -145,7 +145,7 @@ public class World extends ApplicationAdapter implements InputProcessor {
         camera = new OrthographicCamera();
         map = new Map(new ArrayList<>(), new Player("Danial", 1, 0, false, 0, new ArrayList<>()),
                 new Player("Alex", 2, 0, false, 0, new ArrayList<>()));
-        map.player1.setTurn(true);
+        map.getPlayer1().setTurn(true);
         loader = new Loader("g3_2.tmx", "g3_3.xml", "Quicky");
         Infrastructure.setIsAvailable(true);
         try {

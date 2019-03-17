@@ -4,11 +4,8 @@ import be.ac.umons.slay.g03.Core.Player;
 
 public class Tree extends MapElement {
 
-    public Tree(int maintenanceCost, int creationCost, Player owner) {
-        super(maintenanceCost, creationCost, owner);
+    public Tree() {
+        super(0, 0, null);
     }
 
-    public void generateTree() {
-
-    }
 }

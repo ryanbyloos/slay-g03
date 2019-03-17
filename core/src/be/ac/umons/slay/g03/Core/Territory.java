@@ -15,6 +15,8 @@ public class Territory {
     }
 
     private int checkcost() {
+
+
         return 0;
     }
 

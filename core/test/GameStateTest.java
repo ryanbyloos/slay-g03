@@ -23,12 +23,12 @@ public class GameStateTest extends GameStageTest {
             GameState gameState = new GameState(map, loader, 0, null);
             gameState.saveReplay();
             gameState.storeTurn();
-            gameState.storeMove(map.player1);
-            map.player1.setMoveNumber(1);
-            map.player1.setMaxMoveNumber(1);
+            gameState.storeMove(map.getPlayer1());
+            map.getPlayer1().setMoveNumber(1);
+            map.getPlayer1().setMaxMoveNumber(1);
             map.findCell(1, 1).setElementOn(null);
-            gameState.storeMove(map.player1);
-            gameState.undo(map.player1);
+            gameState.storeMove(map.getPlayer1());
+            gameState.undo(map.getPlayer1());
             Assert.assertNotEquals(null, map.findCell(1, 1).getElementOn());
         } catch (ReplayParserException e) {
             e.printStackTrace();

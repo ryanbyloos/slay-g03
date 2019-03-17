@@ -39,7 +39,7 @@ public class LoaderTest extends GameStageTest {
             loader.loadFromTmxFile(map, false);
         } catch (WrongFormatException e) {
         }
-        Assert.assertEquals(8, map.cells.size());
+        Assert.assertEquals(8, map.getCells().size());
     }
 
     @Test
@@ -51,7 +51,7 @@ public class LoaderTest extends GameStageTest {
             loader.loadFromTmxFile(map, false);
         } catch (WrongFormatException e) {
         }
-        Cell elemx0y0 = map.cells.get(0);
+        Cell elemx0y0 = map.getCells().get(0);
         Assert.assertEquals(0, elemx0y0.getX());
     }
 
@@ -94,13 +94,13 @@ public class LoaderTest extends GameStageTest {
         Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, 0, new ArrayList<Territory>()),
                 new Player("Alex", 2, 0, false, 0, new ArrayList<Territory>()));
         Loader loader = new Loader(tmxFileCorrect, xmlFileCorrect, "");
-        map.cells.add(new Cell(1, 1, false, false, map.player1, null));
+        map.getCells().add(new Cell(1, 1, false, false, map.getPlayer1(), null));
         try {
             loader.loadFromXmlFile(map, false);
         } catch (WrongFormatException e) {
 
         }
-        Assert.assertEquals(new Soldier(2, 10, map.player1, 0, false), map.cells.get(0).getElementOn());
+        Assert.assertEquals(new Soldier(2, 10, map.getPlayer1(), 0, false), map.getCells().get(0).getElementOn());
     }
 
     @Test
@@ -108,12 +108,12 @@ public class LoaderTest extends GameStageTest {
         Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, 0, new ArrayList<Territory>()),
                 new Player("Alex", 2, 0, false, 0, new ArrayList<Territory>()));
         Loader loader = new Loader(tmxFileCorrect, xmlFileCorrect, "");
-        map.cells.add(new Cell(0, 0, false, false, map.player1, null));
+        map.getCells().add(new Cell(0, 0, false, false, map.getPlayer1(), null));
         try {
             loader.loadFromXmlFile(map, false);
         } catch (WrongFormatException e) {
         }
-        Assert.assertEquals(new Capital(0, 0, map.player1, 10), map.cells.get(0).getElementOn());
+        Assert.assertEquals(new Capital(0, 0, map.getPlayer1(), 10), map.getCells().get(0).getElementOn());
     }
 
     @Test
@@ -121,17 +121,17 @@ public class LoaderTest extends GameStageTest {
         Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, 0, new ArrayList<Territory>()),
                 new Player("Alex", 2, 0, false, 0, new ArrayList<Territory>()));
         Loader loader = new Loader(tmxFileCorrect, xmlFileCorrect, "");
-        map.cells.add(new Cell(0, 1, false, true, map.player1, null));
+        map.getCells().add(new Cell(0, 1, false, true, map.getPlayer1(), null));
         Infrastructure.setIsAvailable(true);
         try {
             loader.loadFromXmlFile(map, false);
         } catch (WrongFormatException e) {
         }
-        Boat boat = new Boat(3, 0, 0, 25, map.player1, false);
+        Boat boat = new Boat(3, 0, 0, 25, map.getPlayer1(), false);
         ArrayList<Soldier> soldiers = new ArrayList<Soldier>();
-        soldiers.add(new Soldier(5, 20, map.player1, 1, false));
+        soldiers.add(new Soldier(5, 20, map.getPlayer1(), 1, false));
         boat.setSoldiers(soldiers);
-        Assert.assertEquals(boat, map.cells.get(0).getElementOn());
+        Assert.assertEquals(boat, map.getCells().get(0).getElementOn());
 
 
     }
@@ -140,14 +140,14 @@ public class LoaderTest extends GameStageTest {
     public void loadFromXmlTestInfrastructureLoadingIfDisable() {
         Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, 0, new ArrayList<Territory>()),
                 new Player("Alex", 2, 0, false, 0, new ArrayList<Territory>()));
-        map.cells.add(new Cell(0, 1, false, true, map.player1, null));
+        map.getCells().add(new Cell(0, 1, false, true, map.getPlayer1(), null));
         Loader loader = new Loader(tmxFileCorrect, xmlFileCorrect, "");
         Infrastructure.setIsAvailable(false);
         try {
             loader.loadFromXmlFile(map, false);
         } catch (WrongFormatException e) {
         }
-        Assert.assertNotEquals(new Boat(3, 0, 0, 25, map.player1, false), map.cells.get(0).getElementOn());
+        Assert.assertNotEquals(new Boat(3, 0, 0, 25, map.getPlayer1(), false), map.getCells().get(0).getElementOn());
     }
 
     @Test
@@ -155,12 +155,12 @@ public class LoaderTest extends GameStageTest {
         Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, 0, new ArrayList<Territory>()),
                 new Player("Alex", 2, 0, false, 0, new ArrayList<Territory>()));
         Loader loader = new Loader(tmxFileCorrect, xmlFileCorrect, "");
-        map.cells.add(new Cell(2, 2, false, true, map.player1, null));
+        map.getCells().add(new Cell(2, 2, false, true, map.getPlayer1(), null));
         try {
             loader.loadFromXmlFile(map, false);
         } catch (WrongFormatException e) {
         }
-        Assert.assertNull(map.cells.get(0).getElementOn());
+        Assert.assertNull(map.getCells().get(0).getElementOn());
 
     }
 
@@ -169,12 +169,12 @@ public class LoaderTest extends GameStageTest {
         Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, 0, new ArrayList<Territory>()),
                 new Player("Alex", 2, 0, false, 0, new ArrayList<Territory>()));
         Loader loader = new Loader(tmxFileCorrect, xmlFileCorrect, "");
-        map.cells.add(new Cell(2, 1, false, false, map.player1, null));
+        map.getCells().add(new Cell(2, 1, false, false, map.getPlayer1(), null));
         try {
             loader.loadFromXmlFile(map, false);
         } catch (WrongFormatException e) {
         }
-        Assert.assertNull(map.cells.get(0).getElementOn());
+        Assert.assertNull(map.getCells().get(0).getElementOn());
     }
 
     @Test
@@ -186,6 +186,6 @@ public class LoaderTest extends GameStageTest {
             loader.loadFromXmlFile(map, false);
         } catch (WrongFormatException e) {
         }
-        Assert.assertEquals(0, map.cells.size());
+        Assert.assertEquals(0, map.getCells().size());
     }
 }

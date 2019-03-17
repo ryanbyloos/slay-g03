@@ -1,11 +1,9 @@
 package be.ac.umons.slay.g03.Core;
 
-import be.ac.umons.slay.g03.Entity.Boat;
-import be.ac.umons.slay.g03.Entity.Grave;
-import be.ac.umons.slay.g03.Entity.MapElement;
-import be.ac.umons.slay.g03.Entity.Soldier;
+import be.ac.umons.slay.g03.Entity.*;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 
 public class Cell {
@@ -42,6 +40,20 @@ public class Cell {
         }
 
         return null;
+    }
+
+    public void spwanTree(Map map){
+        if (elementOn == null){
+            int tree = 0;
+            for (Cell cell: adjacentCell(map,this)
+                 ) {
+                if (cell.getElementOn() instanceof Tree) tree++;
+            }
+            float random = new Random().nextInt(100);
+            if (random/100 < 1/100 + (tree * Math.log10(tree+1))/10 ){
+                elementOn = new Tree();
+            }
+        }
     }
 
     public ArrayList<Cell> accessibleCell(Map map) {

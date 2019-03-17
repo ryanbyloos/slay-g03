@@ -3,20 +3,20 @@ package be.ac.umons.slay.g03.Core;
 import java.util.ArrayList;
 
 public class Map {
-    public ArrayList<Cell> cells;
-    public Player player1;
-    public Player player2;
+    private ArrayList<Cell> cells;
+    private Player player1;
+    private Player player2;
     private int width;
     private int height;
 
     public Map(ArrayList<Cell> cells, Player player1, Player player2) {
-        this.cells = cells;
-        this.player1 = player1;
-        this.player2 = player2;
+        this.setCells(cells);
+        this.setPlayer1(player1);
+        this.setPlayer2(player2);
     }
 
     public Cell findCell(int x, int y) {
-        for (Cell cell : cells) {
+        for (Cell cell : getCells()) {
             if (cell.getX() == x && cell.getY() == y) {
                 return cell;
             }
@@ -42,5 +42,29 @@ public class Map {
 
     public void setWidth(int width) {
         this.width = width;
+    }
+
+    public ArrayList<Cell> getCells() {
+        return cells;
+    }
+
+    public void setCells(ArrayList<Cell> cells) {
+        this.cells = cells;
+    }
+
+    public Player getPlayer1() {
+        return player1;
+    }
+
+    public void setPlayer1(Player player1) {
+        this.player1 = player1;
+    }
+
+    public Player getPlayer2() {
+        return player2;
+    }
+
+    public void setPlayer2(Player player2) {
+        this.player2 = player2;
     }
 }

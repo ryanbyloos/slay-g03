@@ -80,10 +80,10 @@ public class Loader {
                         territory = new Territory(cells);
                         switch (playerId) {
                             case 1:
-                                map.player1.getTerritories().add(territory);
+                                map.getPlayer1().getTerritories().add(territory);
                                 break;
                             case 2:
-                                map.player2.getTerritories().add(territory);
+                                map.getPlayer2().getTerritories().add(territory);
                                 break;
                             default:
                                 break;
@@ -164,9 +164,9 @@ public class Loader {
                     if (cell.isWater() && Infrastructure.isAvailable) {
                         Player owner;
                         if (playerId == 1) {
-                            owner = map.player1;
+                            owner = map.getPlayer1();
                         } else {
-                            owner = map.player2;
+                            owner = map.getPlayer2();
                         }
                         int distMax = Integer.parseInt(node.getAttributes().getNamedItem("distmax").getTextContent());
                         for (int j = 0; j < soldiersData.getLength(); j++) {
@@ -264,15 +264,15 @@ public class Loader {
                     if (Infrastructure.isAvailable && cell.isWater()) {
                         Player owner;
                         if (playerId == 1) {
-                            owner = map.player1;
+                            owner = map.getPlayer1();
                         } else {
-                            owner = map.player2;
+                            owner = map.getPlayer2();
                         }
                         cell.setElementOn(new Mine(visible, 0, 10, owner));
                     }
                 } else if (type.equals("tree") && cell != null) {
                     if (!cell.isWater()) {
-                        cell.setElementOn(new Tree(0, 0, null));
+                        cell.setElementOn(new Tree());
                     }
                 }
 
@@ -314,14 +314,14 @@ public class Loader {
                             if (player == 0) {
                                 cell1 = new Cell(i, j, false, false, null, null);
                             } else if (player == 1) {
-                                cell1 = new Cell(i, j, false, false, map.player1, null);
+                                cell1 = new Cell(i, j, false, false, map.getPlayer1(), null);
                             } else {
-                                cell1 = new Cell(i, j, false, false, map.player2, null);
+                                cell1 = new Cell(i, j, false, false, map.getPlayer2(), null);
                             }
                         } else {
                             cell1 = new Cell(i, j, false, true, null, null);
                         }
-                        map.cells.add(cell1);
+                        map.getCells().add(cell1);
                     }
                 }
             }
