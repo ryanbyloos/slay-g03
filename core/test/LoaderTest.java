@@ -113,7 +113,7 @@ public class LoaderTest extends GameStageTest {
             loader.loadFromXmlFile(map, false);
         } catch (WrongFormatException e) {
         }
-        Assert.assertEquals(new Capital(0, 0, map.getPlayer1(), 10), map.getCells().get(0).getElementOn());
+        Assert.assertEquals(new Capital(map.getPlayer1(), 10), map.getCells().get(0).getElementOn());
     }
 
     @Test

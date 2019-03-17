@@ -1,5 +1,8 @@
 package be.ac.umons.slay.g03.Core;
 
+import be.ac.umons.slay.g03.Entity.MapElement;
+import be.ac.umons.slay.g03.Entity.Soldier;
+
 import java.util.ArrayList;
 
 public class Map {
@@ -18,6 +21,16 @@ public class Map {
     public Cell findCell(int x, int y) {
         for (Cell cell : getCells()) {
             if (cell.getX() == x && cell.getY() == y) {
+                return cell;
+            }
+        }
+        return null;
+    }
+
+    public Cell findCell(MapElement mapElement){
+        for (Cell cell: cells
+             ) {
+            if(cell.getElementOn() != null && cell.getElementOn() == (mapElement)){
                 return cell;
             }
         }

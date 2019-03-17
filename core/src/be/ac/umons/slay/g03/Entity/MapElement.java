@@ -4,8 +4,6 @@ import be.ac.umons.slay.g03.Core.Cell;
 import be.ac.umons.slay.g03.Core.Map;
 import be.ac.umons.slay.g03.Core.Player;
 
-import java.util.ArrayList;
-
 public abstract class MapElement {
     private int maintenanceCost;
     private int creationCost;
@@ -49,5 +47,13 @@ public abstract class MapElement {
 
     protected void checkNewTerritory(Map map,Cell newCell,Cell oldCell){
 
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Capital)) {
+            return false;
+        }
+        return super.equals(obj);
     }
 }

@@ -2,10 +2,7 @@ import be.ac.umons.slay.g03.Core.Cell;
 import be.ac.umons.slay.g03.Core.Map;
 import be.ac.umons.slay.g03.Core.Player;
 import be.ac.umons.slay.g03.Core.Territory;
-import be.ac.umons.slay.g03.Entity.AttackTower;
-import be.ac.umons.slay.g03.Entity.Boat;
-import be.ac.umons.slay.g03.Entity.Soldier;
-import be.ac.umons.slay.g03.Entity.Tree;
+import be.ac.umons.slay.g03.Entity.*;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -77,7 +74,7 @@ public class EntityTest {
     public void attackNullOwnerElement() {
         Player player = new Player("player1", 0, 0, false, 0, new ArrayList<>());
         Soldier soldier = new Soldier(0, 0, player, 1, false);
-        Tree tree = new Tree(0, 0, null);
+        Tree tree = new Tree();
         Cell cell1 = new Cell(0, 0, false, false, player, soldier);
         Cell cell2 = new Cell(1, 0, false, false, null, tree);
         ArrayList<Cell> mapCell = new ArrayList<Cell>();
@@ -291,12 +288,14 @@ public class EntityTest {
     public void mergeTerritoryTest() {
         Player player1 = new Player("player1", 0, 0, false, 0, new ArrayList<>());
         Soldier soldier = new Soldier(0, 0, player1, 1, false);
+        Capital capital1 = new Capital(player1,10);
+        Capital capital2 = new Capital(player1,10);
         Cell cell1 = new Cell(6, 6, false, false, player1, soldier);
-        Cell cell2 = new Cell(5, 6, false, false, player1, null);
+        Cell cell2 = new Cell(5, 6, false, false, player1,  capital1);
         Cell cell3 = new Cell(7, 6, false, false, player1, null);
         Cell cell4 = new Cell(6, 8, false, false, player1, null);
         Cell cell5 = new Cell(5, 8, false, false, player1, null);
-        Cell cell6 = new Cell(7, 8, false, false, player1, null);
+        Cell cell6 = new Cell(7, 8, false, false, player1, capital2);
         Cell dest = new Cell(6, 7, false, false, null, null);
         ArrayList<Cell> mapCell = new ArrayList<Cell>();
         mapCell.add(cell1);
@@ -320,6 +319,9 @@ public class EntityTest {
         soldier.move(cell1, dest, map);
         Assert.assertEquals(1, player1.getTerritories().size());
         Assert.assertEquals(7, player1.getTerritories().get(0).getCells().size());
+        Assert.assertEquals(cell6.getElementOn(),null);
+        Assert.assertEquals(cell2.getElementOn(),capital1);
+        Assert.assertEquals(20,capital1.getMoney());
     }
 
     @Test

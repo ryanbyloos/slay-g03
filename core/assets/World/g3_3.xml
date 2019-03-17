@@ -3,6 +3,7 @@
     <items>
         <item type="capital" money="10" x="15" y="18" playerId="2" />
         <item type="capital" money="10" x="1" y="5" playerId="1" />
+        <item type="capital" money="10" x="4" y="8" playerId="1" />
         <item type="tree" x="1" y="11" />
         <item type="tree" x="10" y="4"  />
         <item type="tree" x="13" y="17"  />
@@ -11,6 +12,12 @@
         <territory playerId="1">
             <cell x="1" y="5" />
             <cell x="2" y="5" />
+        </territory>
+        <territory playerId="1">
+            <cell x="3" y="7" />
+            <cell x="4" y="7" />
+            <cell x="3" y="8" />
+            <cell x="4" y="8" />
         </territory>
 
         <territory playerId="2">

@@ -124,7 +124,7 @@ public class Loader {
                     if (cell.getOwner() != null && cell.getOwner().getId() == player && !cell.isWater()) {
                         Player owner = cell.getOwner();
                         int money = Integer.parseInt(node.getAttributes().getNamedItem("money").getTextContent());
-                        Capital capital = new Capital(0, 0, owner, money);
+                        Capital capital = new Capital(owner, money);
                         cell.setElementOn(capital);
                     }
 

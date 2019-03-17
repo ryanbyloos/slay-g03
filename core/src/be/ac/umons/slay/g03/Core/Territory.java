@@ -34,6 +34,12 @@ public class Territory {
         return null;
     }
 
+    public int removeCapital(Map map){
+        int money = findCapital().getMoney();
+        map.findCell(findCapital()).setElementOn(null);
+        return money;
+    }
+
     public boolean addCell(Cell cell) {
         cells.add(cell);
         return true;

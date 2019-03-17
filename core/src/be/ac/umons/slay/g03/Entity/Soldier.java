@@ -89,7 +89,8 @@ public class Soldier extends MapElement implements Controlable {
                 if (!cell.findTerritory().equals(oldCell.findTerritory())) {
                     Territory territoryToDelete = cell.findTerritory();
                     ArrayList<Cell> territory = new ArrayList<>();
-                    territory.addAll(cell.findTerritory().getCells());
+                    oldCell.findTerritory().findCapital().addMoney(territoryToDelete.removeCapital(map));
+                    territory.addAll(territoryToDelete.getCells());
                     oldCell.findTerritory().getCells().addAll(territory);
                     cell.getOwner().removeTerritory(territoryToDelete);
                     for (Cell resetCell : cell.findTerritory().getCells()
@@ -181,6 +182,7 @@ public class Soldier extends MapElement implements Controlable {
                 source.setElementOn(null);
                 destination.getElementOn().setHasMoved(true);
                 destination.setChecked(source.isChecked());
+//                System.out.println(source.findTerritory().findCapital().getMoney());
             }
         }
     }

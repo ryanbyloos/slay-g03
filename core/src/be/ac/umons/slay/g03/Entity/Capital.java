@@ -5,8 +5,8 @@ import be.ac.umons.slay.g03.Core.Player;
 public class Capital extends MapElement {
     private int money;
 
-    public Capital(int maintenanceCost, int creationCost, Player owner, int money) {
-        super(maintenanceCost, creationCost, owner);
+    public Capital(Player owner, int money) {
+        super(0,0, owner);
         this.money = money;
     }
 
