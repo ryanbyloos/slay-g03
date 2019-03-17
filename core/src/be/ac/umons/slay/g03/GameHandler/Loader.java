@@ -255,7 +255,8 @@ public class Loader {
 
                 } else if (type.equals("grave") && cell != null) {
                     if (!cell.isWater()) {
-                        cell.setElementOn(new Grave(0, 0, null));
+                        int level = Integer.parseInt(node.getAttributes().getNamedItem("level").getTextContent());
+                        cell.setElementOn(new Grave(level));
                     }
                 } else if (type.equals("mine") && cell != null) {
                     int playerId = Integer.parseInt(node.getAttributes().getNamedItem("playerId").getTextContent());

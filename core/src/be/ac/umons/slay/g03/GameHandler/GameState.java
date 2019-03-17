@@ -131,6 +131,7 @@ public class GameState {
                     switch (playerId) {
                         case 1:
                             cell.setOwner(map.player1);
+                            break;
                         case 2:
                             cell.setOwner(map.player2);
                             break;
@@ -251,7 +252,8 @@ public class GameState {
                             break;
                         }
                         case "grave":
-                            cell.setElementOn(new Grave(0, 0, null));
+                            int level = Integer.parseInt(cellData.getAttribute("level"));
+                            cell.setElementOn(new Grave(level));
                             break;
                         case "mine":
                             boolean visible = Boolean.parseBoolean(cellData.getAttribute("visible"));
@@ -389,6 +391,7 @@ public class GameState {
                 } else if (entity instanceof Grave) {
                     element = document.createElement("item");
                     element.setAttribute("type", "grave");
+                    element.setAttribute("level", Integer.toString(entity.getLevel()));
                     element.setAttribute("x", Integer.toString(cell.getX()));
                     element.setAttribute("y", Integer.toString(cell.getY()));
                     items.appendChild(element);
@@ -557,6 +560,7 @@ public class GameState {
                         element.setAttribute("level", Integer.toString(entity.getLevel()));
                     } else if (entity instanceof Grave) {
                         element.setAttribute("element", "grave");
+                        element.setAttribute("level", Integer.toString(entity.getLevel()));
                     } else if (entity instanceof Mine) {
                         element.setAttribute("element", "mine");
                         element.setAttribute("visible", Boolean.toString(((Mine) entity).isVisible()));
