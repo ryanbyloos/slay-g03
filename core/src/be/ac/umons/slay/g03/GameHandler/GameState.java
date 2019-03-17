@@ -63,6 +63,7 @@ public class GameState {
                 Document doc = dBuilder.parse(file);
                 doc.getDocumentElement().normalize();
                 refreshMap(doc, turnPlayed, player.getMoveNumber());
+
             } catch (ParserConfigurationException e) {
                 throw new ReplayParserException();
             } catch (IOException e) {
@@ -118,36 +119,7 @@ public class GameState {
             }
         }
         if (data != null) {
-            NodeList territories = data.getElementsByTagName("territory");
-            for (int i = 0; i < territories.getLength(); i++) {
-                Node node = territories.item(i);
-                if(node.getNodeType() == node.ELEMENT_NODE){
-                    Element territoryData = (Element) node;
-                    int playerId = Integer.parseInt(territoryData.getAttribute("playerId"));
-                    Territory territory = new Territory(new ArrayList<>());
-                    NodeList cells = territoryData.getChildNodes();
-                    for (int j = 0; j < cells.getLength(); j++) {
-                        Node node1 = cells.item(j);
-                        if(node1.getNodeType() == node.ELEMENT_NODE){
-                            Element cellData = (Element) node1;
-                            int x = Integer.parseInt(cellData.getAttribute("x"));
-                            int y = Integer.parseInt(cellData.getAttribute("y"));
-                            Cell cell = map.findCell(x, y);
-                            if(cell!=null){
-                                territory.getCells().add(cell);
-                            }
-                        }
-                    }
-                    if(playerId == 1){
-                        player1.add(territory);
-                    }
-                    else {
-                        player2.add(territory);
-                    }
-                }
-            }
-            map.getPlayer1().setTerritories(player1);
-            map.getPlayer2().setTerritories(player2);
+
             NodeList cells = data.getElementsByTagName("cell");
             for (int i = 0; i < cells.getLength(); i++) {
                 Node node = cells.item(i);
@@ -301,8 +273,39 @@ public class GameState {
 
                 }
             }
+            this.map.setCells(newCells);
+            NodeList territories = data.getElementsByTagName("territory");
+            for (int i = 0; i < territories.getLength(); i++) {
+                Node node = territories.item(i);
+                if(node.getNodeType() == node.ELEMENT_NODE){
+                    Element territoryData = (Element) node;
+                    int playerId = Integer.parseInt(territoryData.getAttribute("playerId"));
+                    Territory territory = new Territory(new ArrayList<>());
+                    NodeList territoryCells = territoryData.getChildNodes();
+                    for (int j = 0; j < territoryCells.getLength(); j++) {
+                        Node node1 = territoryCells.item(j);
+                        if(node1.getNodeType() == node1.ELEMENT_NODE){
+                            Element cellData = (Element) node1;
+                            int x = Integer.parseInt(cellData.getAttribute("x"));
+                            int y = Integer.parseInt(cellData.getAttribute("y"));
+                            Cell cell = map.findCell(x, y);
+                            if(cell!=null){
+                                territory.getCells().add(cell);
+                            }
+                        }
+                    }
+                    if(playerId == 1){
+                        player1.add(territory);
+                    }
+                    else if (playerId == 2) {
+                        player2.add(territory);
+                    }
+                }
+            }
         }
-        this.map.setCells(newCells);
+
+        map.getPlayer1().setTerritories(player1);
+        map.getPlayer2().setTerritories(player2);
     }
 
 
@@ -536,10 +539,13 @@ public class GameState {
     }
 
     private void resetMoveableUnits(Player player) {
-        for (Cell cell : map.getCells()
+        for (Territory t :player.getTerritories()
              ) {
-            if(cell.getElementOn() != null && cell.getOwner()!=null && cell.getOwner().equals(player) ){
-                cell.getElementOn().setHasMoved(false);
+            for (Cell c: t.getCells()
+                 ) {
+                if(c.getElementOn()!=null && c.getElementOn() instanceof Soldier){
+                    c.getElementOn().setHasMoved(false);
+                }
             }
         }
     }
