@@ -37,8 +37,13 @@ public class Map {
         return null;
     }
 
-    public static int getWaterTilesNumber() {
-        return 0;
+    public static int getWaterTilesNumber(Map map) {
+        int waterTilsNumber = 0;
+        for (Cell cell: map.getCells()
+             ) {
+            if(cell.isWater())waterTilsNumber++;
+        }
+        return waterTilsNumber;
     }
 
     public int getWidth() {
