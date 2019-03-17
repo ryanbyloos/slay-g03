@@ -181,7 +181,6 @@ public class Soldier extends MapElement implements Controlable {
                 source.setElementOn(null);
                 destination.getElementOn().setHasMoved(true);
                 destination.setChecked(source.isChecked());
-                System.out.println(source.findTerritory().findCapital().getMoney());
             }
         }
     }
