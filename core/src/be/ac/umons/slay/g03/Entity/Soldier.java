@@ -175,15 +175,12 @@ public class Soldier extends MapElement implements Controlable {
                 }
 
             } else {
-                System.out.println(1);
                 source.getElementOn().checkNewTerritory(map, destination, source);
                 destination.setOwner(getOwner());
                 destination.setElementOn(source.getElementOn());
                 source.setElementOn(null);
                 destination.getElementOn().setHasMoved(true);
                 destination.setChecked(source.isChecked());
-                System.out.println("Player 1\n" + map.player1.getTerritories());
-                System.out.println("Player 2\n" + map.player2.getTerritories());
             }
         }
     }
