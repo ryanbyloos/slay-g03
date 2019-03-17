@@ -49,11 +49,4 @@ public abstract class MapElement {
 
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof Capital)) {
-            return false;
-        }
-        return super.equals(obj);
-    }
 }
