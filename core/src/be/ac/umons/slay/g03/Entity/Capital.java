@@ -11,7 +11,7 @@ public class Capital extends MapElement {
     }
 
     public void addMoney(int gain) {
-
+        money = money+gain;
     }
 
     @Override
