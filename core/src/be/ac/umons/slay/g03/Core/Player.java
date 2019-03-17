@@ -81,6 +81,7 @@ public class Player {
         this.turn = turn;
     }
 
+
     @Override
     public boolean equals(Object other) {
         if (!(other instanceof Player)) {
@@ -98,5 +99,9 @@ public class Player {
 
     public void setMaxMoveNumber(int maxMoveNumber) {
         this.maxMoveNumber = maxMoveNumber;
+    }
+
+    public void setTerritories(ArrayList<Territory> territories) {
+        this.territories = territories;
     }
 }

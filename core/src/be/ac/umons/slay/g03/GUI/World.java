@@ -7,6 +7,7 @@ import be.ac.umons.slay.g03.Core.Territory;
 import be.ac.umons.slay.g03.Entity.*;
 import be.ac.umons.slay.g03.GameHandler.GameState;
 import be.ac.umons.slay.g03.GameHandler.Loader;
+import be.ac.umons.slay.g03.GameHandler.ReplayParserException;
 import be.ac.umons.slay.g03.GameHandler.WrongFormatException;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
@@ -143,8 +144,8 @@ public class World extends ApplicationAdapter implements InputProcessor {
         contour = atlas.findRegion("tile015");
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
-        map = new Map(new ArrayList<>(), new Player("Danial", 1, 0, false, 0, new ArrayList<>()),
-                new Player("Alex", 2, 0, false, 0, new ArrayList<>()));
+        map = new Map(new ArrayList<>(), new Player("Danial", 1, -1, false, 0, new ArrayList<>()),
+                new Player("Alex", 2, -1, false, 0, new ArrayList<>()));
         map.player1.setTurn(true);
         loader = new Loader("g3_2.tmx", "g3_3.xml", "Quicky");
         Infrastructure.setIsAvailable(true);
@@ -153,7 +154,17 @@ public class World extends ApplicationAdapter implements InputProcessor {
         } catch (WrongFormatException e) {
             e.printStackTrace();
         }
-        gameState = new GameState(map, loader, 0, "osef");
+        gameState = new GameState(map, loader, -1, null);
+
+        try {
+            gameState.saveReplay();
+            gameState.storeTurn();
+            gameState.storeMove(map.player1);
+
+        } catch (ReplayParserException e) {
+            e.printStackTrace();
+        }
+
         setViewport(camera, map);
         Gdx.input.setInputProcessor(this);
     }
@@ -182,10 +193,46 @@ public class World extends ApplicationAdapter implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        if (keycode == Input.Keys.P)
+        if (keycode == Input.Keys.P){
             gameState.nextTurn();
+        }
+
         else if (keycode == Input.Keys.ESCAPE)
             ScreenHandler.setScreen(ScreenHandler.menu);
+        else if(keycode == Input.Keys.J){
+            if(map.player1.isTurn()) {
+                try {
+                    gameState.undo(map.player1);
+                } catch (ReplayParserException e) {
+                    e.printStackTrace();
+                }
+            }
+            else {
+                try {
+                    gameState.undo(map.player2);
+                } catch (ReplayParserException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        else if(keycode == Input.Keys.L){
+            if(map.player1.isTurn()) {
+                try {
+                    gameState.redo(map.player1);
+                } catch (ReplayParserException e) {
+                    e.printStackTrace();
+                }
+            }
+            else {
+                try {
+                    gameState.redo(map.player2);
+                } catch (ReplayParserException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+
         return true;
     }
 
@@ -216,6 +263,18 @@ public class World extends ApplicationAdapter implements InputProcessor {
                 int[] pos = getMouseCoord(camera);
                 destination = map.findCell(pos[0], pos[1]);
                 ((Soldier) source.getElementOn()).move(source, destination, map);
+                try {
+                    if(map.player1.isTurn()){
+                        gameState.storeMove(map.player1);
+                    }
+                    else {
+                        gameState.storeMove(map.player2);
+                    }
+
+                } catch (ReplayParserException e) {
+                    e.printStackTrace();
+                }
+
                 selected = false;
             }
         }

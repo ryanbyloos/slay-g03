@@ -97,6 +97,8 @@ public class GameState {
 
     private void refreshMap(Document doc, int turn, int move) {
         ArrayList<Cell> newCells = new ArrayList<>();
+        ArrayList<Territory> player1 = new ArrayList<>();
+        ArrayList<Territory> player2 = new ArrayList<>();
         Element data = null;
         NodeList turns = doc.getDocumentElement().getChildNodes();
         for (int i = 0; i < turns.getLength(); i++) {
@@ -116,6 +118,36 @@ public class GameState {
             }
         }
         if (data != null) {
+            NodeList territories = data.getElementsByTagName("territory");
+            for (int i = 0; i < territories.getLength(); i++) {
+                Node node = territories.item(i);
+                if(node.getNodeType() == node.ELEMENT_NODE){
+                    Element territoryData = (Element) node;
+                    int playerId = Integer.parseInt(territoryData.getAttribute("playerId"));
+                    Territory territory = new Territory(new ArrayList<>());
+                    NodeList cells = territoryData.getChildNodes();
+                    for (int j = 0; j < cells.getLength(); j++) {
+                        Node node1 = cells.item(j);
+                        if(node1.getNodeType() == node.ELEMENT_NODE){
+                            Element cellData = (Element) node1;
+                            int x = Integer.parseInt(cellData.getAttribute("x"));
+                            int y = Integer.parseInt(cellData.getAttribute("y"));
+                            Cell cell = map.findCell(x, y);
+                            if(cell!=null){
+                                territory.getCells().add(cell);
+                            }
+                        }
+                    }
+                    if(playerId == 1){
+                        player1.add(territory);
+                    }
+                    else {
+                        player2.add(territory);
+                    }
+                }
+            }
+            map.player1.setTerritories(player1);
+            map.player2.setTerritories(player2);
             NodeList cells = data.getElementsByTagName("cell");
             for (int i = 0; i < cells.getLength(); i++) {
                 Node node = cells.item(i);
@@ -123,147 +155,150 @@ public class GameState {
                     Element cellData = (Element) node;
                     int x = Integer.parseInt(cellData.getAttribute("x"));
                     int y = Integer.parseInt(cellData.getAttribute("y"));
-                    boolean isWater = Boolean.parseBoolean(cellData.getAttribute("isWater"));
-                    boolean checked = Boolean.parseBoolean(cellData.getAttribute("checked"));
-                    int playerId = Integer.parseInt(cellData.getAttribute("playerId"));
-                    String entityName = cellData.getAttribute("element");
-                    Cell cell = new Cell(x, y, checked, isWater, null, null);
-                    switch (playerId) {
-                        case 1:
-                            cell.setOwner(map.player1);
-                            break;
-                        case 2:
-                            cell.setOwner(map.player2);
-                            break;
-                        default:
-                            break;
-                    }
-                    switch (entityName) {
-                        case "soldier": {
-                            int level = Integer.parseInt(cellData.getAttribute("level"));
-                            boolean hasMoved = Boolean.parseBoolean(cellData.getAttribute("hasmoved"));
-                            Soldier soldier;
-                            switch (level) {
-                                case 0:
-                                    soldier = new Soldier(2, 10, cell.getOwner(), 0, hasMoved);
-                                    break;
-                                case 1:
-                                    soldier = new Soldier(5, 20, cell.getOwner(), 1, hasMoved);
-                                    break;
-                                case 2:
-                                    soldier = new Soldier(14, 40, cell.getOwner(), 2, hasMoved);
-                                    break;
-                                case 3:
-                                    soldier = new Soldier(41, 80, cell.getOwner(), 3, hasMoved);
-                                    break;
-                                default:
-                                    soldier = null;
-                                    break;
-                            }
-                            cell.setElementOn(soldier);
-                            break;
+                    if(!cellData.getParentNode().getNodeName().equals("territory")){
+                        boolean isWater = Boolean.parseBoolean(cellData.getAttribute("isWater"));
+                        boolean checked = Boolean.parseBoolean(cellData.getAttribute("checked"));
+                        int playerId = Integer.parseInt(cellData.getAttribute("playerId"));
+                        String entityName = cellData.getAttribute("element");
+                        Cell cell = new Cell(x, y, checked, isWater, null, null);
+                        switch (playerId) {
+                            case 1:
+                                cell.setOwner(map.player1);
+                                break;
+                            case 2:
+                                cell.setOwner(map.player2);
+                                break;
+                            default:
+                                break;
                         }
-                        case "attacktower": {
-                            int level = Integer.parseInt(cellData.getAttribute("level"));
-                            AttackTower attackTower;
-                            switch (level) {
-                                case 0:
-                                    attackTower = new AttackTower(2, 5, cell.getOwner(), 0);
-                                    break;
-                                case 1:
-                                    attackTower = new AttackTower(4, 10, cell.getOwner(), 1);
-                                    break;
-                                case 2:
-                                    attackTower = new AttackTower(8, 20, cell.getOwner(), 2);
-                                    break;
-                                case 3:
-                                    attackTower = new AttackTower(16, 40, cell.getOwner(), 3);
-                                    break;
-                                default:
-                                    attackTower = null;
-                                    break;
-                            }
-                            cell.setElementOn(attackTower);
-                            break;
-                        }
-                        case "boat": {
-                            int t = Integer.parseInt(cellData.getAttribute("t"));
-                            int defence = Integer.parseInt(cellData.getAttribute("defence"));
-                            boolean hasMoved = Boolean.parseBoolean(cellData.getAttribute("hasmoved"));
-                            ArrayList<Soldier> soldiers = new ArrayList<Soldier>();
-                            NodeList soldiersData = cellData.getChildNodes();
-                            for (int j = 0; j < soldiersData.getLength(); j++) {
-                                Node node1 = soldiersData.item(j);
-                                if (node1.getNodeType() == Node.ELEMENT_NODE) {
-                                    Element soldierData = (Element) node1;
-                                    int level = Integer.parseInt(soldierData.getAttributes().getNamedItem("level").getTextContent());
-                                    boolean soldierHasMoved = Boolean.parseBoolean(soldierData.getAttributes().getNamedItem("hasmoved").getTextContent());
-                                    Soldier soldier;
-                                    switch (level) {
-                                        case 0:
-                                            soldier = new Soldier(2, 10, cell.getOwner(), 0, soldierHasMoved);
-                                            break;
-                                        case 1:
-                                            soldier = new Soldier(5, 20, cell.getOwner(), 1, soldierHasMoved);
-                                            break;
-                                        case 2:
-                                            soldier = new Soldier(14, 40, cell.getOwner(), 2, soldierHasMoved);
-                                            break;
-                                        case 3:
-                                            soldier = new Soldier(41, 80, cell.getOwner(), 3, soldierHasMoved);
-                                            break;
-                                        default:
-                                            soldier = null;
-                                            break;
-                                    }
-                                    soldiers.add(soldier);
+                        switch (entityName) {
+                            case "soldier": {
+                                int level = Integer.parseInt(cellData.getAttribute("level"));
+                                boolean hasMoved = Boolean.parseBoolean(cellData.getAttribute("hasmoved"));
+                                Soldier soldier;
+                                switch (level) {
+                                    case 0:
+                                        soldier = new Soldier(2, 10, cell.getOwner(), 0, hasMoved);
+                                        break;
+                                    case 1:
+                                        soldier = new Soldier(5, 20, cell.getOwner(), 1, hasMoved);
+                                        break;
+                                    case 2:
+                                        soldier = new Soldier(14, 40, cell.getOwner(), 2, hasMoved);
+                                        break;
+                                    case 3:
+                                        soldier = new Soldier(41, 80, cell.getOwner(), 3, hasMoved);
+                                        break;
+                                    default:
+                                        soldier = null;
+                                        break;
                                 }
+                                cell.setElementOn(soldier);
+                                break;
                             }
-                            Boat boat = new Boat(t, defence, 0, 25, cell.getOwner(), hasMoved);
-                            boat.setSoldiers(soldiers);
-                            cell.setElementOn(boat);
-                            break;
-                        }
-                        case "capital":
-                            int money = Integer.parseInt(cellData.getAttribute("money"));
-                            cell.setElementOn(new Capital(0, 0, cell.getOwner(), money));
-                            break;
-                        case "defencetower": {
-                            int level = Integer.parseInt(cellData.getAttribute("level"));
-                            DefenceTower defenceTower;
-                            switch (level) {
-                                case 0:
-                                    defenceTower = new DefenceTower(2, 5, cell.getOwner(), 0);
-                                    break;
-                                case 1:
-                                    defenceTower = new DefenceTower(4, 10, cell.getOwner(), 1);
-                                    break;
-                                case 2:
-                                    defenceTower = new DefenceTower(8, 20, cell.getOwner(), 2);
-                                    break;
-                                case 3:
-                                    defenceTower = new DefenceTower(16, 40, cell.getOwner(), 3);
-                                    break;
-                                default:
-                                    defenceTower = null;
-                                    break;
+                            case "attacktower": {
+                                int level = Integer.parseInt(cellData.getAttribute("level"));
+                                AttackTower attackTower;
+                                switch (level) {
+                                    case 0:
+                                        attackTower = new AttackTower(2, 5, cell.getOwner(), 0);
+                                        break;
+                                    case 1:
+                                        attackTower = new AttackTower(4, 10, cell.getOwner(), 1);
+                                        break;
+                                    case 2:
+                                        attackTower = new AttackTower(8, 20, cell.getOwner(), 2);
+                                        break;
+                                    case 3:
+                                        attackTower = new AttackTower(16, 40, cell.getOwner(), 3);
+                                        break;
+                                    default:
+                                        attackTower = null;
+                                        break;
+                                }
+                                cell.setElementOn(attackTower);
+                                break;
                             }
-                            cell.setElementOn(defenceTower);
-                            break;
+                            case "boat": {
+                                int t = Integer.parseInt(cellData.getAttribute("t"));
+                                int defence = Integer.parseInt(cellData.getAttribute("defence"));
+                                boolean hasMoved = Boolean.parseBoolean(cellData.getAttribute("hasmoved"));
+                                ArrayList<Soldier> soldiers = new ArrayList<Soldier>();
+                                NodeList soldiersData = cellData.getChildNodes();
+                                for (int j = 0; j < soldiersData.getLength(); j++) {
+                                    Node node1 = soldiersData.item(j);
+                                    if (node1.getNodeType() == Node.ELEMENT_NODE) {
+                                        Element soldierData = (Element) node1;
+                                        int level = Integer.parseInt(soldierData.getAttributes().getNamedItem("level").getTextContent());
+                                        boolean soldierHasMoved = Boolean.parseBoolean(soldierData.getAttributes().getNamedItem("hasmoved").getTextContent());
+                                        Soldier soldier;
+                                        switch (level) {
+                                            case 0:
+                                                soldier = new Soldier(2, 10, cell.getOwner(), 0, soldierHasMoved);
+                                                break;
+                                            case 1:
+                                                soldier = new Soldier(5, 20, cell.getOwner(), 1, soldierHasMoved);
+                                                break;
+                                            case 2:
+                                                soldier = new Soldier(14, 40, cell.getOwner(), 2, soldierHasMoved);
+                                                break;
+                                            case 3:
+                                                soldier = new Soldier(41, 80, cell.getOwner(), 3, soldierHasMoved);
+                                                break;
+                                            default:
+                                                soldier = null;
+                                                break;
+                                        }
+                                        soldiers.add(soldier);
+                                    }
+                                }
+                                Boat boat = new Boat(t, defence, 0, 25, cell.getOwner(), hasMoved);
+                                boat.setSoldiers(soldiers);
+                                cell.setElementOn(boat);
+                                break;
+                            }
+                            case "capital":
+                                int money = Integer.parseInt(cellData.getAttribute("money"));
+                                cell.setElementOn(new Capital(0, 0, cell.getOwner(), money));
+                                break;
+                            case "defencetower": {
+                                int level = Integer.parseInt(cellData.getAttribute("level"));
+                                DefenceTower defenceTower;
+                                switch (level) {
+                                    case 0:
+                                        defenceTower = new DefenceTower(2, 5, cell.getOwner(), 0);
+                                        break;
+                                    case 1:
+                                        defenceTower = new DefenceTower(4, 10, cell.getOwner(), 1);
+                                        break;
+                                    case 2:
+                                        defenceTower = new DefenceTower(8, 20, cell.getOwner(), 2);
+                                        break;
+                                    case 3:
+                                        defenceTower = new DefenceTower(16, 40, cell.getOwner(), 3);
+                                        break;
+                                    default:
+                                        defenceTower = null;
+                                        break;
+                                }
+                                cell.setElementOn(defenceTower);
+                                break;
+                            }
+                            case "grave":
+                                int level = Integer.parseInt(cellData.getAttribute("level"));
+                                cell.setElementOn(new Grave(level));
+                                break;
+                            case "mine":
+                                boolean visible = Boolean.parseBoolean(cellData.getAttribute("visible"));
+                                cell.setElementOn(new Mine(visible, 0, 10, cell.getOwner()));
+                                break;
+                            case "tree":
+                                cell.setElementOn(new Tree(0, 0, null));
+                                break;
                         }
-                        case "grave":
-                            int level = Integer.parseInt(cellData.getAttribute("level"));
-                            cell.setElementOn(new Grave(level));
-                            break;
-                        case "mine":
-                            boolean visible = Boolean.parseBoolean(cellData.getAttribute("visible"));
-                            cell.setElementOn(new Mine(visible, 0, 10, cell.getOwner()));
-                            break;
-                        case "tree":
-                            cell.setElementOn(new Tree(0, 0, null));
-                            break;
+                        newCells.add(cell);
                     }
-                    newCells.add(cell);
+
                 }
             }
         }
@@ -456,40 +491,67 @@ public class GameState {
 
     public void nextTurn() {
 
-        if (map.player1.isTurn()) {
-            map.player1.setTurn(false);
-            map.player2.setTurn(true);
-            resetMoveableUnits(map.player2);
-        } else {
-            map.player2.setTurn(false);
-            map.player1.setTurn(true);
-            resetMoveableUnits(map.player1);
-        }
-        /*try {
+        try {
             storeTurn();
+
         } catch (ReplayParserException e) {
             e.printStackTrace();
-        } finally {
-            turnPlayed += 1;
-        }*/
+        }
+
+        if (map.player1.isTurn()) {
+
+            map.player1.setTurn(false);
+            resetMoveableUnits(map.player1);
+
+            map.player2.setTurn(true);
+            map.player1.setMoveNumber(-1);
+            map.player1.setMaxMoveNumber(-1);
+
+            try {
+                storeMove(map.player2);
+            } catch (ReplayParserException e) {
+                e.printStackTrace();
+            }
+
+
+        } else {
+            map.player2.setTurn(false);
+            resetMoveableUnits(map.player2);
+            map.player1.setTurn(true);
+            map.player2.setMoveNumber(-1);
+            map.player2.setMaxMoveNumber(-1);
+            try {
+                storeMove(map.player1);
+            } catch (ReplayParserException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+
 
     }
 
     private void resetMoveableUnits(Player player) {
-        for (int i = 0; i < player.getTerritories().size(); i++) {
-            Territory territory = player.getTerritories().get(i);
-            for (int j = 0; j < territory.getCells().size(); j++) {
-                Cell cell = territory.getCells().get(j);
-                if (cell.getElementOn() instanceof Soldier) {
-                    cell.getElementOn().setHasMoved(false);
-                } else if (cell.getElementOn() instanceof Boat) {
-                    cell.getElementOn().setHasMoved(false);
-                }
+        /*for (Territory territory: player.getTerritories()
+             ) {
+            for (Cell cell:territory.getCells()
+                 ) {
+
+                if(cell.getElementOn()!=null) cell.getElementOn().setHasMoved(false);
+            }
+        }*/
+        for (Cell cell : map.cells
+             ) {
+            if(cell.getElementOn() != null && cell.getOwner()!=null && cell.getOwner().equals(player) ){
+                cell.getElementOn().setHasMoved(false);
             }
         }
     }
 
     public void storeMove(Player player) throws ReplayParserException {
+        player.setMoveNumber(player.getMoveNumber()+1);
+        player.setMaxMoveNumber(player.getMoveNumber()+1);
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         try {
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -536,7 +598,7 @@ public class GameState {
                     if (entity instanceof Soldier) {
                         element.setAttribute("element", "soldier");
                         element.setAttribute("level", Integer.toString(entity.getLevel()));
-                        element.setAttribute("hasmoved", Boolean.toString(((Soldier) entity).isHasMoved()));
+                        element.setAttribute("hasmoved", Boolean.toString(entity.isHasMoved()));
                     } else if (entity instanceof Capital) {
                         element.setAttribute("element", "capital");
                         element.setAttribute("money", Integer.toString(((Capital) entity).getMoney()));
@@ -547,7 +609,7 @@ public class GameState {
                         element.setAttribute("element", "boat");
                         element.setAttribute("t", Integer.toString(((Boat) entity).getT()));
                         element.setAttribute("defence", Integer.toString(((Boat) entity).getDefence()));
-                        element.setAttribute("hasmoved", Boolean.toString(((Boat) entity).isHasMoved()));
+                        element.setAttribute("hasmoved", Boolean.toString(entity.isHasMoved()));
                         for (int j = 0; j < ((Boat) entity).getSoldiers().size(); j++) {
                             Element soldierElement = document.createElement("soldier");
                             Soldier soldier = ((Boat) entity).getSoldiers().get(j);
@@ -597,8 +659,6 @@ public class GameState {
             }
             move.appendChild(territories);
             turn.appendChild(move);
-        /*player.setMoveNumber(player.getMoveNumber()+1);
-        player.setMaxMoveNumber(player.getMoveNumber()+1);*/ //a voir plus tard
             DOMSource source = new DOMSource(document);
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
@@ -620,6 +680,7 @@ public class GameState {
     }
 
     public void storeTurn() throws ReplayParserException {
+        turnPlayed++;
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         try {
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
