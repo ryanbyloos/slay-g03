@@ -259,7 +259,7 @@ public class GameState {
                             }
                             case "capital":
                                 int money = Integer.parseInt(cellData.getAttribute("money"));
-                                cell.setElementOn(new Capital(0, 0, cell.getOwner(), money));
+                                cell.setElementOn(new Capital(cell.getOwner(), money));
                                 break;
                             case "defencetower": {
                                 int level = Integer.parseInt(cellData.getAttribute("level"));
@@ -490,7 +490,10 @@ public class GameState {
     }
 
     public void nextTurn() {
-
+        for (Cell cell: map.getCells()
+                ) {
+            cell.spwanTree(map);
+        }
         try {
             storeTurn();
 
