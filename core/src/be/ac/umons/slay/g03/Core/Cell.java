@@ -50,7 +50,7 @@ public class Cell {
                 if (cell.getElementOn() instanceof Tree) tree++;
             }
             float random = new Random().nextInt(100);
-            if (random/100 < 1/100 + (tree * Math.log10(tree+1))/1000 ){
+            if (random/100 < 1/100 + (tree * Math.log10(tree+1))/10 ){
                 elementOn = new Tree();
             }
         }
