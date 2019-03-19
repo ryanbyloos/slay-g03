@@ -199,7 +199,7 @@ public class World extends ApplicationAdapter implements InputProcessor {
             gameState.nextTurn();
         }
         else if(keycode == Input.Keys.R){
-            System.out.println(map.getPlayer1().getTerritories());
+            System.out.println(map.getPlayer2().getTerritories());
         }
 
         else if (keycode == Input.Keys.ESCAPE)

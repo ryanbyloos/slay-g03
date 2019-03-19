@@ -53,6 +53,17 @@ public class Territory {
         this.cells = cells;
     }
 
+    public boolean placeCapital(){
+        for (Cell cell: getCells()
+             ) {
+            if(cell.getElementOn() == null){
+                cell.setElementOn(new Capital(cell.getOwner(), 0) );
+                return true;
+            }
+        }
+        return false;
+    }
+
     @Override
     public String toString() {
         String info = "Territory : \n";
