@@ -6,6 +6,7 @@ import be.ac.umons.slay.g03.Core.Player;
 import be.ac.umons.slay.g03.Core.Territory;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Soldier extends MapElement implements Controlable {
     private int level;
@@ -28,8 +29,13 @@ public class Soldier extends MapElement implements Controlable {
                 return true;
             }
         } else if (levelDefender == 3) {
-            cellAttacker.setElementOn(null);
-            cellDefender.setElementOn(null);
+            int random = new Random().nextInt(2);
+            System.out.println(random);
+            if(random == 1) {
+                cellDefender.setElementOn(null);
+                return true;
+            }
+            else cellAttacker.setElementOn(null);
 
             return false;
 

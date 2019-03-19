@@ -3,6 +3,7 @@ package be.ac.umons.slay.g03.Core;
 import be.ac.umons.slay.g03.Entity.Capital;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class Territory {
     private ArrayList<Cell> cells;
@@ -53,15 +54,21 @@ public class Territory {
         this.cells = cells;
     }
 
-    public boolean placeCapital(){
-        for (Cell cell: getCells()
+    public void placeCapital(){
+        ArrayList<Cell> cellPossible = new ArrayList<>();
+        for (Cell cell: cells
              ) {
             if(cell.getElementOn() == null){
-                cell.setElementOn(new Capital(cell.getOwner(), 0) );
-                return true;
+                cellPossible.add(cell);
             }
         }
-        return false;
+        if(cellPossible.size() != 0) {
+            int index = new Random().nextInt(cellPossible.size());
+            cellPossible.get(index).setElementOn(new Capital(cellPossible.get(0).getOwner(), 0));
+            return;
+        }
+        int index = new Random().nextInt(cells.size());
+        cells.get(index).setElementOn(new Capital(cells.get(0).getOwner(), 0));
     }
 
     @Override
