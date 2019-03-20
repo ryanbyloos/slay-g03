@@ -22,7 +22,7 @@ public class Capital extends MapElement {
         }
     }
 
-    public void addMoneyThirdCapital(Capital capital1, Capital capital2){
+    public void addMoneyThirdCapital(Capital capital1, Capital capital2) {
         if (capital1.getMoney() > capital2.getMoney()) {
             setMoney(capital2.getMoney());
         } else {

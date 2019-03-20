@@ -15,7 +15,8 @@ public class Settings extends MenuScreen {
         box.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                Infrastructure.setIsAvailable(!Infrastructure.isAvailable);
+                Infrastructure.setAvailability(!Infrastructure.isAvailable);
+                ScreenHandler.game.prefs.putBoolean("infrastructures", Infrastructure.isAvailable);
             }
         });
         stage.addActor(box);

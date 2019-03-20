@@ -1,6 +1,7 @@
 package be.ac.umons.slay.g03.Core;
 
 import be.ac.umons.slay.g03.Entity.MapElement;
+
 import java.util.ArrayList;
 
 public class Map {

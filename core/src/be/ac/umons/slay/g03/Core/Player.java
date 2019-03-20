@@ -22,8 +22,8 @@ public class Player {
     }
 
     public void checkTerritory() {
-        for (Territory territory: territories
-             ) {
+        for (Territory territory : territories
+        ) {
             territory.checkcost();
         }
     }
