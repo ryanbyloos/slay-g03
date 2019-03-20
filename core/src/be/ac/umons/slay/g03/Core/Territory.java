@@ -10,6 +10,7 @@ import java.util.Random;
 
 public class Territory {
     private ArrayList<Cell> cells;
+    private int gainThisTurn;
 
     public int gain() {
         int gain = 0;
@@ -36,9 +37,11 @@ public class Territory {
 
         if(gain()+findCapital().getMoney() >= cost){
             findCapital().addMoney(gain()-cost);
+            gainThisTurn= gain()-cost;
         }else {
             findCapital().addMoney(gain());
             bankrupt();
+            gainThisTurn= gain();
         }
 
 
@@ -117,5 +120,9 @@ public class Territory {
             }
         }
         return true;
+    }
+
+    public int getGainThisTurn() {
+        return gainThisTurn;
     }
 }
