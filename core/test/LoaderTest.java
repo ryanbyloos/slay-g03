@@ -1,10 +1,11 @@
-
-
 import be.ac.umons.slay.g03.Core.Cell;
 import be.ac.umons.slay.g03.Core.Map;
 import be.ac.umons.slay.g03.Core.Player;
 import be.ac.umons.slay.g03.Core.Territory;
-import be.ac.umons.slay.g03.Entity.*;
+import be.ac.umons.slay.g03.Entity.Boat;
+import be.ac.umons.slay.g03.Entity.Capital;
+import be.ac.umons.slay.g03.Entity.Infrastructure;
+import be.ac.umons.slay.g03.Entity.Soldier;
 import be.ac.umons.slay.g03.GameHandler.Loader;
 import be.ac.umons.slay.g03.GameHandler.WrongFormatException;
 import com.badlogic.gdx.utils.SerializationException;
@@ -122,7 +123,7 @@ public class LoaderTest extends GameStageTest {
                 new Player("Alex", 2, 0, false, 0, new ArrayList<Territory>()));
         Loader loader = new Loader(tmxFileCorrect, xmlFileCorrect, "");
         map.getCells().add(new Cell(0, 1, false, true, map.getPlayer1(), null));
-        Infrastructure.setIsAvailable(true);
+        Infrastructure.setAvailability(true);
         try {
             loader.loadFromXmlFile(map, false);
         } catch (WrongFormatException e) {
@@ -142,7 +143,7 @@ public class LoaderTest extends GameStageTest {
                 new Player("Alex", 2, 0, false, 0, new ArrayList<Territory>()));
         map.getCells().add(new Cell(0, 1, false, true, map.getPlayer1(), null));
         Loader loader = new Loader(tmxFileCorrect, xmlFileCorrect, "");
-        Infrastructure.setIsAvailable(false);
+        Infrastructure.setAvailability(false);
         try {
             loader.loadFromXmlFile(map, false);
         } catch (WrongFormatException e) {

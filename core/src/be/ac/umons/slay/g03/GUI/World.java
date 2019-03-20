@@ -34,7 +34,9 @@ public class World extends ApplicationAdapter implements InputProcessor {
     private Territory territory;
     private GameState gameState;
     private Loader loader;
+
     private boolean selected;
+    boolean creationMode = false;
 
     private int[] getMouseCoord(OrthographicCamera camera) {
         Vector3 vector = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
@@ -121,11 +123,7 @@ public class World extends ApplicationAdapter implements InputProcessor {
         }
     }
 
-
-    @Override
-    public void create() {
-        String atlasPath = Gdx.files.getLocalStoragePath().concat("assets/Sprites/").concat("spritesheet.atlas");
-        atlas = new TextureAtlas(atlasPath);
+    private void initTextures(TextureAtlas atlas) {
         greenHex = atlas.findRegion("tile000");
         blueHex = atlas.findRegion("tile001");
         yellowHex = atlas.findRegion("tile002");
@@ -142,6 +140,13 @@ public class World extends ApplicationAdapter implements InputProcessor {
         tree = atlas.findRegion("tile013");
         grave = atlas.findRegion("tile014");
         contour = atlas.findRegion("tile015");
+    }
+
+    @Override
+    public void create() {
+        String atlasPath = Gdx.files.getLocalStoragePath().concat("assets/Sprites/").concat("spritesheet.atlas");
+        atlas = new TextureAtlas(atlasPath);
+        initTextures(atlas);
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
         map = new Map(new ArrayList<>(), new Player("Danial", 1, -1, false, 0, new ArrayList<>()),
@@ -150,27 +155,22 @@ public class World extends ApplicationAdapter implements InputProcessor {
         map.getPlayer1().setMaxMoveNumber(-1);
         map.getPlayer2().setMaxMoveNumber(-1);
         loader = new Loader("g3_2.tmx", "g3_3.xml", "Quicky");
-        Infrastructure.setIsAvailable(true);
         try {
             loader.load(map, false);
         } catch (WrongFormatException e) {
             e.printStackTrace();
         }
         gameState = new GameState(map, loader, -1, null);
-
         try {
             gameState.saveReplay();
             gameState.storeTurn();
             gameState.storeMove(map.getPlayer1());
-
         } catch (ReplayParserException e) {
             e.printStackTrace();
         }
-
+        Infrastructure.setAvailability(ScreenHandler.game.prefs.getBoolean("infrastructures"));
         setViewport(camera, map);
-        Gdx.input.setInputProcessor(this);
     }
-
 
     @Override
     public void render() {
@@ -187,7 +187,6 @@ public class World extends ApplicationAdapter implements InputProcessor {
         batch.end();
     }
 
-
     @Override
     public void dispose() {
         batch.dispose();
@@ -195,40 +194,34 @@ public class World extends ApplicationAdapter implements InputProcessor {
 
     @Override
     public boolean keyDown(int keycode) {
-        if (keycode == Input.Keys.P){
+        if (keycode == Input.Keys.P) {
             gameState.nextTurn();
-        }
-        else if(keycode == Input.Keys.R){
+        } else if (keycode == Input.Keys.R) {
             System.out.println(map.getPlayer1().getTerritories());
-        }
-
-        else if (keycode == Input.Keys.ESCAPE)
+        } else if (keycode == Input.Keys.ESCAPE)
             ScreenHandler.setScreen(ScreenHandler.menu);
-        else if(keycode == Input.Keys.J){
-            if(map.getPlayer1().isTurn()) {
+        else if (keycode == Input.Keys.J) {
+            if (map.getPlayer1().isTurn()) {
                 try {
                     gameState.undo(map.getPlayer1());
                 } catch (ReplayParserException e) {
                     e.printStackTrace();
                 }
-            }
-            else {
+            } else {
                 try {
                     gameState.undo(map.getPlayer2());
                 } catch (ReplayParserException e) {
                     e.printStackTrace();
                 }
             }
-        }
-        else if(keycode == Input.Keys.L){
-            if(map.getPlayer1().isTurn()) {
+        } else if (keycode == Input.Keys.L) {
+            if (map.getPlayer1().isTurn()) {
                 try {
                     gameState.redo(map.getPlayer1());
                 } catch (ReplayParserException e) {
                     e.printStackTrace();
                 }
-            }
-            else {
+            } else {
                 try {
                     gameState.redo(map.getPlayer2());
                 } catch (ReplayParserException e) {
@@ -236,7 +229,6 @@ public class World extends ApplicationAdapter implements InputProcessor {
                 }
             }
         }
-
 
         return true;
     }
@@ -254,8 +246,18 @@ public class World extends ApplicationAdapter implements InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (button == Input.Buttons.LEFT) {
-            if (!selected) {
-                int[] pos = getMouseCoord(camera);
+            int[] pos = getMouseCoord(camera);
+            if (creationMode) {
+                destination = map.findCell(pos[0], pos[1]);
+                if (destination != null && destination.getElementOn() == null) {
+                    if (destination.getOwner() == map.getPlayer1())
+                        destination.setElementOn(new Soldier(5, 20, map.getPlayer1(), 0, false));
+                    else if (destination.getOwner() == map.getPlayer2())
+                        destination.setElementOn(new Soldier(5, 20, map.getPlayer2(), 0, false));
+
+                }
+                destination = null;
+            } else if (!selected) {
                 source = map.findCell(pos[0], pos[1]);
                 if (source != null && source.getElementOn() instanceof Soldier) {
                     ((Soldier) source.getElementOn()).select();
@@ -265,21 +267,18 @@ public class World extends ApplicationAdapter implements InputProcessor {
                     }
                 }
             } else {
-                int[] pos = getMouseCoord(camera);
                 destination = map.findCell(pos[0], pos[1]);
                 ((Soldier) source.getElementOn()).move(source, destination, map);
                 try {
-                    if(map.getPlayer1().isTurn()){
+                    if (map.getPlayer1().isTurn()) {
                         gameState.storeMove(map.getPlayer1());
-                    }
-                    else {
+                    } else {
                         gameState.storeMove(map.getPlayer2());
                     }
 
                 } catch (ReplayParserException e) {
                     e.printStackTrace();
                 }
-
                 selected = false;
             }
         }
@@ -295,19 +294,20 @@ public class World extends ApplicationAdapter implements InputProcessor {
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         float x = Gdx.input.getDeltaX();
         float y = Gdx.input.getDeltaY();
-        float d = camera.zoom;
+        float z = camera.zoom;
         if (camera.position.x <= 650 && camera.position.x >= 25)
-            camera.translate(-x * d, 0);
+            camera.translate(-x * z, 0);
         else if (camera.position.x > 650)
             camera.position.x = 650;
         else
             camera.position.x = 25;
         if (camera.position.y <= 450 && camera.position.y >= 25)
-            camera.translate(0, y * d);
+            camera.translate(0, y * z);
         else if (camera.position.y > 450)
             camera.position.y = 450;
         else
             camera.position.y = 25;
+
         return true;
     }
 
@@ -327,7 +327,7 @@ public class World extends ApplicationAdapter implements InputProcessor {
 
     @Override
     public boolean scrolled(int amount) {
-        if ((camera.zoom > 0.2 && amount < 0) || (camera.zoom <= 1 && amount > 0))
+        if ((camera.zoom > 0.2 && amount < 0) || (camera.zoom <= 1.2 && amount > 0))
             camera.zoom += 0.1 * amount;
         return false;
     }

@@ -9,7 +9,7 @@ public class Infrastructure extends MapElement {
         super(maintenanceCost, creationCost, player);
     }
 
-    public static void setIsAvailable(boolean bool) {
+    public static void setAvailability(boolean bool) {
         Infrastructure.isAvailable = bool;
     }
 }
