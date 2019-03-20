@@ -16,12 +16,12 @@ public class MenuScreen implements Screen {
         stage = new Stage(new FillViewport(ScreenHandler.WIDTH, ScreenHandler.HEIGHT));
         Gdx.input.setInputProcessor(stage);
 
-        SlayButton returnButton = new SlayButton("RETURN", ScreenHandler.game.skin);
+        MenuButton returnButton = new MenuButton("RETURN", ScreenHandler.game.skin);
         returnButton.setSize(ScreenHandler.BUTTON_WIDTH, ScreenHandler.BUTTON_HEIGHT);
         returnButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                ScreenHandler.setScreen(ScreenHandler.menu);
+                ScreenHandler.setScreen(ScreenHandler.home);
             }
         });
         stage.addActor(returnButton);

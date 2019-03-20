@@ -7,7 +7,7 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
-public class Main extends Game {
+public class Initializer extends Game {
     public Skin skin;
     public BitmapFont font;
     public Preferences prefs;
@@ -31,6 +31,6 @@ public class Main extends Game {
         skin.addRegions(skin.getAtlas());
         font = skin.getFont("default");
         Gdx.graphics.setWindowedMode(ScreenHandler.WIDTH, ScreenHandler.HEIGHT);
-        setScreen(ScreenHandler.menu);
+        setScreen(ScreenHandler.home);
     }
 }

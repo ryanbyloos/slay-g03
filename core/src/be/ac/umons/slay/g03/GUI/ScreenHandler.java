@@ -1,6 +1,6 @@
 package be.ac.umons.slay.g03.GUI;
 
-import be.ac.umons.slay.g03.Main;
+import be.ac.umons.slay.g03.Initializer;
 import com.badlogic.gdx.Screen;
 
 public class ScreenHandler {
@@ -9,8 +9,8 @@ public class ScreenHandler {
     public static int BUTTON_WIDTH;
     public static int BUTTON_HEIGHT;
 
-    public static Menu menu = new Menu();
-    public static Main game = new Main();
+    public static Home home = new Home();
+    public static Initializer game = new Initializer();
 
     static Settings settings;
     static HallOfFame hof;

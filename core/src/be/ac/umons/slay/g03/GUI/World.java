@@ -22,10 +22,8 @@ import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 
 public class World extends ApplicationAdapter implements InputProcessor {
-    private TextureAtlas.AtlasRegion blueHex, greenHex, yellowHex, redHex;
-    private TextureAtlas.AtlasRegion soldier0, soldier1, soldier2, soldier3;
-    private TextureAtlas.AtlasRegion capital, tree, contour;
-    private TextureAtlas.AtlasRegion defenceTower, attackTower, boat, grave, mine;
+    TextureAtlas.AtlasRegion soldier0, soldier1, soldier2, soldier3, defenceTower, attackTower, boat, mine;
+    private TextureAtlas.AtlasRegion blueHex, greenHex, yellowHex, redHex, tree, grave, contour, capital;
     private SpriteBatch batch;
     private OrthographicCamera camera;
     private Map map;
@@ -34,7 +32,6 @@ public class World extends ApplicationAdapter implements InputProcessor {
     private Territory territory;
     private GameState gameState;
     private Loader loader;
-
     private boolean selected;
     boolean creationMode = false;
 
@@ -60,16 +57,20 @@ public class World extends ApplicationAdapter implements InputProcessor {
     }
 
     private void drawSprite(int parity, TextureAtlas.AtlasRegion sprite, Cell cell) {
+        drawSprite(parity, 0, sprite, cell);
+    }
+
+    private void drawSprite(int parity, int offset, TextureAtlas.AtlasRegion sprite, Cell cell) {
         int EVEN = 0;
         int ODD = 1;
         if (cell.getY() % 2 == 0) {
-            batch.draw(sprite, cell.getX() * 32 + 16 * ((parity == EVEN) ? 1 : 0), cell.getY() * 24);
+            batch.draw(sprite, cell.getX() * 32 + 16 * ((parity == EVEN) ? 1 : 0), cell.getY() * 24 + offset);
         } else {
-            batch.draw(sprite, cell.getX() * 32 + 16 * ((parity == ODD) ? 1 : 0), cell.getY() * 24);
+            batch.draw(sprite, cell.getX() * 32 + 16 * ((parity == ODD) ? 1 : 0), cell.getY() * 24 + offset);
         }
     }
 
-    private void drawContour(ArrayList<Cell> cells) {
+    private void drawHighlights(ArrayList<Cell> cells) {
         for (Cell cell : cells)
             drawSprite((map.getHeight() % 2), contour, cell);
     }
@@ -91,33 +92,40 @@ public class World extends ApplicationAdapter implements InputProcessor {
                 if (cell.getOwner() == null) drawSprite(parity, greenHex, cell);
                 else if (cell.getOwner() == map.getPlayer1()) drawSprite(parity, yellowHex, cell);
                 else drawSprite(parity, redHex, cell);
-                if (cell.getElementOn() != null) {
-                    if (cell.getElementOn() instanceof Soldier) {
-                        switch (cell.getElementOn().getLevel()) {
-                            case 0:
-                                drawSprite(parity, soldier0, cell);
-                                break;
-                            case 1:
-                                drawSprite(parity, soldier1, cell);
-                                break;
-                            case 2:
-                                drawSprite(parity, soldier2, cell);
-                                break;
-                            case 3:
-                                drawSprite(parity, soldier3, cell);
-                                break;
-                        }
-                    } else if (cell.getElementOn() instanceof Capital) {
-                        drawSprite(parity, capital, cell);
-                    } else if (cell.getElementOn() instanceof DefenceTower) {
-                        drawSprite(parity, defenceTower, cell);
-                    } else if (cell.getElementOn() instanceof AttackTower) {
-                        drawSprite(parity, attackTower, cell);
-                    } else if (cell.getElementOn() instanceof Grave) {
-                        drawSprite(parity, grave, cell);
-                    } else if (cell.getElementOn() instanceof Tree) {
-                        drawSprite(parity, tree, cell);
+                if (selected && source.getElementOn() != null)
+                    drawHighlights(source.accessibleCell(map));
+                if (territory != null)
+                    drawHighlights(territory.getCells());
+            }
+        }
+        for (int i = 0; i < map.getCells().size(); i++) {
+            Cell cell = map.getCells().get(i);
+            if (cell.getElementOn() != null) {
+                if (cell.getElementOn() instanceof Soldier) {
+                    switch (cell.getElementOn().getLevel()) {
+                        case 0:
+                            drawSprite(parity, 10, soldier0, cell);
+                            break;
+                        case 1:
+                            drawSprite(parity, 10, soldier1, cell);
+                            break;
+                        case 2:
+                            drawSprite(parity, 10, soldier2, cell);
+                            break;
+                        case 3:
+                            drawSprite(parity, 10, soldier3, cell);
+                            break;
                     }
+                } else if (cell.getElementOn() instanceof Capital) {
+                    drawSprite(parity, 4, capital, cell);
+                } else if (cell.getElementOn() instanceof DefenceTower) {
+                    drawSprite(parity, 10, defenceTower, cell);
+                } else if (cell.getElementOn() instanceof AttackTower) {
+                    drawSprite(parity, 10, attackTower, cell);
+                } else if (cell.getElementOn() instanceof Grave) {
+                    drawSprite(parity, 10, grave, cell);
+                } else if (cell.getElementOn() instanceof Tree) {
+                    drawSprite(parity, 12, tree, cell);
                 }
             }
         }
@@ -180,10 +188,6 @@ public class World extends ApplicationAdapter implements InputProcessor {
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
         draw();
-        if (selected && source.getElementOn() != null)
-            drawContour(source.accessibleCell(map));
-        if (territory != null)
-            drawContour(territory.getCells());
         batch.end();
     }
 
@@ -199,7 +203,7 @@ public class World extends ApplicationAdapter implements InputProcessor {
         } else if (keycode == Input.Keys.R) {
             System.out.println(map.getPlayer1().getTerritories());
         } else if (keycode == Input.Keys.ESCAPE)
-            ScreenHandler.setScreen(ScreenHandler.menu);
+            ScreenHandler.setScreen(ScreenHandler.home);
         else if (keycode == Input.Keys.J) {
             if (map.getPlayer1().isTurn()) {
                 try {

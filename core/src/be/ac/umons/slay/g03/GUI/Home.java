@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 
-public class Menu implements Screen {
+public class Home implements Screen {
 
     private Stage stage;
 
@@ -20,12 +20,12 @@ public class Menu implements Screen {
         stage = new Stage(new FillViewport(ScreenHandler.WIDTH, ScreenHandler.HEIGHT));
         Gdx.input.setInputProcessor(stage);
 
-        SlayButton resumeButton = new SlayButton("RESUME", ScreenHandler.game.skin, 1);
-        SlayButton newGameButton = new SlayButton("NEW GAME", ScreenHandler.game.skin, 2);
-        SlayButton replayButton = new SlayButton("REPLAY", ScreenHandler.game.skin, 3);
-        SlayButton hofButton = new SlayButton("HALL OF FAME", ScreenHandler.game.skin, 4);
-        SlayButton settingsButton = new SlayButton("SETTINGS", ScreenHandler.game.skin, 5);
-        SlayButton quitButton = new SlayButton("QUIT", ScreenHandler.game.skin, 6);
+        MenuButton resumeButton = new MenuButton("RESUME", ScreenHandler.game.skin, 1);
+        MenuButton newGameButton = new MenuButton("NEW GAME", ScreenHandler.game.skin, 2);
+        MenuButton replayButton = new MenuButton("REPLAY", ScreenHandler.game.skin, 3);
+        MenuButton hofButton = new MenuButton("HALL OF FAME", ScreenHandler.game.skin, 4);
+        MenuButton settingsButton = new MenuButton("SETTINGS", ScreenHandler.game.skin, 5);
+        MenuButton quitButton = new MenuButton("QUIT", ScreenHandler.game.skin, 6);
 
         resumeButton.addListener(new ClickListener() {
             @Override
