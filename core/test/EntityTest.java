@@ -55,10 +55,10 @@ public class EntityTest {
         Soldier soldier = new Soldier(0, 0, player, 1, false);
         Cell cell1 = new Cell(0, 0, false, false, player, soldier);
         Cell cell2 = new Cell(1, 0, false, false, null, null);
-        ArrayList<Cell> mapCell = new ArrayList<Cell>();
+        ArrayList<Cell> mapCell = new ArrayList<>();
         mapCell.add(cell1);
         mapCell.add(cell2);
-        ArrayList<Cell> territory = new ArrayList<Cell>();
+        ArrayList<Cell> territory = new ArrayList<>();
         territory.add(cell1);
         player.getTerritories().add(new Territory(territory));
         Map map = new Map(mapCell, player, null);
@@ -76,10 +76,10 @@ public class EntityTest {
         Soldier soldier = new Soldier(0, 0, player, 1, false);
         Cell cell1 = new Cell(0, 0, false, false, player, soldier);
         Cell cell2 = new Cell(1, 0, false, false, null, new Grave(0));
-        ArrayList<Cell> mapCell = new ArrayList<Cell>();
+        ArrayList<Cell> mapCell = new ArrayList<>();
         mapCell.add(cell1);
         mapCell.add(cell2);
-        ArrayList<Cell> territory = new ArrayList<Cell>();
+        ArrayList<Cell> territory = new ArrayList<>();
         territory.add(cell1);
         player.getTerritories().add(new Territory(territory));
         Map map = new Map(mapCell, null, null);
@@ -97,13 +97,13 @@ public class EntityTest {
         Soldier soldierHigh = new Soldier(0, 0, player2, 2, false);
         Cell cell1 = new Cell(0, 0, false, false, player1, soldierLow);
         Cell cell2 = new Cell(1, 0, false, false, player2, soldierHigh);
-        ArrayList<Cell> mapCell = new ArrayList<Cell>();
+        ArrayList<Cell> mapCell = new ArrayList<>();
         mapCell.add(cell1);
         mapCell.add(cell2);
-        ArrayList<Cell> territory = new ArrayList<Cell>();
+        ArrayList<Cell> territory = new ArrayList<>();
         territory.add(cell1);
         player1.getTerritories().add(new Territory(territory));
-        ArrayList<Cell> territory2 = new ArrayList<Cell>();
+        ArrayList<Cell> territory2 = new ArrayList<>();
         territory2.add(cell2);
         player2.getTerritories().add(new Territory(territory2));
         Map map = new Map(mapCell, player1, player2);
@@ -119,7 +119,7 @@ public class EntityTest {
         Soldier soldierHigh = new Soldier(0, 0, new Player("player2", 1, 0, false, 0, new ArrayList<>()), 2, false);
         Cell cell1 = new Cell(0, 0, false, false, null, soldierLow);
         Cell cell2 = new Cell(1, 0, false, false, null, soldierHigh);
-        ArrayList<Cell> mapCell = new ArrayList<Cell>();
+        ArrayList<Cell> mapCell = new ArrayList<>();
         mapCell.add(cell1);
         mapCell.add(cell2);
         Map map = new Map(mapCell, null, null);
@@ -135,7 +135,7 @@ public class EntityTest {
         Soldier soldier2 = new Soldier(0, 0, new Player("player2", 1, 0, false, 0, new ArrayList<>()), 1, false);
         Cell cell1 = new Cell(0, 0, false, false, null, soldier1);
         Cell cell2 = new Cell(1, 0, false, false, null, soldier2);
-        ArrayList<Cell> mapCell = new ArrayList<Cell>();
+        ArrayList<Cell> mapCell = new ArrayList<>();
         mapCell.add(cell1);
         mapCell.add(cell2);
         Map map = new Map(mapCell, null, null);
@@ -152,10 +152,10 @@ public class EntityTest {
         Soldier soldier2 = new Soldier(0, 0, player2, 3, false);
         Cell cell1 = new Cell(0, 0, false, false, player1, soldier1);
         Cell cell2 = new Cell(1, 0, false, false, player2, soldier2);
-        ArrayList<Cell> mapCell = new ArrayList<Cell>();
+        ArrayList<Cell> mapCell = new ArrayList<>();
         mapCell.add(cell1);
         mapCell.add(cell2);
-        Map map = new Map(mapCell, null, null);
+        Map map = new Map(mapCell, player1, player2);
         ArrayList<Cell> territory1 = new ArrayList<>();
         ArrayList<Cell> territory2 = new ArrayList<>();
         territory1.add(cell1);
@@ -166,17 +166,124 @@ public class EntityTest {
         Assert.assertTrue(cell1.getElementOn() == null ^ cell2.getElementOn() == null);
 
     }
+    @Test
+    public void moveToLowerSoldier() {
+        Player player1 = new Player("player1", 0, 0, false, 0, new ArrayList<>());
+        Player player2 = new Player("player2", 1, 0, false, 0, new ArrayList<>());
+        Soldier soldierLow = new Soldier(0, 0, player1, 1, false);
+        Soldier soldierHigh = new Soldier(0, 0, player2, 2, false);
+        Cell cell1 = new Cell(0, 0, false, false, player1, soldierLow);
+        Cell cell3 = new Cell(2, 0, false, false, player2, soldierHigh);
+        Cell cell2 = new Cell(1, 0, false, false, null, null);
+        ArrayList<Cell> mapCell = new ArrayList<>();
+        mapCell.add(cell1);
+        mapCell.add(cell2);
+        mapCell.add(cell3);
+        ArrayList<Cell> territory = new ArrayList<>();
+        territory.add(cell1);
+        player1.getTerritories().add(new Territory(territory));
+        ArrayList<Cell> territory2 = new ArrayList<>();
+        territory2.add(cell3);
+        player2.getTerritories().add(new Territory(territory2));
+        Map map = new Map(mapCell, player1, player2);
+        soldierHigh.move(cell3, cell2, map);
+        Assert.assertEquals(soldierHigh, cell2.getElementOn());
+        Assert.assertEquals(soldierLow, cell1.getElementOn());
+        Assert.assertNull( cell3.getElementOn());
+
+    }
 
     @Test
-    public void mergesoldierSameLevel() {
-        Soldier soldier1 = new Soldier(0, 0, new Player("player1", 0, 0, false, 0, new ArrayList<>()), 2, false);
-        Soldier soldier2 = new Soldier(0, 0, new Player("player1", 0, 0, false, 0, new ArrayList<>()), 2, false);
-        Cell cell1 = new Cell(0, 0, false, false, null, soldier1);
-        Cell cell2 = new Cell(1, 0, false, false, null, soldier2);
+    public void movToHigherSoldier() {
+        Player player1 = new Player("player1", 0, 0, false, 0, new ArrayList<>());
+        Player player2 = new Player("player2", 1, 0, false, 0, new ArrayList<>());
+        Soldier soldierLow = new Soldier(0, 0, player1, 1, false);
+        Soldier soldierHigh = new Soldier(0, 0, player2, 2, false);
+        Cell cell1 = new Cell(0, 0, false, false, player1, soldierLow);
+        Cell cell2 = new Cell(1, 0, false, false, null, null);
+        Cell cell3 = new Cell(2, 0, false, false, player2, soldierHigh);
+        ArrayList<Cell> mapCell = new ArrayList<>();
+        mapCell.add(cell1);
+        mapCell.add(cell2);
+        mapCell.add(cell3);
+        Map map = new Map(mapCell, player1, player2);
+        ArrayList<Cell> territory = new ArrayList<>();
+        territory.add(cell1);
+        player1.getTerritories().add(new Territory(territory));
+        ArrayList<Cell> territory2 = new ArrayList<>();
+        territory2.add(cell3);
+        player2.getTerritories().add(new Territory(territory2));
+        soldierLow.move(cell1, cell2, map);
+        Assert.assertEquals(soldierLow, cell1.getElementOn());
+        Assert.assertEquals(soldierHigh, cell3.getElementOn());
+        Assert.assertNull( cell2.getElementOn());
+
+    }
+
+    @Test
+    public void moveToEqualSoldier() {
+        Player player1 = new Player("player1", 0, 0, false, 0, new ArrayList<>());
+        Player player2 = new Player("player2", 1, 0, false, 0, new ArrayList<>());
+        Soldier soldier1 = new Soldier(0, 0, player1, 1, false);
+        Soldier soldier2 = new Soldier(0, 0,player2, 1, false);
+        Cell cell1 = new Cell(0, 0, false, false, player1, soldier1);
+        Cell cell2 = new Cell(1, 0, false, false, null, null);
+        Cell cell3 = new Cell(2, 0, false, false, player2, soldier2);
         ArrayList<Cell> mapCell = new ArrayList<Cell>();
         mapCell.add(cell1);
         mapCell.add(cell2);
-        Map map = new Map(mapCell, null, null);
+        mapCell.add(cell3);
+        Map map = new Map(mapCell, player1, player2);
+        ArrayList<Cell> territory = new ArrayList<>();
+        territory.add(cell1);
+        player1.getTerritories().add(new Territory(territory));
+        ArrayList<Cell> territory2 = new ArrayList<>();
+        territory2.add(cell3);
+        player2.getTerritories().add(new Territory(territory2));
+        soldier1.move(cell1, cell2, map);
+        Assert.assertEquals(soldier1, cell1.getElementOn());
+        Assert.assertEquals(soldier2, cell3.getElementOn());
+        Assert.assertNull( cell2.getElementOn());
+
+    }
+
+    @Test
+    public void moveToEqualHighSoldier() {
+        Player player1 = new Player("player1", 0, 0, false, 0, new ArrayList<>());
+        Player player2 = new Player("player2", 1, 0, false, 0, new ArrayList<>());
+        Soldier soldier1 = new Soldier(0, 0, player1, 3, false);
+        Soldier soldier2 = new Soldier(0, 0, player2, 3, false);
+        Cell cell1 = new Cell(0, 0, false, false, player1, soldier1);
+        Cell cell2 = new Cell(1, 0, false, false, null, null);
+        Cell cell3 = new Cell(2, 0, false, false, player2, soldier2);
+        ArrayList<Cell> mapCell = new ArrayList<Cell>();
+        mapCell.add(cell1);
+        mapCell.add(cell2);
+        mapCell.add(cell3);
+        Map map = new Map(mapCell, player1, player2);
+        ArrayList<Cell> territory1 = new ArrayList<>();
+        ArrayList<Cell> territory2 = new ArrayList<>();
+        territory1.add(cell1);
+        territory2.add(cell3);
+        player1.getTerritories().add(new Territory(territory1));
+        player2.getTerritories().add(new Territory(territory2));
+        soldier1.move(cell1, cell2, map);
+        Assert.assertEquals(soldier1, cell2.getElementOn());
+        Assert.assertEquals(soldier2, cell3.getElementOn());
+        Assert.assertNull( cell1.getElementOn());
+
+    }
+    @Test
+    public void mergesoldierSameLevel() {
+        Player player1 = new Player("player1", 0, 0, false, 0, new ArrayList<>());
+        Soldier soldier1 = new Soldier(0, 0, player1, 2, false);
+        Soldier soldier2 = new Soldier(0, 0, player1, 2, false);
+        Cell cell1 = new Cell(0, 0, false, false, player1, soldier1);
+        Cell cell2 = new Cell(1, 0, false, false, player1, soldier2);
+        ArrayList<Cell> mapCell = new ArrayList<>();
+        mapCell.add(cell1);
+        mapCell.add(cell2);
+        Map map = new Map(mapCell, player1, null);
         soldier1.move(cell1, cell2, map);
         Assert.assertEquals(3, cell2.getElementOn().getLevel());
         Assert.assertNull(cell1.getElementOn());
@@ -184,14 +291,15 @@ public class EntityTest {
 
     @Test
     public void mergesoldierMaxLevel() {
-        Soldier soldier1 = new Soldier(0, 0, new Player("player1", 0, 0, false, 0, new ArrayList<>()), 3, false);
-        Soldier soldier2 = new Soldier(0, 0, new Player("player1", 0, 0, false, 0, new ArrayList<>()), 3, false);
-        Cell cell1 = new Cell(0, 0, false, false, null, soldier1);
-        Cell cell2 = new Cell(1, 0, false, false, null, soldier2);
-        ArrayList<Cell> mapCell = new ArrayList<Cell>();
+        Player player1 = new Player("player1", 0, 0, false, 0, new ArrayList<>());
+        Soldier soldier1 = new Soldier(0, 0, player1, 3, false);
+        Soldier soldier2 = new Soldier(0, 0, player1, 3, false);
+        Cell cell1 = new Cell(0, 0, false, false, player1, soldier1);
+        Cell cell2 = new Cell(1, 0, false, false, player1, soldier2);
+        ArrayList<Cell> mapCell = new ArrayList<>();
         mapCell.add(cell1);
         mapCell.add(cell2);
-        Map map = new Map(mapCell, null, null);
+        Map map = new Map(mapCell, player1, null);
         soldier1.move(cell1, cell2, map);
         Assert.assertEquals(soldier1, cell1.getElementOn());
         Assert.assertEquals(soldier2, cell2.getElementOn());
@@ -200,14 +308,15 @@ public class EntityTest {
 
     @Test
     public void mergesoldierDiffLevel() {
-        Soldier soldier1 = new Soldier(0, 0, new Player("player1", 0, 0, false, 0, new ArrayList<>()), 1, false);
-        Soldier soldier2 = new Soldier(0, 0, new Player("player1", 0, 0, false, 0, new ArrayList<>()), 2, false);
-        Cell cell1 = new Cell(0, 0, false, false, null, soldier1);
-        Cell cell2 = new Cell(1, 0, false, false, null, soldier2);
-        ArrayList<Cell> mapCell = new ArrayList<Cell>();
+        Player player1 = new Player("player1", 0, 0, false, 0, new ArrayList<>());
+        Soldier soldier1 = new Soldier(0, 0, player1, 1, false);
+        Soldier soldier2 = new Soldier(0, 0,player1, 2, false);
+        Cell cell1 = new Cell(0, 0, false, false, player1, soldier1);
+        Cell cell2 = new Cell(1, 0, false, false, player1, soldier2);
+        ArrayList<Cell> mapCell = new ArrayList<>();
         mapCell.add(cell1);
         mapCell.add(cell2);
-        Map map = new Map(mapCell, null, null);
+        Map map = new Map(mapCell, player1, null);
         soldier1.move(cell1, cell2, map);
         Assert.assertEquals(soldier1, cell1.getElementOn());
         Assert.assertEquals(soldier2, cell2.getElementOn());
@@ -374,7 +483,7 @@ public class EntityTest {
     public void tripleSplitTerritoryTestCas1() {
         Player player1 = new Player("player1", 0, 0, false, 0, new ArrayList<>());
         Player player2 = new Player("player2", 1, 0, false, 0, new ArrayList<>());
-        Soldier soldier = new Soldier(0, 0, player1, 1, false);
+        Soldier soldier = new Soldier(0, 0, player2, 1, false);
         Capital capital = new Capital(player1,13);
         Cell cell1 = new Cell(1, 5, false, false, player1, capital);
         Cell dest = new Cell(2, 5, false, false, player1, null);
@@ -382,7 +491,7 @@ public class EntityTest {
         Cell cell4 = new Cell(2, 4, false, false, player1, null);
         Cell source = new Cell(3, 5, false, false, player2, soldier);
         Cell cell5 = new Cell(4, 5, false, false, player2, null);
-        ArrayList<Cell> mapCell = new ArrayList<Cell>();
+        ArrayList<Cell> mapCell = new ArrayList<>();
         mapCell.add(cell1);
         mapCell.add(dest);
         mapCell.add(cell3);
@@ -390,8 +499,8 @@ public class EntityTest {
         mapCell.add(source);
         mapCell.add(cell5);
         Map map = new Map(mapCell, player1, player2);
-        ArrayList<Cell> territory = new ArrayList<Cell>();
-        ArrayList<Cell> territory1 = new ArrayList<Cell>();
+        ArrayList<Cell> territory = new ArrayList<>();
+        ArrayList<Cell> territory1 = new ArrayList<>();
         territory.add(cell1);
         territory.add(dest);
         territory.add(cell3);
@@ -408,7 +517,7 @@ public class EntityTest {
     public void tripleSplitTerritoryTestCas2() {
         Player player1 = new Player("player1", 0, 0, false, 0, new ArrayList<>());
         Player player2 = new Player("player2", 1, 0, false, 0, new ArrayList<>());
-        Soldier soldier = new Soldier(0, 0, player1, 1, false);
+        Soldier soldier = new Soldier(0, 0, player2, 1, false);
         Capital capital = new Capital(player1,13);
         Cell cell1 = new Cell(1, 5, false, false, player1, null);
         Cell dest = new Cell(2, 5, false, false, player1, null);
@@ -416,7 +525,7 @@ public class EntityTest {
         Cell cell4 = new Cell(2, 4, false, false, player1, null);
         Cell source = new Cell(3, 5, false, false, player2, soldier);
         Cell cell5 = new Cell(4, 5, false, false, player2, null);
-        ArrayList<Cell> mapCell = new ArrayList<Cell>();
+        ArrayList<Cell> mapCell = new ArrayList<>();
         mapCell.add(cell1);
         mapCell.add(dest);
         mapCell.add(cell3);
@@ -424,8 +533,8 @@ public class EntityTest {
         mapCell.add(source);
         mapCell.add(cell5);
         Map map = new Map(mapCell, player1, player2);
-        ArrayList<Cell> territory = new ArrayList<Cell>();
-        ArrayList<Cell> territory1 = new ArrayList<Cell>();
+        ArrayList<Cell> territory = new ArrayList<>();
+        ArrayList<Cell> territory1 = new ArrayList<>();
         territory.add(cell1);
         territory.add(dest);
         territory.add(cell3);
@@ -442,7 +551,7 @@ public class EntityTest {
     public void tripleSplitTerritoryTestCas3() {
         Player player1 = new Player("player1", 0, 0, false, 0, new ArrayList<>());
         Player player2 = new Player("player2", 1, 0, false, 0, new ArrayList<>());
-        Soldier soldier = new Soldier(0, 0, player1, 1, false);
+        Soldier soldier = new Soldier(0, 0, player2, 1, false);
         Capital capital = new Capital(player1,13);
         Cell cell1 = new Cell(1, 5, false, false, player1, null);
         Cell dest = new Cell(2, 5, false, false, player1, null);
@@ -450,7 +559,7 @@ public class EntityTest {
         Cell cell4 = new Cell(2, 4, false, false, player1, capital);
         Cell source = new Cell(3, 5, false, false, player2, soldier);
         Cell cell5 = new Cell(4, 5, false, false, player2, null);
-        ArrayList<Cell> mapCell = new ArrayList<Cell>();
+        ArrayList<Cell> mapCell = new ArrayList<>();
         mapCell.add(cell1);
         mapCell.add(dest);
         mapCell.add(cell3);
@@ -458,8 +567,8 @@ public class EntityTest {
         mapCell.add(source);
         mapCell.add(cell5);
         Map map = new Map(mapCell, player1, player2);
-        ArrayList<Cell> territory = new ArrayList<Cell>();
-        ArrayList<Cell> territory1 = new ArrayList<Cell>();
+        ArrayList<Cell> territory = new ArrayList<>();
+        ArrayList<Cell> territory1 = new ArrayList<>();
         territory.add(cell1);
         territory.add(dest);
         territory.add(cell3);

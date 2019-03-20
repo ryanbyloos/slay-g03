@@ -30,11 +30,10 @@ public class Soldier extends MapElement implements Controlable {
             }
         } else if (levelDefender == 3) {
             int random = new Random().nextInt(2);
-            if(random == 1) {
+            if (random == 1) {
                 cellDefender.setElementOn(null);
                 return true;
-            }
-            else cellAttacker.setElementOn(null);
+            } else cellAttacker.setElementOn(null);
 
             return false;
 
@@ -114,7 +113,7 @@ public class Soldier extends MapElement implements Controlable {
         Cell oldCellMark = null;
         Cell oldCellMarkFirst = null;
         Boolean twoNewCapital = false;
-        int oldTerritoryCell= 0;
+        int oldTerritoryCell = 0;
         for (Cell cellMark : cellToTest) {
             if (cellMark.getOwner() != null && !cellMark.getOwner().equals(newCell.getOwner())) {
                 Territory territoryMark = new Territory(new ArrayList<>());
@@ -136,7 +135,7 @@ public class Soldier extends MapElement implements Controlable {
 
                         if (!territoryMark.equals(territory)) {
                             int cellTot = cellMark.findTerritory().getCells().size();
-                            if (cellAlreadyChecked == null)oldTerritoryCell = cellTot;
+                            if (cellAlreadyChecked == null) oldTerritoryCell = cellTot;
                             cellMark.getOwner().removeTerritory(cellMark.findTerritory());
                             if (!cellMark.getOwner().getTerritories().contains(territory))
                                 cellMark.getOwner().getTerritories().add(territory);
@@ -157,11 +156,11 @@ public class Soldier extends MapElement implements Controlable {
                             } else {
                                 if (!twoNewCapital) {
                                     cell.findTerritory().placeCapital();
-                                    cell.findTerritory().findCapital().addMoneyThirdCapital(cellAlreadyChecked.findTerritory().findCapital(),oldCellMarkFirst.findTerritory().findCapital());
+                                    cell.findTerritory().findCapital().addMoneyThirdCapital(cellAlreadyChecked.findTerritory().findCapital(), oldCellMarkFirst.findTerritory().findCapital());
 
-                                }else {
-                                    cell.findTerritory().findCapital().splitMoney(oldCellMark.findTerritory().findCapital(),oldTerritoryCell,cell.findTerritory().getCells().size(),oldCellMark.findTerritory().getCells().size());
-                                    oldCellMarkFirst.findTerritory().findCapital().addMoneyThirdCapital(cell.findTerritory().findCapital(),oldCellMark.findTerritory().findCapital());
+                                } else {
+                                    cell.findTerritory().findCapital().splitMoney(oldCellMark.findTerritory().findCapital(), oldTerritoryCell, cell.findTerritory().getCells().size(), oldCellMark.findTerritory().getCells().size());
+                                    oldCellMarkFirst.findTerritory().findCapital().addMoneyThirdCapital(cell.findTerritory().findCapital(), oldCellMark.findTerritory().findCapital());
 
                                 }
                             }
@@ -191,7 +190,7 @@ public class Soldier extends MapElement implements Controlable {
 
     @Override
     public void move(Cell source, Cell destination, Map map) {
-        if (source.accessibleCell(map).contains(destination)) {
+        if (source.accessibleCell(map).contains(destination) && (source.getElementOn().getLevel() > levelDenfender(map, source, destination) || source.getElementOn().getLevel() == 3)) {
 
             if (destination.getElementOn() != null) {
                 if (destination.getElementOn().getOwner() == null) {
@@ -218,9 +217,25 @@ public class Soldier extends MapElement implements Controlable {
                 source.setElementOn(null);
                 destination.getElementOn().setHasMoved(true);
                 destination.setChecked(source.isChecked());
-
             }
         }
+    }
+
+    private int levelDenfender(Map map, Cell source, Cell destination) {
+        ArrayList<Cell> adjacentCell = destination.adjacentCell(map, destination);
+        int levelDefender = -1;
+        Player player = source.getOwner();
+        for (Cell defenderCell : adjacentCell
+                ) {
+            if (defenderCell.getElementOn() instanceof Soldier && defenderCell.getElementOn().getOwner() != player) {
+                if (levelDefender == -1) {
+                    levelDefender = defenderCell.getElementOn().getLevel();
+                } else if (levelDefender < defenderCell.getElementOn().getLevel()) {
+                    levelDefender = defenderCell.getElementOn().getLevel();
+                }
+            }
+        }
+        return levelDefender;
     }
 
 
@@ -245,6 +260,6 @@ public class Soldier extends MapElement implements Controlable {
 
     @Override
     public String toString() {
-        return super.toString() + " level : " + level;
+        return super.toString() + " level : " + level + " owner : " + getOwner();
     }
 }

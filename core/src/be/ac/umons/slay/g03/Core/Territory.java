@@ -27,17 +27,11 @@ public class Territory {
     }
 
     public void checkcost() {
-        int cost = 0;
-        for (Cell cell: cells
-             ) {
-            if(cell.getElementOn() != null){
-                cost = cost + cell.getElementOn().getMaintenanceCost();
-            }
-        }
 
-        if(gain()+findCapital().getMoney() >= cost){
-            findCapital().addMoney(gain()-cost);
-            gainThisTurn= gain()-cost;
+
+        if(gain()+findCapital().getMoney() >= cost()){
+            findCapital().addMoney(gain()-cost());
+            gainThisTurn= gain()-cost();
         }else {
             findCapital().addMoney(gain());
             bankrupt();
@@ -45,6 +39,17 @@ public class Territory {
         }
 
 
+    }
+
+    public int cost(){
+        int cost = 0;
+        for (Cell cell: cells
+                ) {
+            if(cell.getElementOn() != null){
+                cost = cost + cell.getElementOn().getMaintenanceCost();
+            }
+        }
+        return cost;
     }
 
     private void bankrupt() {

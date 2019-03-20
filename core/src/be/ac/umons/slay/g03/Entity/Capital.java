@@ -60,6 +60,11 @@ public class Capital extends MapElement {
     }
 
     @Override
+    public int getLevel() {
+        return 0;
+    }
+
+    @Override
     public String toString() {
         return super.toString() + " with : " + money;
     }

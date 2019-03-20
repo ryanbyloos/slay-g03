@@ -107,4 +107,9 @@ public class Player {
     public void setTerritories(ArrayList<Territory> territories) {
         this.territories = territories;
     }
+
+    @Override
+    public String toString() {
+        return "Name : " + name + " ID : "+id;
+    }
 }
