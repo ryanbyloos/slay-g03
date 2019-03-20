@@ -146,17 +146,25 @@ public class EntityTest {
 
     @Test
     public void attackEqualHighSoldier() {
-        Soldier soldier1 = new Soldier(0, 0, new Player("player1", 1, 0, false, 0, new ArrayList<>()), 3, false);
-        Soldier soldier2 = new Soldier(0, 0, new Player("player2", 2, 0, false, 0, new ArrayList<>()), 3, false);
-        Cell cell1 = new Cell(0, 0, false, false, null, soldier1);
-        Cell cell2 = new Cell(1, 0, false, false, null, soldier2);
+        Player player1 = new Player("player1", 0, 0, false, 0, new ArrayList<>());
+        Player player2 = new Player("player2", 1, 0, false, 0, new ArrayList<>());
+        Soldier soldier1 = new Soldier(0, 0, player1, 3, false);
+        Soldier soldier2 = new Soldier(0, 0, player2, 3, false);
+        Cell cell1 = new Cell(0, 0, false, false, player1, soldier1);
+        Cell cell2 = new Cell(1, 0, false, false, player2, soldier2);
         ArrayList<Cell> mapCell = new ArrayList<Cell>();
         mapCell.add(cell1);
         mapCell.add(cell2);
         Map map = new Map(mapCell, null, null);
+        ArrayList<Cell> territory1 = new ArrayList<>();
+        ArrayList<Cell> territory2 = new ArrayList<>();
+        territory1.add(cell1);
+        territory2.add(cell2);
+        player1.getTerritories().add(new Territory(territory1));
+        player2.getTerritories().add(new Territory(territory2));
         soldier1.move(cell1, cell2, map);
-        Assert.assertNull(cell1.getElementOn());
-        Assert.assertNull(cell2.getElementOn());
+        Assert.assertTrue(cell1.getElementOn() == null ^ cell2.getElementOn() == null);
+
     }
 
     @Test
@@ -324,16 +332,17 @@ public class EntityTest {
     }
 
     @Test
-    public void splitTerritoryTest() {
+    public void doubleSplitTerritoryTest() {
         Player player1 = new Player("player1", 0, 0, false, 0, new ArrayList<>());
         Player player2 = new Player("player2", 1, 0, false, 0, new ArrayList<>());
         Soldier soldier = new Soldier(0, 0, player1, 1, false);
+        Capital capital = new Capital(player2, 13);
         Cell cell1 = new Cell(6, 6, false, false, player1, null);
         Cell cell2 = new Cell(5, 6, false, false, player1, null);
         Cell cell3 = new Cell(7, 6, false, false, player1, null);
         Cell cell4 = new Cell(6, 7, false, false, player1, soldier);
         Cell cell5 = new Cell(6, 8, false, false, player2, null);
-        Cell cell6 = new Cell(5, 8, false, false, player2, null);
+        Cell cell6 = new Cell(5, 8, false, false, player2, capital);
         Cell cell7 = new Cell(7, 8, false, false, player2, null);
         ArrayList<Cell> mapCell = new ArrayList<Cell>();
         mapCell.add(cell1);
@@ -359,13 +368,15 @@ public class EntityTest {
         Assert.assertEquals(2, player2.getTerritories().size());
         Assert.assertEquals(1, player2.getTerritories().get(0).getCells().size());
         Assert.assertFalse(territory1.contains(cell5));
+        Assert.assertEquals(capital.getMoney(), 7);
     }
     @Test
-    public void tripleSplitTerritoryTest() {
+    public void tripleSplitTerritoryTestCas1() {
         Player player1 = new Player("player1", 0, 0, false, 0, new ArrayList<>());
         Player player2 = new Player("player2", 1, 0, false, 0, new ArrayList<>());
         Soldier soldier = new Soldier(0, 0, player1, 1, false);
-        Cell cell1 = new Cell(1, 5, false, false, player1, null);
+        Capital capital = new Capital(player1, 13);
+        Cell cell1 = new Cell(1, 5, false, false, player1, capital);
         Cell dest = new Cell(2, 5, false, false, player1, null);
         Cell cell3 = new Cell(2, 6, false, false, player1, null);
         Cell cell4 = new Cell(2, 4, false, false, player1, null);
@@ -391,6 +402,77 @@ public class EntityTest {
         player2.getTerritories().add(new Territory(territory1));
         soldier.move(source, dest, map);
         Assert.assertEquals(3, player1.getTerritories().size());
+        Assert.assertEquals(5, capital.getMoney());
+    }
+
+    @Test
+    public void tripleSplitTerritoryTestCas2() {
+        Player player1 = new Player("player1", 0, 0, false, 0, new ArrayList<>());
+        Player player2 = new Player("player2", 1, 0, false, 0, new ArrayList<>());
+        Soldier soldier = new Soldier(0, 0, player1, 1, false);
+        Capital capital = new Capital(player1, 13);
+        Cell cell1 = new Cell(1, 5, false, false, player1, null);
+        Cell dest = new Cell(2, 5, false, false, player1, null);
+        Cell cell3 = new Cell(2, 6, false, false, player1, capital);
+        Cell cell4 = new Cell(2, 4, false, false, player1, null);
+        Cell source = new Cell(3, 5, false, false, player2, soldier);
+        Cell cell5 = new Cell(4, 5, false, false, player2, null);
+        ArrayList<Cell> mapCell = new ArrayList<Cell>();
+        mapCell.add(cell1);
+        mapCell.add(dest);
+        mapCell.add(cell3);
+        mapCell.add(cell4);
+        mapCell.add(source);
+        mapCell.add(cell5);
+        Map map = new Map(mapCell, player1, player2);
+        ArrayList<Cell> territory = new ArrayList<Cell>();
+        ArrayList<Cell> territory1 = new ArrayList<Cell>();
+        territory.add(cell1);
+        territory.add(dest);
+        territory.add(cell3);
+        territory.add(cell4);
+        territory1.add(source);
+        territory1.add(cell5);
+        player1.getTerritories().add(new Territory(territory));
+        player2.getTerritories().add(new Territory(territory1));
+        soldier.move(source, dest, map);
+        Assert.assertEquals(3, player1.getTerritories().size());
+        Assert.assertEquals(5, capital.getMoney());
+    }
+
+    @Test
+    public void tripleSplitTerritoryTestCas3() {
+        Player player1 = new Player("player1", 0, 0, false, 0, new ArrayList<>());
+        Player player2 = new Player("player2", 1, 0, false, 0, new ArrayList<>());
+        Soldier soldier = new Soldier(0, 0, player1, 1, false);
+        Capital capital = new Capital(player1, 13);
+        Cell cell1 = new Cell(1, 5, false, false, player1, null);
+        Cell dest = new Cell(2, 5, false, false, player1, null);
+        Cell cell3 = new Cell(2, 6, false, false, player1, null);
+        Cell cell4 = new Cell(2, 4, false, false, player1, capital);
+        Cell source = new Cell(3, 5, false, false, player2, soldier);
+        Cell cell5 = new Cell(4, 5, false, false, player2, null);
+        ArrayList<Cell> mapCell = new ArrayList<Cell>();
+        mapCell.add(cell1);
+        mapCell.add(dest);
+        mapCell.add(cell3);
+        mapCell.add(cell4);
+        mapCell.add(source);
+        mapCell.add(cell5);
+        Map map = new Map(mapCell, player1, player2);
+        ArrayList<Cell> territory = new ArrayList<Cell>();
+        ArrayList<Cell> territory1 = new ArrayList<Cell>();
+        territory.add(cell1);
+        territory.add(dest);
+        territory.add(cell3);
+        territory.add(cell4);
+        territory1.add(source);
+        territory1.add(cell5);
+        player1.getTerritories().add(new Territory(territory));
+        player2.getTerritories().add(new Territory(territory1));
+        soldier.move(source, dest, map);
+        Assert.assertEquals(3, player1.getTerritories().size());
+        Assert.assertEquals(5, capital.getMoney());
     }
 
     @Test
@@ -458,8 +540,94 @@ public class EntityTest {
         player1.getTerritories().add(new Territory(territory));
         player2.getTerritories().add(new Territory(territory2));
         soldier.move(cell1,cellTree,map);
-        Assert.assertEquals(10,capital.getMoney());
+        Assert.assertEquals(10, capital.getMoney());
         Assert.assertEquals(soldier,cellTree.getElementOn());
+    }
+
+    @Test
+    public void splitMoneySimple() {
+        Capital capital = new Capital(null, 30);
+        Capital newCapital = new Capital(null, 0);
+        capital.splitMoney(newCapital, 10, 4, 6);
+        Assert.assertEquals(12, capital.getMoney());
+        Assert.assertEquals(18, newCapital.getMoney());
+        Assert.assertEquals(30, newCapital.getMoney() + capital.getMoney());
+    }
+
+    @Test
+    public void splitMoneySimpleHalf() {
+        Capital capital = new Capital(null, 30);
+        Capital newCapital = new Capital(null, 0);
+        capital.splitMoney(newCapital, 10, 5, 5);
+        Assert.assertEquals(15, capital.getMoney());
+        Assert.assertEquals(15, newCapital.getMoney());
+        Assert.assertEquals(30, newCapital.getMoney() + capital.getMoney());
+    }
+
+    @Test
+    public void splitMoneyComplex() {
+        Capital capital = new Capital(null, 31);
+        Capital newCapital = new Capital(null, 0);
+        capital.splitMoney(newCapital, 10, 4, 6);
+        Assert.assertEquals(12, capital.getMoney());
+        Assert.assertEquals(19, newCapital.getMoney());
+        Assert.assertEquals(31, newCapital.getMoney() + capital.getMoney());
+    }
+
+    @Test
+    public void splitMoneyComplexx() {
+        Capital capital = new Capital(null, 31);
+        Capital newCapital = new Capital(null, 0);
+        capital.splitMoney(newCapital, 10, 5, 5);
+        Assert.assertEquals(16, capital.getMoney());
+        Assert.assertEquals(15, newCapital.getMoney());
+        Assert.assertEquals(31, newCapital.getMoney() + capital.getMoney());
+    }
+
+    @Test
+    public void bankrupt() {
+        Player player = new Player("player", 0, 0, false, 0, new ArrayList<>());
+        Soldier soldier = new Soldier(15, 0, player, 1, false);
+        Capital capital = new Capital(player, 3);
+        Cell cellSoldier = new Cell(1, 5, false, false, player, soldier);
+        Cell cellCapital = new Cell(0, 5, false, false, player, capital);
+        Cell cellTree = new Cell(2, 5, false, false, player, new Tree());
+        Cell cellEmpty = new Cell(3, 5, false, false, player, null);
+        ArrayList<Cell> territory = new ArrayList<>();
+        territory.add(cellCapital);
+        territory.add(cellSoldier);
+        territory.add(cellTree);
+        territory.add(cellEmpty);
+        player.getTerritories().add(new Territory(territory));
+        player.checkTerritory();
+        Assert.assertEquals(6, capital.getMoney());
+        Assert.assertTrue(cellSoldier.getElementOn() instanceof Grave);
+        Assert.assertTrue(cellCapital.getElementOn() instanceof Capital);
+        Assert.assertTrue(cellTree.getElementOn() instanceof Tree);
+        Assert.assertTrue(cellEmpty.getElementOn() == null);
+    }
+
+    @Test
+    public void noBankrupt() {
+        Player player = new Player("player", 0, 0, false, 0, new ArrayList<>());
+        Soldier soldier = new Soldier(15, 0, player, 1, false);
+        Capital capital = new Capital(player, 14);
+        Cell cellSoldier = new Cell(1, 5, false, false, player, soldier);
+        Cell cellCapital = new Cell(0, 5, false, false, player, capital);
+        Cell cellTree = new Cell(2, 5, false, false, player, new Tree());
+        Cell cellEmpty = new Cell(3, 5, false, false, player, null);
+        ArrayList<Cell> territory = new ArrayList<>();
+        territory.add(cellCapital);
+        territory.add(cellSoldier);
+        territory.add(cellTree);
+        territory.add(cellEmpty);
+        player.getTerritories().add(new Territory(territory));
+        player.checkTerritory();
+        Assert.assertEquals(2, capital.getMoney());
+        Assert.assertTrue(cellSoldier.getElementOn() instanceof Soldier);
+        Assert.assertTrue(cellCapital.getElementOn() instanceof Capital);
+        Assert.assertTrue(cellTree.getElementOn() instanceof Tree);
+        Assert.assertTrue(cellEmpty.getElementOn() == null);
     }
 
 }

@@ -23,8 +23,6 @@ public class WorldScreen implements Screen {
         createButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-//                if (!world.creationMode)
-//                    world.creationMode=true;
                 world.creationMode = !world.creationMode;
             }
         });

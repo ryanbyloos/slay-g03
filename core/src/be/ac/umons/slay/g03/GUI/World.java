@@ -254,9 +254,9 @@ public class World extends ApplicationAdapter implements InputProcessor {
                         destination.setElementOn(new Soldier(5, 20, map.getPlayer1(), 0, false));
                     else if (destination.getOwner() == map.getPlayer2())
                         destination.setElementOn(new Soldier(5, 20, map.getPlayer2(), 0, false));
-
                 }
                 destination = null;
+                this.creationMode = false;
             } else if (!selected) {
                 source = map.findCell(pos[0], pos[1]);
                 if (source != null && source.getElementOn() instanceof Soldier) {
