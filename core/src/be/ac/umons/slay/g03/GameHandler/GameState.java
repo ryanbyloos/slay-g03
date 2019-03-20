@@ -512,6 +512,7 @@ public class GameState {
             map.getPlayer2().setTurn(true);
             map.getPlayer1().setMoveNumber(-1);
             map.getPlayer1().setMaxMoveNumber(-1);
+            map.getPlayer2().checkTerritory();
 
             try {
                 storeMove(map.getPlayer2());
@@ -526,6 +527,7 @@ public class GameState {
             map.getPlayer1().setTurn(true);
             map.getPlayer2().setMoveNumber(-1);
             map.getPlayer2().setMaxMoveNumber(-1);
+            map.getPlayer1().checkTerritory();
             try {
                 storeMove(map.getPlayer1());
             } catch (ReplayParserException e) {

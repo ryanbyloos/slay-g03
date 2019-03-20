@@ -1,6 +1,9 @@
 package be.ac.umons.slay.g03.Core;
 
 import be.ac.umons.slay.g03.Entity.Capital;
+import be.ac.umons.slay.g03.Entity.Grave;
+import be.ac.umons.slay.g03.Entity.Soldier;
+import be.ac.umons.slay.g03.Entity.Tree;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -9,7 +12,12 @@ public class Territory {
     private ArrayList<Cell> cells;
 
     public int gain() {
-        return 0;
+        int gain = 0;
+        for (Cell cell: cells
+             ) {
+            if(!(cell.getElementOn() instanceof Tree)) gain++;
+        }
+        return gain;
     }
 
     public Territory(ArrayList<Cell> cells) {
@@ -17,14 +25,30 @@ public class Territory {
         this.cells = cells;
     }
 
-    private int checkcost() {
+    public void checkcost() {
+        int cost = 0;
+        for (Cell cell: cells
+             ) {
+            if(cell.getElementOn() != null){
+                cost = cost + cell.getElementOn().getMaintenanceCost();
+            }
+        }
+
+        if(gain()+findCapital().getMoney() >= cost){
+            findCapital().addMoney(gain()-cost);
+        }else {
+            findCapital().addMoney(gain());
+            bankrupt();
+        }
 
 
-        return 0;
     }
 
     private void bankrupt() {
-
+        for (Cell cell: cells
+             ) {
+            if(cell.getElementOn() instanceof Soldier) cell.setElementOn(new Grave(cell.getElementOn().getLevel()));
+        }
     }
 
     public Capital findCapital(){

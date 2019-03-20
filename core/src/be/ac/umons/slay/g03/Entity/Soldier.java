@@ -30,7 +30,6 @@ public class Soldier extends MapElement implements Controlable {
             }
         } else if (levelDefender == 3) {
             int random = new Random().nextInt(2);
-            System.out.println(random);
             if(random == 1) {
                 cellDefender.setElementOn(null);
                 return true;

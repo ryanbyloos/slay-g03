@@ -26,8 +26,8 @@
     </territories>
 
     <units>
-        <unit type="soldier" level="3" x="1" y="5" playerId="1" hasmoved="false" />
-        <unit type="soldier" level="3" x="2" y="10" playerId="2" hasmoved="false" />
+        <unit type="soldier" level="0" x="2" y="5" playerId="1" hasmoved="false" />
+        <unit type="soldier" level="0" x="2" y="10" playerId="2" hasmoved="false" />
     </units>
     <infrastructures>
     </infrastructures>

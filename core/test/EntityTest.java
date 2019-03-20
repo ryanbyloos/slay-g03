@@ -146,17 +146,25 @@ public class EntityTest {
 
     @Test
     public void attackEqualHighSoldier() {
-        Soldier soldier1 = new Soldier(0, 0, new Player("player1", 1, 0, false, 0, new ArrayList<>()), 3, false);
-        Soldier soldier2 = new Soldier(0, 0, new Player("player2", 2, 0, false, 0, new ArrayList<>()), 3, false);
-        Cell cell1 = new Cell(0, 0, false, false, null, soldier1);
-        Cell cell2 = new Cell(1, 0, false, false, null, soldier2);
+        Player player1 = new Player("player1", 0, 0, false, 0, new ArrayList<>());
+        Player player2 = new Player("player2", 1, 0, false, 0, new ArrayList<>());
+        Soldier soldier1 = new Soldier(0, 0, player1, 3, false);
+        Soldier soldier2 = new Soldier(0, 0, player2, 3, false);
+        Cell cell1 = new Cell(0, 0, false, false, player1, soldier1);
+        Cell cell2 = new Cell(1, 0, false, false, player2, soldier2);
         ArrayList<Cell> mapCell = new ArrayList<Cell>();
         mapCell.add(cell1);
         mapCell.add(cell2);
         Map map = new Map(mapCell, null, null);
+        ArrayList<Cell> territory1 = new ArrayList<>();
+        ArrayList<Cell> territory2 = new ArrayList<>();
+        territory1.add(cell1);
+        territory2.add(cell2);
+        player1.getTerritories().add(new Territory(territory1));
+        player2.getTerritories().add(new Territory(territory2));
         soldier1.move(cell1, cell2, map);
-        Assert.assertNull(cell1.getElementOn());
-        Assert.assertNull(cell2.getElementOn());
+        Assert.assertTrue(cell1.getElementOn() == null ^ cell2.getElementOn() == null);
+
     }
 
     @Test
@@ -571,6 +579,51 @@ public class EntityTest {
         Assert.assertEquals(16, capital.getMoney());
         Assert.assertEquals(15, newCapital.getMoney());
         Assert.assertEquals(31, newCapital.getMoney() + capital.getMoney());
+    }
+
+    @Test
+    public void bankrupt(){
+        Player player = new Player("player", 0, 0, false, 0, new ArrayList<>());
+        Soldier soldier = new Soldier(15, 0, player, 1, false);
+        Capital capital = new Capital(player,3);
+        Cell cellSoldier = new Cell(1, 5, false, false, player, soldier);
+        Cell cellCapital = new Cell(0,5,false,false,player,capital);
+        Cell cellTree = new Cell(2,5,false,false,player, new Tree());
+        Cell cellEmpty = new Cell(3,5,false,false,player,null);
+        ArrayList<Cell> territory = new ArrayList<>();
+        territory.add(cellCapital);
+        territory.add(cellSoldier);
+        territory.add(cellTree);
+        territory.add(cellEmpty);
+        player.getTerritories().add(new Territory(territory));
+        player.checkTerritory();
+        Assert.assertEquals(6,capital.getMoney());
+        Assert.assertTrue(cellSoldier.getElementOn() instanceof Grave);
+        Assert.assertTrue(cellCapital.getElementOn() instanceof Capital);
+        Assert.assertTrue(cellTree.getElementOn() instanceof Tree);
+        Assert.assertTrue(cellEmpty.getElementOn() == null);
+    }
+    @Test
+    public void noBankrupt(){
+        Player player = new Player("player", 0, 0, false, 0, new ArrayList<>());
+        Soldier soldier = new Soldier(15, 0, player, 1, false);
+        Capital capital = new Capital(player,14);
+        Cell cellSoldier = new Cell(1, 5, false, false, player, soldier);
+        Cell cellCapital = new Cell(0,5,false,false,player,capital);
+        Cell cellTree = new Cell(2,5,false,false,player, new Tree());
+        Cell cellEmpty = new Cell(3,5,false,false,player,null);
+        ArrayList<Cell> territory = new ArrayList<>();
+        territory.add(cellCapital);
+        territory.add(cellSoldier);
+        territory.add(cellTree);
+        territory.add(cellEmpty);
+        player.getTerritories().add(new Territory(territory));
+        player.checkTerritory();
+        Assert.assertEquals(2,capital.getMoney());
+        Assert.assertTrue(cellSoldier.getElementOn() instanceof Soldier);
+        Assert.assertTrue(cellCapital.getElementOn() instanceof Capital);
+        Assert.assertTrue(cellTree.getElementOn() instanceof Tree);
+        Assert.assertTrue(cellEmpty.getElementOn() == null);
     }
 
 }

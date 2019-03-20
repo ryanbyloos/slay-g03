@@ -22,7 +22,10 @@ public class Player {
     }
 
     public void checkTerritory() {
-
+        for (Territory territory: territories
+             ) {
+            territory.checkcost();
+        }
     }
 
     public boolean isOver() {
