@@ -13,7 +13,6 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -182,8 +181,6 @@ public class World extends ApplicationAdapter implements InputProcessor {
 
     @Override
     public void render() {
-        Gdx.gl.glClearColor(145 / 255f, 145 / 255f, 145 / 255f, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
