@@ -192,7 +192,7 @@ public class Soldier extends MapElement implements Controlable {
 
     @Override
     public void move(Cell source, Cell destination, Map map) {
-        if (source.accessibleCell(map).contains(destination) && (source.getElementOn().getLevel() > levelDenfender(map, source, destination) || source.getElementOn().getLevel() == 3)) {
+        if (source.accessibleCell(map).contains(destination) && (source.getElementOn().getLevel() >= levelDefender(map, source, destination))) {
 
             if (destination.getElementOn() != null) {
                 if (destination.getElementOn().getOwner() == null) {
@@ -226,7 +226,7 @@ public class Soldier extends MapElement implements Controlable {
         }
     }
 
-    private int levelDenfender(Map map, Cell source, Cell destination) {
+    private int levelDefender(Map map, Cell source, Cell destination) {
         ArrayList<Cell> adjacentCell = destination.adjacentCell(map, destination);
         int levelDefender = -1;
         Player player = source.getOwner();
