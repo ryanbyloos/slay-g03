@@ -79,7 +79,7 @@ public class States {
 
     @Override
     public String toString() {
-        return "[territorySelected][soldierSelected][boatSelected]" + "["+ territorySelected+ "]"  + "["+ soldierSelected+ "]"  +"["+ boatSelected+ "]";
+        return "[creationMode][territorySelected][soldierSelected][boatSelected]" + "["  + creationMode+ "]"+"["+ territorySelected+ "]"  + "["+ soldierSelected+ "]"  +"["+ boatSelected+ "]";
     }
 
 }

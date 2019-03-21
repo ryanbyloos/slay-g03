@@ -197,7 +197,8 @@ public class World extends ApplicationAdapter implements InputProcessor {
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.P) {
             gameState.nextTurn();
-        } else if (keycode == Input.Keys.ESCAPE)
+        }
+        else if (keycode == Input.Keys.ESCAPE)
             ScreenHandler.setScreen(ScreenHandler.home);
         else if (keycode == Input.Keys.J) {
             if (map.getPlayer1().isTurn()) {

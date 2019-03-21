@@ -47,7 +47,7 @@ class Hud extends Stage {
         soldier0.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                world.gameState.getStates().setCreationMode(!world.gameState.getStates().isCreationMode());
+                if(world.gameState.getStates().isTerritorySelected()) world.gameState.getStates().setCreationMode(!world.gameState.getStates().isCreationMode());
             }
         });
     }

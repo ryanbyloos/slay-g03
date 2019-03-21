@@ -318,15 +318,15 @@ public class GameState {
 
         Cell cell = map.findCell(x, y);
         if (cell != null) {
-            if (cell.getElementOn() == null && cell.getOwner() != null) {
+            if (cell.getElementOn() == null && cell.getOwner() != null && cell.getOwner().isTurn() ) {
                 states.setTerritory(cell.findTerritory());
                 states.setTerritorySelected(true);
-            }
-            else {
+            } else {
                 states.setTerritory(null);
                 states.setTerritorySelected(false);
             }
         }
+
         if (states.isTerritorySelected()) {
             if (states.isCreationMode()) {
                 states.setDestination(map.findCell(x, y));
@@ -582,14 +582,12 @@ public class GameState {
         }
 
         if (map.getPlayer1().isTurn()) {
-
+            if (turnPlayed > 1) map.getPlayer2().checkTerritory();
             map.getPlayer1().setTurn(false);
             resetMoveableUnits(map.getPlayer1());
-
             map.getPlayer2().setTurn(true);
             map.getPlayer1().setMoveNumber(-1);
             map.getPlayer1().setMaxMoveNumber(-1);
-            map.getPlayer2().checkTerritory();
 
             try {
                 storeMove(map.getPlayer2());
