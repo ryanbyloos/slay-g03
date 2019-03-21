@@ -1,17 +1,19 @@
 package be.ac.umons.slay.g03.GUI;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 
 class Hud extends Stage {
 
     ImageButton soldier0, soldier1, soldier2, soldier3, defenceTower, attackTower, boat, mine;
-    TextButton button;
+    //    TextButton button;
+    ShapeRenderer shapeRenderer;
     World world;
     private int w = ScreenHandler.WIDTH;
     private int h = ScreenHandler.HEIGHT;
@@ -32,12 +34,13 @@ class Hud extends Stage {
         mine = new ImageButton(new TextureRegionDrawable(new TextureRegion(world.mine)));
 
         ImageButton buttons[] = {soldier0, soldier1, soldier2, soldier3, defenceTower, attackTower, boat, mine};
-        button = new TextButton("", ScreenHandler.game.skin);
-        button.setSize(ScreenHandler.WIDTH, 48);
-        this.addActor(button);
+        shapeRenderer = new ShapeRenderer();
+//        button = new TextButton("", ScreenHandler.game.skin);
+//        button.setSize(w, 48);
+//        this.addActor(button);
         int i = 0;
         for (ImageButton button : buttons) {
-            button.setPosition(w / 24 + i, 6);
+            button.setPosition((float) w / 24 + i, 6);
             i += 48;
             this.addActor(button);
         }
@@ -47,5 +50,14 @@ class Hud extends Stage {
                 world.creationMode = !world.creationMode;
             }
         });
+    }
+
+    @Override
+    public void draw() {
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(Color.LIGHT_GRAY);
+        shapeRenderer.rect(0, 0, w, 48);
+        shapeRenderer.end();
+        super.draw();
     }
 }
