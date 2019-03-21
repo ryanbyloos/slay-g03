@@ -256,6 +256,11 @@ public class World extends ApplicationAdapter implements InputProcessor {
                     else if (destination.getOwner() == map.getPlayer2())
                         destination.setElementOn(new Soldier(5, 20, map.getPlayer2(), 0, false));
                 }
+                try {
+                    gameState.storeMove(destination.getOwner());
+                } catch (ReplayParserException e) {
+                    e.printStackTrace();
+                }
                 destination = null;
                 this.creationMode = false;
             } else if (!selected) {
@@ -308,7 +313,6 @@ public class World extends ApplicationAdapter implements InputProcessor {
             camera.position.y = 450;
         else
             camera.position.y = 25;
-
         return true;
     }
 
