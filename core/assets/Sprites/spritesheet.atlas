@@ -1,7 +1,7 @@
 spritesheet.png
 size: 512, 32
 format: RGBA8888
-filter: Linear,Linear
+filter: Nearest,Linear
 repeat: none
 tile000
   rotate: false
@@ -33,8 +33,8 @@ tile003
   index: -1
 tile004
   rotate: false
-  xy: 128, 0
-  size: 32, 32
+  xy: 129, 0
+  size: 31, 32
   orig: 32, 32
   offset: 0, 0
   index: -1

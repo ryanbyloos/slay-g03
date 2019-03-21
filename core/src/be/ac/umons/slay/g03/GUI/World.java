@@ -251,13 +251,13 @@ public class World extends ApplicationAdapter implements InputProcessor {
             if (creationMode) {
                 destination = map.findCell(pos[0], pos[1]);
                 if (destination != null && destination.getElementOn() == null) {
-                    if (destination.getOwner() == map.getPlayer1())
+                    if (destination.getOwner() == map.getPlayer1() && map.getPlayer1().isTurn())
                         destination.setElementOn(new Soldier(5, 20, map.getPlayer1(), 0, false));
-                    else if (destination.getOwner() == map.getPlayer2())
+                    else if (destination.getOwner() == map.getPlayer2() && map.getPlayer2().isTurn())
                         destination.setElementOn(new Soldier(5, 20, map.getPlayer2(), 0, false));
                 }
                 try {
-                    gameState.storeMove(destination.getOwner());
+                    gameState.storeMove(destination != null ? destination.getOwner() : null);
                 } catch (ReplayParserException e) {
                     e.printStackTrace();
                 }
