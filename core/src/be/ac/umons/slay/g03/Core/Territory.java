@@ -73,9 +73,8 @@ public class Territory {
         return money;
     }
 
-    public boolean addCell(Cell cell) {
+    public void addCell(Cell cell) {
         cells.add(cell);
-        return true;
     }
 
     public ArrayList<Cell> getCells() {
@@ -88,6 +87,7 @@ public class Territory {
 
     public void placeCapital(){
         ArrayList<Cell> cellPossible = new ArrayList<>();
+        ArrayList<Cell> cellPossibleToDelete = new ArrayList<>();
         for (Cell cell: cells
              ) {
             if(cell.getElementOn() == null){
@@ -99,8 +99,13 @@ public class Territory {
             cellPossible.get(index).setElementOn(new Capital(cellPossible.get(0).getOwner(), 0));
             return;
         }
-        int index = new Random().nextInt(cells.size());
-        cells.get(index).setElementOn(new Capital(cells.get(0).getOwner(), 0));
+        for (Cell cell: cells
+             ) {
+            if(!(cell.getElementOn() instanceof Capital)) cellPossibleToDelete.add(cell);
+        }
+        int index = new Random().nextInt(cellPossibleToDelete.size());
+        cellPossibleToDelete.get(index).setElementOn(new Capital(cells.get(0).getOwner(), 0));
+
     }
 
     @Override

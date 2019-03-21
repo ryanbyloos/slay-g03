@@ -208,6 +208,9 @@ public class Soldier extends MapElement implements Controlable {
                         }
 
                     }
+                } else if (destination.getElementOn() instanceof Capital) {
+                    destroyCapital(destination,source);
+                    move(source, destination, map);
                 }
 
             } else {
@@ -227,7 +230,7 @@ public class Soldier extends MapElement implements Controlable {
         Player player = source.getOwner();
         for (Cell defenderCell : adjacentCell
                 ) {
-            if (defenderCell.getElementOn() instanceof Soldier && defenderCell.getElementOn().getOwner() != player) {
+            if ((defenderCell.getElementOn() instanceof Soldier || defenderCell.getElementOn() instanceof Capital) && defenderCell.getElementOn().getOwner() != player) {
                 if (levelDefender == -1) {
                     levelDefender = defenderCell.getElementOn().getLevel();
                 } else if (levelDefender < defenderCell.getElementOn().getLevel()) {
@@ -236,6 +239,16 @@ public class Soldier extends MapElement implements Controlable {
             }
         }
         return levelDefender;
+    }
+
+    private void destroyCapital(Cell cellCapital, Cell attacker) {
+        int steal = (cellCapital.findTerritory().gain() - cellCapital.findTerritory().cost()) / 2;
+        int money = cellCapital.findTerritory().findCapital().getMoney();
+        attacker.findTerritory().findCapital().addMoney(steal);
+        cellCapital.findTerritory().placeCapital();
+        cellCapital.setElementOn(null);
+        cellCapital.findTerritory().findCapital().setMoney(money-steal);
+
     }
 
 

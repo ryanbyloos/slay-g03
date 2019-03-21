@@ -735,4 +735,42 @@ public class EntityTest {
         Assert.assertTrue(cellEmpty.getElementOn() == null);
     }
 
+    @Test
+    public void destroyCapital(){
+        Player player1 = new Player("player1", 0, 0, false, 0, new ArrayList<>());
+        Player player2 = new Player("player2", 1, 0, false, 0, new ArrayList<>());
+        Soldier soldier = new Soldier(0, 0, player1, 1, false);
+        Soldier soldier2 = new Soldier(2, 0, player2, 1, false);
+        Capital capital = new Capital(player1,20);
+        Capital capital2 = new Capital(player2,20);
+        Cell cell1 = new Cell(6, 6, false, false, player1, soldier);
+        Cell cell2 = new Cell(5, 6, false, false, player1, capital);
+        Cell cell3 = new Cell(7, 6, false, false, player2, capital2);
+        Cell cell4 = new Cell(8, 6, false, false, player2, null);
+        Cell cell5 = new Cell(9, 6, false, false, player2, null);
+        Cell cell6 = new Cell(10, 6, false, false, player2, soldier2);
+        ArrayList<Cell> mapCell = new ArrayList<Cell>();
+        mapCell.add(cell1);
+        mapCell.add(cell2);
+        mapCell.add(cell3);
+        mapCell.add(cell4);
+        mapCell.add(cell5);
+        mapCell.add(cell6);
+        Map map = new Map(mapCell, player1, player2);
+        ArrayList<Cell> territory1 = new ArrayList<Cell>();
+        ArrayList<Cell> territory2 = new ArrayList<Cell>();
+        territory1.add(cell1);
+        territory1.add(cell2);
+        territory2.add(cell3);
+        territory2.add(cell4);
+        territory2.add(cell5);
+        territory2.add(cell6);
+        player1.getTerritories().add(new Territory(territory1));
+        player2.getTerritories().add(new Territory(territory2));
+        soldier.move(cell1, cell3, map);
+        Assert.assertEquals(soldier,cell3.getElementOn());
+        Assert.assertEquals(21,capital.getMoney());
+        Assert.assertEquals(19,player2.getTerritories().get(0).findCapital().getMoney());
+    }
+
 }
