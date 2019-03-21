@@ -37,12 +37,14 @@ public class GameState {
     private Loader loader;
     private int turnPlayed;
     private String logFile;
+    private States states;
 
     public GameState(Map map, Loader loader, int turnPlayed, String logFile) {
         this.map = map;
         this.loader = loader;
         this.turnPlayed = turnPlayed;
         this.logFile = logFile;
+        this.states = new States();
     }
 
     public void pause() {
@@ -127,7 +129,7 @@ public class GameState {
                     Element cellData = (Element) node;
                     int x = Integer.parseInt(cellData.getAttribute("x"));
                     int y = Integer.parseInt(cellData.getAttribute("y"));
-                    if(!cellData.getParentNode().getNodeName().equals("territory")){
+                    if (!cellData.getParentNode().getNodeName().equals("territory")) {
                         boolean isWater = Boolean.parseBoolean(cellData.getAttribute("isWater"));
                         boolean checked = Boolean.parseBoolean(cellData.getAttribute("checked"));
                         int playerId = Integer.parseInt(cellData.getAttribute("playerId"));
@@ -231,7 +233,7 @@ public class GameState {
                             }
                             case "capital":
                                 int money = Integer.parseInt(cellData.getAttribute("money"));
-                                cell.setElementOn(new Capital( cell.getOwner(), money));
+                                cell.setElementOn(new Capital(cell.getOwner(), money));
                                 break;
                             case "defencetower": {
                                 int level = Integer.parseInt(cellData.getAttribute("level"));
@@ -277,27 +279,26 @@ public class GameState {
             NodeList territories = data.getElementsByTagName("territory");
             for (int i = 0; i < territories.getLength(); i++) {
                 Node node = territories.item(i);
-                if(node.getNodeType() == node.ELEMENT_NODE){
+                if (node.getNodeType() == node.ELEMENT_NODE) {
                     Element territoryData = (Element) node;
                     int playerId = Integer.parseInt(territoryData.getAttribute("playerId"));
                     Territory territory = new Territory(new ArrayList<>());
                     NodeList territoryCells = territoryData.getChildNodes();
                     for (int j = 0; j < territoryCells.getLength(); j++) {
                         Node node1 = territoryCells.item(j);
-                        if(node1.getNodeType() == node1.ELEMENT_NODE){
+                        if (node1.getNodeType() == node1.ELEMENT_NODE) {
                             Element cellData = (Element) node1;
                             int x = Integer.parseInt(cellData.getAttribute("x"));
                             int y = Integer.parseInt(cellData.getAttribute("y"));
                             Cell cell = map.findCell(x, y);
-                            if(cell!=null){
+                            if (cell != null) {
                                 territory.getCells().add(cell);
                             }
                         }
                     }
-                    if(playerId == 1){
+                    if (playerId == 1) {
                         player1.add(territory);
-                    }
-                    else if (playerId == 2) {
+                    } else if (playerId == 2) {
                         player2.add(territory);
                     }
                 }
@@ -312,6 +313,82 @@ public class GameState {
     public void quit() {
 
     }
+
+    public void handle(int x, int y) {
+
+        Cell cell = map.findCell(x, y);
+        if (cell != null) {
+            if (cell.getElementOn() == null && cell.getOwner() != null) {
+                states.setTerritory(cell.findTerritory());
+                states.setTerritorySelected(true);
+            }
+            else {
+                states.setTerritory(null);
+                states.setTerritorySelected(false);
+            }
+        }
+        if (states.isTerritorySelected()) {
+            if (states.isCreationMode()) {
+                states.setDestination(map.findCell(x, y));
+                if (states.getDestination() != null && states.getDestination().getElementOn() == null) {
+                    if (states.getDestination().getOwner() == map.getPlayer1() && map.getPlayer1().isTurn())
+                        states.getDestination().setElementOn(new Soldier(5, 20, map.getPlayer1(), 0, false));
+                    else if (states.getDestination().getOwner() == map.getPlayer2() && map.getPlayer2().isTurn())
+                        states.getDestination().setElementOn(new Soldier(5, 20, map.getPlayer2(), 0, false));
+                }
+                try {
+                    storeMove(states.getDestination() != null ? states.getDestination().getOwner() : null);
+                } catch (ReplayParserException e) {
+                    e.printStackTrace();
+                }
+                states.setTerritorySelected(false);
+                states.setDestination(null);
+                states.setCreationMode(false);
+            }
+        } else if (!states.isSoldierSelected() && !states.isBoatSelected() && !states.isAttackTowerSelected()) {
+            states.setSource(map.findCell(x, y));
+            if (states.getSource() != null) {
+                if (states.getSource().getElementOn() instanceof Soldier) {
+                    if (states.getSource().accessibleCell(map) != null && ((Soldier) states.getSource().getElementOn()).select())
+                        states.setSoldierSelected(true);
+
+
+                } else if (states.getSource().getElementOn() instanceof Boat) {
+                    if (states.getSource().accessibleCell(map) != null && ((Boat) states.getSource().getElementOn()).select())
+                        states.setBoatSelected(true);
+                } else if (states.getSource().getElementOn() instanceof AttackTower) {
+                    if (states.getSource().accessibleCell(map) != null && ((AttackTower) states.getSource().getElementOn()).select())
+                        states.setAttackTowerSelected(true);
+                }
+                states.setTerritory(null);
+            }
+
+        } else {
+            states.setDestination(map.findCell(x, y));
+            if (states.getSource().getElementOn() instanceof Soldier) {
+                ((Soldier) states.getSource().getElementOn()).move(states.getSource(), states.getDestination(), map);
+                states.setSoldierSelected(false);
+            } else if (states.getSource().getElementOn() instanceof Boat) {
+                ((Boat) states.getSource().getElementOn()).move(states.getSource(), states.getDestination(), map);
+                states.setBoatSelected(false);
+            } else if (states.getSource().getElementOn() instanceof AttackTower) {
+                ((AttackTower) states.getSource().getElementOn()).attack(states.getDestination());
+                states.setAttackTowerSelected(false);
+
+            }
+            try {
+                if (map.getPlayer1().isTurn()) {
+                    storeMove(map.getPlayer1());
+                } else {
+                    storeMove(map.getPlayer2());
+                }
+
+            } catch (ReplayParserException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
     public void saveTmxFile() throws IOException {
         String dest = Gdx.files.getLocalStoragePath().concat("assets/Saves/").concat(map.getPlayer1().getName() + '-' + map.getPlayer2().getName() + '-').concat(loader.getTmxFile());
@@ -493,8 +570,8 @@ public class GameState {
     }
 
     public void nextTurn() {
-        for (Cell cell: map.getCells()
-                ) {
+        for (Cell cell : map.getCells()
+        ) {
             cell.spwanTree(map);
         }
         try {
@@ -541,11 +618,11 @@ public class GameState {
     }
 
     private void resetMoveableUnits(Player player) {
-        for (Territory t :player.getTerritories()
-             ) {
-            for (Cell c: t.getCells()
-                 ) {
-                if(c.getElementOn()!=null && c.getElementOn() instanceof Soldier){
+        for (Territory t : player.getTerritories()
+        ) {
+            for (Cell c : t.getCells()
+            ) {
+                if (c.getElementOn() != null && c.getElementOn() instanceof Soldier) {
                     c.getElementOn().setHasMoved(false);
                 }
             }
@@ -553,8 +630,8 @@ public class GameState {
     }
 
     public void storeMove(Player player) throws ReplayParserException {
-        player.setMoveNumber(player.getMoveNumber()+1);
-        player.setMaxMoveNumber(player.getMoveNumber()+1);
+        player.setMoveNumber(player.getMoveNumber() + 1);
+        player.setMaxMoveNumber(player.getMoveNumber() + 1);
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         try {
             DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -735,5 +812,9 @@ public class GameState {
         } catch (ParserConfigurationException e) {
             throw new ReplayParserException();
         }
+    }
+
+    public States getStates() {
+        return states;
     }
 }

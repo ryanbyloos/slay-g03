@@ -29,7 +29,7 @@ public class World extends ApplicationAdapter implements InputProcessor {
     private TextureAtlas atlas;
     private Cell source, destination;
     private Territory territory;
-    private GameState gameState;
+    protected GameState gameState;
     private Loader loader;
     private boolean selected;
     boolean creationMode = false;
@@ -91,10 +91,10 @@ public class World extends ApplicationAdapter implements InputProcessor {
                 if (cell.getOwner() == null) drawSprite(parity, greenHex, cell);
                 else if (cell.getOwner() == map.getPlayer1()) drawSprite(parity, yellowHex, cell);
                 else drawSprite(parity, redHex, cell);
-                if (selected && source.getElementOn() != null)
-                    drawHighlights(source.accessibleCell(map));
-                if (territory != null)
-                    drawHighlights(territory.getCells());
+                if ((gameState.getStates().isSoldierSelected() || gameState.getStates().isBoatSelected() || gameState.getStates().isAttackTowerSelected()) && gameState.getStates().getSource().getElementOn() != null)
+                    drawHighlights(gameState.getStates().getSource().accessibleCell(map));
+                if (gameState.getStates().getTerritory() != null)
+                    drawHighlights(gameState.getStates().getTerritory().getCells());
             }
         }
         for (int i = 0; i < map.getCells().size(); i++) {
@@ -197,8 +197,6 @@ public class World extends ApplicationAdapter implements InputProcessor {
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.P) {
             gameState.nextTurn();
-        } else if (keycode == Input.Keys.R) {
-            System.out.println(map.getPlayer1().getTerritories());
         } else if (keycode == Input.Keys.ESCAPE)
             ScreenHandler.setScreen(ScreenHandler.home);
         else if (keycode == Input.Keys.J) {
@@ -248,45 +246,7 @@ public class World extends ApplicationAdapter implements InputProcessor {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         if (button == Input.Buttons.LEFT) {
             int[] pos = getMouseCoord(camera);
-            if (creationMode) {
-                destination = map.findCell(pos[0], pos[1]);
-                if (destination != null && destination.getElementOn() == null) {
-                    if (destination.getOwner() == map.getPlayer1() && map.getPlayer1().isTurn())
-                        destination.setElementOn(new Soldier(5, 20, map.getPlayer1(), 0, false));
-                    else if (destination.getOwner() == map.getPlayer2() && map.getPlayer2().isTurn())
-                        destination.setElementOn(new Soldier(5, 20, map.getPlayer2(), 0, false));
-                }
-                try {
-                    gameState.storeMove(destination != null ? destination.getOwner() : null);
-                } catch (ReplayParserException e) {
-                    e.printStackTrace();
-                }
-                destination = null;
-                this.creationMode = false;
-            } else if (!selected) {
-                source = map.findCell(pos[0], pos[1]);
-                if (source != null && source.getElementOn() instanceof Soldier) {
-                    ((Soldier) source.getElementOn()).select();
-                    if (source.accessibleCell(map) != null && ((Soldier) source.getElementOn()).select()) {
-                        selected = true;
-                        territory = null;
-                    }
-                }
-            } else {
-                destination = map.findCell(pos[0], pos[1]);
-                ((Soldier) source.getElementOn()).move(source, destination, map);
-                try {
-                    if (map.getPlayer1().isTurn()) {
-                        gameState.storeMove(map.getPlayer1());
-                    } else {
-                        gameState.storeMove(map.getPlayer2());
-                    }
-
-                } catch (ReplayParserException e) {
-                    e.printStackTrace();
-                }
-                selected = false;
-            }
+            gameState.handle(pos[0], pos[1]);
         }
         return true;
     }
@@ -318,13 +278,13 @@ public class World extends ApplicationAdapter implements InputProcessor {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        if (screenX < map.getWidth() * 32 && (map.getHeight() * 32 - screenY) < map.getHeight() * 32) {
+        if (!gameState.getStates().isTerritorySelected() && screenX < ScreenHandler.WIDTH && (ScreenHandler.HEIGHT - screenY) < ScreenHandler.HEIGHT) {
             int[] pos = getMouseCoord(camera);
             Cell cell = map.findCell(pos[0], pos[1]);
-            if (cell != null && cell.getOwner() != null && !selected) {
-                territory = cell.findTerritory();
+            if (cell != null && cell.getOwner() != null && !(gameState.getStates().isSoldierSelected() || gameState.getStates().isBoatSelected() || gameState.getStates().isAttackTowerSelected())) {
+                gameState.getStates().setTerritory(cell.findTerritory());
             } else {
-                territory = null;
+                gameState.getStates().setTerritory(null);
             }
         }
         return true;
