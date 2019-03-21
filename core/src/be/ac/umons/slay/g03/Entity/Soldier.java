@@ -91,9 +91,11 @@ public class Soldier extends MapElement implements Controlable {
                 ) {
             if (cell.getOwner() != null && cell.getOwner().equals(oldCell.getOwner())) {
                 if (!cell.findTerritory().equals(oldCell.findTerritory())) {
+                    if(oldCell.findTerritory().getCells().size() -1 < cell.findTerritory().getCells().size()){
+                        cell.findTerritory().findCapital().addMoney(oldCell.findTerritory().removeCapital(map));
+                    }else oldCell.findTerritory().findCapital().addMoney(cell.findTerritory().removeCapital(map));
                     Territory territoryToDelete = cell.findTerritory();
                     ArrayList<Cell> territory = new ArrayList<>();
-                    oldCell.findTerritory().findCapital().addMoney(territoryToDelete.removeCapital(map));
                     territory.addAll(territoryToDelete.getCells());
                     oldCell.findTerritory().getCells().addAll(territory);
                     cell.getOwner().removeTerritory(territoryToDelete);
@@ -208,7 +210,7 @@ public class Soldier extends MapElement implements Controlable {
                         }
 
                     }
-                } else if (destination.getElementOn() instanceof Capital) {
+                } else if (destination.getElementOn() instanceof Capital && !destination.getOwner().equals(source.getOwner())) {
                     destroyCapital(destination,source);
                     move(source, destination, map);
                 }
