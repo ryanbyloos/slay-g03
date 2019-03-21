@@ -30,11 +30,6 @@ public class Capital extends MapElement {
         }
     }
 
-    public void splitMoney(Capital newCapital1, Capital newCapital2, int nbCellTot, int nbCellOldCapital, int nbCellNewCapital1, int nbCellNewCapital2) {
-        double money = this.money;
-
-    }
-
     public void addMoney(int gain) {
         money = money + gain;
     }

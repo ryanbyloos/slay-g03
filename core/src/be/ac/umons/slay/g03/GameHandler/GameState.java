@@ -505,14 +505,12 @@ public class GameState {
         }
 
         if (map.getPlayer1().isTurn()) {
-
+            if(turnPlayed >1) map.getPlayer2().checkTerritory();
             map.getPlayer1().setTurn(false);
             resetMoveableUnits(map.getPlayer1());
-
             map.getPlayer2().setTurn(true);
             map.getPlayer1().setMoveNumber(-1);
             map.getPlayer1().setMaxMoveNumber(-1);
-            map.getPlayer2().checkTerritory();
 
             try {
                 storeMove(map.getPlayer2());

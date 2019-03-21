@@ -198,7 +198,8 @@ public class World extends ApplicationAdapter implements InputProcessor {
         if (keycode == Input.Keys.P) {
             gameState.nextTurn();
         } else if (keycode == Input.Keys.R) {
-            System.out.println(map.getPlayer1().getTerritories());
+            System.out.println("Player 1 : "+ map.getPlayer1().getTerritories());
+            System.out.println("Player 2 : "+map.getPlayer2().getTerritories());
         } else if (keycode == Input.Keys.ESCAPE)
             ScreenHandler.setScreen(ScreenHandler.home);
         else if (keycode == Input.Keys.J) {
