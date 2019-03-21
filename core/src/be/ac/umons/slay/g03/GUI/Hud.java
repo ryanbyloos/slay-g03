@@ -35,9 +35,6 @@ class Hud extends Stage {
 
         ImageButton buttons[] = {soldier0, soldier1, soldier2, soldier3, defenceTower, attackTower, boat, mine};
         shapeRenderer = new ShapeRenderer();
-//        button = new TextButton("", ScreenHandler.game.skin);
-//        button.setSize(w, 48);
-//        this.addActor(button);
         int i = 0;
         for (ImageButton button : buttons) {
             button.setPosition((float) w / 24 + i, 6);
@@ -47,7 +44,8 @@ class Hud extends Stage {
         soldier0.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if(world.gameState.getStates().isTerritorySelected()) world.gameState.getStates().setCreationMode(!world.gameState.getStates().isCreationMode());
+                if (world.gameState.getStates().isTerritorySelected())
+                    world.gameState.getStates().setCreationMode(!world.gameState.getStates().isCreationMode());
             }
         });
     }

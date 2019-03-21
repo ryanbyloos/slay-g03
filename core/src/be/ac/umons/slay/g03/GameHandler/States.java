@@ -7,6 +7,11 @@ public class States {
     private boolean territorySelected;
     private boolean soldierSelected;
     private boolean boatSelected;
+    private boolean attackTowerSelected;
+    private boolean creationMode;
+    private Cell destination;
+    private Cell source;
+    private Territory territory;
 
     public boolean isBoatSelected() {
         return boatSelected;
@@ -24,11 +29,6 @@ public class States {
         this.attackTowerSelected = attackTowerSelected;
     }
 
-    private boolean attackTowerSelected;
-    private boolean creationMode;
-    private Cell destination;
-    private Cell source;
-    private Territory territory;
     public boolean isTerritorySelected() {
         return territorySelected;
     }
@@ -79,7 +79,7 @@ public class States {
 
     @Override
     public String toString() {
-        return "[creationMode][territorySelected][soldierSelected][boatSelected]" + "["  + creationMode+ "]"+"["+ territorySelected+ "]"  + "["+ soldierSelected+ "]"  +"["+ boatSelected+ "]";
+        return "[creationMode][territorySelected][soldierSelected][boatSelected]" + "[" + creationMode + "]" + "[" + territorySelected + "]" + "[" + soldierSelected + "]" + "[" + boatSelected + "]";
     }
 
 }

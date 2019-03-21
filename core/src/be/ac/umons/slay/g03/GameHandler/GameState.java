@@ -35,9 +35,9 @@ import java.util.ArrayList;
 public class GameState {
     private Map map;
     private Loader loader;
-    private int turnPlayed;
     private String logFile;
     private States states;
+    private int turnPlayed;
 
     public GameState(Map map, Loader loader, int turnPlayed, String logFile) {
         this.map = map;
@@ -45,6 +45,16 @@ public class GameState {
         this.turnPlayed = turnPlayed;
         this.logFile = logFile;
         this.states = new States();
+    }
+
+    private static void copyFile(File source, File dest) throws IOException {
+        FileChannel sourceChannel = null;
+        FileChannel destChannel = null;
+        sourceChannel = new FileInputStream(source).getChannel();
+        destChannel = new FileOutputStream(dest).getChannel();
+        destChannel.transferFrom(sourceChannel, 0, sourceChannel.size());
+        sourceChannel.close();
+        destChannel.close();
     }
 
     public void pause() {
@@ -309,7 +319,6 @@ public class GameState {
         map.getPlayer2().setTerritories(player2);
     }
 
-
     public void quit() {
 
     }
@@ -318,7 +327,7 @@ public class GameState {
 
         Cell cell = map.findCell(x, y);
         if (cell != null) {
-            if (cell.getElementOn() == null && cell.getOwner() != null && cell.getOwner().isTurn() ) {
+            if (cell.getElementOn() == null && cell.getOwner() != null && cell.getOwner().isTurn()) {
                 states.setTerritory(cell.findTerritory());
                 states.setTerritorySelected(true);
             } else {
@@ -388,7 +397,6 @@ public class GameState {
             }
         }
     }
-
 
     public void saveTmxFile() throws IOException {
         String dest = Gdx.files.getLocalStoragePath().concat("assets/Saves/").concat(map.getPlayer1().getName() + '-' + map.getPlayer2().getName() + '-').concat(loader.getTmxFile());
@@ -557,16 +565,6 @@ public class GameState {
         StreamResult streamResult = new StreamResult(new File(file));
         transformer.transform(domSource, streamResult);
 
-    }
-
-    private static void copyFile(File source, File dest) throws IOException {
-        FileChannel sourceChannel = null;
-        FileChannel destChannel = null;
-        sourceChannel = new FileInputStream(source).getChannel();
-        destChannel = new FileOutputStream(dest).getChannel();
-        destChannel.transferFrom(sourceChannel, 0, sourceChannel.size());
-        sourceChannel.close();
-        destChannel.close();
     }
 
     public void nextTurn() {
@@ -786,7 +784,6 @@ public class GameState {
 
 
     }
-
 
     public void saveReplay() throws ReplayParserException {
         String file = Gdx.files.getLocalStoragePath().concat("assets/Replays/").concat("test.xml"); // TODO: 02-03-19 à changer par la suite (le nom, les 2 cas possible si(la partie repris est une sauvegarde ou pas ect ..)

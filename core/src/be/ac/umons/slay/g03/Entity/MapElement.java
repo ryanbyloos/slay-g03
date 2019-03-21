@@ -32,7 +32,7 @@ public abstract class MapElement {
         this.owner = newOwner;
     }
 
-    public int getLevel(){
+    public int getLevel() {
         return -1;
     }
 
@@ -45,7 +45,7 @@ public abstract class MapElement {
     }
 
 
-    protected void checkNewTerritory(Map map,Cell newCell,Cell oldCell){
+    protected void checkNewTerritory(Map map, Cell newCell, Cell oldCell) {
 
     }
 

@@ -76,6 +76,10 @@ public class Player {
         return territories;
     }
 
+    public void setTerritories(ArrayList<Territory> territories) {
+        this.territories = territories;
+    }
+
     public boolean isTurn() {
         return turn;
     }
@@ -83,7 +87,6 @@ public class Player {
     public void setTurn(boolean turn) {
         this.turn = turn;
     }
-
 
     @Override
     public boolean equals(Object other) {
@@ -104,12 +107,8 @@ public class Player {
         this.maxMoveNumber = maxMoveNumber;
     }
 
-    public void setTerritories(ArrayList<Territory> territories) {
-        this.territories = territories;
-    }
-
     @Override
     public String toString() {
-        return "Name : " + name + " ID : "+id;
+        return "Name : " + name + " ID : " + id;
     }
 }

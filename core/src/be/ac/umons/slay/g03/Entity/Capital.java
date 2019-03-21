@@ -34,10 +34,6 @@ public class Capital extends MapElement {
         money = money + gain;
     }
 
-    public void setMoney(int money) {
-        this.money = money;
-    }
-
     @Override
     public boolean equals(Object other) {
         if (!(other instanceof Capital)) {
@@ -52,6 +48,10 @@ public class Capital extends MapElement {
 
     public int getMoney() {
         return money;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
     }
 
     @Override

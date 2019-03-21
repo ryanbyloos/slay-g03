@@ -19,10 +19,12 @@ public class AttackTower extends DefenceTower {
     public ArrayList<Cell> reachableCells() {
         return null;
     }
-    public boolean select(){
+
+    public boolean select() {
         // TODO: 21-03-19  
         return false;
     }
+
     public void attack(Cell cell) {
         if (cell.getElementOn() instanceof Soldier) {
             if (((cell.getElementOn()).getLevel() < this.getLevel()

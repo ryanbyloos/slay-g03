@@ -3,7 +3,6 @@ package be.ac.umons.slay.g03.GUI;
 import be.ac.umons.slay.g03.Core.Cell;
 import be.ac.umons.slay.g03.Core.Map;
 import be.ac.umons.slay.g03.Core.Player;
-import be.ac.umons.slay.g03.Core.Territory;
 import be.ac.umons.slay.g03.Entity.*;
 import be.ac.umons.slay.g03.GameHandler.GameState;
 import be.ac.umons.slay.g03.GameHandler.Loader;
@@ -21,18 +20,14 @@ import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 
 public class World extends ApplicationAdapter implements InputProcessor {
+    GameState gameState;
     TextureAtlas.AtlasRegion soldier0, soldier1, soldier2, soldier3, defenceTower, attackTower, boat, mine;
     private TextureAtlas.AtlasRegion blueHex, greenHex, yellowHex, redHex, tree, grave, contour, capital;
     private SpriteBatch batch;
     private OrthographicCamera camera;
     private Map map;
     private TextureAtlas atlas;
-    private Cell source, destination;
-    private Territory territory;
-    protected GameState gameState;
     private Loader loader;
-    private boolean selected;
-    boolean creationMode = false;
 
     private int[] getMouseCoord(OrthographicCamera camera) {
         Vector3 vector = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
@@ -197,8 +192,7 @@ public class World extends ApplicationAdapter implements InputProcessor {
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.P) {
             gameState.nextTurn();
-        }
-        else if (keycode == Input.Keys.ESCAPE)
+        } else if (keycode == Input.Keys.ESCAPE)
             ScreenHandler.setScreen(ScreenHandler.home);
         else if (keycode == Input.Keys.J) {
             if (map.getPlayer1().isTurn()) {

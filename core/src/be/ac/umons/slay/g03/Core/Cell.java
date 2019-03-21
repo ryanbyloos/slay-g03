@@ -24,7 +24,7 @@ public class Cell {
     }
 
     public void kill() {
-        elementOn= new Grave(elementOn.getLevel());
+        elementOn = new Grave(elementOn.getLevel());
 
     }
 
@@ -42,15 +42,15 @@ public class Cell {
         return null;
     }
 
-    public void spwanTree(Map map){
-        if (elementOn == null){
+    public void spwanTree(Map map) {
+        if (elementOn == null) {
             int tree = 0;
-            for (Cell cell: adjacentCell(map,this)
-                 ) {
+            for (Cell cell : adjacentCell(map, this)
+            ) {
                 if (cell.getElementOn() instanceof Tree) tree++;
             }
             float random = new Random().nextInt(100);
-            if (random/100 < 1/100 + (tree * Math.log10(tree+1))/100 ){
+            if (random / 100 < 1 / 100 + (tree * Math.log10(tree + 1)) / 100) {
                 elementOn = new Tree();
             }
         }
@@ -65,23 +65,23 @@ public class Cell {
     }
 
     // TODO: 13/03/2019
-    private ArrayList<Cell> boatAccessibleCell(Map map){
+    private ArrayList<Cell> boatAccessibleCell(Map map) {
 
         return null;
     }
 
-    private ArrayList<Cell> soldierAccessibleCell(Map map){
+    private ArrayList<Cell> soldierAccessibleCell(Map map) {
         ArrayList<Cell> adjacentCell = new ArrayList<>();
         ArrayList<Cell> accessibleCell = new ArrayList<>(adjacentCell(map, this));
 
         for (int dist = 3; dist > 0; dist--) {
-            for (Cell cell: accessibleCell) {
-                if(cell.getOwner()!=null && cell.getOwner().equals(this.getOwner())){
+            for (Cell cell : accessibleCell) {
+                if (cell.getOwner() != null && cell.getOwner().equals(this.getOwner())) {
                     adjacentCell.addAll(adjacentCell(map, cell));
                 }
             }
             for (Cell cellAdj : adjacentCell) {
-                if (!accessibleCell.contains(cellAdj)){
+                if (!accessibleCell.contains(cellAdj)) {
                     accessibleCell.add(cellAdj);
                 }
             }
@@ -90,7 +90,7 @@ public class Cell {
         return accessibleCell;
     }
 
-    public ArrayList<Cell> adjacentCell(Map map,Cell himself){
+    public ArrayList<Cell> adjacentCell(Map map, Cell himself) {
         ArrayList<Cell> adjacentCell = new ArrayList<>();
 
         int x = himself.getX();
@@ -108,21 +108,21 @@ public class Cell {
     }
 
     private void addCell(ArrayList<Cell> cells, Cell cell) {
-        if (cell != null && !cell.isWater()){
+        if (cell != null && !cell.isWater()) {
             cells.add(cell);
         }
     }
 
-   public Territory createTerritory( Map map, Boolean mark, Territory territory){
-       this.setChecked(!this.isChecked());
-       territory.addCell(this);
-       for (Cell cellAdj : this.adjacentCell(map, this)) {
-           if (this.getOwner() != null && cellAdj.getOwner() != null && cellAdj.getOwner().equals(this.getOwner()) && cellAdj.isChecked() == mark){
-               cellAdj.createTerritory(map,mark,territory);
-           }
-       }
-       return territory;
-   }
+    public Territory createTerritory(Map map, Boolean mark, Territory territory) {
+        this.setChecked(!this.isChecked());
+        territory.addCell(this);
+        for (Cell cellAdj : this.adjacentCell(map, this)) {
+            if (this.getOwner() != null && cellAdj.getOwner() != null && cellAdj.getOwner().equals(this.getOwner()) && cellAdj.isChecked() == mark) {
+                cellAdj.createTerritory(map, mark, territory);
+            }
+        }
+        return territory;
+    }
 
     public int getY() {
         return y;
@@ -174,7 +174,9 @@ public class Cell {
 
     @Override
     public String toString() {
-        if(owner!=null) return "Cell[x][y][owner][checked][elementOn] : "+"["+x+"]"+"[" +y+"]"+"["+owner.getClass().getSimpleName()+"]"+"["+checked+"]"+"["+elementOn+"]\n";
-        else return "Cell[x][y][owner][checked] : "+"["+x+"]"+"[" +y+"]"+"["+owner+"]" +"["+ checked + "]\n";
+        if (owner != null)
+            return "Cell[x][y][owner][checked][elementOn] : " + "[" + x + "]" + "[" + y + "]" + "[" + owner.getClass().getSimpleName() + "]" + "[" + checked + "]" + "[" + elementOn + "]\n";
+        else
+            return "Cell[x][y][owner][checked] : " + "[" + x + "]" + "[" + y + "]" + "[" + owner + "]" + "[" + checked + "]\n";
     }
 }

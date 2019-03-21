@@ -12,18 +12,18 @@ public class Territory {
     private ArrayList<Cell> cells;
     private int gainThisTurn;
 
-    public int gain() {
-        int gain = 0;
-        for (Cell cell : cells
-                ) {
-            if (!(cell.getElementOn() instanceof Tree)) gain++;
-        }
-        return gain;
-    }
-
     public Territory(ArrayList<Cell> cells) {
 
         this.cells = cells;
+    }
+
+    public int gain() {
+        int gain = 0;
+        for (Cell cell : cells
+        ) {
+            if (!(cell.getElementOn() instanceof Tree)) gain++;
+        }
+        return gain;
     }
 
     public void checkcost() {
@@ -44,7 +44,7 @@ public class Territory {
     public int cost() {
         int cost = 0;
         for (Cell cell : cells
-                ) {
+        ) {
             if (cell.getElementOn() != null) {
                 cost = cost + cell.getElementOn().getMaintenanceCost();
             }
@@ -54,14 +54,14 @@ public class Territory {
 
     private void bankrupt() {
         for (Cell cell : cells
-                ) {
+        ) {
             if (cell.getElementOn() instanceof Soldier) cell.setElementOn(new Grave(cell.getElementOn().getLevel()));
         }
     }
 
     public Capital findCapital() {
         for (Cell cell : cells
-                ) {
+        ) {
             if (cell.getElementOn() instanceof Capital) return (Capital) cell.getElementOn();
         }
         return null;
@@ -89,7 +89,7 @@ public class Territory {
         ArrayList<Cell> cellPossible = new ArrayList<>();
         ArrayList<Cell> cellPossibleToDelete = new ArrayList<>();
         for (Cell cell : cells
-                ) {
+        ) {
             if (cell.getElementOn() == null) {
                 cellPossible.add(cell);
             }
@@ -100,7 +100,7 @@ public class Territory {
             return;
         }
         for (Cell cell : cells
-                ) {
+        ) {
             if (!(cell.getElementOn() instanceof Capital)) cellPossibleToDelete.add(cell);
         }
         if ((cellPossibleToDelete.size() != 0)) {
