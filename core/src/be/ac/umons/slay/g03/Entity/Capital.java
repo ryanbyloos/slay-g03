@@ -6,7 +6,7 @@ public class Capital extends MapElement {
     private int money;
 
     public Capital(Player owner, int money) {
-        super(0, 0, owner);
+        super(owner);
         this.money = money;
     }
 

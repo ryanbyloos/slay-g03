@@ -5,9 +5,11 @@ import be.ac.umons.slay.g03.Core.Player;
 public class Mine extends Infrastructure {
     private boolean visible;
 
-    public Mine(boolean visible, int maintenanceCost, int creationCost, Player player) {
-        super(maintenanceCost, creationCost, player);
-        this.visible = visible;
+    public Mine(Player owner) {
+        super(owner);
+        this.visible = true;
+        this.creationCost = 15;
+        this.maintenanceCost = 0;
     }
 
     public boolean checkExplosion() {
@@ -20,5 +22,9 @@ public class Mine extends Infrastructure {
 
     public boolean isVisible() {
         return visible;
+    }
+
+    public void setInvisible() {
+        this.visible = false;
     }
 }

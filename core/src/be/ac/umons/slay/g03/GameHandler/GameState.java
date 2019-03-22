@@ -38,6 +38,7 @@ public class GameState {
     private String logFile;
     private States states;
     private int turnPlayed;
+    private String elementToBuild;
 
     public GameState(Map map, Loader loader, int turnPlayed, String logFile) {
         this.map = map;
@@ -162,16 +163,16 @@ public class GameState {
                                 Soldier soldier;
                                 switch (level) {
                                     case 0:
-                                        soldier = new Soldier(2, 10, cell.getOwner(), 0, hasMoved);
+                                        soldier = new Soldier(cell.getOwner(), 0, hasMoved);
                                         break;
                                     case 1:
-                                        soldier = new Soldier(5, 20, cell.getOwner(), 1, hasMoved);
+                                        soldier = new Soldier(cell.getOwner(), 1, hasMoved);
                                         break;
                                     case 2:
-                                        soldier = new Soldier(14, 40, cell.getOwner(), 2, hasMoved);
+                                        soldier = new Soldier(cell.getOwner(), 2, hasMoved);
                                         break;
                                     case 3:
-                                        soldier = new Soldier(41, 80, cell.getOwner(), 3, hasMoved);
+                                        soldier = new Soldier(cell.getOwner(), 3, hasMoved);
                                         break;
                                     default:
                                         soldier = null;
@@ -185,16 +186,16 @@ public class GameState {
                                 AttackTower attackTower;
                                 switch (level) {
                                     case 0:
-                                        attackTower = new AttackTower(2, 5, cell.getOwner(), 0);
+                                        attackTower = new AttackTower(cell.getOwner(), 0);
                                         break;
                                     case 1:
-                                        attackTower = new AttackTower(4, 10, cell.getOwner(), 1);
+                                        attackTower = new AttackTower(cell.getOwner(), 1);
                                         break;
                                     case 2:
-                                        attackTower = new AttackTower(8, 20, cell.getOwner(), 2);
+                                        attackTower = new AttackTower(cell.getOwner(), 2);
                                         break;
                                     case 3:
-                                        attackTower = new AttackTower(16, 40, cell.getOwner(), 3);
+                                        attackTower = new AttackTower(cell.getOwner(), 3);
                                         break;
                                     default:
                                         attackTower = null;
@@ -218,16 +219,16 @@ public class GameState {
                                         Soldier soldier;
                                         switch (level) {
                                             case 0:
-                                                soldier = new Soldier(2, 10, cell.getOwner(), 0, soldierHasMoved);
+                                                soldier = new Soldier(cell.getOwner(), 0, soldierHasMoved);
                                                 break;
                                             case 1:
-                                                soldier = new Soldier(5, 20, cell.getOwner(), 1, soldierHasMoved);
+                                                soldier = new Soldier(cell.getOwner(), 1, soldierHasMoved);
                                                 break;
                                             case 2:
-                                                soldier = new Soldier(14, 40, cell.getOwner(), 2, soldierHasMoved);
+                                                soldier = new Soldier(cell.getOwner(), 2, soldierHasMoved);
                                                 break;
                                             case 3:
-                                                soldier = new Soldier(41, 80, cell.getOwner(), 3, soldierHasMoved);
+                                                soldier = new Soldier(cell.getOwner(), 3, soldierHasMoved);
                                                 break;
                                             default:
                                                 soldier = null;
@@ -236,7 +237,7 @@ public class GameState {
                                         soldiers.add(soldier);
                                     }
                                 }
-                                Boat boat = new Boat(t, defence, 0, 25, cell.getOwner(), hasMoved);
+                                Boat boat = new Boat(cell.getOwner(), hasMoved);
                                 boat.setSoldiers(soldiers);
                                 cell.setElementOn(boat);
                                 break;
@@ -250,16 +251,16 @@ public class GameState {
                                 DefenceTower defenceTower;
                                 switch (level) {
                                     case 0:
-                                        defenceTower = new DefenceTower(2, 5, cell.getOwner(), 0);
+                                        defenceTower = new DefenceTower(cell.getOwner(), 0);
                                         break;
                                     case 1:
-                                        defenceTower = new DefenceTower(4, 10, cell.getOwner(), 1);
+                                        defenceTower = new DefenceTower(cell.getOwner(), 1);
                                         break;
                                     case 2:
-                                        defenceTower = new DefenceTower(8, 20, cell.getOwner(), 2);
+                                        defenceTower = new DefenceTower(cell.getOwner(), 2);
                                         break;
                                     case 3:
-                                        defenceTower = new DefenceTower(16, 40, cell.getOwner(), 3);
+                                        defenceTower = new DefenceTower(cell.getOwner(), 3);
                                         break;
                                     default:
                                         defenceTower = null;
@@ -274,7 +275,7 @@ public class GameState {
                                 break;
                             case "mine":
                                 boolean visible = Boolean.parseBoolean(cellData.getAttribute("visible"));
-                                cell.setElementOn(new Mine(visible, 0, 10, cell.getOwner()));
+                                cell.setElementOn(new Mine(cell.getOwner()));
                                 break;
                             case "tree":
                                 cell.setElementOn(new Tree());
@@ -335,15 +336,17 @@ public class GameState {
                 states.setTerritorySelected(false);
             }
         }
-
         if (states.isTerritorySelected()) {
             if (states.isCreationMode()) {
                 states.setDestination(map.findCell(x, y));
                 if (states.getDestination() != null && states.getDestination().getElementOn() == null) {
                     if (states.getDestination().getOwner() == map.getPlayer1() && map.getPlayer1().isTurn())
-                        states.getDestination().setElementOn(new Soldier(5, 20, map.getPlayer1(), 0, false));
+                        states.getDestination().setElementOn(newElement(elementToBuild, map.getPlayer1()));
                     else if (states.getDestination().getOwner() == map.getPlayer2() && map.getPlayer2().isTurn())
-                        states.getDestination().setElementOn(new Soldier(5, 20, map.getPlayer2(), 0, false));
+                        states.getDestination().setElementOn(newElement(elementToBuild, map.getPlayer2()));
+                    else if (map.getPlayer1().isTurn() && states.getDestination().isWater() && elementToBuild.equals("boat")) {
+                        states.getDestination().setElementOn(newElement(elementToBuild, map.getPlayer1()));
+                    }
                 }
                 try {
                     storeMove(states.getDestination() != null ? states.getDestination().getOwner() : null);
@@ -360,8 +363,6 @@ public class GameState {
                 if (states.getSource().getElementOn() instanceof Soldier) {
                     if (states.getSource().accessibleCell(map) != null && ((Soldier) states.getSource().getElementOn()).select())
                         states.setSoldierSelected(true);
-
-
                 } else if (states.getSource().getElementOn() instanceof Boat) {
                     if (states.getSource().accessibleCell(map) != null && ((Boat) states.getSource().getElementOn()).select())
                         states.setBoatSelected(true);
@@ -383,7 +384,6 @@ public class GameState {
             } else if (states.getSource().getElementOn() instanceof AttackTower) {
                 ((AttackTower) states.getSource().getElementOn()).attack(states.getDestination());
                 states.setAttackTowerSelected(false);
-
             }
             try {
                 if (map.getPlayer1().isTurn()) {
@@ -396,6 +396,28 @@ public class GameState {
                 e.printStackTrace();
             }
         }
+    }
+
+    private MapElement newElement(String elementToBuild, Player player) {
+        switch (elementToBuild) {
+            case "soldier0":
+                return new Soldier(player, 0, false);
+            case "soldier1":
+                return new Soldier(player, 1, false);
+            case "soldier2":
+                return new Soldier(player, 2, false);
+            case "soldier3":
+                return new Soldier(player, 3, false);
+            case "defenceTower":
+                return new DefenceTower(player, 0);
+            case "attacktTower":
+                return new AttackTower(player, 0);
+            case "boat":
+                return new Boat(player, false);
+            case "mine":
+                return new Mine(player);
+        }
+        return null;
     }
 
     public void saveTmxFile() throws IOException {
@@ -811,5 +833,13 @@ public class GameState {
 
     public States getStates() {
         return states;
+    }
+
+    public String getElementToBuild() {
+        return elementToBuild;
+    }
+
+    public void setElementToBuild(String elementToBuild) {
+        this.elementToBuild = elementToBuild;
     }
 }

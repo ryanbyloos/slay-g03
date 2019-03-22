@@ -12,7 +12,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 class Hud extends Stage {
 
     ImageButton soldier0, soldier1, soldier2, soldier3, defenceTower, attackTower, boat, mine;
-    //    TextButton button;
     ShapeRenderer shapeRenderer;
     World world;
     private int w = ScreenHandler.WIDTH;
@@ -33,7 +32,7 @@ class Hud extends Stage {
         boat = new ImageButton(new TextureRegionDrawable(new TextureRegion(world.boat)));
         mine = new ImageButton(new TextureRegionDrawable(new TextureRegion(world.mine)));
 
-        ImageButton buttons[] = {soldier0, soldier1, soldier2, soldier3, defenceTower, attackTower, boat, mine};
+        ImageButton[] buttons = {soldier0, soldier1, soldier2, soldier3, defenceTower, attackTower, boat, mine};
         shapeRenderer = new ShapeRenderer();
         int i = 0;
         for (ImageButton button : buttons) {
@@ -41,13 +40,14 @@ class Hud extends Stage {
             i += 48;
             this.addActor(button);
         }
-        soldier0.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                if (world.gameState.getStates().isTerritorySelected())
-                    world.gameState.getStates().setCreationMode(!world.gameState.getStates().isCreationMode());
-            }
-        });
+        soldier0.addListener(createClickListener("soldier0"));
+        soldier1.addListener(createClickListener("soldier1"));
+        soldier2.addListener(createClickListener("soldier2"));
+        soldier3.addListener(createClickListener("soldier3"));
+        defenceTower.addListener(createClickListener("defenceTower"));
+        attackTower.addListener(createClickListener("attackTower"));
+        boat.addListener(createClickListener("boat"));
+        mine.addListener(createClickListener("mine"));
     }
 
     @Override
@@ -57,5 +57,16 @@ class Hud extends Stage {
         shapeRenderer.rect(0, 0, w, 48);
         shapeRenderer.end();
         super.draw();
+    }
+
+    private ClickListener createClickListener(String name) {
+        return new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (world.gameState.getStates().isTerritorySelected())
+                    world.gameState.getStates().setCreationMode(!world.gameState.getStates().isCreationMode());
+                world.gameState.setElementToBuild(name);
+            }
+        };
     }
 }

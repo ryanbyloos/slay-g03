@@ -137,16 +137,16 @@ public class Loader {
                         Soldier soldier;
                         switch (level) {
                             case 0:
-                                soldier = new Soldier(2, 10, owner, 0, hasMoved);
+                                soldier = new Soldier(owner, 0, hasMoved);
                                 break;
                             case 1:
-                                soldier = new Soldier(5, 20, owner, 1, hasMoved);
+                                soldier = new Soldier(owner, 1, hasMoved);
                                 break;
                             case 2:
-                                soldier = new Soldier(14, 40, owner, 2, hasMoved);
+                                soldier = new Soldier(owner, 2, hasMoved);
                                 break;
                             case 3:
-                                soldier = new Soldier(41, 80, owner, 3, hasMoved);
+                                soldier = new Soldier(owner, 3, hasMoved);
                                 break;
                             default:
                                 soldier = null;
@@ -172,22 +172,21 @@ public class Loader {
                         for (int j = 0; j < soldiersData.getLength(); j++) {
                             Node soldierData = soldiersData.item(j);
                             if (soldierData.getNodeType() == Node.ELEMENT_NODE) {
-                                ;
                                 int level = Integer.parseInt(soldierData.getAttributes().getNamedItem("level").getTextContent());
                                 boolean soldierHasMoved = Boolean.parseBoolean(soldierData.getAttributes().getNamedItem("hasmoved").getTextContent());
                                 Soldier soldier;
                                 switch (level) {
                                     case 0:
-                                        soldier = new Soldier(2, 10, owner, 0, soldierHasMoved);
+                                        soldier = new Soldier(owner, 0, soldierHasMoved);
                                         break;
                                     case 1:
-                                        soldier = new Soldier(5, 20, owner, 1, soldierHasMoved);
+                                        soldier = new Soldier(owner, 1, soldierHasMoved);
                                         break;
                                     case 2:
-                                        soldier = new Soldier(14, 40, owner, 2, soldierHasMoved);
+                                        soldier = new Soldier(owner, 2, soldierHasMoved);
                                         break;
                                     case 3:
-                                        soldier = new Soldier(41, 80, owner, 3, soldierHasMoved);
+                                        soldier = new Soldier(owner, 3, soldierHasMoved);
                                         break;
                                     default:
                                         soldier = null;
@@ -197,7 +196,7 @@ public class Loader {
                             }
 
                         }
-                        Boat boat = new Boat(distMax, 0, 0, 25, owner, hasMoved);//Defense à determiner avec les autre, pareil pour creationCost
+                        Boat boat = new Boat(owner, hasMoved);//Defense à determiner avec les autre, pareil pour creationCost
                         boat.setSoldiers(soldiers);
                         cell.setElementOn(boat);
                     }
@@ -209,16 +208,16 @@ public class Loader {
                         AttackTower attackTower;
                         switch (level) {
                             case 0:
-                                attackTower = new AttackTower(2, 5, owner, 0);
+                                attackTower = new AttackTower(owner, 0);
                                 break;
                             case 1:
-                                attackTower = new AttackTower(4, 10, owner, 1);
+                                attackTower = new AttackTower(owner, 1);
                                 break;
                             case 2:
-                                attackTower = new AttackTower(8, 20, owner, 2);
+                                attackTower = new AttackTower(owner, 2);
                                 break;
                             case 3:
-                                attackTower = new AttackTower(16, 40, owner, 3);
+                                attackTower = new AttackTower(owner, 3);
                                 break;
                             default:
                                 attackTower = null;
@@ -235,16 +234,16 @@ public class Loader {
                         DefenceTower defenceTower;
                         switch (level) {
                             case 0:
-                                defenceTower = new DefenceTower(2, 5, owner, 0);
+                                defenceTower = new DefenceTower(owner, 0);
                                 break;
                             case 1:
-                                defenceTower = new DefenceTower(4, 10, owner, 1);
+                                defenceTower = new DefenceTower(owner, 1);
                                 break;
                             case 2:
-                                defenceTower = new DefenceTower(8, 20, owner, 2);
+                                defenceTower = new DefenceTower(owner, 2);
                                 break;
                             case 3:
-                                defenceTower = new DefenceTower(16, 40, owner, 3);
+                                defenceTower = new DefenceTower(owner, 3);
                                 break;
                             default:
                                 defenceTower = null;
@@ -268,7 +267,7 @@ public class Loader {
                         } else {
                             owner = map.getPlayer2();
                         }
-                        cell.setElementOn(new Mine(visible, 0, 10, owner));
+                        cell.setElementOn(new Mine(owner));
                     }
                 } else if (type.equals("tree") && cell != null) {
                     if (!cell.isWater()) {

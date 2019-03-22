@@ -8,17 +8,24 @@ import java.util.ArrayList;
 
 public class Boat extends Infrastructure implements Controlable {
 
-    private int t;
+    private int t = 5;
     private int defence;
     private boolean hasMoved;
 
-    private ArrayList<Soldier> soldiers;
+    private ArrayList<Soldier> soldiers = new ArrayList<>();
 
-    public Boat(int t, int defence, int maintenanceCost, int creationCost, Player player, boolean hasMoved) {
-        super(maintenanceCost, creationCost, player);
-        this.t = t;
-        this.defence = defence;
+    public Boat(Player player, boolean hasMoved) {
+        super(player);
         this.hasMoved = hasMoved;
+        this.defence = 0;
+        if (soldiers != null && soldiers.size() != 0) {
+            for (Soldier s : soldiers) {
+                if (s.getLevel() >= defence)
+                    defence = s.getLevel();
+            }
+        }
+        this.maintenanceCost = 0;
+        this.creationCost = 40;
     }
 
     public boolean deploy() {

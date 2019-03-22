@@ -4,7 +4,7 @@ public class Grave extends MapElement {
     private int level;
 
     public Grave(int level) {
-        super(0, 0, null);
+        super(null);
         this.level = level;
     }
 

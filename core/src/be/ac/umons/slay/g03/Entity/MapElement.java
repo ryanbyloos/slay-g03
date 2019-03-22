@@ -5,14 +5,12 @@ import be.ac.umons.slay.g03.Core.Map;
 import be.ac.umons.slay.g03.Core.Player;
 
 public abstract class MapElement {
-    private int maintenanceCost;
-    private int creationCost;
+    int maintenanceCost;
+    int creationCost;
     private Player owner;
     private boolean hasMoved;
 
-    public MapElement(int maintenanceCost, int creationCost, Player owner) {
-        this.maintenanceCost = maintenanceCost;
-        this.creationCost = creationCost;
+    public MapElement(Player owner) {
         this.owner = owner;
     }
 
@@ -43,7 +41,6 @@ public abstract class MapElement {
     public void setHasMoved(boolean hasMoved) {
         this.hasMoved = hasMoved;
     }
-
 
     protected void checkNewTerritory(Map map, Cell newCell, Cell oldCell) {
 

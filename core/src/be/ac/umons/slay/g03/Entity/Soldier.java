@@ -11,10 +11,28 @@ import java.util.Random;
 public class Soldier extends MapElement implements Controlable {
     private int level;
 
-    public Soldier(int maintenanceCost, int creationCost, Player owner, int level, boolean hasMoved) {
-        super(maintenanceCost, creationCost, owner);
+    public Soldier(Player owner, int level, boolean hasMoved) {
+        super(owner);
         this.level = level;
         this.setHasMoved(hasMoved);
+        switch (level) {
+            case 0:
+                this.creationCost = 10;
+                this.maintenanceCost = 2;
+                break;
+            case 1:
+                this.creationCost = 20;
+                this.maintenanceCost = 5;
+                break;
+            case 2:
+                this.creationCost = 40;
+                this.maintenanceCost = 14;
+                break;
+            case 3:
+                this.creationCost = 80;
+                this.maintenanceCost = 41;
+                break;
+        }
     }
 
     private boolean attack(Cell cellAttacker, Cell cellDefender) {
@@ -51,13 +69,13 @@ public class Soldier extends MapElement implements Controlable {
 
             switch (this.level) {
                 case 0:
-                    upSoldier = new Soldier(5, 20, this.getOwner(), 1, false);
+                    upSoldier = new Soldier(this.getOwner(), 1, false);
                     break;
                 case 1:
-                    upSoldier = new Soldier(14, 40, this.getOwner(), 2, false);
+                    upSoldier = new Soldier(this.getOwner(), 2, false);
                     break;
                 case 2:
-                    upSoldier = new Soldier(41, 80, this.getOwner(), 3, false);
+                    upSoldier = new Soldier(this.getOwner(), 3, false);
                     break;
             }
 

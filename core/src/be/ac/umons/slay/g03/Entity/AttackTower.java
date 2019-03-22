@@ -7,8 +7,8 @@ import java.util.ArrayList;
 
 public class AttackTower extends DefenceTower {
 
-    public AttackTower(int maintenanceCost, int creationCost, Player player, int level) {
-        super(maintenanceCost, creationCost, player, level);
+    public AttackTower(Player owner, int level) {
+        super(owner, level);
     }
 
     @Override
