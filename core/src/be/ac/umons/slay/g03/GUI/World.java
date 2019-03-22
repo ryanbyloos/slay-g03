@@ -25,7 +25,7 @@ public class World extends ApplicationAdapter implements InputProcessor {
     private TextureAtlas.AtlasRegion blueHex, greenHex, yellowHex, redHex, tree, grave, contour, capital;
     private SpriteBatch batch;
     private OrthographicCamera camera;
-    private Map map;
+    Map map;
     private TextureAtlas atlas;
     private Loader loader;
 

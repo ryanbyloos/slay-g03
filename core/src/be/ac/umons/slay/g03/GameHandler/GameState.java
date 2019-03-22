@@ -385,6 +385,8 @@ public class GameState {
                 ((AttackTower) states.getSource().getElementOn()).attack(states.getDestination());
                 states.setAttackTowerSelected(false);
             }
+            states.setTerritory(states.getDestination().findTerritory());
+            states.setTerritorySelected(true);
             try {
                 if (map.getPlayer1().isTurn()) {
                     storeMove(map.getPlayer1());

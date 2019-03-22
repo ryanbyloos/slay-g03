@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 public class WorldScreen implements Screen {
 
     private World world = new World();
+    private TerritoryHud territoryHud;
     private Hud hud;
 
     private InputMultiplexer multiplexer = new InputMultiplexer();
@@ -15,8 +16,10 @@ public class WorldScreen implements Screen {
     @Override
     public void show() {
         world.create();
+        territoryHud = new TerritoryHud(world);
         hud = new Hud(world);
         multiplexer.addProcessor(hud);
+        multiplexer.addProcessor(territoryHud);
         multiplexer.addProcessor(world);
         Gdx.input.setInputProcessor(multiplexer);
     }
@@ -26,6 +29,7 @@ public class WorldScreen implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         world.render();
+        territoryHud.draw();
         hud.draw();
     }
 
@@ -50,6 +54,7 @@ public class WorldScreen implements Screen {
     @Override
     public void dispose() {
         world.dispose();
+        territoryHud.dispose();
         hud.dispose();
     }
 
