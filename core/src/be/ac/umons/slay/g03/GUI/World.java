@@ -16,7 +16,11 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector3;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class World extends ApplicationAdapter implements InputProcessor {
@@ -192,8 +196,21 @@ public class World extends ApplicationAdapter implements InputProcessor {
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.P) {
             gameState.nextTurn();
-        } else if (keycode == Input.Keys.ESCAPE)
+        } else if (keycode == Input.Keys.ESCAPE){
+            try {
+                gameState.save();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (TransformerException e) {
+                e.printStackTrace();
+            } catch (ParserConfigurationException e) {
+                e.printStackTrace();
+            } catch (SAXException e) {
+                e.printStackTrace();
+            }
             ScreenHandler.setScreen(ScreenHandler.home);
+        }
+
         else if (keycode == Input.Keys.J) {
             if (map.getPlayer1().isTurn()) {
                 try {
