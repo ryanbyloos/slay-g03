@@ -155,8 +155,8 @@ public class World extends ApplicationAdapter implements InputProcessor {
         initTextures(atlas);
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
-        map = new Map(new ArrayList<>(), new Player("Danial", 1, -1, false, 0, new ArrayList<>()),
-                new Player("Alex", 2, -1, false, 0, new ArrayList<>()));
+        map = new Map(new ArrayList<>(), new Player("Yellow", 1, -1, false, 0, new ArrayList<>()),
+                new Player("Red", 2, -1, false, 0, new ArrayList<>()));
         map.getPlayer1().setTurn(true);
         map.getPlayer1().setMaxMoveNumber(-1);
         map.getPlayer2().setMaxMoveNumber(-1);
@@ -199,13 +199,7 @@ public class World extends ApplicationAdapter implements InputProcessor {
         } else if (keycode == Input.Keys.ESCAPE){
             try {
                 gameState.save();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (TransformerException e) {
-                e.printStackTrace();
-            } catch (ParserConfigurationException e) {
-                e.printStackTrace();
-            } catch (SAXException e) {
+            } catch (IOException | TransformerException | ParserConfigurationException | SAXException e) {
                 e.printStackTrace();
             }
             ScreenHandler.setScreen(ScreenHandler.home);

@@ -25,7 +25,7 @@ public class Boat extends Infrastructure implements Controlable {
             }
         }
         this.maintenanceCost = 0;
-        this.creationCost = 40;
+        this.creationCost = 25;
     }
 
     public boolean deploy() {

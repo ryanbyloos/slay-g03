@@ -335,6 +335,7 @@ public class GameState {
     public void handle(int x, int y) {
 
         Cell cell = map.findCell(x, y);
+        MapElement m;
         if (cell != null) {
             if (cell.getElementOn() == null && cell.getOwner() != null && cell.getOwner().isTurn() && !states.isSelectionMode()) {
                 states.setTerritory(cell.findTerritory());
@@ -348,20 +349,23 @@ public class GameState {
                         else if (adjCell.getOwner() == map.getPlayer2())
                             p2 = true;
                     }
-                    cell.setElementOn(newElement(elementToBuild, map.playingPlayer()));
+                    m = newElement(elementToBuild, map.playingPlayer());
+                    cell.setElementOn(m);
+                    states.getTerritory().findCapital().addMoney(-(m.getCreationCost()));
                     states.reset();
                 }
 
                 states.setTerritory(null);
                 states.setTerritorySelected(false);
-//                states.reset();
             }
         }
         if (states.isTerritorySelected()) {
             if (states.isCreationMode()) {
                 states.setDestination(map.findCell(x, y));
                 if (states.getDestination() != null && map.playingPlayer() != null && states.getDestination().getElementOn() == null) {
-                    states.getDestination().setElementOn(newElement(elementToBuild, map.playingPlayer()));
+                    m = newElement(elementToBuild, map.playingPlayer());
+                    states.getDestination().setElementOn(m);
+                    states.getTerritory().findCapital().addMoney(-(m.getCreationCost()));
                 }
                 try {
                     storeMove(states.getDestination() != null ? states.getDestination().getOwner() : null);
