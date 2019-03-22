@@ -400,6 +400,7 @@ public class GameState {
             } catch (ReplayParserException e) {
                 e.printStackTrace();
             }
+            states.reset();
         }
     }
 

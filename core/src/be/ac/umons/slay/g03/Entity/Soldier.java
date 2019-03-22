@@ -195,6 +195,28 @@ public class Soldier extends MapElement implements Controlable {
         return level;
     }
 
+    public void levelUp() {
+        this.level++;
+        switch (this.getLevel()) {
+            case 1:
+                this.creationCost = 20;
+                this.maintenanceCost = 5;
+                break;
+            case 2:
+                this.creationCost = 40;
+                this.maintenanceCost = 14;
+                break;
+            case 3:
+                this.creationCost = 80;
+                this.maintenanceCost = 41;
+                break;
+            default:
+                this.creationCost = 80;
+                this.maintenanceCost = 41;
+                break;
+        }
+    }
+
     @Override
     public boolean belongsTo() {
         return getOwner().isTurn();

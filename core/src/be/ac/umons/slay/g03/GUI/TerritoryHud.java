@@ -1,6 +1,8 @@
 package be.ac.umons.slay.g03.GUI;
 
+import be.ac.umons.slay.g03.Core.Player;
 import be.ac.umons.slay.g03.Core.Territory;
+import be.ac.umons.slay.g03.Entity.Soldier;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -8,12 +10,14 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 class TerritoryHud extends Stage {
 
     HudButton soldier0, soldier1, soldier2, soldier3, defenceTower, attackTower, boat, mine;
     HudButton[] buttons;
+    TextButton levelUp;
     ShapeRenderer shapeRenderer;
     SpriteBatch batch;
     World world;
@@ -69,6 +73,24 @@ class TerritoryHud extends Stage {
                 button.setColor(Color.GRAY);
         }
         if (world.gameState.getStates().isSelectionMode() || world.gameState.getStates().isTerritorySelected()) {
+            if (world.gameState.getStates().isSoldierSelected()) {
+                levelUp = new TextButton("LEVEL UP", ScreenHandler.game.skin);
+                levelUp.setPosition(ScreenHandler.WIDTH - levelUp.getWidth(), 96);
+
+                levelUp.addListener(new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        int level = world.gameState.getStates().getSource().getElementOn().getLevel();
+                        Player owner = world.gameState.getStates().getSource().getElementOn().getOwner();
+                        boolean hasmoved = world.gameState.getStates().getSource().getElementOn().isHasMoved();
+                        if (level < 3) {
+                            world.gameState.getStates().getSource().setElementOn(new Soldier(owner, level + 1, hasmoved));
+                        }
+                    }
+                });
+                this.addActor(levelUp);
+            }
+
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setColor(Color.LIGHT_GRAY);
             shapeRenderer.rect(0, 0, w, 48);
@@ -84,11 +106,14 @@ class TerritoryHud extends Stage {
             batch.end();
         }
         if (territory != null) {
-            if ((world.map.getPlayer1().isTurn() && territory.findCapital().getOwner() == world.map.getPlayer1()) ||
-                    (world.map.getPlayer2().isTurn() && territory.findCapital().getOwner() == world.map.getPlayer2())) {
+            if ((territory.findCapital().getOwner() == world.map.playingPlayer())) {
                 batch.begin();
                 showTerritoryInfo(batch, territory);
                 batch.end();
+            }
+        } else {
+            if (levelUp != null) {
+                levelUp.remove();
             }
         }
     }
