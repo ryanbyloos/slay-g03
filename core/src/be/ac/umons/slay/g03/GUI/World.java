@@ -29,7 +29,7 @@ public class World extends ApplicationAdapter implements InputProcessor {
     private TextureAtlas.AtlasRegion blueHex, greenHex, yellowHex, redHex, tree, grave, contour, capital;
     private SpriteBatch batch;
     private OrthographicCamera camera;
-    private Map map;
+    Map map;
     private TextureAtlas atlas;
     private Loader loader;
 
@@ -116,10 +116,10 @@ public class World extends ApplicationAdapter implements InputProcessor {
                     }
                 } else if (cell.getElementOn() instanceof Capital) {
                     drawSprite(parity, 4, capital, cell);
-                } else if (cell.getElementOn() instanceof DefenceTower) {
-                    drawSprite(parity, 10, defenceTower, cell);
                 } else if (cell.getElementOn() instanceof AttackTower) {
                     drawSprite(parity, 10, attackTower, cell);
+                } else if (cell.getElementOn() instanceof DefenceTower) {
+                    drawSprite(parity, 10, defenceTower, cell);
                 } else if (cell.getElementOn() instanceof Grave) {
                     drawSprite(parity, 10, grave, cell);
                 } else if (cell.getElementOn() instanceof Tree) {
