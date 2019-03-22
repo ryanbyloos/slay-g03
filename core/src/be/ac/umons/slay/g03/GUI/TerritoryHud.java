@@ -8,14 +8,12 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 class TerritoryHud extends Stage {
 
     HudButton soldier0, soldier1, soldier2, soldier3, defenceTower, attackTower, boat, mine;
-    HudButton buttons[];
-    TextButton nextTurn;
+    HudButton[] buttons;
     ShapeRenderer shapeRenderer;
     SpriteBatch batch;
     World world;
