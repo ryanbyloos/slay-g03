@@ -53,6 +53,10 @@ public class States {
         this.creationMode = creationMode;
     }
 
+    public boolean isSelectionMode() {
+        return isAttackTowerSelected() || isSoldierSelected() || isBoatSelected();
+    }
+
     public Cell getDestination() {
         return destination;
     }

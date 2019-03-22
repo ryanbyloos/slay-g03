@@ -328,7 +328,7 @@ public class GameState {
 
         Cell cell = map.findCell(x, y);
         if (cell != null) {
-            if (cell.getElementOn() == null && cell.getOwner() != null && cell.getOwner().isTurn()) {
+            if (cell.getElementOn() == null && cell.getOwner() != null && cell.getOwner().isTurn() && !states.isSelectionMode()) {
                 states.setTerritory(cell.findTerritory());
                 states.setTerritorySelected(true);
             } else {
