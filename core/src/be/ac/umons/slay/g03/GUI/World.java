@@ -86,7 +86,7 @@ public class World extends ApplicationAdapter implements InputProcessor {
                 if (cell.getOwner() == null) drawSprite(parity, greenHex, cell);
                 else if (cell.getOwner() == map.getPlayer1()) drawSprite(parity, yellowHex, cell);
                 else drawSprite(parity, redHex, cell);
-                if ((gameState.getStates().isSoldierSelected() || gameState.getStates().isBoatSelected() || gameState.getStates().isAttackTowerSelected()) && gameState.getStates().getSource().getElementOn() != null)
+                if ((gameState.getStates().isSelectionMode()) && gameState.getStates().getSource().getElementOn() != null)
                     drawHighlights(gameState.getStates().getSource().accessibleCell(map));
                 if (gameState.getStates().getTerritory() != null)
                     drawHighlights(gameState.getStates().getTerritory().getCells());

@@ -13,8 +13,8 @@ public class Territory {
     private int gainThisTurn;
 
     public Territory(ArrayList<Cell> cells) {
-
         this.cells = cells;
+        this.gainThisTurn = gain();
     }
 
     public int gain() {
@@ -27,7 +27,6 @@ public class Territory {
     }
 
     public void checkcost() {
-
 
         if (gain() + findCapital().getMoney() >= cost()) {
             findCapital().addMoney(gain() - cost());
