@@ -332,21 +332,28 @@ public class GameState {
                 states.setTerritory(cell.findTerritory());
                 states.setTerritorySelected(true);
             } else {
+                if (cell.isWater() && states.isCreationMode() && (elementToBuild.equals("boat") || elementToBuild.equals("mine"))) {
+                    boolean p1 = false, p2 = false;
+                    for (Cell adjCell : cell.adjacentCell(map, cell)) {
+                        if (adjCell.getOwner() == map.getPlayer1())
+                            p1 = true;
+                        else if (adjCell.getOwner() == map.getPlayer2())
+                            p2 = true;
+                    }
+                    cell.setElementOn(newElement(elementToBuild, map.playingPlayer()));
+                    states.reset();
+                }
+
                 states.setTerritory(null);
                 states.setTerritorySelected(false);
+//                states.reset();
             }
         }
         if (states.isTerritorySelected()) {
             if (states.isCreationMode()) {
                 states.setDestination(map.findCell(x, y));
-                if (states.getDestination() != null && states.getDestination().getElementOn() == null) {
-                    if (states.getDestination().getOwner() == map.getPlayer1() && map.getPlayer1().isTurn())
-                        states.getDestination().setElementOn(newElement(elementToBuild, map.getPlayer1()));
-                    else if (states.getDestination().getOwner() == map.getPlayer2() && map.getPlayer2().isTurn())
-                        states.getDestination().setElementOn(newElement(elementToBuild, map.getPlayer2()));
-                    else if (map.getPlayer1().isTurn() && states.getDestination().isWater() && elementToBuild.equals("boat")) {
-                        states.getDestination().setElementOn(newElement(elementToBuild, map.getPlayer1()));
-                    }
+                if (states.getDestination() != null && map.playingPlayer() != null && states.getDestination().getElementOn() == null) {
+                    states.getDestination().setElementOn(newElement(elementToBuild, map.playingPlayer()));
                 }
                 try {
                     storeMove(states.getDestination() != null ? states.getDestination().getOwner() : null);
@@ -388,11 +395,7 @@ public class GameState {
             states.setTerritory(states.getDestination().findTerritory());
             states.setTerritorySelected(true);
             try {
-                if (map.getPlayer1().isTurn()) {
-                    storeMove(map.getPlayer1());
-                } else {
-                    storeMove(map.getPlayer2());
-                }
+                storeMove(map.playingPlayer());
 
             } catch (ReplayParserException e) {
                 e.printStackTrace();
@@ -412,7 +415,7 @@ public class GameState {
                 return new Soldier(player, 3, false);
             case "defenceTower":
                 return new DefenceTower(player, 0);
-            case "attacktTower":
+            case "attackTower":
                 return new AttackTower(player, 0);
             case "boat":
                 return new Boat(player, false);

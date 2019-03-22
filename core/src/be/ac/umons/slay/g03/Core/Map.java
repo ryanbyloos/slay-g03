@@ -37,12 +37,12 @@ public class Map {
     }
 
     public static int getWaterTilesNumber(Map map) {
-        int waterTilsNumber = 0;
+        int waterTilesNumber = 0;
         for (Cell cell: map.getCells()
              ) {
-            if(cell.isWater())waterTilsNumber++;
+            if (cell.isWater()) waterTilesNumber++;
         }
-        return waterTilsNumber;
+        return waterTilesNumber;
     }
 
     public int getWidth() {
@@ -83,5 +83,13 @@ public class Map {
 
     public void setPlayer2(Player player2) {
         this.player2 = player2;
+    }
+
+    public Player playingPlayer() {
+        if (getPlayer1().isTurn())
+            return getPlayer1();
+        if (getPlayer2().isTurn())
+            return getPlayer2();
+        return null;
     }
 }

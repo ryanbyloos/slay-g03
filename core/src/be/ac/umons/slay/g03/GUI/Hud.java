@@ -18,6 +18,7 @@ public class Hud extends Stage {
         nextTurn.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                world.gameState.getStates().reset();
                 world.gameState.nextTurn();
             }
         });

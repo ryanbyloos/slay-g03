@@ -57,6 +57,15 @@ public class States {
         return isAttackTowerSelected() || isSoldierSelected() || isBoatSelected();
     }
 
+    public void reset() {
+        setTerritorySelected(false);
+        setSoldierSelected(false);
+        setBoatSelected(false);
+        setAttackTowerSelected(false);
+        setCreationMode(false);
+        setTerritory(null);
+    }
+
     public Cell getDestination() {
         return destination;
     }
