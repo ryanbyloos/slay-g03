@@ -30,7 +30,9 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.channels.FileChannel;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class GameState {
     private Map map;
@@ -63,7 +65,13 @@ public class GameState {
     }
 
     public void resume() {
-
+        try {
+            if(checkPending()){
+                loader.load(map, true);
+            }
+        } catch (WrongFormatException e) {
+            e.printStackTrace();
+        }
     }
 
     public void undo(Player player) throws ReplayParserException {
@@ -426,8 +434,37 @@ public class GameState {
         return null;
     }
 
-    public void saveTmxFile() throws IOException {
-        String dest = Gdx.files.getLocalStoragePath().concat("assets/Saves/").concat(map.getPlayer1().getName() + '-' + map.getPlayer2().getName() + '-').concat(loader.getTmxFile());
+    public void save() throws IOException, TransformerException, ParserConfigurationException, SAXException {
+        saveTmxFile();
+        String xml = saveXmlFile();
+        String tmx = saveTmxFile();
+        int splitIndex = logFile.lastIndexOf('/')+1;
+        String path = logFile.substring(splitIndex);
+        DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        Document document = documentBuilder.parse(Gdx.files.getLocalStoragePath().concat("assets/Saves/games.xml"));
+        Element root = document.getDocumentElement();
+        Element game = document.createElement("game");
+        game.setAttribute("player1", map.getPlayer1().getName());
+        game.setAttribute("player2", map.getPlayer2().getName());
+        game.setAttribute("pending", "true");
+        game.setAttribute("xml", xml);
+        game.setAttribute("tmx", tmx);
+        game.setAttribute("replay", path);
+        game.setAttribute("turn", Integer.toString(turnPlayed));
+        root.appendChild(game);
+        DOMSource source = new DOMSource(document);
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        StreamResult result = new StreamResult(Gdx.files.getLocalStoragePath().concat("assets/Saves/games.xml"));
+        transformer.transform(source, result);
+
+    }
+
+    private String saveTmxFile() throws IOException {
+        int splitIndex = logFile.lastIndexOf('/')+1;
+        String path = logFile.substring(splitIndex, logFile.length()-4);
+        String dest = Gdx.files.getLocalStoragePath().concat("assets/Saves/").concat(path).concat(loader.getTmxFile());
         String source = Gdx.files.getLocalStoragePath().concat("assets/World/").concat(loader.getTmxFile());
         File file = new File(dest);
         TiledMap tiledMap = new TmxMapLoader().load(source);
@@ -455,14 +492,15 @@ public class GameState {
                 }
             }
         }
-
+        return path.concat(loader.getTmxFile());
     }
 
-    public void saveXmlFile() throws ParserConfigurationException, TransformerException {
-        String file = Gdx.files.getLocalStoragePath().concat("assets/Saves/").concat(map.getPlayer1().getName() + '-' + map.getPlayer2().getName() + '-').concat(loader.getXmlFile());
+    private String saveXmlFile() throws ParserConfigurationException, TransformerException {
+        int splitIndex = logFile.lastIndexOf('/')+1;
+        String path = logFile.substring(splitIndex, logFile.length()-4);
+        String file = Gdx.files.getLocalStoragePath().concat("assets/Saves/").concat(path).concat(loader.getXmlFile());
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder;
-
         documentBuilder = documentBuilderFactory.newDocumentBuilder();
         Document document = documentBuilder.newDocument();
         // root element
@@ -592,6 +630,7 @@ public class GameState {
         DOMSource domSource = new DOMSource(document);
         StreamResult streamResult = new StreamResult(new File(file));
         transformer.transform(domSource, streamResult);
+        return path.concat(loader.getXmlFile());
 
     }
 
@@ -800,8 +839,6 @@ public class GameState {
             transformer.transform(source, result);
         } catch (IOException e) {
             throw new ReplayParserException();
-        } catch (TransformerConfigurationException e) {
-            throw new ReplayParserException();
         } catch (ParserConfigurationException e) {
             throw new ReplayParserException();
         } catch (SAXException e) {
@@ -812,9 +849,49 @@ public class GameState {
 
 
     }
+    public boolean checkPending() throws WrongFormatException {
+        try {
+            File file = new File(Gdx.files.getLocalStoragePath().concat("assets/Save/games.xml"));
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(file);
+            doc.getDocumentElement().normalize();
+            NodeList games = doc.getElementsByTagName("game");
+            for (int i = 0; i < games.getLength(); i++) {
+                Node node = games.item(i);
+                if(node.getNodeType() == Node.ELEMENT_NODE){
+                    Element game = (Element)node;
+                    boolean pending = Boolean.parseBoolean(game.getAttribute("pending"));
+                    if(pending){
+                        String player1 = game.getAttribute("player1");
+                        String player2 = game.getAttribute("player2");
+                        if(player1.equals(map.getPlayer1().getName()) && player2.equals(map.getPlayer2().getName())){
+                            loader.setTmxFile(game.getAttribute("tmx"));
+                            loader.setXmlFile(game.getAttribute("xml"));
+                            logFile = game.getAttribute("replay");
+                            turnPlayed = Integer.parseInt(game.getAttribute("turn"));
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        } catch (ParserConfigurationException e) {
+            throw new WrongFormatException();
+        } catch (IOException e) {
+            throw new WrongFormatException();
+        } catch (SAXException e) {
+            throw new WrongFormatException();
+        }
 
+
+    }
     public void saveReplay() throws ReplayParserException {
-        String file = Gdx.files.getLocalStoragePath().concat("assets/Replays/").concat("test.xml"); // TODO: 02-03-19 à changer par la suite (le nom, les 2 cas possible si(la partie repris est une sauvegarde ou pas ect ..)
+        String file;
+        Date today = new Date();
+        SimpleDateFormat changeFormat = new SimpleDateFormat("dd.MM.yyyy.HH.mm.ss");
+        String date = changeFormat.format(today);
+        file= Gdx.files.getLocalStoragePath().concat("assets/Replays/").concat(map.getPlayer1().getName()+"-"+map.getPlayer2().getName()+"("+date+")").concat(".xml"); // TODO: 02-03-19 à changer par la suite (le nom, les 2 cas possible si(la partie repris est une sauvegarde ou pas ect ..)
         logFile = file;
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder;
@@ -826,7 +903,7 @@ public class GameState {
             TransformerFactory transformerFactory = TransformerFactory.newInstance();
             Transformer transformer = transformerFactory.newTransformer();
             DOMSource domSource = new DOMSource(document);
-            StreamResult streamResult = new StreamResult(new File(file));
+            StreamResult streamResult = new StreamResult(new File(logFile));
             transformer.transform(domSource, streamResult);
         } catch (TransformerConfigurationException e) {
             throw new ReplayParserException();

@@ -28,6 +28,13 @@ public class Loader {
     private String tmxFile;
     private String xmlFile;
 
+    public void setTmxFile(String tmxFile) {
+        this.tmxFile = tmxFile;
+    }
+
+    public void setXmlFile(String xmlFile) {
+        this.xmlFile = xmlFile;
+    }
 
     public Loader(String tmxFile, String xmlFile, String name) {
         this.tmxFile = tmxFile;
