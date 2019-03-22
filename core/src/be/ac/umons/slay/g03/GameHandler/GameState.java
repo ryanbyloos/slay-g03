@@ -357,17 +357,17 @@ public class GameState {
                 states.setDestination(null);
                 states.setCreationMode(false);
             }
-        } else if (!states.isSoldierSelected() && !states.isBoatSelected() && !states.isAttackTowerSelected()) {
+        } else if (!states.isSelectionMode()) {
             states.setSource(map.findCell(x, y));
-            if (states.getSource() != null) {
+            if (states.getSource() != null && states.getSource().accessibleCell(map) != null) {
                 if (states.getSource().getElementOn() instanceof Soldier) {
-                    if (states.getSource().accessibleCell(map) != null && ((Soldier) states.getSource().getElementOn()).select())
+                    if (((Soldier) states.getSource().getElementOn()).select())
                         states.setSoldierSelected(true);
                 } else if (states.getSource().getElementOn() instanceof Boat) {
-                    if (states.getSource().accessibleCell(map) != null && ((Boat) states.getSource().getElementOn()).select())
+                    if (((Boat) states.getSource().getElementOn()).select())
                         states.setBoatSelected(true);
                 } else if (states.getSource().getElementOn() instanceof AttackTower) {
-                    if (states.getSource().accessibleCell(map) != null && ((AttackTower) states.getSource().getElementOn()).select())
+                    if (((AttackTower) states.getSource().getElementOn()).select())
                         states.setAttackTowerSelected(true);
                 }
                 states.setTerritory(null);

@@ -35,52 +35,52 @@ public class Soldier extends MapElement implements Controlable {
         }
     }
 
-    private boolean attack(Cell cellAttacker, Cell cellDefender) {
-        int levelAttacker = cellAttacker.getElementOn().getLevel();
-        int levelDefender = cellDefender.getElementOn().getLevel();
+    private boolean attack(Cell source, Cell destination) {
+        int sourceLevel = source.getElementOn().getLevel();
+        int destinationLevel = destination.getElementOn().getLevel();
 
 
-        if (levelAttacker != 3) {
-            if (levelAttacker > levelDefender) {
-                cellDefender.setElementOn(null);
+        if (sourceLevel != 3) {
+            if (sourceLevel > destinationLevel) {
+                destination.setElementOn(null);
                 return true;
             }
-        } else if (levelDefender == 3) {
-            int random = new Random().nextInt(2);
-            if (random == 1) {
-                cellDefender.setElementOn(null);
+        } else if (destinationLevel == 3) {
+            int rand = new Random().nextInt(2);
+            if (rand == 1) {
+                destination.setElementOn(null);
                 return true;
-            } else cellAttacker.setElementOn(null);
+            } else source.setElementOn(null);
 
             return false;
 
         } else {
-            cellDefender.setElementOn(null);
+            destination.setElementOn(null);
             return true;
         }
         return false;
     }
 
-    private boolean mergeSoldier(Cell himself, Cell allySoldier) {
+    private boolean mergeSoldier(Cell source, Cell destination) {
 
-        if ((this.level == allySoldier.getElementOn().getLevel()) && this.level != 3) {
+        if ((this.level == destination.getElementOn().getLevel()) && this.level != 3) {
 
-            Soldier upSoldier = null;
+            Soldier newSoldier = null;
 
             switch (this.level) {
                 case 0:
-                    upSoldier = new Soldier(this.getOwner(), 1, false);
+                    newSoldier = new Soldier(this.getOwner(), 1, false);
                     break;
                 case 1:
-                    upSoldier = new Soldier(this.getOwner(), 2, false);
+                    newSoldier = new Soldier(this.getOwner(), 2, false);
                     break;
                 case 2:
-                    upSoldier = new Soldier(this.getOwner(), 3, false);
+                    newSoldier = new Soldier(this.getOwner(), 3, false);
                     break;
             }
 
-            allySoldier.setElementOn(upSoldier);
-            himself.setElementOn(null);
+            destination.setElementOn(newSoldier);
+            source.setElementOn(null);
             return true;
         }
 
@@ -112,8 +112,7 @@ public class Soldier extends MapElement implements Controlable {
                         cell.findTerritory().findCapital().addMoney(oldCell.findTerritory().removeCapital(map));
                     } else oldCell.findTerritory().findCapital().addMoney(cell.findTerritory().removeCapital(map));
                     Territory territoryToDelete = cell.findTerritory();
-                    ArrayList<Cell> territory = new ArrayList<>();
-                    territory.addAll(territoryToDelete.getCells());
+                    ArrayList<Cell> territory = new ArrayList<>(territoryToDelete.getCells());
                     oldCell.findTerritory().getCells().addAll(territory);
                     cell.getOwner().removeTerritory(territoryToDelete);
                     for (Cell resetCell : cell.findTerritory().getCells()
@@ -131,7 +130,7 @@ public class Soldier extends MapElement implements Controlable {
         Cell cellAlreadyChecked = null;
         Cell oldCellMark = null;
         Cell oldCellMarkFirst = null;
-        Boolean twoNewCapital = false;
+        boolean twoNewCapital = false;
         int oldTerritoryCell = 0;
         for (Cell cellMark : cellToTest) {
             if (cellMark.getOwner() != null && !cellMark.getOwner().equals(newCell.getOwner())) {
@@ -204,7 +203,6 @@ public class Soldier extends MapElement implements Controlable {
     @Override
     public void move(Cell source, Cell destination, Map map) {
         if (source.accessibleCell(map).contains(destination) && (source.getElementOn().getLevel() >= levelDefender(map, source, destination))) {
-
             if (destination.getElementOn() != null) {
                 if (destination.getElementOn().getOwner() == null) {
                     if (destination.getElementOn() instanceof Tree && destination.getOwner() != null && destination.getOwner().equals(source.getOwner())) {
@@ -260,7 +258,6 @@ public class Soldier extends MapElement implements Controlable {
         cellCapital.findTerritory().placeCapital();
         cellCapital.setElementOn(null);
         cellCapital.findTerritory().findCapital().setMoney(money - steal);
-
     }
 
     @Override
