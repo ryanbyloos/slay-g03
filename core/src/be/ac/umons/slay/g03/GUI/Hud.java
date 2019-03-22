@@ -12,7 +12,7 @@ public class Hud extends Stage {
     Hud(World world) {
         this.world = world;
 
-        nextTurn = new TextButton("NEXT TURN", ScreenHandler.game.skin);
+        nextTurn = new TextButton("PASS", ScreenHandler.game.skin);
         nextTurn.setPosition(ScreenHandler.WIDTH - nextTurn.getWidth(), 64);
 
         nextTurn.addListener(new ClickListener() {

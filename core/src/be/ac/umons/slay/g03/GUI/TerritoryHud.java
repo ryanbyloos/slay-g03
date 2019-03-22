@@ -51,14 +51,14 @@ class TerritoryHud extends Stage {
             this.addActor(button);
         }
 
-        soldier0.addListener(createClickListener("soldier0"));
-        soldier1.addListener(createClickListener("soldier1"));
-        soldier2.addListener(createClickListener("soldier2"));
-        soldier3.addListener(createClickListener("soldier3"));
-        defenceTower.addListener(createClickListener("defenceTower"));
-        attackTower.addListener(createClickListener("attackTower"));
-        boat.addListener(createClickListener("boat"));
-        mine.addListener(createClickListener("mine"));
+        soldier0.addListener(createClickListener("soldier0", soldier0.getCost()));
+        soldier1.addListener(createClickListener("soldier1", soldier1.getCost()));
+        soldier2.addListener(createClickListener("soldier2", soldier2.getCost()));
+        soldier3.addListener(createClickListener("soldier3", soldier3.getCost()));
+        defenceTower.addListener(createClickListener("defenceTower", defenceTower.getCost()));
+        attackTower.addListener(createClickListener("attackTower", attackTower.getCost()));
+        boat.addListener(createClickListener("boat", boat.getCost()));
+        mine.addListener(createClickListener("mine", mine.getCost()));
     }
 
     @Override
@@ -111,11 +111,18 @@ class TerritoryHud extends Stage {
                 showTerritoryInfo(batch, territory);
                 batch.end();
             }
+        } else if (world.gameState.getStates().isSoldierSelected()) {
+            batch.begin();
+            showTerritoryInfo(batch, world.gameState.getStates().getSource().findTerritory());
+            batch.end();
         } else {
             if (levelUp != null) {
                 levelUp.remove();
             }
         }
+        batch.begin();
+        ScreenHandler.game.font.draw(batch, "Player: " + world.map.playingPlayer().getName(), (float) (w - w / 8), h);
+        batch.end();
     }
 
     private void checkPrice(HudButton[] buttons, Territory territory) {
@@ -126,11 +133,11 @@ class TerritoryHud extends Stage {
         }
     }
 
-    private ClickListener createClickListener(String name) {
+    private ClickListener createClickListener(String name, int cost) {
         return new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (world.gameState.getStates().isTerritorySelected())
+                if (world.gameState.getStates().isTerritorySelected() && world.gameState.getStates().getTerritory().findCapital().getMoney() >= cost)
                     world.gameState.getStates().setCreationMode(!world.gameState.getStates().isCreationMode());
                 world.gameState.setElementToBuild(name);
             }
