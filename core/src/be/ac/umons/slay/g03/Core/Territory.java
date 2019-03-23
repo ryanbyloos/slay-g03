@@ -108,6 +108,18 @@ public class Territory {
         }
     }
 
+    public ArrayList<Cell> accesibleCellToCreateUnit(Map map){
+        ArrayList<Cell> accesibleCellToCreateUnit = cells;
+        for (Cell cell: cells
+             ) {
+            for (Cell cellAdj: cell.adjacentCell(map,cell)
+                 ) {
+                if (!accesibleCellToCreateUnit.contains(cellAdj)) accesibleCellToCreateUnit.add(cellAdj);
+            }
+        }
+        return accesibleCellToCreateUnit;
+    }
+
     @Override
     public String toString() {
         String info = "Territory : \n";
