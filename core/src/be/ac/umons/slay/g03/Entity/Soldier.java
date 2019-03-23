@@ -195,6 +195,7 @@ public class Soldier extends MapElement implements Controlable {
         return level;
     }
 
+    @Override
     public void levelUp() {
         this.level++;
         switch (this.getLevel()) {
@@ -213,6 +214,7 @@ public class Soldier extends MapElement implements Controlable {
             default:
                 this.creationCost = 80;
                 this.maintenanceCost = 41;
+                this.level--;
                 break;
         }
     }

@@ -1,6 +1,5 @@
 package be.ac.umons.slay.g03.GUI;
 
-import be.ac.umons.slay.g03.Core.Player;
 import be.ac.umons.slay.g03.Core.Territory;
 import be.ac.umons.slay.g03.Entity.Soldier;
 import com.badlogic.gdx.graphics.Color;
@@ -73,23 +72,22 @@ class TerritoryHud extends Stage {
                 button.setColor(Color.GRAY);
         }
         if (world.gameState.getStates().isSelectionMode() || world.gameState.getStates().isTerritorySelected()) {
-            if (world.gameState.getStates().isSoldierSelected()) {
-                levelUp = new TextButton("LEVEL UP", ScreenHandler.game.skin);
-                levelUp.setPosition(ScreenHandler.WIDTH - levelUp.getWidth(), 96);
+            levelUp = new TextButton("LEVEL UP", ScreenHandler.game.skin);
+            levelUp.setPosition(ScreenHandler.WIDTH - levelUp.getWidth(), 96);
 
-                levelUp.addListener(new ClickListener() {
-                    @Override
-                    public void clicked(InputEvent event, float x, float y) {
-                        int level = world.gameState.getStates().getSource().getElementOn().getLevel();
-                        Player owner = world.gameState.getStates().getSource().getElementOn().getOwner();
-                        boolean hasmoved = world.gameState.getStates().getSource().getElementOn().isHasMoved();
-                        if (level < 3) {
-                            world.gameState.getStates().getSource().setElementOn(new Soldier(owner, level + 1, hasmoved));
-                        }
-                    }
-                });
-                this.addActor(levelUp);
-            }
+            levelUp.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    if (world.gameState.getStates().getSource().getElementOn() != null)
+                        world.gameState.getStates().getSource().getElementOn().levelUp();
+                }
+            });
+            this.addActor(levelUp);
+
+            if (world.gameState.getStates().getSource().getElementOn() instanceof Soldier)
+                levelUp.setColor(Color.LIGHT_GRAY);
+            else
+                levelUp.setColor(Color.RED);
 
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setColor(Color.LIGHT_GRAY);
