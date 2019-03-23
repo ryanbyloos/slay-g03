@@ -66,7 +66,7 @@ public class GameState {
 
     public void resume() {
         try {
-            if(checkPending()){
+            if (checkPending()) {
                 loader.load(map, true);
             }
         } catch (WrongFormatException e) {
@@ -442,7 +442,7 @@ public class GameState {
         saveTmxFile();
         String xml = saveXmlFile();
         String tmx = saveTmxFile();
-        int splitIndex = logFile.lastIndexOf('/')+1;
+        int splitIndex = logFile.lastIndexOf('/') + 1;
         String path = logFile.substring(splitIndex);
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -466,8 +466,8 @@ public class GameState {
     }
 
     private String saveTmxFile() throws IOException {
-        int splitIndex = logFile.lastIndexOf('/')+1;
-        String path = logFile.substring(splitIndex, logFile.length()-4);
+        int splitIndex = logFile.lastIndexOf('/') + 1;
+        String path = logFile.substring(splitIndex, logFile.length() - 4);
         String dest = Gdx.files.getLocalStoragePath().concat("assets/Saves/").concat(path).concat(loader.getTmxFile());
         String source = Gdx.files.getLocalStoragePath().concat("assets/World/").concat(loader.getTmxFile());
         File file = new File(dest);
@@ -500,8 +500,8 @@ public class GameState {
     }
 
     private String saveXmlFile() throws ParserConfigurationException, TransformerException {
-        int splitIndex = logFile.lastIndexOf('/')+1;
-        String path = logFile.substring(splitIndex, logFile.length()-4);
+        int splitIndex = logFile.lastIndexOf('/') + 1;
+        String path = logFile.substring(splitIndex, logFile.length() - 4);
         String file = Gdx.files.getLocalStoragePath().concat("assets/Saves/").concat(path).concat(loader.getXmlFile());
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder;
@@ -640,7 +640,7 @@ public class GameState {
 
     public void nextTurn() {
         for (Cell cell : map.getCells()
-        ) {
+                ) {
             cell.spwanTree(map);
         }
         try {
@@ -651,6 +651,7 @@ public class GameState {
         }
 
         if (map.getPlayer1().isTurn()) {
+            map.getPlayer2().cleanGrave();
             if (turnPlayed > 1) map.getPlayer2().checkTerritory();
             map.getPlayer1().setTurn(false);
             resetMoveableUnits(map.getPlayer1());
@@ -671,7 +672,9 @@ public class GameState {
             map.getPlayer1().setTurn(true);
             map.getPlayer2().setMoveNumber(-1);
             map.getPlayer2().setMaxMoveNumber(-1);
+            map.getPlayer1().cleanGrave();
             map.getPlayer1().checkTerritory();
+
             try {
                 storeMove(map.getPlayer1());
             } catch (ReplayParserException e) {
@@ -686,9 +689,9 @@ public class GameState {
 
     private void resetMoveableUnits(Player player) {
         for (Territory t : player.getTerritories()
-        ) {
+                ) {
             for (Cell c : t.getCells()
-            ) {
+                    ) {
                 if (c.getElementOn() != null && c.getElementOn() instanceof Soldier) {
                     c.getElementOn().setHasMoved(false);
                 }
@@ -853,6 +856,7 @@ public class GameState {
 
 
     }
+
     public boolean checkPending() throws WrongFormatException {
         try {
             File file = new File(Gdx.files.getLocalStoragePath().concat("assets/Save/games.xml"));
@@ -863,13 +867,13 @@ public class GameState {
             NodeList games = doc.getElementsByTagName("game");
             for (int i = 0; i < games.getLength(); i++) {
                 Node node = games.item(i);
-                if(node.getNodeType() == Node.ELEMENT_NODE){
-                    Element game = (Element)node;
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    Element game = (Element) node;
                     boolean pending = Boolean.parseBoolean(game.getAttribute("pending"));
-                    if(pending){
+                    if (pending) {
                         String player1 = game.getAttribute("player1");
                         String player2 = game.getAttribute("player2");
-                        if(player1.equals(map.getPlayer1().getName()) && player2.equals(map.getPlayer2().getName())){
+                        if (player1.equals(map.getPlayer1().getName()) && player2.equals(map.getPlayer2().getName())) {
                             loader.setTmxFile(game.getAttribute("tmx"));
                             loader.setXmlFile(game.getAttribute("xml"));
                             logFile = game.getAttribute("replay");
@@ -890,12 +894,13 @@ public class GameState {
 
 
     }
+
     public void saveReplay() throws ReplayParserException {
         String file;
         Date today = new Date();
         SimpleDateFormat changeFormat = new SimpleDateFormat("dd.MM.yyyy.HH.mm.ss");
         String date = changeFormat.format(today);
-        file= Gdx.files.getLocalStoragePath().concat("assets/Replays/").concat(map.getPlayer1().getName()+"-"+map.getPlayer2().getName()+"("+date+")").concat(".xml"); // TODO: 02-03-19 à changer par la suite (le nom, les 2 cas possible si(la partie repris est une sauvegarde ou pas ect ..)
+        file = Gdx.files.getLocalStoragePath().concat("assets/Replays/").concat(map.getPlayer1().getName() + "-" + map.getPlayer2().getName() + "(" + date + ")").concat(".xml"); // TODO: 02-03-19 à changer par la suite (le nom, les 2 cas possible si(la partie repris est une sauvegarde ou pas ect ..)
         logFile = file;
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder;

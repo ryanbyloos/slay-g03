@@ -1,5 +1,7 @@
 package be.ac.umons.slay.g03.Core;
 
+import be.ac.umons.slay.g03.Entity.Grave;
+
 import java.util.ArrayList;
 
 public class Player {
@@ -38,6 +40,18 @@ public class Player {
 
     public void surrend() {
 
+    }
+
+    public void cleanGrave(){
+        for (Territory territory: territories
+             ) {
+            for (Cell cell: territory.getCells()
+                 ) {
+                if (cell.getElementOn() instanceof Grave){
+                    cell.setElementOn(null);
+                }
+            }
+        }
     }
 
     public void removeTerritory(Territory territory) {
