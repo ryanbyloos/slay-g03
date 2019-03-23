@@ -1,6 +1,7 @@
 package be.ac.umons.slay.g03.Core;
 
 import be.ac.umons.slay.g03.Entity.Grave;
+import be.ac.umons.slay.g03.Entity.Soldier;
 
 import java.util.ArrayList;
 
@@ -31,7 +32,19 @@ public class Player {
     }
 
     public boolean isOver() {
-        return false;
+        for (Territory territory: territories
+             ) {
+            for (Cell cell: territory.getCells()
+                 ) {
+                if(cell.getElementOn() instanceof Soldier) return false;
+            }
+        }
+        for (Territory territory: territories
+             ) {
+            if(territory.findCapital().getMoney() >= 10) return false;
+        }
+
+        return true;
     }
 
     public void computeScore() {

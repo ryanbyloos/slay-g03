@@ -658,7 +658,6 @@ public class GameState {
             map.getPlayer2().setTurn(true);
             map.getPlayer1().setMoveNumber(-1);
             map.getPlayer1().setMaxMoveNumber(-1);
-
             try {
                 storeMove(map.getPlayer2());
             } catch (ReplayParserException e) {
