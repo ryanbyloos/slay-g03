@@ -6,6 +6,7 @@ import be.ac.umons.slay.g03.Core.Player;
 import be.ac.umons.slay.g03.Core.Territory;
 import be.ac.umons.slay.g03.Entity.*;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -66,7 +67,7 @@ public class GameState {
 
     public void resume() {
         try {
-            if (checkPending()) {
+            if (checkAndSetPending()) {
                 loader.load(map, true);
             }
         } catch (WrongFormatException e) {
@@ -640,7 +641,7 @@ public class GameState {
 
     public void nextTurn() {
         for (Cell cell : map.getCells()
-                ) {
+        ) {
             cell.spwanTree(map);
         }
         try {
@@ -688,9 +689,9 @@ public class GameState {
 
     private void resetMoveableUnits(Player player) {
         for (Territory t : player.getTerritories()
-                ) {
+        ) {
             for (Cell c : t.getCells()
-                    ) {
+            ) {
                 if (c.getElementOn() != null && c.getElementOn() instanceof Soldier) {
                     c.getElementOn().setHasMoved(false);
                 }
@@ -856,9 +857,9 @@ public class GameState {
 
     }
 
-    public boolean checkPending() throws WrongFormatException {
+    public boolean checkAndSetPending() throws WrongFormatException {
         try {
-            File file = new File(Gdx.files.getLocalStoragePath().concat("assets/Save/games.xml"));
+            File file = new File(Gdx.files.getLocalStoragePath().concat("assets/Saves/games.xml"));
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(file);
@@ -894,7 +895,152 @@ public class GameState {
 
     }
 
+    public boolean isPending() throws WrongFormatException {
+        try {
+            File file = new File(Gdx.files.getLocalStoragePath().concat("assets/Saves/games.xml"));
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(file);
+            doc.getDocumentElement().normalize();
+            NodeList games = doc.getElementsByTagName("game");
+            for (int i = 0; i < games.getLength(); i++) {
+                Node node = games.item(i);
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    Element game = (Element) node;
+                    boolean pending = Boolean.parseBoolean(game.getAttribute("pending"));
+                    if (pending) {
+                        String player1 = game.getAttribute("player1");
+                        String player2 = game.getAttribute("player2");
+                        if (player1.equals(map.getPlayer1().getName()) && player2.equals(map.getPlayer2().getName())) {
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        } catch (ParserConfigurationException e) {
+            throw new WrongFormatException();
+        } catch (IOException e) {
+            throw new WrongFormatException();
+        } catch (SAXException e) {
+            throw new WrongFormatException();
+        }
+    }
+    public void deleteGame(String player1, String player2) throws WrongFormatException{
+        try {
+            File file = new File(Gdx.files.getLocalStoragePath().concat("assets/Saves/games.xml"));
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(file);
+            doc.getDocumentElement().normalize();
+            NodeList games = doc.getElementsByTagName("game");
+            for (int i = 0; i < games.getLength(); i++) {
+                Node node = games.item(i);
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    Element game = (Element) node;
+                    boolean pending = Boolean.parseBoolean(game.getAttribute("pending"));
+                    if (pending) {
+                        String p1 = game.getAttribute("player1");
+                        String p2 = game.getAttribute("player2");
+                        String xml = game.getAttribute("xml");
+                        String tmx = game.getAttribute("tmx");
+                        String replay = game.getAttribute("replay");
+                        if (player1.equals(p1) && player2.equals(p2)) {
+                            game.getParentNode().removeChild(game);
+                            FileHandle xmlFile = Gdx.files.local("assets/Saves/"+xml);
+                            FileHandle tmxFile = Gdx.files.local("assets/Saves/"+tmx);
+                            FileHandle replayFile = Gdx.files.local("assets/Replays/"+replay);
+                            xmlFile.delete();
+                            tmxFile.delete();
+                            replayFile.delete();
+                        }
+                    }
+                }
+            }
+            DOMSource source = new DOMSource(doc);
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            StreamResult result = new StreamResult(file);
+            transformer.transform(source, result);
+        } catch (ParserConfigurationException | IOException | SAXException | TransformerException e) {
+            throw new WrongFormatException();
+        }
+    }
+    public void deleteSaves(String player1, String player2) throws WrongFormatException{
+        try {
+            File file = new File(Gdx.files.getLocalStoragePath().concat("assets/Saves/games.xml"));
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(file);
+            doc.getDocumentElement().normalize();
+            NodeList games = doc.getElementsByTagName("game");
+            for (int i = 0; i < games.getLength(); i++) {
+                Node node = games.item(i);
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    Element game = (Element) node;
+                    boolean pending = Boolean.parseBoolean(game.getAttribute("pending"));
+                    if (pending) {
+                        String p1 = game.getAttribute("player1");
+                        String p2 = game.getAttribute("player2");
+                        String xml = game.getAttribute("xml");
+                        String tmx = game.getAttribute("tmx");
+                        if (player1.equals(p1) && player2.equals(p2)) {
+                            game.getParentNode().removeChild(game);
+                            FileHandle xmlFile = Gdx.files.local("assets/Saves/"+xml);
+                            FileHandle tmxFile = Gdx.files.local("assets/Saves/"+tmx);
+                            xmlFile.delete();
+                            tmxFile.delete();
+                        }
+                    }
+                }
+            }
+            DOMSource source = new DOMSource(doc);
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            StreamResult result = new StreamResult(file);
+            transformer.transform(source, result);
+        } catch (ParserConfigurationException | IOException | SAXException | TransformerException e) {
+            throw new WrongFormatException();
+        }
+    }
+    public void deleteGamePending(String player1, String player2) throws WrongFormatException {
+        try {
+            File file = new File(Gdx.files.getLocalStoragePath().concat("assets/Saves/games.xml"));
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(file);
+            doc.getDocumentElement().normalize();
+            NodeList games = doc.getElementsByTagName("game");
+            for (int i = 0; i < games.getLength(); i++) {
+                Node node = games.item(i);
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    Element game = (Element) node;
+                    boolean pending = Boolean.parseBoolean(game.getAttribute("pending"));
+                    if (pending) {
+                        String p1 = game.getAttribute("player1");
+                        String p2 = game.getAttribute("player2");
+                        if (player1.equals(p1) && player2.equals(p2)) {
+                            game.getParentNode().removeChild(game);
+                        }
+                    }
+                }
+            }
+            DOMSource source = new DOMSource(doc);
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            StreamResult result = new StreamResult(file);
+            transformer.transform(source, result);
+        } catch (ParserConfigurationException | IOException | SAXException | TransformerException e) {
+            throw new WrongFormatException();
+        }
+    }
+
     public void saveReplay() throws ReplayParserException {
+        try {
+            if (isPending()) deleteGame(map.getPlayer1().getName(), map.getPlayer2().getName());
+        } catch (WrongFormatException e) {
+            e.printStackTrace();
+        }
         String file;
         Date today = new Date();
         SimpleDateFormat changeFormat = new SimpleDateFormat("dd.MM.yyyy.HH.mm.ss");

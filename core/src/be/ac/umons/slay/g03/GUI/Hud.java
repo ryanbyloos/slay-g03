@@ -1,5 +1,6 @@
 package be.ac.umons.slay.g03.GUI;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
@@ -14,6 +15,7 @@ public class Hud extends Stage {
 
         nextTurn = new TextButton("PASS", ScreenHandler.game.skin);
         nextTurn.setPosition(ScreenHandler.WIDTH - nextTurn.getWidth(), 64);
+        nextTurn.setColor(Color.LIGHT_GRAY);
 
         nextTurn.addListener(new ClickListener() {
             @Override
