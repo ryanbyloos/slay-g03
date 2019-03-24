@@ -168,6 +168,7 @@ public class World extends ApplicationAdapter implements InputProcessor {
         }
         gameState = new GameState(map, loader, -1, null);
         try {
+
             gameState.saveReplay();
             gameState.storeTurn();
             gameState.storeMove(map.getPlayer1());
