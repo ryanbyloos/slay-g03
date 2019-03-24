@@ -91,6 +91,9 @@ public class Soldier extends MapElement implements Controlable {
     @Override
     protected void checkNewTerritory(Map map, Cell newCell, Cell oldCell) {
         Territory oldTerritoryCell = newCell.findTerritory();
+        if(newCell.getOwner() != null && oldTerritoryCell.getCells().size()<2) {
+            newCell.getOwner().removeTerritory(oldTerritoryCell);
+        }
         oldCell.findTerritory().addCell(newCell);
         mergeTerritory(map, newCell, oldCell);
         if (newCell.getOwner() != null && !newCell.equals(oldCell.getOwner())) {
@@ -98,6 +101,7 @@ public class Soldier extends MapElement implements Controlable {
             newCell.setOwner(oldCell.getOwner());
             splitTerritory(map, newCell);
         }
+
 
     }
 
