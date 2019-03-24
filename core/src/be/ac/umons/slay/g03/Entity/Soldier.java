@@ -279,7 +279,12 @@ public class Soldier extends MapElement implements Controlable {
         attacker.findTerritory().findCapital().addMoney(steal);
         cellCapital.findTerritory().placeCapital();
         cellCapital.setElementOn(null);
-        cellCapital.findTerritory().findCapital().setMoney(money - steal);
+        try {
+            cellCapital.findTerritory().findCapital().setMoney(money - steal);
+
+        }catch (NullPointerException e){
+
+        }
     }
 
     @Override
