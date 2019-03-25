@@ -14,6 +14,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.*;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class Authenticator {
     private GameState gameState;
@@ -60,7 +62,7 @@ public class Authenticator {
                 Node nNode = nList.item(i);
                 if(nNode.getNodeType() == Node.ELEMENT_NODE){
                     Element eElement = (Element) nNode;
-                    if(eElement.getAttribute("userNme").equals(userName) && eElement.getAttribute("password").equals(pwd)) return true;
+                    if(eElement.getAttribute("userNme").equals(userName) && eElement.getAttribute("password").equals(hashPassword(pwd))) return true;
                 }
             }
             return false;
@@ -89,7 +91,7 @@ public class Authenticator {
 
             Element newUser = doc.createElement("user");
             newUser.setAttribute("userName", userName);
-            newUser.setAttribute("password", pwd);
+            newUser.setAttribute("password", hashPassword(pwd));
             newUser.setAttribute("pseudo", pseudo);
             newUser.setAttribute("image", image);
             newUser.setAttribute("game", "0");
@@ -140,5 +142,21 @@ public class Authenticator {
 
     public boolean start(String xmlFile, String tmxFile) {
         return false;
+    }
+
+    private String hashPassword(String password){
+        String hexString ="";
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            md.update(password.getBytes());
+            byte[] digest = md.digest();
+            for (int i = 0;i<digest.length;i++) {
+                hexString = hexString + (Integer.toHexString(0xFF & digest[i]));
+            }
+
+        }catch (NoSuchAlgorithmException e){
+            e.fillInStackTrace();
+        }
+        return hexString;
     }
 }
