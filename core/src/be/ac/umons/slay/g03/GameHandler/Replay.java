@@ -184,26 +184,6 @@ public class Replay {
         return false;
     }
 
-    public void autoDisplay() {
-//        Thread thread = new Thread();
-//        thread.start();
-        autoDisplay = true;
-        while (autoDisplay) {
-            while (nextTurn()) {
-                if (next()) {
-//                    try {
-//                        //draw ici
-//                        Thread.sleep(1000 * speed);
-//                    } catch (InterruptedException e) {
-//                        e.printStackTrace();
-//                    }
-                } else
-                    moveNumber = 0;
-            }
-            autoDisplay = false;
-        }
-    }
-
     public void stopAutoDisplay() {
         autoDisplay = false;
     }
