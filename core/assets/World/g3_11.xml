@@ -2,7 +2,7 @@
 
     <items>
         <item type="capital" money="10" x="6" y="3" playerId="1"/>
-        <item type="capital" money="10" x="33" y="6" playerId="2"/>
+        <item type="capital" money="10" x="33" y="36" playerId="2"/>
         <item type="tree" x="4" y="24"/>
         <item type="tree" x="14" y="8"/>
         <item type="tree" x="20" y="3"/>
