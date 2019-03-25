@@ -65,7 +65,6 @@ public class Loader {
             NodeList units = doc.getElementsByTagName("unit");
             NodeList infrastructures = doc.getElementsByTagName("infrastructure");
             NodeList territories = doc.getElementsByTagName("territory");
-
             for (int i = 0; i < territories.getLength(); i++) {
                 Territory territory;
                 ArrayList<Cell> cells = new ArrayList<Cell>();
@@ -141,25 +140,10 @@ public class Loader {
                         Player owner = cell.getOwner();
                         int level = Integer.parseInt(node.getAttributes().getNamedItem("level").getTextContent());
                         boolean hasMoved = Boolean.parseBoolean(node.getAttributes().getNamedItem("hasmoved").getTextContent());
-                        Soldier soldier;
-                        switch (level) {
-                            case 0:
-                                soldier = new Soldier(owner, 0, hasMoved);
-                                break;
-                            case 1:
-                                soldier = new Soldier(owner, 1, hasMoved);
-                                break;
-                            case 2:
-                                soldier = new Soldier(owner, 2, hasMoved);
-                                break;
-                            case 3:
-                                soldier = new Soldier(owner, 3, hasMoved);
-                                break;
-                            default:
-                                soldier = null;
-                                break;
+                        Soldier soldier = null;
+                        if(level >=0 && level<4){
+                            soldier = new Soldier(owner, level, hasMoved);
                         }
-
                         cell.setElementOn(soldier);
                     }
 
@@ -181,29 +165,13 @@ public class Loader {
                             if (soldierData.getNodeType() == Node.ELEMENT_NODE) {
                                 int level = Integer.parseInt(soldierData.getAttributes().getNamedItem("level").getTextContent());
                                 boolean soldierHasMoved = Boolean.parseBoolean(soldierData.getAttributes().getNamedItem("hasmoved").getTextContent());
-                                Soldier soldier;
-                                switch (level) {
-                                    case 0:
-                                        soldier = new Soldier(owner, 0, soldierHasMoved);
-                                        break;
-                                    case 1:
-                                        soldier = new Soldier(owner, 1, soldierHasMoved);
-                                        break;
-                                    case 2:
-                                        soldier = new Soldier(owner, 2, soldierHasMoved);
-                                        break;
-                                    case 3:
-                                        soldier = new Soldier(owner, 3, soldierHasMoved);
-                                        break;
-                                    default:
-                                        soldier = null;
-                                        break;
-                                }
+                                Soldier soldier = null;
+                                if(level >=0 && level < 4) soldier = new Soldier(owner, level, soldierHasMoved);
                                 soldiers.add(soldier);
                             }
 
                         }
-                        Boat boat = new Boat(owner, hasMoved);//Defense à determiner avec les autre, pareil pour creationCost
+                        Boat boat = new Boat(owner, hasMoved);
                         boat.setSoldiers(soldiers);
                         cell.setElementOn(boat);
                     }
@@ -212,24 +180,8 @@ public class Loader {
                     if (Infrastructure.isAvailable && !cell.isWater() && cell.getOwner() != null && cell.getOwner().getId() == playerId) {
                         Player owner = cell.getOwner();
                         int level = Integer.parseInt(node.getAttributes().getNamedItem("level").getTextContent());
-                        AttackTower attackTower;
-                        switch (level) {
-                            case 0:
-                                attackTower = new AttackTower(owner, 0);
-                                break;
-                            case 1:
-                                attackTower = new AttackTower(owner, 1);
-                                break;
-                            case 2:
-                                attackTower = new AttackTower(owner, 2);
-                                break;
-                            case 3:
-                                attackTower = new AttackTower(owner, 3);
-                                break;
-                            default:
-                                attackTower = null;
-                                break;
-                        }
+                        AttackTower attackTower = null;
+                        if(level >=0 && level < 4) attackTower = new AttackTower(owner, level);
                         cell.setElementOn(attackTower);
                     }
 
@@ -238,31 +190,15 @@ public class Loader {
                     if (Infrastructure.isAvailable && !cell.isWater() && cell.getOwner() != null && cell.getOwner().getId() == playerId) {
                         Player owner = cell.getOwner();
                         int level = Integer.parseInt(node.getAttributes().getNamedItem("level").getTextContent());
-                        DefenceTower defenceTower;
-                        switch (level) {
-                            case 0:
-                                defenceTower = new DefenceTower(owner, 0);
-                                break;
-                            case 1:
-                                defenceTower = new DefenceTower(owner, 1);
-                                break;
-                            case 2:
-                                defenceTower = new DefenceTower(owner, 2);
-                                break;
-                            case 3:
-                                defenceTower = new DefenceTower(owner, 3);
-                                break;
-                            default:
-                                defenceTower = null;
-                                break;
-                        }
+                        DefenceTower defenceTower = null;
+                        if(level >=0 && level < 4) defenceTower = new DefenceTower(owner, level);
                         cell.setElementOn(defenceTower);
                     }
 
                 } else if (type.equals("grave") && cell != null) {
                     if (!cell.isWater()) {
                         int level = Integer.parseInt(node.getAttributes().getNamedItem("level").getTextContent());
-                        cell.setElementOn(new Grave(level));
+                        if(level >=0 && level < 4) cell.setElementOn(new Grave(level));
                     }
                 } else if (type.equals("mine") && cell != null) {
                     int playerId = Integer.parseInt(node.getAttributes().getNamedItem("playerId").getTextContent());
@@ -283,11 +219,7 @@ public class Loader {
                 }
 
             }
-        } catch (ParserConfigurationException e) {
-            throw new WrongFormatException();
-        } catch (SAXException e) {
-            throw new WrongFormatException();
-        } catch (IOException e) {
+        } catch (ParserConfigurationException  | SAXException | IOException e) {
             throw new WrongFormatException();
         }
     }

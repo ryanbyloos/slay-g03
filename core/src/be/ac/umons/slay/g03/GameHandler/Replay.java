@@ -29,7 +29,8 @@ public class Replay {
         this.turnNumber = turnNumber;
         this.replayFileName = replayFileName;
     }
-    public void setReplay() throws WrongFormatException{
+
+    public void setReplay() throws WrongFormatException {
         File file = new File(Gdx.files.getLocalStoragePath().concat(replayFileName));
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = null;
@@ -40,15 +41,15 @@ public class Replay {
             NodeList turns = doc.getDocumentElement().getChildNodes();
             Player p1 = new Player("yellow", 1, 0, false, 0, null);
             Player p2 = new Player("red", 2, 0, false, 0, null);
-            for (int i = 0; i < turns.getLength() ; i++) {
+            for (int i = 0; i < turns.getLength(); i++) {
                 Node turn = turns.item(i);
-                if(turn.getNodeType() == Node.ELEMENT_NODE){
+                if (turn.getNodeType() == Node.ELEMENT_NODE) {
                     Element turnElement = (Element) turn;
                     ArrayList<ArrayList<Cell>> movesCells = new ArrayList<>();
                     NodeList moves = turnElement.getChildNodes();
-                    for (int j = 0; j < moves.getLength() ; j++) {
+                    for (int j = 0; j < moves.getLength(); j++) {
                         Node move = moves.item(j);
-                        if(move.getNodeType() == Node.ELEMENT_NODE){
+                        if (move.getNodeType() == Node.ELEMENT_NODE) {
                             ArrayList<Cell> cells = new ArrayList<>();
                             Element moveElement = (Element) move;
                             NodeList cellsFromXml = moveElement.getElementsByTagName("cell");
@@ -79,7 +80,7 @@ public class Replay {
                                                 int level = Integer.parseInt(cellData.getAttribute("level"));
                                                 boolean hasMoved = Boolean.parseBoolean(cellData.getAttribute("hasmoved"));
                                                 Soldier soldier = null;
-                                                if(level >= 0 && level<4){
+                                                if (level >= 0 && level < 4) {
                                                     soldier = new Soldier(cell.getOwner(), level, hasMoved);
                                                 }
                                                 cell.setElementOn(soldier);
@@ -88,7 +89,7 @@ public class Replay {
                                             case "attacktower": {
                                                 int level = Integer.parseInt(cellData.getAttribute("level"));
                                                 AttackTower attackTower = null;
-                                                if(level >= 0 && level<4){
+                                                if (level >= 0 && level < 4) {
                                                     attackTower = new AttackTower(cell.getOwner(), level);
                                                 }
                                                 cell.setElementOn(attackTower);
@@ -105,7 +106,7 @@ public class Replay {
                                                         int level = Integer.parseInt(soldierData.getAttributes().getNamedItem("level").getTextContent());
                                                         boolean soldierHasMoved = Boolean.parseBoolean(soldierData.getAttributes().getNamedItem("hasmoved").getTextContent());
                                                         Soldier soldier = null;
-                                                        if(level >= 0 && level<4){
+                                                        if (level >= 0 && level < 4) {
                                                             soldier = new Soldier(cell.getOwner(), level, soldierHasMoved);
                                                         }
                                                         cell.setElementOn(soldier);
@@ -124,7 +125,7 @@ public class Replay {
                                             case "defencetower": {
                                                 int level = Integer.parseInt(cellData.getAttribute("level"));
                                                 DefenceTower defenceTower = null;
-                                                if(level>0 && level<4){
+                                                if (level > 0 && level < 4) {
                                                     defenceTower = new DefenceTower(cell.getOwner(), level);
                                                 }
                                                 cell.setElementOn(defenceTower);
@@ -153,19 +154,20 @@ public class Replay {
                     replay.add(movesCells);
                 }
             }
-        } catch (ParserConfigurationException |SAXException | IOException e) {
+        } catch (ParserConfigurationException | SAXException | IOException e) {
             throw new WrongFormatException();
         }
 
     }
+
     public void jump(int turn) {
-        if(turn < replay.size() && turn >=0){
+        if (turn < replay.size() && turn >= 0) {
             turnNumber = turn;
         }
     }
 
     public boolean nextTurn() {
-        if(turnNumber+1 <replay.size()){
+        if (turnNumber + 1 < replay.size()) {
             turnNumber++;
             return true;
         }
@@ -173,7 +175,7 @@ public class Replay {
     }
 
     public boolean previousTurn() {
-        if(turnNumber-1 >=0){
+        if (turnNumber - 1 >= 0) {
             turnNumber--;
             return true;
         }
@@ -184,36 +186,63 @@ public class Replay {
         Thread thread = new Thread();
         thread.start();
         autoDisplay = true;
-        while (autoDisplay){
-            while(nextTurn()){
-                if(next()){
+        while (autoDisplay) {
+            while (nextTurn()) {
+                if (next()) {
                     try {
                         //draw ici
-                        Thread.sleep(1000*speed);
+                        Thread.sleep(1000 * speed);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
                 }
             }
-            autoDisplay =false;
+            autoDisplay = false;
         }
     }
-    public void stopAutoDisplay(){
+
+    public void stopAutoDisplay() {
         autoDisplay = false;
     }
 
     public boolean previous() {
-        if(moveNumber-1 >=0){
+        if (moveNumber - 1 >= 0) {
             moveNumber--;
             return true;
         }
         return false;
     }
-    public boolean next(){
-        if(moveNumber+1 <replay.get(turnNumber).size()){
+
+    public boolean next() {
+        if (moveNumber + 1 < replay.get(turnNumber).size()) {
             moveNumber++;
             return true;
         }
         return false;
+    }
+
+    public ArrayList<String> getReplays() throws WrongFormatException {
+        ArrayList<String> replays = new ArrayList<>();
+        try {
+            File file = new File(Gdx.files.getLocalStoragePath().concat("assets/Saves/games.xml"));
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(file);
+            doc.getDocumentElement().normalize();
+            NodeList games = doc.getElementsByTagName("game");
+            for (int i = 0; i < games.getLength(); i++) {
+                Node node = games.item(i);
+                if (node.getNodeType() == Node.ELEMENT_NODE) {
+                    Element game = (Element) node;
+                    boolean pending = Boolean.parseBoolean(game.getAttribute("pending"));
+                    if (!pending) {
+                        replays.add(game.getAttribute("replay"));
+                    }
+                }
+            }
+        } catch (ParserConfigurationException | IOException | SAXException e) {
+            throw new WrongFormatException();
+        }
+        return replays;
     }
 }

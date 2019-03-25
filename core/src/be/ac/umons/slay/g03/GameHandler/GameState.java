@@ -170,47 +170,15 @@ public class GameState {
                             case "soldier": {
                                 int level = Integer.parseInt(cellData.getAttribute("level"));
                                 boolean hasMoved = Boolean.parseBoolean(cellData.getAttribute("hasmoved"));
-                                Soldier soldier;
-                                switch (level) {
-                                    case 0:
-                                        soldier = new Soldier(cell.getOwner(), 0, hasMoved);
-                                        break;
-                                    case 1:
-                                        soldier = new Soldier(cell.getOwner(), 1, hasMoved);
-                                        break;
-                                    case 2:
-                                        soldier = new Soldier(cell.getOwner(), 2, hasMoved);
-                                        break;
-                                    case 3:
-                                        soldier = new Soldier(cell.getOwner(), 3, hasMoved);
-                                        break;
-                                    default:
-                                        soldier = null;
-                                        break;
-                                }
+                                Soldier soldier = null;
+                                if (level >= 0 && level < 4) soldier = new Soldier(cell.getOwner(), level, hasMoved);
                                 cell.setElementOn(soldier);
                                 break;
                             }
                             case "attacktower": {
                                 int level = Integer.parseInt(cellData.getAttribute("level"));
-                                AttackTower attackTower;
-                                switch (level) {
-                                    case 0:
-                                        attackTower = new AttackTower(cell.getOwner(), 0);
-                                        break;
-                                    case 1:
-                                        attackTower = new AttackTower(cell.getOwner(), 1);
-                                        break;
-                                    case 2:
-                                        attackTower = new AttackTower(cell.getOwner(), 2);
-                                        break;
-                                    case 3:
-                                        attackTower = new AttackTower(cell.getOwner(), 3);
-                                        break;
-                                    default:
-                                        attackTower = null;
-                                        break;
-                                }
+                                AttackTower attackTower = null;
+                                if (level >= 0 && level < 4) attackTower = new AttackTower(cell.getOwner(), level);
                                 cell.setElementOn(attackTower);
                                 break;
                             }
@@ -226,24 +194,9 @@ public class GameState {
                                         Element soldierData = (Element) node1;
                                         int level = Integer.parseInt(soldierData.getAttributes().getNamedItem("level").getTextContent());
                                         boolean soldierHasMoved = Boolean.parseBoolean(soldierData.getAttributes().getNamedItem("hasmoved").getTextContent());
-                                        Soldier soldier;
-                                        switch (level) {
-                                            case 0:
-                                                soldier = new Soldier(cell.getOwner(), 0, soldierHasMoved);
-                                                break;
-                                            case 1:
-                                                soldier = new Soldier(cell.getOwner(), 1, soldierHasMoved);
-                                                break;
-                                            case 2:
-                                                soldier = new Soldier(cell.getOwner(), 2, soldierHasMoved);
-                                                break;
-                                            case 3:
-                                                soldier = new Soldier(cell.getOwner(), 3, soldierHasMoved);
-                                                break;
-                                            default:
-                                                soldier = null;
-                                                break;
-                                        }
+                                        Soldier soldier = null;
+                                        if (level >= 0 && level < 4)
+                                            soldier = new Soldier(cell.getOwner(), level, soldierHasMoved);
                                         soldiers.add(soldier);
                                     }
                                 }
@@ -259,9 +212,7 @@ public class GameState {
                             case "defencetower": {
                                 int level = Integer.parseInt(cellData.getAttribute("level"));
                                 DefenceTower defenceTower = null;
-                                if(level>0 && level<4){
-                                    defenceTower = new DefenceTower(cell.getOwner(), level);
-                                }
+                                if (level > 0 && level < 4) defenceTower = new DefenceTower(cell.getOwner(), level);
                                 cell.setElementOn(defenceTower);
                                 break;
                             }
@@ -342,7 +293,7 @@ public class GameState {
                     states.getTerritory().findCapital().addMoney(-m.getCreationCost());
                     states.reset();
                 }
-                if(!states.isCreationMode() ||  (states.getCreatableCells() != null && !states.getCreatableCells().contains(cell))){
+                if (!states.isCreationMode() || (states.getCreatableCells() != null && !states.getCreatableCells().contains(cell))) {
                     states.setCreatableCells(null);
                     states.setCreationMode(false);
                     states.setTerritory(null);
@@ -356,7 +307,7 @@ public class GameState {
             if (states.isCreationMode()) {
                 states.setDestination(map.findCell(x, y));
                 if (states.getDestination() != null && map.playingPlayer() != null && states.getDestination().getElementOn() == null) {
-                    if(!states.getSource().findTerritory().getCells().contains(states.getDestination())){
+                    if (!states.getSource().findTerritory().getCells().contains(states.getDestination())) {
                         states.getDestination().setOwner(map.playingPlayer());
                         states.getTerritory().addCell(states.getDestination());
                     }
@@ -374,11 +325,11 @@ public class GameState {
                 states.setCreationMode(false);
                 states.setCreatableCells(null);
             }
-        } else if (!states.isSelectionMode() && map.findCell(x,y)!=null && map.findCell(x,y).getOwner() != null) {
+        } else if (!states.isSelectionMode() && map.findCell(x, y) != null && map.findCell(x, y).getOwner() != null) {
             states.setSource(map.findCell(x, y));
             if (states.getSource() != null && states.getSource().accessibleCell(map) != null) {
                 if (states.getSource().getElementOn() instanceof Soldier) {
-                    if (((Soldier) states.getSource().getElementOn()).select()){
+                    if (((Soldier) states.getSource().getElementOn()).select()) {
                         System.out.println("wtf");
                         states.setSoldierSelected(true);
                     }
@@ -395,7 +346,7 @@ public class GameState {
         } else {
             states.setDestination(map.findCell(x, y));
             if (states.getSource().getElementOn() instanceof Soldier) {
-                if(!states.getSource().getElementOn().isHasMoved()){
+                if (!states.getSource().getElementOn().isHasMoved()) {
                     ((Soldier) states.getSource().getElementOn()).move(states.getSource(), states.getDestination(), map);
                 }
                 states.setSoldierSelected(false);
@@ -657,7 +608,7 @@ public class GameState {
             map.getPlayer2().cleanGrave();
             if (turnPlayed > 1) map.getPlayer2().checkTerritory();
             map.getPlayer1().setTurn(false);
-            if(map.getPlayer2().isOver()){
+            if (map.getPlayer2().isOver()) {
                 states.setOver(true);
                 try {
                     deleteSaves();
@@ -678,7 +629,7 @@ public class GameState {
 
         } else {
             map.getPlayer2().setTurn(false);
-            if(map.getPlayer1().isOver()){
+            if (map.getPlayer1().isOver()) {
                 states.setOver(true);
                 try {
                     deleteSaves();
@@ -832,15 +783,7 @@ public class GameState {
             Transformer transformer = transformerFactory.newTransformer();
             StreamResult result = new StreamResult(logFile);
             transformer.transform(source, result);
-        } catch (IOException e) {
-            throw new ReplayParserException();
-        } catch (TransformerConfigurationException e) {
-            throw new ReplayParserException();
-        } catch (ParserConfigurationException e) {
-            throw new ReplayParserException();
-        } catch (SAXException e) {
-            throw new ReplayParserException();
-        } catch (TransformerException e) {
+        } catch (IOException | TransformerException | ParserConfigurationException | SAXException e) {
             throw new ReplayParserException();
         }
 
@@ -902,11 +845,7 @@ public class GameState {
                 }
             }
             return false;
-        } catch (ParserConfigurationException e) {
-            throw new WrongFormatException();
-        } catch (IOException e) {
-            throw new WrongFormatException();
-        } catch (SAXException e) {
+        } catch (ParserConfigurationException | IOException | SAXException e) {
             throw new WrongFormatException();
         }
 
@@ -944,7 +883,8 @@ public class GameState {
             throw new WrongFormatException();
         }
     }
-    public void deleteGame() throws WrongFormatException{
+
+    public void deleteGame() throws WrongFormatException {
         try {
             File file = new File(Gdx.files.getLocalStoragePath().concat("assets/Saves/games.xml"));
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -965,9 +905,9 @@ public class GameState {
                         String replay = game.getAttribute("replay");
                         if (map.getPlayer1().getName().equals(p1) && map.getPlayer2().getName().equals(p2)) {
                             game.getParentNode().removeChild(game);
-                            FileHandle xmlFile = Gdx.files.local("assets/Saves/"+xml);
-                            FileHandle tmxFile = Gdx.files.local("assets/Saves/"+tmx);
-                            FileHandle replayFile = Gdx.files.local("assets/Replays/"+replay);
+                            FileHandle xmlFile = Gdx.files.local("assets/Saves/" + xml);
+                            FileHandle tmxFile = Gdx.files.local("assets/Saves/" + tmx);
+                            FileHandle replayFile = Gdx.files.local("assets/Replays/" + replay);
                             xmlFile.delete();
                             tmxFile.delete();
                             replayFile.delete();
@@ -984,7 +924,8 @@ public class GameState {
             throw new WrongFormatException();
         }
     }
-    public void deleteSaves() throws WrongFormatException{
+
+    public void deleteSaves() throws WrongFormatException {
         try {
             File file = new File(Gdx.files.getLocalStoragePath().concat("assets/Saves/games.xml"));
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -1003,8 +944,8 @@ public class GameState {
                         String xml = game.getAttribute("xml");
                         String tmx = game.getAttribute("tmx");
                         if (map.getPlayer1().getName().equals(p1) && map.getPlayer2().getName().equals(p2)) {
-                            FileHandle xmlFile = Gdx.files.local("assets/Saves/"+xml);
-                            FileHandle tmxFile = Gdx.files.local("assets/Saves/"+tmx);
+                            FileHandle xmlFile = Gdx.files.local("assets/Saves/" + xml);
+                            FileHandle tmxFile = Gdx.files.local("assets/Saves/" + tmx);
                             xmlFile.delete();
                             tmxFile.delete();
                             game.setAttribute("pending", "false");
@@ -1021,6 +962,7 @@ public class GameState {
             throw new WrongFormatException();
         }
     }
+
     public void deleteGamePending() throws WrongFormatException {
         try {
             File file = new File(Gdx.files.getLocalStoragePath().concat("assets/Saves/games.xml"));
@@ -1077,11 +1019,7 @@ public class GameState {
             DOMSource domSource = new DOMSource(document);
             StreamResult streamResult = new StreamResult(new File(logFile));
             transformer.transform(domSource, streamResult);
-        } catch (TransformerConfigurationException e) {
-            throw new ReplayParserException();
-        } catch (TransformerException e) {
-            throw new ReplayParserException();
-        } catch (ParserConfigurationException e) {
+        } catch (TransformerException  | ParserConfigurationException e) {
             throw new ReplayParserException();
         }
     }
