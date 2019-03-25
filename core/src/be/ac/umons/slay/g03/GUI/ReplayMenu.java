@@ -28,7 +28,7 @@ public class ReplayMenu extends MenuScreen {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
                         if (ScreenHandler.replayScreen == null) {
-                            ScreenHandler.replayScreen = new ReplayRenderer(replay, "Replays/" + replayName);
+                            ScreenHandler.replayScreen = new ReplayRenderer(replay, "assets/Replays/" + replayName);
                             ScreenHandler.setScreen(ScreenHandler.replayScreen);
                         }
                     }

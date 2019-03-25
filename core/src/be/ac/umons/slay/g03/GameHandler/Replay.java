@@ -20,11 +20,13 @@ import java.util.ArrayList;
 public class Replay {
 
     private int turnNumber = 0;
-    private int moveNumber = 0;
+    public int moveNumber = 0;
     private int speed = 1;
     private String replayFileName;
-    private ArrayList<ArrayList<ArrayList<Cell>>> replay;
+    private ArrayList<ArrayList<ArrayList<Cell>>> replay = new ArrayList<>();
     private boolean autoDisplay;
+
+    private Player p1, p2;
 
     public Replay(int turnNumber) {
         this.turnNumber = turnNumber;
@@ -39,8 +41,8 @@ public class Replay {
             Document doc = dBuilder.parse(file);
             doc.getDocumentElement().normalize();
             NodeList turns = doc.getDocumentElement().getChildNodes();
-            Player p1 = new Player("yellow", 1, 0, false, 0, null);
-            Player p2 = new Player("red", 2, 0, false, 0, null);
+            p1 = new Player("yellow", 1, 0, false, 0, null);
+            p2 = new Player("red", 2, 0, false, 0, null);
             for (int i = 0; i < turns.getLength(); i++) {
                 Node turn = turns.item(i);
                 if (turn.getNodeType() == Node.ELEMENT_NODE) {
@@ -183,19 +185,20 @@ public class Replay {
     }
 
     public void autoDisplay() {
-        Thread thread = new Thread();
-        thread.start();
+//        Thread thread = new Thread();
+//        thread.start();
         autoDisplay = true;
         while (autoDisplay) {
             while (nextTurn()) {
                 if (next()) {
-                    try {
-                        //draw ici
-                        Thread.sleep(1000 * speed);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
+//                    try {
+//                        //draw ici
+//                        Thread.sleep(1000 * speed);
+//                    } catch (InterruptedException e) {
+//                        e.printStackTrace();
+//                    }
+                } else
+                    moveNumber = 0;
             }
             autoDisplay = false;
         }
@@ -263,7 +266,23 @@ public class Replay {
         return moveNumber;
     }
 
+    public Player getP1() {
+        return p1;
+    }
+
+    public Player getP2() {
+        return p2;
+    }
+
     public void setReplayFileName(String replayFileName) {
         this.replayFileName = replayFileName;
+    }
+
+    public boolean isAutoDisplay() {
+        return autoDisplay;
+    }
+
+    public void setAutoDisplay(boolean autoDisplay) {
+        this.autoDisplay = autoDisplay;
     }
 }

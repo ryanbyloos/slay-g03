@@ -21,7 +21,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
@@ -313,9 +312,12 @@ public class GameState {
                     }
                     m = newElement(elementToBuild, map.playingPlayer());
                     states.getDestination().setElementOn(m);
-                    states.getTerritory().findCapital().addMoney(-(m.getCreationCost()));
+                    if (m != null) {
+                        states.getTerritory().findCapital().addMoney(-m.getCreationCost());
+                    }
                 }
                 try {
+                    System.out.println("Bonne nuit");
                     storeMove(states.getDestination() != null ? states.getDestination().getOwner() : null);
                 } catch (ReplayParserException e) {
                     e.printStackTrace();
@@ -344,7 +346,7 @@ public class GameState {
 
         } else {
             states.setDestination(map.findCell(x, y));
-            if(states.getSource()!=null){
+            if (states.getSource() != null) {
                 if (states.getSource().getElementOn() instanceof Soldier) {
                     if (!states.getSource().getElementOn().isHasMoved()) {
                         ((Soldier) states.getSource().getElementOn()).move(states.getSource(), states.getDestination(), map);
@@ -359,15 +361,17 @@ public class GameState {
                     states.setAttackTowerSelected(false);
                 }
             }
-            if(states.getDestination() != null){
+            if (states.getDestination() != null) {
+                if (states.getDestination().getOwner() == map.playingPlayer()) {
+                    try {
+                        storeMove(map.playingPlayer());
+                        System.out.println("Bonsoir");
+                    } catch (ReplayParserException e) {
+                        e.printStackTrace();
+                    }
+                }
                 states.setTerritory(states.getDestination().findTerritory());
                 states.setTerritorySelected(true);
-            }
-            try {
-                storeMove(map.playingPlayer());
-
-            } catch (ReplayParserException e) {
-                e.printStackTrace();
             }
             states.reset();
         }
@@ -1022,7 +1026,7 @@ public class GameState {
             DOMSource domSource = new DOMSource(document);
             StreamResult streamResult = new StreamResult(new File(logFile));
             transformer.transform(domSource, streamResult);
-        } catch (TransformerException  | ParserConfigurationException e) {
+        } catch (TransformerException | ParserConfigurationException e) {
             throw new ReplayParserException();
         }
     }
@@ -1035,11 +1039,11 @@ public class GameState {
         return elementToBuild;
     }
 
-    public Map getMap() {
-        return map;
-    }
-
     public void setElementToBuild(String elementToBuild) {
         this.elementToBuild = elementToBuild;
+    }
+
+    public Map getMap() {
+        return map;
     }
 }
