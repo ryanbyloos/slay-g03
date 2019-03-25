@@ -317,7 +317,6 @@ public class GameState {
                     }
                 }
                 try {
-                    System.out.println("Bonne nuit");
                     storeMove(states.getDestination() != null ? states.getDestination().getOwner() : null);
                 } catch (ReplayParserException e) {
                     e.printStackTrace();
@@ -365,7 +364,6 @@ public class GameState {
                 if (states.getDestination().getOwner() == map.playingPlayer()) {
                     try {
                         storeMove(map.playingPlayer());
-                        System.out.println("Bonsoir");
                     } catch (ReplayParserException e) {
                         e.printStackTrace();
                     }

@@ -7,6 +7,7 @@ import java.util.Random;
 
 
 public class Cell {
+
     private int y;
     private int x;
     private boolean checked;
@@ -43,7 +44,7 @@ public class Cell {
     }
 
     public void spwanTree(Map map) {
-        if (elementOn == null) {
+        if (elementOn == null && !water) {
             int tree = 0;
             for (Cell cell : adjacentCell(map, this)
             ) {
@@ -178,4 +179,6 @@ public class Cell {
         else
             return "Cell[x][y][owner][checked] : " + "[" + x + "]" + "[" + y + "]" + "[" + owner + "]" + "[" + checked + "]\n";
     }
+
+
 }
