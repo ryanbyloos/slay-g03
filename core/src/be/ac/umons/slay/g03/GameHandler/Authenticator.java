@@ -1,28 +1,141 @@
 package be.ac.umons.slay.g03.GameHandler;
 
 import be.ac.umons.slay.g03.Core.Player;
+import com.badlogic.gdx.Gdx;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.*;
 
 public class Authenticator {
     private GameState gameState;
     private String hallOfFameFile;
     private String loginFile;
 
-    public Authenticator(GameState gameState, String hallOfFameFile, String loginFile) {
+    public Authenticator(GameState gameState,String loginFile) throws AuthenticationError {
         this.gameState = gameState;
-        this.hallOfFameFile = hallOfFameFile;
+
+        if(!Gdx.files.internal(loginFile).exists()) {
+            try {
+                File newFile = new File(loginFile);
+                DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+                Document doc = dBuilder.newDocument();
+                Element root = doc.createElement("users");
+                doc.appendChild(root);
+                TransformerFactory transformerFactory = TransformerFactory.newInstance();
+                Transformer transformer = transformerFactory.newTransformer();
+                DOMSource domSource = new DOMSource(doc);
+                StreamResult streamResult = new StreamResult(newFile);
+                transformer.transform(domSource, streamResult);
+
+            }catch (Exception e){
+                throw new AuthenticationError();
+            }
+        }
+
         this.loginFile = loginFile;
+
     }
 
-    public boolean login(String name, String pwd) {
-        return false;
+
+    public boolean login(String userName, String pwd) throws AuthenticationError {
+        try {
+            File inputFile = new File(loginFile);
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(inputFile);
+            doc.getDocumentElement().normalize();
+            NodeList nList = doc.getElementsByTagName("user");
+
+            for (int i = 0; i < nList.getLength() ; i++) {
+                Node nNode = nList.item(i);
+                if(nNode.getNodeType() == Node.ELEMENT_NODE){
+                    Element eElement = (Element) nNode;
+                    if(eElement.getAttribute("userNme").equals(userName) && eElement.getAttribute("password").equals(pwd)) return true;
+                }
+            }
+            return false;
+        }catch (Exception e){
+            throw new AuthenticationError();
+        }
     }
 
-    public boolean register(String name, String pwd) {
-        return false;
+    public boolean register(String userName, String pwd, String pseudo, String image) throws AuthenticationError {
+        try{
+            File inputFile = new File(loginFile);
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(inputFile);
+            doc.getDocumentElement().normalize();
+            NodeList nList = doc.getElementsByTagName("user");
+
+            for (int i = 0; i < nList.getLength() ; i++) {
+                Node nNode = nList.item(i);
+                if(nNode.getNodeType() == Node.ELEMENT_NODE){
+                    Element eElement = (Element) nNode;
+                    if(eElement.getAttribute("userName").equals(userName)) return false;
+                    if(eElement.getAttribute("pseudo").equals(pseudo)) return false;
+                }
+            }
+
+            Element newUser = doc.createElement("user");
+            newUser.setAttribute("userName", userName);
+            newUser.setAttribute("password", pwd);
+            newUser.setAttribute("pseudo", pseudo);
+            newUser.setAttribute("image", image);
+            newUser.setAttribute("game", "0");
+            newUser.setAttribute("gameWin", "0");
+            newUser.setAttribute("gameLose", "0");
+
+            doc.getDocumentElement().appendChild(newUser);
+            DOMSource source = new DOMSource(doc);
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            StreamResult result = new StreamResult(loginFile);
+            transformer.transform(source, result);
+
+        }catch (Exception e){
+            throw new AuthenticationError();
+        }
+        return true;
     }
 
-    public boolean addScore(Player player) {
-        return false;
+    public void addScore(Player winner, Player loser) throws AuthenticationError {
+        try {
+            File inputFile = new File(loginFile);
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(inputFile);
+            doc.getDocumentElement().normalize();
+            NodeList nList = doc.getElementsByTagName("user");
+
+            for (int i = 0; i < nList.getLength() ; i++) {
+                Node nNode = nList.item(i);
+                if(nNode.getNodeType() == Node.ELEMENT_NODE){
+                    Element eElement = (Element) nNode;
+                    if(! winner.isGuest() && eElement.getAttribute("pseudo").equals(winner.getName())){
+                        eElement.setAttribute("game", Integer.toString(Integer.parseInt(eElement.getAttribute("game")) + 1));
+                        eElement.setAttribute("gameWin", Integer.toString(Integer.parseInt(eElement.getAttribute("gameWin")) + 1));
+                    }
+                    if(! loser.isGuest() && eElement.getAttribute("pseudo").equals(loser.getName())){
+                        eElement.setAttribute("game", Integer.toString(Integer.parseInt(eElement.getAttribute("game")) + 1));
+                        eElement.setAttribute("gameLose", Integer.toString(Integer.parseInt(eElement.getAttribute("gameLose")) + 1));
+                    }
+                }
+            }
+
+        }catch (Exception e){
+            throw new AuthenticationError();
+        }
     }
 
     public boolean start(String xmlFile, String tmxFile) {
