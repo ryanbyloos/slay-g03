@@ -14,7 +14,8 @@ public class ScreenHandler {
 
     static Settings settings;
     static HallOfFame hof;
-    static ReplayScreen replay;
+    static ReplayMenu replay;
+    static ReplayRenderer replayScreen;
     static WorldScreen worldScreen;
 
     static void setScreen(Screen screen) {

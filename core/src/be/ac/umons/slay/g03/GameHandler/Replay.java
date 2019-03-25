@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 public class Replay {
+
     private int turnNumber = 0;
     private int moveNumber = 0;
     private int speed = 1;
@@ -25,9 +26,8 @@ public class Replay {
     private ArrayList<ArrayList<ArrayList<Cell>>> replay;
     private boolean autoDisplay;
 
-    public Replay(int turnNumber, String replayFileName) {
+    public Replay(int turnNumber) {
         this.turnNumber = turnNumber;
-        this.replayFileName = replayFileName;
     }
 
     public void setReplay() throws WrongFormatException {
@@ -244,5 +244,25 @@ public class Replay {
             throw new WrongFormatException();
         }
         return replays;
+    }
+
+    public void setReplayFileName(String replayFileName) {
+        this.replayFileName = replayFileName;
+    }
+
+    public ArrayList<ArrayList<ArrayList<Cell>>> getReplay() {
+        return this.replay;
+    }
+
+    public void setReplay(ArrayList<ArrayList<ArrayList<Cell>>> replay) {
+        this.replay = replay;
+    }
+
+    public int getTurnNumber() {
+        return turnNumber;
+    }
+
+    public int getMoveNumber() {
+        return moveNumber;
     }
 }

@@ -40,7 +40,7 @@ public class Home implements Screen {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 if (ScreenHandler.replay == null)
-                    ScreenHandler.replay = new ReplayScreen();
+                    ScreenHandler.replay = new ReplayMenu();
                 ScreenHandler.setScreen(ScreenHandler.replay);
             }
         });
