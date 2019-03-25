@@ -258,23 +258,9 @@ public class GameState {
                                 break;
                             case "defencetower": {
                                 int level = Integer.parseInt(cellData.getAttribute("level"));
-                                DefenceTower defenceTower;
-                                switch (level) {
-                                    case 0:
-                                        defenceTower = new DefenceTower(cell.getOwner(), 0);
-                                        break;
-                                    case 1:
-                                        defenceTower = new DefenceTower(cell.getOwner(), 1);
-                                        break;
-                                    case 2:
-                                        defenceTower = new DefenceTower(cell.getOwner(), 2);
-                                        break;
-                                    case 3:
-                                        defenceTower = new DefenceTower(cell.getOwner(), 3);
-                                        break;
-                                    default:
-                                        defenceTower = null;
-                                        break;
+                                DefenceTower defenceTower = null;
+                                if(level>0 && level<4){
+                                    defenceTower = new DefenceTower(cell.getOwner(), level);
                                 }
                                 cell.setElementOn(defenceTower);
                                 break;
@@ -353,7 +339,7 @@ public class GameState {
                     }
                     m = newElement(elementToBuild, map.playingPlayer());
                     cell.setElementOn(m);
-                    states.getTerritory().findCapital().addMoney(-(m.getCreationCost()));
+                    states.getTerritory().findCapital().addMoney(-m.getCreationCost());
                     states.reset();
                 }
                 if(!states.isCreationMode() ||  (states.getCreatableCells() != null && !states.getCreatableCells().contains(cell))){
@@ -370,7 +356,6 @@ public class GameState {
             if (states.isCreationMode()) {
                 states.setDestination(map.findCell(x, y));
                 if (states.getDestination() != null && map.playingPlayer() != null && states.getDestination().getElementOn() == null) {
-                    System.out.println("yea" +states.getSource());
                     if(!states.getSource().findTerritory().getCells().contains(states.getDestination())){
                         states.getDestination().setOwner(map.playingPlayer());
                         states.getTerritory().addCell(states.getDestination());
@@ -394,6 +379,7 @@ public class GameState {
             if (states.getSource() != null && states.getSource().accessibleCell(map) != null) {
                 if (states.getSource().getElementOn() instanceof Soldier) {
                     if (((Soldier) states.getSource().getElementOn()).select()){
+                        System.out.println("wtf");
                         states.setSoldierSelected(true);
                     }
                 } else if (states.getSource().getElementOn() instanceof Boat) {
@@ -409,8 +395,11 @@ public class GameState {
         } else {
             states.setDestination(map.findCell(x, y));
             if (states.getSource().getElementOn() instanceof Soldier) {
-                ((Soldier) states.getSource().getElementOn()).move(states.getSource(), states.getDestination(), map);
+                if(!states.getSource().getElementOn().isHasMoved()){
+                    ((Soldier) states.getSource().getElementOn()).move(states.getSource(), states.getDestination(), map);
+                }
                 states.setSoldierSelected(false);
+
             } else if (states.getSource().getElementOn() instanceof Boat) {
                 ((Boat) states.getSource().getElementOn()).move(states.getSource(), states.getDestination(), map);
                 states.setBoatSelected(false);
