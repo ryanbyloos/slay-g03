@@ -1,2 +1,15 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><games>
-<game pending="true" player1="Danial" player2="Alex" replay="Danial-Alex(22.03.2019.19.05.41).xml" tmx="Danial-Alex(22.03.2019.19.05.41)g3_2.tmx" turn="0" xml="Danial-Alex(22.03.2019.19.05.41)g3_3.xml"/></games>
+    <game pending="true" player1="Danial" player2="Alex" replay="Danial-Alex(22.03.2019.19.05.41).xml"
+          tmx="Danial-Alex(22.03.2019.19.05.41)g3_2.tmx" turn="0" xml="Danial-Alex(22.03.2019.19.05.41)g3_3.xml"/>
+
+    <game pending="false" player1="Yellow" player2="Red" replay="Yellow-Red(25.03.2019.13.55.06).xml"
+          tmx="Yellow-Red(25.03.2019.13.55.06)g3_2.tmx" turn="0" xml="Yellow-Red(25.03.2019.13.55.06)g3_3.xml"/>
+    <game pending="false" player1="Yellow" player2="Red" replay="Yellow-Red(25.03.2019.18.50.44).xml"
+          tmx="Yellow-Red(25.03.2019.18.50.44)g3_2.tmx" turn="0" xml="Yellow-Red(25.03.2019.18.50.44)g3_3.xml"/>
+    <game pending="false" player1="Yellow" player2="Red" replay="Yellow-Red(25.03.2019.19.04.22).xml"
+          tmx="Yellow-Red(25.03.2019.19.04.22)g3_2.tmx" turn="0" xml="Yellow-Red(25.03.2019.19.04.22)g3_3.xml"/>
+    <game pending="false" player1="Yellow" player2="Red" replay="Yellow-Red(25.03.2019.19.13.05).xml"
+          tmx="Yellow-Red(25.03.2019.19.13.05)g3_2.tmx" turn="0" xml="Yellow-Red(25.03.2019.19.13.05)g3_3.xml"/>
+    <game pending="true" player1="Yellow" player2="Red" replay="Yellow-Red(25.03.2019.19.15.40).xml"
+          tmx="Yellow-Red(25.03.2019.19.15.40)g3_10.tmx" turn="0" xml="Yellow-Red(25.03.2019.19.15.40)g3_11.xml"/>
+</games>

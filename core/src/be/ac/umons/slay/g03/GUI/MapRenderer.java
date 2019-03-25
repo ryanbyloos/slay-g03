@@ -51,12 +51,14 @@ public class MapRenderer extends Game {
                 if (cell.getOwner() == null) drawSprite(parity, greenHex, cell);
                 else if (cell.getOwner() == map.getPlayer1()) drawSprite(parity, yellowHex, cell);
                 else drawSprite(parity, redHex, cell);
-                if ((gameState.getStates().isSelectionMode()) && gameState.getStates().getSource().getElementOn() != null)
-                    drawHighlights(gameState.getStates().getSource().accessibleCell(map));
-                if (gameState.getStates().getTerritory() != null)
-                    drawHighlights(gameState.getStates().getTerritory().getCells());
-                if (gameState.getStates().isCreationMode() && gameState.getStates().getCreatableCells() != null) {
-                    drawHighlights(gameState.getStates().getCreatableCells());
+                if (gameState != null) {
+                    if ((gameState.getStates().isSelectionMode()) && gameState.getStates().getSource().getElementOn() != null)
+                        drawHighlights(gameState.getStates().getSource().accessibleCell(map));
+                    if (gameState.getStates().getTerritory() != null)
+                        drawHighlights(gameState.getStates().getTerritory().getCells());
+                    if (gameState.getStates().isCreationMode() && gameState.getStates().getCreatableCells() != null) {
+                        drawHighlights(gameState.getStates().getCreatableCells());
+                    }
                 }
             }
         }
@@ -122,11 +124,14 @@ public class MapRenderer extends Game {
         int EVEN = 0;
         int ODD = 1;
         if (cell.getY() % 2 == 0) {
-            batch.draw(sprite, cell.getX() * 32 + 16 * ((parity == EVEN) ? 1 : 0), cell.getY() * 24 + offset);
+            this.batch.draw(sprite, cell.getX() * 32 + 16 * ((parity == EVEN) ? 1 : 0), cell.getY() * 24 + offset);
         } else {
-            batch.draw(sprite, cell.getX() * 32 + 16 * ((parity == ODD) ? 1 : 0), cell.getY() * 24 + offset);
+            this.batch.draw(sprite, cell.getX() * 32 + 16 * ((parity == ODD) ? 1 : 0), cell.getY() * 24 + offset);
         }
     }
+
+//    void drawSprite(int parity, int offset, TextureAtlas.AtlasRegion sprite, Cell cell)
+
 
     void drawHighlights(ArrayList<Cell> cells) {
         for (Cell cell : cells)

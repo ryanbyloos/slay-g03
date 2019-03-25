@@ -4,7 +4,6 @@ import be.ac.umons.slay.g03.Core.Cell;
 import be.ac.umons.slay.g03.Core.Map;
 import be.ac.umons.slay.g03.Core.Player;
 import be.ac.umons.slay.g03.Core.Territory;
-import be.ac.umons.slay.g03.GameHandler.Authenticator;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -156,7 +155,8 @@ public class Soldier extends MapElement implements Controlable {
                             int cellTot = cellMark.findTerritory().getCells().size();
                             if (cellAlreadyChecked == null) oldTerritoryCell = cellTot;
                             cellMark.getOwner().removeTerritory(cellMark.findTerritory());
-                            if (!cellMark.getOwner().getTerritories().contains(territory)) cellMark.getOwner().getTerritories().add(territory);
+                            if (!cellMark.getOwner().getTerritories().contains(territory))
+                                cellMark.getOwner().getTerritories().add(territory);
                             cellMark.getOwner().getTerritories().add(territoryMark);
                             if (cellAlreadyChecked == null) {
 
