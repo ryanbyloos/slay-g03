@@ -135,8 +135,11 @@ class TerritoryHud extends Stage {
         return new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (world.gameState.getStates().isTerritorySelected() && world.gameState.getStates().getTerritory().findCapital().getMoney() >= cost)
+                if (world.gameState.getStates().isTerritorySelected() && world.gameState.getStates().getTerritory().findCapital().getMoney() >= cost){
                     world.gameState.getStates().setCreationMode(!world.gameState.getStates().isCreationMode());
+                    world.gameState.getStates().setCreatableCells(world.gameState.getStates().getTerritory().accesibleCellToCreateUnit(world.gameState.getMap()));
+                }
+
                 world.gameState.setElementToBuild(name);
             }
         };

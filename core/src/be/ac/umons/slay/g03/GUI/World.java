@@ -94,6 +94,9 @@ public class World extends ApplicationAdapter implements InputProcessor {
                     drawHighlights(gameState.getStates().getSource().accessibleCell(map));
                 if (gameState.getStates().getTerritory() != null)
                     drawHighlights(gameState.getStates().getTerritory().getCells());
+                if(gameState.getStates().isCreationMode() && gameState.getStates().getCreatableCells() != null){
+                    drawHighlights(gameState.getStates().getCreatableCells());
+                }
             }
         }
         for (int i = 0; i < map.getCells().size(); i++) {
@@ -172,7 +175,8 @@ public class World extends ApplicationAdapter implements InputProcessor {
             gameState.saveReplay();
             gameState.storeTurn();
             gameState.storeMove(map.getPlayer1());
-        } catch (ReplayParserException e) {
+            gameState.save();
+        }  catch (TransformerException | SAXException| ParserConfigurationException | IOException  | ReplayParserException e) {
             e.printStackTrace();
         }
         Infrastructure.setAvailability(ScreenHandler.game.prefs.getBoolean("infrastructures"));
@@ -181,6 +185,9 @@ public class World extends ApplicationAdapter implements InputProcessor {
 
     @Override
     public void render() {
+        if(gameState.getStates().isOver()){
+            ScreenHandler.setScreen(ScreenHandler.home);
+        }
         camera.update();
         batch.setProjectionMatrix(camera.combined);
         batch.begin();
@@ -198,12 +205,9 @@ public class World extends ApplicationAdapter implements InputProcessor {
         if (keycode == Input.Keys.P) {
             gameState.nextTurn();
         } else if (keycode == Input.Keys.ESCAPE){
-            try {
-                gameState.save();
-            } catch (IOException | TransformerException | ParserConfigurationException | SAXException e) {
-                e.printStackTrace();
-            }
             ScreenHandler.setScreen(ScreenHandler.home);
+        }
+        else if(keycode == Input.Keys.R){
         }
 
         else if (keycode == Input.Keys.J) {

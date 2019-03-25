@@ -66,7 +66,6 @@ public class Cell {
 
     // TODO: 13/03/2019
     private ArrayList<Cell> boatAccessibleCell(Map map) {
-
         return null;
     }
 

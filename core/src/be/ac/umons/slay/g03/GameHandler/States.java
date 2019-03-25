@@ -3,15 +3,20 @@ package be.ac.umons.slay.g03.GameHandler;
 import be.ac.umons.slay.g03.Core.Cell;
 import be.ac.umons.slay.g03.Core.Territory;
 
+import java.util.ArrayList;
+
 public class States {
+    private boolean over;
     private boolean territorySelected;
     private boolean soldierSelected;
     private boolean boatSelected;
     private boolean attackTowerSelected;
     private boolean creationMode;
+    private boolean upgradeMode;
     private Cell destination;
     private Cell source;
     private Territory territory;
+    private ArrayList<Cell> creatableCells;
 
     public boolean isBoatSelected() {
         return boatSelected;
@@ -64,6 +69,10 @@ public class States {
         setAttackTowerSelected(false);
         setCreationMode(false);
         setTerritory(null);
+        setUpgradeMode(false);
+        setCreatableCells(null);
+
+
     }
 
     public Cell getDestination() {
@@ -92,7 +101,30 @@ public class States {
 
     @Override
     public String toString() {
-        return "[creationMode][territorySelected][soldierSelected][boatSelected]" + "[" + creationMode + "]" + "[" + territorySelected + "]" + "[" + soldierSelected + "]" + "[" + boatSelected + "]";
+        return "[creationMode][territorySelected][soldierSelected][boatSelected][upgradeMode]" + "[" + creationMode + "]" + "[" + territorySelected + "]" + "[" + soldierSelected + "]" + "[" + boatSelected + "]" + "[" + upgradeMode + "]";
     }
 
+    public boolean isUpgradeMode() {
+        return upgradeMode;
+    }
+
+    public void setUpgradeMode(boolean upgradeMode) {
+        this.upgradeMode = upgradeMode;
+    }
+
+    public ArrayList<Cell> getCreatableCells() {
+        return creatableCells;
+    }
+
+    public void setCreatableCells(ArrayList<Cell> creatableCells) {
+        this.creatableCells = creatableCells;
+    }
+
+    public boolean isOver() {
+        return over;
+    }
+
+    public void setOver(boolean over) {
+        this.over = over;
+    }
 }

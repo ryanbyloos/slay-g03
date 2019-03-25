@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class GameState {
+
     private Map map;
     private Loader loader;
     private String logFile;
@@ -355,15 +356,25 @@ public class GameState {
                     states.getTerritory().findCapital().addMoney(-(m.getCreationCost()));
                     states.reset();
                 }
+                if(!states.isCreationMode() ||  (states.getCreatableCells() != null && !states.getCreatableCells().contains(cell))){
+                    states.setCreatableCells(null);
+                    states.setCreationMode(false);
+                    states.setTerritory(null);
+                    states.setTerritorySelected(false);
+                }
 
-                states.setTerritory(null);
-                states.setTerritorySelected(false);
+
             }
         }
         if (states.isTerritorySelected()) {
             if (states.isCreationMode()) {
                 states.setDestination(map.findCell(x, y));
                 if (states.getDestination() != null && map.playingPlayer() != null && states.getDestination().getElementOn() == null) {
+                    System.out.println("yea" +states.getSource());
+                    if(!states.getSource().findTerritory().getCells().contains(states.getDestination())){
+                        states.getDestination().setOwner(map.playingPlayer());
+                        states.getTerritory().addCell(states.getDestination());
+                    }
                     m = newElement(elementToBuild, map.playingPlayer());
                     states.getDestination().setElementOn(m);
                     states.getTerritory().findCapital().addMoney(-(m.getCreationCost()));
@@ -376,13 +387,15 @@ public class GameState {
                 states.setTerritorySelected(false);
                 states.setDestination(null);
                 states.setCreationMode(false);
+                states.setCreatableCells(null);
             }
-        } else if (!states.isSelectionMode()) {
+        } else if (!states.isSelectionMode() && map.findCell(x,y)!=null && map.findCell(x,y).getOwner() != null) {
             states.setSource(map.findCell(x, y));
             if (states.getSource() != null && states.getSource().accessibleCell(map) != null) {
                 if (states.getSource().getElementOn() instanceof Soldier) {
-                    if (((Soldier) states.getSource().getElementOn()).select())
+                    if (((Soldier) states.getSource().getElementOn()).select()){
                         states.setSoldierSelected(true);
+                    }
                 } else if (states.getSource().getElementOn() instanceof Boat) {
                     if (((Boat) states.getSource().getElementOn()).select())
                         states.setBoatSelected(true);
@@ -655,6 +668,14 @@ public class GameState {
             map.getPlayer2().cleanGrave();
             if (turnPlayed > 1) map.getPlayer2().checkTerritory();
             map.getPlayer1().setTurn(false);
+            if(map.getPlayer2().isOver()){
+                states.setOver(true);
+                try {
+                    deleteSaves();
+                } catch (WrongFormatException e) {
+                    e.printStackTrace();
+                }
+            }
             resetMoveableUnits(map.getPlayer1());
             map.getPlayer2().setTurn(true);
             map.getPlayer1().setMoveNumber(-1);
@@ -668,6 +689,14 @@ public class GameState {
 
         } else {
             map.getPlayer2().setTurn(false);
+            if(map.getPlayer1().isOver()){
+                states.setOver(true);
+                try {
+                    deleteSaves();
+                } catch (WrongFormatException e) {
+                    e.printStackTrace();
+                }
+            }
             resetMoveableUnits(map.getPlayer2());
             map.getPlayer1().setTurn(true);
             map.getPlayer2().setMoveNumber(-1);
@@ -926,7 +955,7 @@ public class GameState {
             throw new WrongFormatException();
         }
     }
-    public void deleteGame(String player1, String player2) throws WrongFormatException{
+    public void deleteGame() throws WrongFormatException{
         try {
             File file = new File(Gdx.files.getLocalStoragePath().concat("assets/Saves/games.xml"));
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -945,7 +974,7 @@ public class GameState {
                         String xml = game.getAttribute("xml");
                         String tmx = game.getAttribute("tmx");
                         String replay = game.getAttribute("replay");
-                        if (player1.equals(p1) && player2.equals(p2)) {
+                        if (map.getPlayer1().getName().equals(p1) && map.getPlayer2().getName().equals(p2)) {
                             game.getParentNode().removeChild(game);
                             FileHandle xmlFile = Gdx.files.local("assets/Saves/"+xml);
                             FileHandle tmxFile = Gdx.files.local("assets/Saves/"+tmx);
@@ -966,7 +995,7 @@ public class GameState {
             throw new WrongFormatException();
         }
     }
-    public void deleteSaves(String player1, String player2) throws WrongFormatException{
+    public void deleteSaves() throws WrongFormatException{
         try {
             File file = new File(Gdx.files.getLocalStoragePath().concat("assets/Saves/games.xml"));
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -984,12 +1013,12 @@ public class GameState {
                         String p2 = game.getAttribute("player2");
                         String xml = game.getAttribute("xml");
                         String tmx = game.getAttribute("tmx");
-                        if (player1.equals(p1) && player2.equals(p2)) {
-                            game.getParentNode().removeChild(game);
+                        if (map.getPlayer1().getName().equals(p1) && map.getPlayer2().getName().equals(p2)) {
                             FileHandle xmlFile = Gdx.files.local("assets/Saves/"+xml);
                             FileHandle tmxFile = Gdx.files.local("assets/Saves/"+tmx);
                             xmlFile.delete();
                             tmxFile.delete();
+                            game.setAttribute("pending", "false");
                         }
                     }
                 }
@@ -1003,7 +1032,7 @@ public class GameState {
             throw new WrongFormatException();
         }
     }
-    public void deleteGamePending(String player1, String player2) throws WrongFormatException {
+    public void deleteGamePending() throws WrongFormatException {
         try {
             File file = new File(Gdx.files.getLocalStoragePath().concat("assets/Saves/games.xml"));
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -1019,7 +1048,7 @@ public class GameState {
                     if (pending) {
                         String p1 = game.getAttribute("player1");
                         String p2 = game.getAttribute("player2");
-                        if (player1.equals(p1) && player2.equals(p2)) {
+                        if (map.getPlayer1().getName().equals(p1) && map.getPlayer2().getName().equals(p2)) {
                             game.getParentNode().removeChild(game);
                         }
                     }
@@ -1037,7 +1066,7 @@ public class GameState {
 
     public void saveReplay() throws ReplayParserException {
         try {
-            if (isPending()) deleteGame(map.getPlayer1().getName(), map.getPlayer2().getName());
+            if (isPending()) deleteGame();
         } catch (WrongFormatException e) {
             e.printStackTrace();
         }
@@ -1074,6 +1103,10 @@ public class GameState {
 
     public String getElementToBuild() {
         return elementToBuild;
+    }
+
+    public Map getMap() {
+        return map;
     }
 
     public void setElementToBuild(String elementToBuild) {
