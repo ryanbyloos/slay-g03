@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.2" tiledversion="1.2.2" name="spritesheet" tilewidth="32" tileheight="32" tilecount="16" columns="4">
- <image source="spritesheetTmx.png" width="128" height="128"/>
+<tileset version="1.2" tiledversion="1.2.2" name="spritesheet" tilewidth="32" tileheight="32" tilecount="16" columns="16">
+ <image source="spritesheet.png" width="512" height="32"/>
  <tile id="0">
   <properties>
    <property name="available" type="bool" value="true"/>
