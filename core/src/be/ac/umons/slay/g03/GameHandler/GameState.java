@@ -307,7 +307,7 @@ public class GameState {
             if (states.isCreationMode()) {
                 states.setDestination(map.findCell(x, y));
                 if (states.getDestination() != null && map.playingPlayer() != null && states.getDestination().getElementOn() == null) {
-                    if (!states.getSource().findTerritory().getCells().contains(states.getDestination())) {
+                    if (!states.getTerritory().getCells().contains(states.getDestination())) {
                         states.getDestination().setOwner(map.playingPlayer());
                         states.getTerritory().addCell(states.getDestination());
                     }
@@ -330,7 +330,6 @@ public class GameState {
             if (states.getSource() != null && states.getSource().accessibleCell(map) != null) {
                 if (states.getSource().getElementOn() instanceof Soldier) {
                     if (((Soldier) states.getSource().getElementOn()).select()) {
-                        System.out.println("wtf");
                         states.setSoldierSelected(true);
                     }
                 } else if (states.getSource().getElementOn() instanceof Boat) {
@@ -345,21 +344,25 @@ public class GameState {
 
         } else {
             states.setDestination(map.findCell(x, y));
-            if (states.getSource().getElementOn() instanceof Soldier) {
-                if (!states.getSource().getElementOn().isHasMoved()) {
-                    ((Soldier) states.getSource().getElementOn()).move(states.getSource(), states.getDestination(), map);
-                }
-                states.setSoldierSelected(false);
+            if(states.getSource()!=null){
+                if (states.getSource().getElementOn() instanceof Soldier) {
+                    if (!states.getSource().getElementOn().isHasMoved()) {
+                        ((Soldier) states.getSource().getElementOn()).move(states.getSource(), states.getDestination(), map);
+                    }
+                    states.setSoldierSelected(false);
 
-            } else if (states.getSource().getElementOn() instanceof Boat) {
-                ((Boat) states.getSource().getElementOn()).move(states.getSource(), states.getDestination(), map);
-                states.setBoatSelected(false);
-            } else if (states.getSource().getElementOn() instanceof AttackTower) {
-                ((AttackTower) states.getSource().getElementOn()).attack(states.getDestination());
-                states.setAttackTowerSelected(false);
+                } else if (states.getSource().getElementOn() instanceof Boat) {
+                    ((Boat) states.getSource().getElementOn()).move(states.getSource(), states.getDestination(), map);
+                    states.setBoatSelected(false);
+                } else if (states.getSource().getElementOn() instanceof AttackTower) {
+                    ((AttackTower) states.getSource().getElementOn()).attack(states.getDestination());
+                    states.setAttackTowerSelected(false);
+                }
             }
-            states.setTerritory(states.getDestination().findTerritory());
-            states.setTerritorySelected(true);
+            if(states.getDestination() != null){
+                states.setTerritory(states.getDestination().findTerritory());
+                states.setTerritorySelected(true);
+            }
             try {
                 storeMove(map.playingPlayer());
 

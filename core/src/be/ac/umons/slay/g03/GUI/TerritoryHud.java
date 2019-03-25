@@ -84,7 +84,7 @@ class TerritoryHud extends Stage {
             });
             this.addActor(levelUp);
 
-            if (world.gameState.getStates().getSource().getElementOn() instanceof Soldier)
+            if (world.gameState.getStates().getSource()!=null &&  world.gameState.getStates().getSource().getElementOn() instanceof Soldier)
                 levelUp.setColor(Color.LIGHT_GRAY);
             else
                 levelUp.setColor(Color.RED);

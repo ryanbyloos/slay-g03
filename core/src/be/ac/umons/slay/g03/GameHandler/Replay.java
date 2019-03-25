@@ -246,9 +246,6 @@ public class Replay {
         return replays;
     }
 
-    public void setReplayFileName(String replayFileName) {
-        this.replayFileName = replayFileName;
-    }
 
     public ArrayList<ArrayList<ArrayList<Cell>>> getReplay() {
         return this.replay;
@@ -264,5 +261,9 @@ public class Replay {
 
     public int getMoveNumber() {
         return moveNumber;
+    }
+
+    public void setReplayFileName(String replayFileName) {
+        this.replayFileName = replayFileName;
     }
 }
