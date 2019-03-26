@@ -83,7 +83,11 @@ public class Boat extends Infrastructure implements Controlable {
     }
 
     public int getDefence() {
-        return defence;
+        if (soldiers != null && soldiers.size() != 0)
+            for (Soldier soldier : soldiers)
+                if (soldier.getLevel() >= this.defence)
+                    this.defence = soldier.getLevel();
+        return this.defence;
     }
 
     public ArrayList<Soldier> getSoldiers() {
@@ -121,4 +125,5 @@ public class Boat extends Infrastructure implements Controlable {
                 && this.isHasMoved() == that.isHasMoved()
                 && this.getSoldiers().equals(that.getSoldiers());
     }
+
 }

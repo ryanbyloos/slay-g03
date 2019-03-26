@@ -143,6 +143,7 @@ public class Loader {
                         Soldier soldier = null;
                         if(level >=0 && level<4){
                             soldier = new Soldier(owner, level);
+                            soldier.setHasMoved(hasMoved);
                         }
                         cell.setElementOn(soldier);
                     }
@@ -159,7 +160,7 @@ public class Loader {
                         } else {
                             owner = map.getPlayer2();
                         }
-//                        int distMax = Integer.parseInt(node.getAttributes().getNamedItem("distmax").getTextContent());
+                        int distMax = Integer.parseInt(node.getAttributes().getNamedItem("distmax").getTextContent());
                         for (int j = 0; j < soldiersData.getLength(); j++) {
                             Node soldierData = soldiersData.item(j);
                             if (soldierData.getNodeType() == Node.ELEMENT_NODE) {
@@ -168,11 +169,13 @@ public class Loader {
                                 Soldier soldier = null;
                                 if(level >=0 && level < 4) soldier = new Soldier(owner, level);
                                 soldiers.add(soldier);
+                                soldier.setHasMoved(soldierHasMoved);
                             }
 
                         }
                         Boat boat = new Boat(owner);
                         boat.setSoldiers(soldiers);
+                        boat.setT(distMax);
                         cell.setElementOn(boat);
                     }
                 } else if (type.equals("attacktower") && cell != null) {

@@ -119,8 +119,8 @@ public class LoaderTest extends GameStageTest {
 
     @Test
     public void loadFromXmlTestInfrastructureLoadingIfAvailable() {
-        Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, 0, new ArrayList<Territory>()),
-                new Player("Alex", 2, 0, false, 0, new ArrayList<Territory>()));
+        Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, 0, new ArrayList<>()),
+                new Player("Alex", 2, 0, false, 0, new ArrayList<>()));
         Loader loader = new Loader(tmxFileCorrect, xmlFileCorrect, "");
         map.getCells().add(new Cell(0, 1, false, true, map.getPlayer1(), null));
         Infrastructure.setAvailability(true);
@@ -129,6 +129,7 @@ public class LoaderTest extends GameStageTest {
         } catch (WrongFormatException e) {
         }
         Boat boat = new Boat(map.getPlayer1());
+        boat.setT(3);
         ArrayList<Soldier> soldiers = new ArrayList<Soldier>();
         soldiers.add(new Soldier(map.getPlayer1(), 1));
         boat.setSoldiers(soldiers);
