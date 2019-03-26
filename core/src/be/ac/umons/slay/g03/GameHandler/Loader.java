@@ -167,9 +167,12 @@ public class Loader {
                                 int level = Integer.parseInt(soldierData.getAttributes().getNamedItem("level").getTextContent());
                                 boolean soldierHasMoved = Boolean.parseBoolean(soldierData.getAttributes().getNamedItem("hasmoved").getTextContent());
                                 Soldier soldier = null;
-                                if(level >=0 && level < 4) soldier = new Soldier(owner, level);
+                                if(level >=0 && level < 4) {
+                                    soldier = new Soldier(owner, level);
+                                    soldier.setHasMoved(soldierHasMoved);
+                                }
                                 soldiers.add(soldier);
-                                soldier.setHasMoved(soldierHasMoved);
+
                             }
 
                         }
