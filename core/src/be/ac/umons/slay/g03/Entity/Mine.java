@@ -12,13 +12,6 @@ public class Mine extends Infrastructure {
         this.maintenanceCost = 0;
     }
 
-    public boolean checkExplosion() {
-        return false;
-    }
-
-    private boolean explode(Boat boat) {
-        return false;
-    }
 
     public boolean isVisible() {
         return visible;

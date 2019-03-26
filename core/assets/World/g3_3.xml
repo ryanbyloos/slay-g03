@@ -30,6 +30,7 @@
         <unit type="soldier" level="0" x="2" y="10" playerId="2" hasmoved="false"/>
     </units>
     <infrastructures>
+        <infrastructure type="boat" x="3" y="2" playerId="1" hasmoved="false" distmax="5"/>
     </infrastructures>
 
 
