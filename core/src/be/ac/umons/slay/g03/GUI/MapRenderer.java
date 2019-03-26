@@ -130,9 +130,6 @@ public class MapRenderer extends Game {
         }
     }
 
-//    void drawSprite(int parity, int offset, TextureAtlas.AtlasRegion sprite, Cell cell)
-
-
     void drawHighlights(ArrayList<Cell> cells) {
         for (Cell cell : cells)
             drawSprite((map.getHeight() % 2), contour, cell);

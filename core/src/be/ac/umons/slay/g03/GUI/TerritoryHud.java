@@ -1,7 +1,6 @@
 package be.ac.umons.slay.g03.GUI;
 
 import be.ac.umons.slay.g03.Core.Territory;
-import be.ac.umons.slay.g03.Entity.Soldier;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -9,19 +8,21 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 
 class TerritoryHud extends Stage {
 
     HudButton soldier0, soldier1, soldier2, soldier3, defenceTower, attackTower, boat, mine;
     HudButton[] buttons;
-    TextButton levelUp;
+    Table table;
     ShapeRenderer shapeRenderer;
     SpriteBatch batch;
     World world;
-    private int w = ScreenHandler.WIDTH;
-    private int h = ScreenHandler.HEIGHT;
+
+    private float w = Slay.w;
+    private float h = Slay.h;
 
     TerritoryHud(World world) {
         this.world = world;
@@ -29,25 +30,26 @@ class TerritoryHud extends Stage {
     }
 
     private void initActors() {
-        soldier0 = new HudButton("          10", ScreenHandler.game.skin, 10);
-        soldier1 = new HudButton("          20", ScreenHandler.game.skin, 20);
-        soldier2 = new HudButton("          40", ScreenHandler.game.skin, 40);
-        soldier3 = new HudButton("          80", ScreenHandler.game.skin, 80);
-        attackTower = new HudButton("          25", ScreenHandler.game.skin, 25);
-        defenceTower = new HudButton("          10", ScreenHandler.game.skin, 10);
-        boat = new HudButton("          25", ScreenHandler.game.skin, 25);
-        mine = new HudButton("          20", ScreenHandler.game.skin, 20);
+        soldier0 = new HudButton(10, Slay.game.skin);
+        soldier1 = new HudButton(20, Slay.game.skin);
+        soldier2 = new HudButton(40, Slay.game.skin);
+        soldier3 = new HudButton(80, Slay.game.skin);
+        attackTower = new HudButton(25, Slay.game.skin);
+        defenceTower = new HudButton(10, Slay.game.skin);
+        boat = new HudButton(25, Slay.game.skin);
+        mine = new HudButton(20, Slay.game.skin);
+
+        table = new Table().center().bottom().padBottom(h / 150);
+        table.setFillParent(true);
+        this.addActor(table);
 
         this.buttons = new HudButton[]{soldier0, soldier1, soldier2, soldier3, defenceTower, attackTower, boat, mine};
-
         shapeRenderer = new ShapeRenderer();
         batch = new SpriteBatch();
-        int i = 0;
+
         for (HudButton button : buttons) {
-            button.setPosition((float) w / 24 + i, (float) h / 100);
-            button.setHeight(38f);
-            i += 96;
-            this.addActor(button);
+            button.getLabel().setAlignment(Align.right);
+            table.add(button).padLeft(w / 64).padRight(w / 64).width(w / 12).height(h / 14);
         }
 
         soldier0.addListener(createClickListener("soldier0", soldier0.getCost()));
@@ -72,34 +74,19 @@ class TerritoryHud extends Stage {
                 button.setColor(Color.GRAY);
         }
         if (world.gameState.getStates().isSelectionMode() || world.gameState.getStates().isTerritorySelected()) {
-            levelUp = new TextButton("LEVEL UP", ScreenHandler.game.skin);
-            levelUp.setPosition(ScreenHandler.WIDTH - levelUp.getWidth(), 96);
-
-            levelUp.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    if (world.gameState.getStates().getSource().getElementOn() != null)
-                        world.gameState.getStates().getSource().getElementOn().levelUp();
-                }
-            });
-            this.addActor(levelUp);
-
-            if (world.gameState.getStates().getSource()!=null &&  world.gameState.getStates().getSource().getElementOn() instanceof Soldier)
-                levelUp.setColor(Color.LIGHT_GRAY);
-            else
-                levelUp.setColor(Color.RED);
 
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-            shapeRenderer.setColor(Color.LIGHT_GRAY);
-            shapeRenderer.rect(0, 0, w, 48);
+            shapeRenderer.setColor(Color.BLACK);
+            shapeRenderer.rect(0, 0, w, h / 12);
             shapeRenderer.end();
 
             super.draw();
+
             batch.begin();
             int i = 0;
             for (TextureAtlas.AtlasRegion image : buttonImages) {
-                batch.draw(new TextureRegion(image), (float) (w / 22) + i, (float) (h / 65));
-                i += 96;
+                batch.draw(new TextureRegion(image), (float) (w / 14) + i, (float) (h / 65));
+                i += w / 32 + w / 12;
             }
             batch.end();
         }
@@ -113,13 +100,9 @@ class TerritoryHud extends Stage {
             batch.begin();
             showTerritoryInfo(batch, world.gameState.getStates().getSource().findTerritory());
             batch.end();
-        } else {
-            if (levelUp != null) {
-                levelUp.remove();
-            }
         }
         batch.begin();
-        ScreenHandler.game.font.draw(batch, "Player: " + world.map.playingPlayer().getName(), (float) (w - w / 8), h);
+        Slay.game.font.draw(batch, "Player: " + world.map.playingPlayer().getName(), (float) (w - w / 8), h);
         batch.end();
     }
 
@@ -148,7 +131,7 @@ class TerritoryHud extends Stage {
     private void showTerritoryInfo(SpriteBatch batch, Territory territory) {
         String money = "Money: " + territory.findCapital().getMoney();
         String gain = "Gain: " + territory.getGainThisTurn();
-        ScreenHandler.game.font.draw(batch, money + " " + gain, 0, h);
+        Slay.game.font.draw(batch, money + " " + gain, 0, h);
     }
 
 }

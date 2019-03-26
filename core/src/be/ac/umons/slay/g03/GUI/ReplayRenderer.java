@@ -23,7 +23,7 @@ public class ReplayRenderer extends MapRenderer implements Screen {
     float elapsed;
 
     private Stage stage = new Stage();
-    private TextButton button = new TextButton("NEXT", ScreenHandler.game.skin);
+    private TextButton button = new TextButton("NEXT", Slay.game.skin);
 
     public ReplayRenderer(Replay replay, String replayFileName) {
         this.replay = replay;
@@ -41,7 +41,7 @@ public class ReplayRenderer extends MapRenderer implements Screen {
         }
         replayMap = replay.getReplay();
         this.batch = new SpriteBatch();
-        button.setPosition(0, ScreenHandler.HEIGHT - button.getHeight());
+        button.setPosition(0, Slay.h - button.getHeight());
         button.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

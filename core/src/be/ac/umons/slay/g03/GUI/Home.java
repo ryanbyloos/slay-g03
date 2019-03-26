@@ -6,73 +6,75 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 
 public class Home implements Screen {
 
     private Stage stage;
+    private Table table;
 
     @Override
     public void show() {
 
-        stage = new Stage(new FillViewport(ScreenHandler.WIDTH, ScreenHandler.HEIGHT));
+        stage = new Stage(new FillViewport(Slay.w, Slay.h));
         Gdx.input.setInputProcessor(stage);
 
-        MenuButton resumeButton = new MenuButton("RESUME", ScreenHandler.game.skin, 1);
-        MenuButton newGameButton = new MenuButton("NEW GAME", ScreenHandler.game.skin, 2);
-        MenuButton replayButton = new MenuButton("REPLAY", ScreenHandler.game.skin, 3);
-        MenuButton hofButton = new MenuButton("HALL OF FAME", ScreenHandler.game.skin, 4);
-        MenuButton settingsButton = new MenuButton("SETTINGS", ScreenHandler.game.skin, 5);
-        MenuButton quitButton = new MenuButton("QUIT", ScreenHandler.game.skin, 6);
+        table = new Table().align(Align.center);
+        table.setFillParent(true);
+        stage.addActor(table);
+
+        TextButton resumeButton = new TextButton("RESUME", Slay.game.skin);
+        TextButton newGameButton = new TextButton("NEW GAME", Slay.game.skin);
+        TextButton replayButton = new TextButton("REPLAY", Slay.game.skin);
+        TextButton hofButton = new TextButton("HALL OF FAME", Slay.game.skin);
+        TextButton settingsButton = new TextButton("SETTINGS", Slay.game.skin);
+        TextButton quitButton = new TextButton("QUIT", Slay.game.skin);
 
         resumeButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (ScreenHandler.worldScreen == null)
-                    ScreenHandler.worldScreen = new WorldScreen();
-                ScreenHandler.setScreen(ScreenHandler.worldScreen);
+                if (Slay.worldScreen == null)
+                    Slay.worldScreen = new WorldScreen();
+                Slay.setScreen(Slay.worldScreen);
             }
         });
 
-        replayButton.addListener(new ChangeListener() {
+        replayButton.addListener(new ClickListener() {
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                if (ScreenHandler.replay == null)
-                    ScreenHandler.replay = new ReplayMenu();
-                ScreenHandler.setScreen(ScreenHandler.replay);
+            public void clicked(InputEvent event, float x, float y) {
+                if (Slay.replay == null)
+                    Slay.replay = new ReplayMenu();
+                Slay.setScreen(Slay.replay);
             }
         });
-        hofButton.addListener(new ChangeListener() {
+        hofButton.addListener(new ClickListener() {
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                if (ScreenHandler.hof == null)
-                    ScreenHandler.hof = new HallOfFame();
-                ScreenHandler.setScreen(ScreenHandler.hof);
+            public void clicked(InputEvent event, float x, float y) {
+                if (Slay.hof == null)
+                    Slay.hof = new HallOfFame();
+                Slay.setScreen(Slay.hof);
             }
         });
-        settingsButton.addListener(new ChangeListener() {
+        settingsButton.addListener(new ClickListener() {
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                if (ScreenHandler.settings == null)
-                    ScreenHandler.settings = new Settings();
-                ScreenHandler.setScreen(ScreenHandler.settings);
+            public void clicked(InputEvent event, float x, float y) {
+                if (Slay.settings == null)
+                    Slay.settings = new Settings();
+                Slay.setScreen(Slay.settings);
             }
         });
-        quitButton.addListener(new ChangeListener() {
+        quitButton.addListener(new ClickListener() {
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
+            public void clicked(InputEvent event, float x, float y) {
                 Gdx.app.exit();
             }
         });
 
-        stage.addActor(resumeButton);
-        stage.addActor(newGameButton);
-        stage.addActor(replayButton);
-        stage.addActor(hofButton);
-        stage.addActor(settingsButton);
-        stage.addActor(quitButton);
+        addToTable(table, resumeButton, newGameButton, replayButton, hofButton, settingsButton, quitButton);
     }
 
     @Override
@@ -104,5 +106,12 @@ public class Home implements Screen {
     @Override
     public void dispose() {
         stage.dispose();
+    }
+
+    private void addToTable(Table table, Actor... actors) {
+        for (Actor actor : actors) {
+            table.add(actor).pad(Slay.h / 48).width(Slay.buttonW).height(Slay.buttonH);
+            table.row();
+        }
     }
 }

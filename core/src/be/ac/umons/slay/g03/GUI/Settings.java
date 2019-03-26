@@ -1,24 +1,28 @@
 package be.ac.umons.slay.g03.GUI;
 
 import be.ac.umons.slay.g03.Entity.Infrastructure;
-import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class Settings extends MenuScreen {
     @Override
     public void show() {
         super.show();
-        CheckBox box = new CheckBox("INFRASTRUCTURES", ScreenHandler.game.skin);
-        box.setPosition((ScreenHandler.WIDTH - (int) box.getWidth()) >> 1, ScreenHandler.HEIGHT >> 1);
+        Table table = new Table().center();
+        table.setFillParent(true);
+        stage.addActor(table);
+
+        CheckBox box = new CheckBox("INFRASTRUCTURES", Slay.game.skin);
         box.setChecked(Infrastructure.isAvailable);
-        box.addListener(new ChangeListener() {
+        box.addListener(new ClickListener() {
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
+            public void clicked(InputEvent event, float x, float y) {
                 Infrastructure.setAvailability(!Infrastructure.isAvailable);
-                ScreenHandler.game.prefs.putBoolean("infrastructures", Infrastructure.isAvailable);
+//                Slay.game.prefs.putBoolean("infrastructures", Infrastructure.isAvailable);
             }
         });
-        stage.addActor(box);
+        table.add(box);
     }
 }

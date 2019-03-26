@@ -3,7 +3,6 @@ package be.ac.umons.slay.g03.GUI;
 import be.ac.umons.slay.g03.Core.Cell;
 import be.ac.umons.slay.g03.Core.Map;
 import be.ac.umons.slay.g03.Core.Player;
-import be.ac.umons.slay.g03.Entity.Infrastructure;
 import be.ac.umons.slay.g03.GameHandler.GameState;
 import be.ac.umons.slay.g03.GameHandler.Loader;
 import be.ac.umons.slay.g03.GameHandler.ReplayParserException;
@@ -49,14 +48,14 @@ public class World extends MapRenderer implements InputProcessor {
         }  catch (TransformerException | SAXException| ParserConfigurationException | IOException  | ReplayParserException e) {
             e.printStackTrace();
         }
-        Infrastructure.setAvailability(ScreenHandler.game.prefs.getBoolean("infrastructures"));
+//        Infrastructure.setAvailability(Slay.game.prefs.getBoolean("infrastructures"));
         setViewport(camera, map);
     }
 
     @Override
     public void render() {
         if(gameState.getStates().isOver()){
-            ScreenHandler.setScreen(ScreenHandler.home);
+            Slay.setScreen(Slay.home);
         }
         camera.update();
         batch.setProjectionMatrix(camera.combined);
@@ -75,7 +74,7 @@ public class World extends MapRenderer implements InputProcessor {
         if (keycode == Input.Keys.P) {
             gameState.nextTurn();
         } else if (keycode == Input.Keys.ESCAPE){
-            ScreenHandler.setScreen(ScreenHandler.home);
+            Slay.setScreen(Slay.home);
         }
         else if(keycode == Input.Keys.R){
         }
@@ -141,25 +140,27 @@ public class World extends MapRenderer implements InputProcessor {
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         float x = Gdx.input.getDeltaX();
         float y = Gdx.input.getDeltaY();
+        float w = map.getWidth() * 32;
+        float h = map.getHeight() * 32;
         float z = camera.zoom;
-        if (camera.position.x <= 650 && camera.position.x >= 25)
+        if (camera.position.x <= w - (32 / z) && camera.position.x >= 32)
             camera.translate(-x * z, 0);
-        else if (camera.position.x > 650)
-            camera.position.x = 650;
+        else if (camera.position.x > w - (32 / z))
+            camera.position.x = w - (32 / z);
         else
-            camera.position.x = 25;
-        if (camera.position.y <= 450 && camera.position.y >= 25)
+            camera.position.x = 32;
+        if (camera.position.y <= h - (128 / z) && camera.position.y >= 32)
             camera.translate(0, y * z);
-        else if (camera.position.y > 450)
-            camera.position.y = 450;
+        else if (camera.position.y > h - (128 / z))
+            camera.position.y = h - (128 / z);
         else
-            camera.position.y = 25;
+            camera.position.y = 32;
         return true;
     }
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        if (!gameState.getStates().isTerritorySelected() && screenX < ScreenHandler.WIDTH && (ScreenHandler.HEIGHT - screenY) < ScreenHandler.HEIGHT) {
+        if (!gameState.getStates().isTerritorySelected() && screenX < Slay.w && (Slay.h - screenY) < Slay.h) {
             int[] pos = getMouseCoord(camera);
             Cell cell = map.findCell(pos[0], pos[1]);
             if (cell != null && cell.getOwner() != null && !(gameState.getStates().isSoldierSelected() || gameState.getStates().isBoatSelected() || gameState.getStates().isAttackTowerSelected())) {
@@ -173,7 +174,7 @@ public class World extends MapRenderer implements InputProcessor {
 
     @Override
     public boolean scrolled(int amount) {
-        if ((camera.zoom > 0.2 && amount < 0) || (camera.zoom <= 1.2 && amount > 0))
+        if ((camera.zoom > 0.6 && amount < 0) || (camera.zoom <= 1.2 && amount > 0))
             camera.zoom += 0.1 * amount;
         return false;
     }

@@ -3,11 +3,11 @@ package be.ac.umons.slay.g03.GUI;
 import be.ac.umons.slay.g03.Initializer;
 import com.badlogic.gdx.Screen;
 
-public class ScreenHandler {
-    public static int WIDTH;
-    public static int HEIGHT;
-    public static int BUTTON_WIDTH;
-    public static int BUTTON_HEIGHT;
+public class Slay {
+    public static int w;
+    public static int h;
+    public static int buttonW;
+    public static int buttonH;
 
     public static Home home = new Home();
     public static Initializer game = new Initializer();

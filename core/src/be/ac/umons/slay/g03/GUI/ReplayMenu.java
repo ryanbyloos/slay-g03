@@ -3,6 +3,7 @@ package be.ac.umons.slay.g03.GUI;
 import be.ac.umons.slay.g03.GameHandler.Replay;
 import be.ac.umons.slay.g03.GameHandler.WrongFormatException;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
@@ -15,25 +16,26 @@ public class ReplayMenu extends MenuScreen {
     @Override
     public void show() {
         super.show();
-        int i = ScreenHandler.HEIGHT;
+        Table replayTable = new Table().top().center();
+        replayTable.setFillParent(true);
         try {
             ArrayList<String> replays = replay.getReplays();
             for (String replayName : replays) {
-                TextButton button = new TextButton(replayName, ScreenHandler.game.skin);
-                stage.addActor(button);
-                button.setPosition((ScreenHandler.WIDTH - button.getWidth()) / 2, i - 2 * button.getHeight());
-                i -= 2 * button.getHeight();
+                TextButton button = new TextButton(replayName, Slay.game.skin);
+                replayTable.add(button).pad(5);
+                replayTable.row();
 
                 button.addListener(new ClickListener() {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
-                        if (ScreenHandler.replayScreen == null) {
-                            ScreenHandler.replayScreen = new ReplayRenderer(replay, "assets/Replays/" + replayName);
-                            ScreenHandler.setScreen(ScreenHandler.replayScreen);
+                        if (Slay.replayScreen == null) {
+                            Slay.replayScreen = new ReplayRenderer(replay, "assets/Replays/" + replayName);
+                            Slay.setScreen(Slay.replayScreen);
                         }
                     }
                 });
             }
+            stage.addActor(replayTable);
         } catch (WrongFormatException e) {
             e.printStackTrace();
         }

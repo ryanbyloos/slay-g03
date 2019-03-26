@@ -4,27 +4,36 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 
 public class MenuScreen implements Screen {
     Stage stage;
+    Table table;
 
     @Override
     public void show() {
-        stage = new Stage(new FillViewport(ScreenHandler.WIDTH, ScreenHandler.HEIGHT));
+        stage = new Stage(new FillViewport(Slay.w, Slay.h));
         Gdx.input.setInputProcessor(stage);
 
-        MenuButton returnButton = new MenuButton("RETURN", ScreenHandler.game.skin);
-        returnButton.setSize(ScreenHandler.BUTTON_WIDTH, ScreenHandler.BUTTON_HEIGHT);
-        returnButton.addListener(new ChangeListener() {
+        table = new Table().bottom().left().pad(10);
+        table.setFillParent(true);
+        stage.addActor(table);
+
+        TextButton returnButton = new TextButton("RETURN", Slay.game.skin);
+        returnButton.addListener(new ClickListener() {
             @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                ScreenHandler.setScreen(ScreenHandler.home);
+            public void clicked(InputEvent event, float x, float y) {
+                Slay.setScreen(Slay.home);
             }
         });
-        stage.addActor(returnButton);
+        table.add(returnButton).width(Slay.buttonW).height(Slay.buttonH);
+
+        stage.addActor(table);
     }
 
     @Override
