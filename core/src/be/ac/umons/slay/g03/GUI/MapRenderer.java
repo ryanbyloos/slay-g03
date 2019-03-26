@@ -43,7 +43,7 @@ public class MapRenderer extends Game {
                 if (cell.getElementOn() != null) {
                     if (cell.getElementOn() instanceof Boat) {
                         drawSprite(parity, boat, cell);
-                    } else if (cell.getElementOn() instanceof Mine) {
+                    } else if (cell.getElementOn() instanceof Mine && cell.getElementOn().getOwner().isTurn()) {
                         drawSprite(parity, mine, cell);
                     }
                 }
