@@ -52,8 +52,14 @@ public class MapRenderer extends Game {
                 else if (cell.getOwner() == map.getPlayer1()) drawSprite(parity, yellowHex, cell);
                 else drawSprite(parity, redHex, cell);
                 if (gameState != null) {
-                    if ((gameState.getStates().isSelectionMode()) && gameState.getStates().getSource().getElementOn() != null)
-                        drawHighlights(gameState.getStates().getSource().accessibleCell(map));
+                    if ((gameState.getStates().isSelectionMode()) && gameState.getStates().getSource().getElementOn() != null){
+                        if(gameState.getStates().getSource().getElementOn() instanceof Soldier){
+                            drawHighlights(gameState.getStates().getSource().accessibleCell(map));
+                        }
+                        else if(gameState.getStates().getSource().getElementOn() instanceof Boat){
+                            drawHighlights(gameState.getStates().getSource().adjacentCell(map, gameState.getStates().getSource(), true));
+                        }
+                    }
                     if (gameState.getStates().getTerritory() != null)
                         drawHighlights(gameState.getStates().getTerritory().getCells());
                     if (gameState.getStates().isCreationMode() && gameState.getStates().getCreatableCells() != null) {

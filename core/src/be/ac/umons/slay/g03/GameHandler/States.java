@@ -65,7 +65,6 @@ public class States {
     public void reset() {
         setTerritorySelected(false);
         setSoldierSelected(false);
-        setBoatSelected(false);
         setAttackTowerSelected(false);
         setCreationMode(false);
         setTerritory(null);

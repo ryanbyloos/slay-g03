@@ -326,16 +326,22 @@ public class GameState {
                 states.setCreationMode(false);
                 states.setCreatableCells(null);
             }
-        } else if (!states.isSelectionMode() && map.findCell(x, y) != null && map.findCell(x, y).getOwner() != null) {
+        }
+
+        else if (!states.isSelectionMode() && map.findCell(x, y) != null && map.findCell(x, y).getElementOn() != null && (map.findCell(x, y).getOwner() != null || map.findCell(x, y).getElementOn() instanceof Boat)) {
             states.setSource(map.findCell(x, y));
-            if (states.getSource() != null && states.getSource().accessibleCell(map) != null) {
+            if (states.getSource().accessibleCell(map) != null) {
                 if (states.getSource().getElementOn() instanceof Soldier) {
                     if (((Soldier) states.getSource().getElementOn()).select()) {
                         states.setSoldierSelected(true);
                     }
                 } else if (states.getSource().getElementOn() instanceof Boat) {
-                    if (((Boat) states.getSource().getElementOn()).select())
+
+                    if (((Boat) states.getSource().getElementOn()).select()) {
+
                         states.setBoatSelected(true);
+                    }
+
                 } else if (states.getSource().getElementOn() instanceof AttackTower) {
                     if (((AttackTower) states.getSource().getElementOn()).select())
                         states.setAttackTowerSelected(true);
@@ -353,8 +359,23 @@ public class GameState {
                     states.setSoldierSelected(false);
 
                 } else if (states.getSource().getElementOn() instanceof Boat) {
-                    ((Boat) states.getSource().getElementOn()).move(states.getSource(), states.getDestination(), map);
-                    states.setBoatSelected(false);
+                    Boat boat = (Boat) states.getSource().getElementOn();
+                    if(!states.getSource().adjacentCell(map, states.getSource(), true).contains(states.getDestination())){
+                        states.setBoatSelected(false);
+                    }
+                    else {
+                        if (boat.getT() > 0) {
+                            boat.move(states.getSource(), states.getDestination(), map);
+                            if (boat.getT() != 0) {
+                                states.setSource(states.getDestination());
+                            } else {
+                                states.setBoatSelected(false);
+                            }
+                        }
+                    }
+
+
+
                 } else if (states.getSource().getElementOn() instanceof AttackTower) {
                     ((AttackTower) states.getSource().getElementOn()).attack(states.getDestination());
                     states.setAttackTowerSelected(false);
@@ -612,6 +633,7 @@ public class GameState {
         if (map.getPlayer1().isTurn()) {
             map.getPlayer2().cleanGrave();
             if (turnPlayed > 1) map.getPlayer2().checkTerritory();
+            resetBoats(map.getPlayer1());
             map.getPlayer1().setTurn(false);
             if (map.getPlayer2().isOver()) {
                 states.setOver(true);
@@ -621,7 +643,7 @@ public class GameState {
                     e.printStackTrace();
                 }
             }
-            resetMoveableUnits(map.getPlayer1());
+            resetSoldiers(map.getPlayer1());
             map.getPlayer2().setTurn(true);
             map.getPlayer1().setMoveNumber(-1);
             map.getPlayer1().setMaxMoveNumber(-1);
@@ -633,6 +655,7 @@ public class GameState {
 
 
         } else {
+            resetBoats(map.getPlayer2());
             map.getPlayer2().setTurn(false);
             if (map.getPlayer1().isOver()) {
                 states.setOver(true);
@@ -642,7 +665,8 @@ public class GameState {
                     e.printStackTrace();
                 }
             }
-            resetMoveableUnits(map.getPlayer2());
+            resetSoldiers(map.getPlayer2());
+
             map.getPlayer1().setTurn(true);
             map.getPlayer2().setMoveNumber(-1);
             map.getPlayer2().setMaxMoveNumber(-1);
@@ -661,7 +685,7 @@ public class GameState {
 
     }
 
-    private void resetMoveableUnits(Player player) {
+    private void resetSoldiers(Player player) {
         for (Territory t : player.getTerritories()
         ) {
             for (Cell c : t.getCells()
@@ -669,6 +693,15 @@ public class GameState {
                 if (c.getElementOn() != null && c.getElementOn() instanceof Soldier) {
                     c.getElementOn().setHasMoved(false);
                 }
+            }
+        }
+    }
+    private void resetBoats(Player player){
+        for(Cell cell : map.getCells()){
+
+            if(cell.getElementOn() != null && map.playingPlayer().equals(player) && cell.getElementOn() instanceof Boat && cell.getElementOn().getOwner() != null && cell.getElementOn().getOwner().equals(player)){
+                ((Boat) cell.getElementOn()).setT(5);
+                cell.getElementOn().setHasMoved(false);
             }
         }
     }

@@ -71,7 +71,9 @@ public class Boat extends Infrastructure implements Controlable {
                 }
             }
         }
-        this.setHasMoved(true);
+        else {
+            this.setHasMoved(true);
+        }
     }
 
     public int getT() {
@@ -101,14 +103,15 @@ public class Boat extends Infrastructure implements Controlable {
 
     @Override
     public boolean belongsTo() {
-        return false;
+        return getOwner().isTurn();
     }
 
 
 
     @Override
     public boolean select() {
-        return false;
+
+        return t>0 && belongsTo() && !isHasMoved();
     }
 
     @Override
