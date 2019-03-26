@@ -66,6 +66,20 @@ public class EntityTest {
         Assert.assertEquals(2, boat.getDefence());
     }
     @Test
+    public void boatMove(){
+        Player player = new Player("palyer", 1, 0, false, 0, new ArrayList<>());
+        Boat boat = new Boat(player);
+        Cell cell1 = new Cell(0, 0, false, true, null, null);
+        Cell cell2 = new Cell(1, 0, false, true, null, boat);
+        ArrayList<Cell> mapCell = new ArrayList<>();
+        mapCell.add(cell1);
+        mapCell.add(cell2);
+        Map map = new Map(mapCell, player, null);
+        boat.move(cell2,cell1,map);
+        Assert.assertEquals(cell1.getElementOn(), boat);
+        Assert.assertEquals(cell2.getElementOn(), null);
+    }
+    @Test
     public void boatToMine() {
         Player player = new Player("palyer", 1, 0, false, 0, new ArrayList<>());
         Boat boat = new Boat(player);
@@ -99,7 +113,24 @@ public class EntityTest {
         Assert.assertEquals(1, boat.getDefence());
     }
 
-
+    @Test
+    public void boardDeploy(){
+        Player player = new Player("palyer", 1, 0, false, 0, new ArrayList<>());
+        Boat boat = new Boat(player);
+        Soldier soldier = new Soldier(player, 1);
+        boat.bord(soldier);
+        Cell cell1 = new Cell(0, 0, false, false, null, null);
+        Cell cell2 = new Cell(1, 0, false, true, null, boat);
+        ArrayList<Cell> mapCell = new ArrayList<>();
+        mapCell.add(cell1);
+        mapCell.add(cell2);
+        Map map = new Map(mapCell, player, null);
+        boat.deploy(cell2,cell1,map);
+        Assert.assertEquals(cell1.getElementOn(), soldier);
+        Assert.assertTrue(!boat.getSoldiers().contains(soldier));
+        Assert.assertEquals(boat, cell2.getElementOn());
+        Assert.assertTrue(cell1.getOwner().equals(player));
+    }
 
     @Test
     public void simpleMove() {

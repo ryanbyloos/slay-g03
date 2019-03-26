@@ -21,18 +21,13 @@ public class Boat extends Infrastructure implements Controlable {
         this.creationCost = 25;
     }
 
-    public boolean deploy() {
-        return false;
-    }
-
-    private ArrayList<Cell> findLand(Map map,Cell cell) {
-        ArrayList<Cell> adjacent = cell.adjacentCell(map,cell, false);
-        ArrayList<Cell> land = new ArrayList<>();
-        for (Cell celladj: adjacent
-             ) {
-            if(!celladj.isWater()) land.add(celladj);
+    public void deploy(Cell source, Cell destination, Map map) {
+        if (source.adjacentCell(map,source,false).contains(destination) && soldiers.size()>0){
+            Soldier soldier = soldiers.get(soldiers.size()-1);
+            soldiers.remove(soldier);
+            System.out.println("ok");
+            soldier.move(new Cell(source.getX(),source.getY(), false,true,getOwner(),null),destination,map);
         }
-        return land;
     }
 
 

@@ -11,6 +11,7 @@
     <game pending="false" player1="Yellow" player2="Red" replay="Yellow-Red(25.03.2019.19.13.05).xml"
           tmx="Yellow-Red(25.03.2019.19.13.05)g3_2.tmx" turn="0" xml="Yellow-Red(25.03.2019.19.13.05)g3_3.xml"/>
 
-    <game pending="true" player1="Yellow" player2="Red" replay="Yellow-Red(26.03.2019.17.37.28).xml"
-          tmx="Yellow-Red(26.03.2019.17.37.28)g3_10.tmx" turn="0" xml="Yellow-Red(26.03.2019.17.37.28)g3_11.xml"/>
+
+    <game pending="true" player1="Yellow" player2="Red" replay="Yellow-Red(26.03.2019.20.54.42).xml"
+          tmx="Yellow-Red(26.03.2019.20.54.42)g3_2.tmx" turn="0" xml="Yellow-Red(26.03.2019.20.54.42)g3_3.xml"/>
 </games>

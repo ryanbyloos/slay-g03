@@ -306,6 +306,9 @@ public class GameState {
             if (states.isCreationMode()) {
                 states.setDestination(map.findCell(x, y));
                 if (states.getDestination() != null && map.playingPlayer() != null && states.getDestination().getElementOn() == null) {
+                    if (states.getTerritory().getCellsForMine().contains(states.getDestination())) {
+
+                    }
                     if (!states.getTerritory().getCells().contains(states.getDestination())) {
                         states.getDestination().setOwner(map.playingPlayer());
                         states.getTerritory().addCell(states.getDestination());
@@ -315,6 +318,12 @@ public class GameState {
                     if (m != null) {
                         states.getTerritory().findCapital().addMoney(-m.getCreationCost());
                     }
+                }
+                if (states.getDestination() != null && states.getDestination().getElementOn() instanceof Tree) {
+                    m = newElement(elementToBuild, map.playingPlayer());
+                    states.getDestination().setOwner(map.playingPlayer());
+                    states.getDestination().setElementOn(m);
+                    states.getTerritory().addCell(states.getDestination());
                 }
                 try {
                     storeMove(states.getDestination() != null ? states.getDestination().getOwner() : null);
@@ -574,7 +583,6 @@ public class GameState {
                     element.setAttribute("type", "mine");
                     element.setAttribute("x", Integer.toString(cell.getX()));
                     element.setAttribute("y", Integer.toString(cell.getY()));
-                    element.setAttribute("visible", Boolean.toString(mine.isVisible()));
                     infrastructures.appendChild(element);
                 } else if (entity instanceof Tree) {
                     element = document.createElement("item");
@@ -678,11 +686,8 @@ public class GameState {
             } catch (ReplayParserException e) {
                 e.printStackTrace();
             }
-
-
         }
-
-
+        states.reset();
     }
 
     private void resetSoldiers(Player player) {
@@ -782,7 +787,6 @@ public class GameState {
                         element.setAttribute("level", Integer.toString(entity.getLevel()));
                     } else if (entity instanceof Mine) {
                         element.setAttribute("element", "mine");
-                        element.setAttribute("visible", Boolean.toString(((Mine) entity).isVisible()));
                     } else if (entity instanceof Tree) {
                         element.setAttribute("element", "tree");
                     }

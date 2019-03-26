@@ -36,7 +36,7 @@ public class Soldier extends MapElement implements Controlable {
     }
 
     private boolean attack(Cell source, Cell destination) {
-        int sourceLevel = source.getElementOn().getLevel();
+        int sourceLevel = getLevel();
         int destinationLevel = destination.getElementOn().getLevel();
 
 
@@ -94,7 +94,11 @@ public class Soldier extends MapElement implements Controlable {
         if(newCell.getOwner() != null && oldTerritoryCell.getCells().size()<2) {
             newCell.getOwner().removeTerritory(oldTerritoryCell);
         }
-        oldCell.findTerritory().addCell(newCell);
+        if(oldCell.isWater()) {
+            Territory territory = new Territory(new ArrayList<>());
+            territory.addCell(newCell);
+            oldCell.getOwner().getTerritories().add(territory);
+        }else oldCell.findTerritory().addCell(newCell);
         mergeTerritory(map, newCell, oldCell);
         if (newCell.getOwner() != null && !newCell.equals(oldCell.getOwner())) {
             oldTerritoryCell.getCells().remove(newCell);
@@ -236,7 +240,7 @@ public class Soldier extends MapElement implements Controlable {
                 }
 
             } else {
-                source.getElementOn().checkNewTerritory(map, destination, source);
+                checkNewTerritory(map, destination, source);
                 destination.setOwner(getOwner());
                 destination.setElementOn(this);
                 source.setElementOn(null);
