@@ -553,7 +553,6 @@ public class GameState {
                     element.setAttribute("type", "mine");
                     element.setAttribute("x", Integer.toString(cell.getX()));
                     element.setAttribute("y", Integer.toString(cell.getY()));
-                    element.setAttribute("visible", Boolean.toString(mine.isVisible()));
                     infrastructures.appendChild(element);
                 } else if (entity instanceof Tree) {
                     element = document.createElement("item");
@@ -749,7 +748,6 @@ public class GameState {
                         element.setAttribute("level", Integer.toString(entity.getLevel()));
                     } else if (entity instanceof Mine) {
                         element.setAttribute("element", "mine");
-                        element.setAttribute("visible", Boolean.toString(((Mine) entity).isVisible()));
                     } else if (entity instanceof Tree) {
                         element.setAttribute("element", "tree");
                     }
