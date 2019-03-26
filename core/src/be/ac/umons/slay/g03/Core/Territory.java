@@ -149,4 +149,8 @@ public class Territory {
     public int getGainThisTurn() {
         return gainThisTurn;
     }
+
+    public ArrayList<Cell> getCellsForMine() {
+        return null;
+    }
 }
