@@ -43,6 +43,15 @@ public class Home implements Screen {
             }
         });
 
+        newGameButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (Slay.authScreen == null)
+                    Slay.authScreen = new AuthenticatorScreen();
+                Slay.setScreen(Slay.authScreen);
+            }
+        });
+
         replayButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
