@@ -46,7 +46,7 @@ public class Cell {
     public void spwanTree(Map map) {
         if (elementOn == null && !water) {
             int tree = 0;
-            for (Cell cell : adjacentCell(map, this)
+            for (Cell cell : adjacentCell(map, this, false)
             ) {
                 if (cell.getElementOn() instanceof Tree) tree++;
             }
@@ -57,27 +57,15 @@ public class Cell {
         }
     }
 
+
     public ArrayList<Cell> accessibleCell(Map map) {
-        if (this.getElementOn() instanceof Soldier)
-            return soldierAccessibleCell(map);
-        else if (this.getElementOn() instanceof Boat)
-            return boatAccessibleCell(map);
-        return null;
-    }
-
-    // TODO: 13/03/2019
-    private ArrayList<Cell> boatAccessibleCell(Map map) {
-        return null;
-    }
-
-    private ArrayList<Cell> soldierAccessibleCell(Map map) {
         ArrayList<Cell> adjacentCell = new ArrayList<>();
-        ArrayList<Cell> accessibleCell = new ArrayList<>(adjacentCell(map, this));
+        ArrayList<Cell> accessibleCell = new ArrayList<>(adjacentCell(map, this, false));
 
         for (int dist = 3; dist > 0; dist--) {
             for (Cell cell : accessibleCell) {
                 if (cell.getOwner() != null && cell.getOwner().equals(this.getOwner())) {
-                    adjacentCell.addAll(adjacentCell(map, cell));
+                    adjacentCell.addAll(adjacentCell(map, cell, false));
                 }
             }
             for (Cell cellAdj : adjacentCell) {
@@ -90,33 +78,32 @@ public class Cell {
         return accessibleCell;
     }
 
-    public ArrayList<Cell> adjacentCell(Map map, Cell himself) {
+    public ArrayList<Cell> adjacentCell(Map map, Cell himself, boolean water) {
         ArrayList<Cell> adjacentCell = new ArrayList<>();
 
         int x = himself.getX();
         int y = himself.getY();
         int p = (map.getHeight() % 2 == y % 2) ? 0 : 1;
 
-        addCell(adjacentCell, map.findCell(x - p, y - 1));
-        addCell(adjacentCell, map.findCell(x + 1 - p, y - 1));
-        addCell(adjacentCell, map.findCell(x - 1, y));
-        addCell(adjacentCell, map.findCell(x + 1, y));
-        addCell(adjacentCell, map.findCell(x, y + 1));
-        addCell(adjacentCell, map.findCell(x + 1 - (2 * p), y + 1));
+        addCell(adjacentCell, map.findCell(x - p, y - 1),water);
+        addCell(adjacentCell, map.findCell(x + 1 - p, y - 1),water);
+        addCell(adjacentCell, map.findCell(x - 1, y),water);
+        addCell(adjacentCell, map.findCell(x + 1, y),water);
+        addCell(adjacentCell, map.findCell(x, y + 1),water);
+        addCell(adjacentCell, map.findCell(x + 1 - (2 * p), y + 1),water);
 
         return adjacentCell;
     }
 
-    private void addCell(ArrayList<Cell> cells, Cell cell) {
-        if (cell != null && !cell.isWater()) {
-            cells.add(cell);
-        }
+    private void addCell(ArrayList<Cell> cells, Cell cell, boolean water) {
+        if (!water && cell != null && (!cell.isWater() || cell.getElementOn() instanceof Boat)) cells.add(cell);
+        if(water && cell != null && cell.isWater()) cells.add(cell);
     }
 
     public Territory createTerritory(Map map, Boolean mark, Territory territory) {
         this.setChecked(!this.isChecked());
         territory.addCell(this);
-        for (Cell cellAdj : this.adjacentCell(map, this)) {
+        for (Cell cellAdj : this.adjacentCell(map, this, false)) {
             if (this.getOwner() != null && cellAdj.getOwner() != null && cellAdj.getOwner().equals(this.getOwner()) && cellAdj.isChecked() == mark) {
                 cellAdj.createTerritory(map, mark, territory);
             }

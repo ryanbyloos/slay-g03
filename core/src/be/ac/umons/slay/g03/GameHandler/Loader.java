@@ -142,7 +142,7 @@ public class Loader {
                         boolean hasMoved = Boolean.parseBoolean(node.getAttributes().getNamedItem("hasmoved").getTextContent());
                         Soldier soldier = null;
                         if(level >=0 && level<4){
-                            soldier = new Soldier(owner, level, hasMoved);
+                            soldier = new Soldier(owner, level);
                         }
                         cell.setElementOn(soldier);
                     }
@@ -159,19 +159,19 @@ public class Loader {
                         } else {
                             owner = map.getPlayer2();
                         }
-                        int distMax = Integer.parseInt(node.getAttributes().getNamedItem("distmax").getTextContent());
+//                        int distMax = Integer.parseInt(node.getAttributes().getNamedItem("distmax").getTextContent());
                         for (int j = 0; j < soldiersData.getLength(); j++) {
                             Node soldierData = soldiersData.item(j);
                             if (soldierData.getNodeType() == Node.ELEMENT_NODE) {
                                 int level = Integer.parseInt(soldierData.getAttributes().getNamedItem("level").getTextContent());
                                 boolean soldierHasMoved = Boolean.parseBoolean(soldierData.getAttributes().getNamedItem("hasmoved").getTextContent());
                                 Soldier soldier = null;
-                                if(level >=0 && level < 4) soldier = new Soldier(owner, level, soldierHasMoved);
+                                if(level >=0 && level < 4) soldier = new Soldier(owner, level);
                                 soldiers.add(soldier);
                             }
 
                         }
-                        Boat boat = new Boat(owner, hasMoved);
+                        Boat boat = new Boat(owner);
                         boat.setSoldiers(soldiers);
                         cell.setElementOn(boat);
                     }

@@ -83,7 +83,7 @@ public class Replay {
                                                 boolean hasMoved = Boolean.parseBoolean(cellData.getAttribute("hasmoved"));
                                                 Soldier soldier = null;
                                                 if (level >= 0 && level < 4) {
-                                                    soldier = new Soldier(cell.getOwner(), level, hasMoved);
+                                                    soldier = new Soldier(cell.getOwner(), level);
                                                 }
                                                 cell.setElementOn(soldier);
                                                 break;
@@ -109,13 +109,13 @@ public class Replay {
                                                         boolean soldierHasMoved = Boolean.parseBoolean(soldierData.getAttributes().getNamedItem("hasmoved").getTextContent());
                                                         Soldier soldier = null;
                                                         if (level >= 0 && level < 4) {
-                                                            soldier = new Soldier(cell.getOwner(), level, soldierHasMoved);
+                                                            soldier = new Soldier(cell.getOwner(), level);
                                                         }
                                                         cell.setElementOn(soldier);
                                                         soldiers.add(soldier);
                                                     }
                                                 }
-                                                Boat boat = new Boat(cell.getOwner(), hasMoved);
+                                                Boat boat = new Boat(cell.getOwner());
                                                 boat.setSoldiers(soldiers);
                                                 cell.setElementOn(boat);
                                                 break;

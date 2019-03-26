@@ -8,22 +8,15 @@ import java.util.ArrayList;
 
 public class Boat extends Infrastructure implements Controlable {
 
-    private int t = 5;
+    private int t;
     private int defence;
-    private boolean hasMoved;
 
     private ArrayList<Soldier> soldiers = new ArrayList<>();
 
-    public Boat(Player player, boolean hasMoved) {
+    public Boat(Player player) {
         super(player);
-        this.hasMoved = hasMoved;
+        setHasMoved(false);
         this.defence = 0;
-        if (soldiers != null && soldiers.size() != 0) {
-            for (Soldier s : soldiers) {
-                if (s.getLevel() >= defence)
-                    defence = s.getLevel();
-            }
-        }
         this.maintenanceCost = 0;
         this.creationCost = 25;
     }
@@ -32,39 +25,65 @@ public class Boat extends Infrastructure implements Controlable {
         return false;
     }
 
-    private ArrayList<Cell> checkLand() {
-        return null;
+    private ArrayList<Cell> findLand(Map map,Cell cell) {
+        ArrayList<Cell> adjacent = cell.adjacentCell(map,cell, false);
+        ArrayList<Cell> land = new ArrayList<>();
+        for (Cell celladj: adjacent
+             ) {
+            if(!celladj.isWater()) land.add(celladj);
+        }
+        return land;
     }
 
-    private void setDefenceLevel() {
 
+    public boolean capture(Soldier soldier) {
+        if(soldier.getLevel() > defence){
+            this.setOwner(soldier.getOwner());
+            this.soldiers = new ArrayList<>();
+            this.soldiers.add(soldier);
+            defence = soldier.getLevel();
+            return true;
+        }
+        return false;
     }
 
-    public void capture(Soldier soldier) {
-        // TODO : verify the levels.
-        this.setOwner(soldier.getOwner());
-        this.soldiers = new ArrayList<>();
-        this.soldiers.add(soldier);
+    public boolean bord(Soldier soldier){
+        if(soldiers.size()<6){
+            soldiers.add(soldier);
+            defence = defence+soldier.getLevel();
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void move(Cell source, Cell destination, Map map) {
+        if(t>0){
+            if(source.adjacentCell(map,source,true).contains(destination)){
+                if(destination.getElementOn() == null){
+                    t = t-1;
+                    destination.setElementOn(this);
+                    source.setElementOn(null);
+                }
+                if(destination.getElementOn() instanceof Mine){
+                    destination.setElementOn(null);
+                    source.setElementOn(null);
+                }
+            }
+        }
+        this.setHasMoved(true);
     }
 
     public int getT() {
         return t;
     }
 
+    public void setT(int t) {
+        this.t = t;
+    }
+
     public int getDefence() {
-        if (soldiers != null && soldiers.size() != 0)
-            for (Soldier soldier : soldiers)
-                if (soldier.getLevel() >= this.defence)
-                    this.defence = soldier.getLevel();
-        return this.defence;
-    }
-
-    public boolean isHasMoved() {
-        return hasMoved;
-    }
-
-    public void setHasMoved(boolean hasMoved) {
-        this.hasMoved = hasMoved;
+        return defence;
     }
 
     public ArrayList<Soldier> getSoldiers() {
@@ -75,15 +94,13 @@ public class Boat extends Infrastructure implements Controlable {
         this.soldiers = soldiers;
     }
 
+
     @Override
     public boolean belongsTo() {
         return false;
     }
 
-    @Override
-    public void move(Cell source, Cell destination, Map map) {
 
-    }
 
     @Override
     public boolean select() {
