@@ -157,10 +157,10 @@ public class GameState {
                         Cell cell = new Cell(x, y, checked, isWater, null, null);
                         switch (playerId) {
                             case 1:
-                                cell.setOwner(map.getPlayer1());
+                                if(!isWater)cell.setOwner(map.getPlayer1());
                                 break;
                             case 2:
-                                cell.setOwner(map.getPlayer2());
+                                if(!isWater)cell.setOwner(map.getPlayer2());
                                 break;
                             default:
                                 break;
@@ -183,9 +183,9 @@ public class GameState {
                             }
                             case "boat": {
                                 int t = Integer.parseInt(cellData.getAttribute("t"));
-                                int defence = Integer.parseInt(cellData.getAttribute("defence"));
+
                                 boolean hasMoved = Boolean.parseBoolean(cellData.getAttribute("hasmoved"));
-                                ArrayList<Soldier> soldiers = new ArrayList<Soldier>();
+                                ArrayList<Soldier> soldiers = new ArrayList<>();
                                 NodeList soldiersData = cellData.getChildNodes();
                                 for (int j = 0; j < soldiersData.getLength(); j++) {
                                     Node node1 = soldiersData.item(j);
@@ -194,14 +194,28 @@ public class GameState {
                                         int level = Integer.parseInt(soldierData.getAttributes().getNamedItem("level").getTextContent());
                                         boolean soldierHasMoved = Boolean.parseBoolean(soldierData.getAttributes().getNamedItem("hasmoved").getTextContent());
                                         Soldier soldier = null;
-                                        if (level >= 0 && level < 4)
-                                            soldier = new Soldier(cell.getOwner(), level);
+                                        if (level >= 0 && level < 4){
+                                            soldier = new Soldier(cell.getElementOn().getOwner(), level);
+                                            soldier.setHasMoved(soldierHasMoved);
+                                        }
                                         soldiers.add(soldier);
                                     }
                                 }
                                 Boat boat = new Boat(cell.getOwner());
+                                boat.setHasMoved(hasMoved);
+                                boat.setT(t);
                                 boat.setSoldiers(soldiers);
                                 cell.setElementOn(boat);
+                                switch (playerId){
+                                    case 1:
+                                        cell.getElementOn().setOwner(map.getPlayer1());
+                                        break;
+                                    case 2:
+                                        cell.getElementOn().setOwner(map.getPlayer2());
+                                        break;
+                                    default:
+                                        break;
+                                }
                                 break;
                             }
                             case "capital":
@@ -275,7 +289,7 @@ public class GameState {
         Cell cell = map.findCell(x, y);
         MapElement m;
         if (cell != null) {
-            if (cell.getElementOn() == null && cell.getOwner() != null && cell.getOwner().isTurn() && !states.isSelectionMode()) {
+            if ((cell.getElementOn() == null || cell.getElementOn() instanceof Capital) && cell.getOwner() != null && cell.getOwner().isTurn() && !states.isSelectionMode()) {
                 states.setTerritory(cell.findTerritory());
                 states.setTerritorySelected(true);
             } else {
@@ -302,13 +316,13 @@ public class GameState {
 
             }
         }
-        if (states.isTerritorySelected()) {
+        if (states.isTerritorySelected() ) {
             if (states.isCreationMode()) {
                 states.setDestination(map.findCell(x, y));
                 if (states.getDestination() != null && map.playingPlayer() != null && states.getDestination().getElementOn() == null) {
-                    if (states.getTerritory().getCellsForMine().contains(states.getDestination())) {
+                    /*if (states.getTerritory().getCellsForMine().contains(states.getDestination())) {
 
-                    }
+                    }*/
                     if (!states.getTerritory().getCells().contains(states.getDestination())) {
                         states.getDestination().setOwner(map.playingPlayer());
                         states.getTerritory().addCell(states.getDestination());
@@ -335,9 +349,7 @@ public class GameState {
                 states.setCreationMode(false);
                 states.setCreatableCells(null);
             }
-        }
-
-        else if (!states.isSelectionMode() && map.findCell(x, y) != null && map.findCell(x, y).getElementOn() != null && (map.findCell(x, y).getOwner() != null || map.findCell(x, y).getElementOn() instanceof Boat)) {
+        } else if (!states.isSelectionMode() && map.findCell(x, y) != null && map.findCell(x, y).getElementOn() != null && (map.findCell(x, y).getOwner() != null || map.findCell(x, y).getElementOn() instanceof Boat)) {
             states.setSource(map.findCell(x, y));
             if (states.getSource().accessibleCell(map) != null) {
                 if (states.getSource().getElementOn() instanceof Soldier) {
@@ -345,9 +357,7 @@ public class GameState {
                         states.setSoldierSelected(true);
                     }
                 } else if (states.getSource().getElementOn() instanceof Boat) {
-
                     if (((Boat) states.getSource().getElementOn()).select()) {
-
                         states.setBoatSelected(true);
                     }
 
@@ -360,48 +370,61 @@ public class GameState {
 
         } else {
             states.setDestination(map.findCell(x, y));
-            if (states.getSource() != null) {
-                if (states.getSource().getElementOn() instanceof Soldier) {
-                    if (!states.getSource().getElementOn().isHasMoved()) {
-                        ((Soldier) states.getSource().getElementOn()).move(states.getSource(), states.getDestination(), map);
-                    }
-                    states.setSoldierSelected(false);
+            if (states.getDestination() != null) {
+                if (states.getSource() != null) {
+                    if (states.getSource().getElementOn() instanceof Soldier) {
+                        if (!states.getSource().getElementOn().isHasMoved()) {
+                            ((Soldier) states.getSource().getElementOn()).move(states.getSource(), states.getDestination(), map);
+                        }
+                        states.setSoldierSelected(false);
 
-                } else if (states.getSource().getElementOn() instanceof Boat) {
-                    Boat boat = (Boat) states.getSource().getElementOn();
-                    if(!states.getSource().adjacentCell(map, states.getSource(), true).contains(states.getDestination())){
-                        states.setBoatSelected(false);
-                    }
-                    else {
-                        if (boat.getT() > 0) {
-                            boat.move(states.getSource(), states.getDestination(), map);
-                            if (boat.getT() != 0) {
-                                states.setSource(states.getDestination());
-                            } else {
-                                states.setBoatSelected(false);
+                    } else if (states.getSource().getElementOn() instanceof Boat) {
+                        Boat boat = (Boat) states.getSource().getElementOn();
+                        if (!states.getSource().adjacentCell(map, states.getSource(), true).contains(states.getDestination())) {
+                            states.setSource(null);
+                            states.setBoatSelected(false);
+                        } else {
+                            if (boat.getT() > 0) {
+                                boat.move(states.getSource(), states.getDestination(), map);
+                                if (states.getDestination().getElementOn().getOwner() == map.playingPlayer()) {
+                                    try {
+                                        storeMove(map.playingPlayer());
+                                    } catch (ReplayParserException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                                if (boat.getT() != 0) {
+                                    states.setSource(states.getDestination());
+                                } else {
+                                    states.setBoatSelected(false);
+                                }
                             }
                         }
-                    }
 
 
-
-                } else if (states.getSource().getElementOn() instanceof AttackTower) {
-                    ((AttackTower) states.getSource().getElementOn()).attack(states.getDestination());
-                    states.setAttackTowerSelected(false);
-                }
-            }
-            if (states.getDestination() != null) {
-                if (states.getDestination().getOwner() == map.playingPlayer()) {
-                    try {
-                        storeMove(map.playingPlayer());
-                    } catch (ReplayParserException e) {
-                        e.printStackTrace();
+                    } else if (states.getSource().getElementOn() instanceof AttackTower) {
+                        ((AttackTower) states.getSource().getElementOn()).attack(states.getDestination());
+                        states.setAttackTowerSelected(false);
                     }
                 }
-                states.setTerritory(states.getDestination().findTerritory());
-                states.setTerritorySelected(true);
+                if (states.getDestination() != null) {
+                    if (states.getDestination().getOwner() == map.playingPlayer()) {
+                        try {
+                            storeMove(map.playingPlayer());
+                        } catch (ReplayParserException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    states.setTerritory(states.getDestination().findTerritory());
+                    states.setTerritorySelected(true);
+                }
+                states.reset();
+            } else {
+
+                states.reset();
+                states.setSource(null);
             }
-            states.reset();
+
         }
     }
 
@@ -701,10 +724,11 @@ public class GameState {
             }
         }
     }
-    private void resetBoats(Player player){
-        for(Cell cell : map.getCells()){
 
-            if(cell.getElementOn() != null && map.playingPlayer().equals(player) && cell.getElementOn() instanceof Boat && cell.getElementOn().getOwner() != null && cell.getElementOn().getOwner().equals(player)){
+    private void resetBoats(Player player) {
+        for (Cell cell : map.getCells()) {
+
+            if (cell.getElementOn() != null && map.playingPlayer().equals(player) && cell.getElementOn() instanceof Boat && cell.getElementOn().getOwner() != null && cell.getElementOn().getOwner().equals(player)) {
                 ((Boat) cell.getElementOn()).setT(5);
                 cell.getElementOn().setHasMoved(false);
             }
@@ -741,17 +765,7 @@ public class GameState {
                 if (cell.getOwner() == null) {
                     element.setAttribute("playerId", "0");
                 } else {
-
-                    switch (cell.getOwner().getId()) {
-                        case 1:
-                            element.setAttribute("playerId", "1");
-                            break;
-                        case 2:
-                            element.setAttribute("playerId", "2");
-                            break;
-                        default:
-                            break;
-                    }
+                    element.setAttribute("playerId", Integer.toString(cell.getOwner().getId()));
                 }
                 if (cell.getElementOn() == null) {
                     element.setAttribute("element", "null");
@@ -772,6 +786,7 @@ public class GameState {
                         element.setAttribute("t", Integer.toString(((Boat) entity).getT()));
                         element.setAttribute("defence", Integer.toString(((Boat) entity).getDefence()));
                         element.setAttribute("hasmoved", Boolean.toString(entity.isHasMoved()));
+                        element.setAttribute("playerId", Integer.toString(entity.getOwner().getId()));
                         for (int j = 0; j < ((Boat) entity).getSoldiers().size(); j++) {
                             Element soldierElement = document.createElement("soldier");
                             Soldier soldier = ((Boat) entity).getSoldiers().get(j);
