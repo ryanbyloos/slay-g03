@@ -316,6 +316,12 @@ public class GameState {
                         states.getTerritory().findCapital().addMoney(-m.getCreationCost());
                     }
                 }
+                if (states.getDestination() != null && states.getDestination().getElementOn() instanceof Tree) {
+                    m = newElement(elementToBuild, map.playingPlayer());
+                    states.getDestination().setOwner(map.playingPlayer());
+                    states.getDestination().setElementOn(m);
+                    states.getTerritory().addCell(states.getDestination());
+                }
                 try {
                     storeMove(states.getDestination() != null ? states.getDestination().getOwner() : null);
                 } catch (ReplayParserException e) {
@@ -654,11 +660,8 @@ public class GameState {
             } catch (ReplayParserException e) {
                 e.printStackTrace();
             }
-
-
         }
-
-
+        states.reset();
     }
 
     private void resetMoveableUnits(Player player) {

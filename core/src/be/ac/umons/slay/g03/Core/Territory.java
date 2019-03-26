@@ -111,8 +111,7 @@ public class Territory {
     public ArrayList<Cell> accesibleCellToCreateUnit(Map map){
         ArrayList<Cell> accesibleCellToCreateUnit = new ArrayList<>();
         accesibleCellToCreateUnit.addAll(cells);
-        for (Cell cell: cells
-             ) {
+        for (Cell cell : cells) {
             for (Cell cellAdj: cell.adjacentCell(map,cell, false)
                  ) {
                 if (!accesibleCellToCreateUnit.contains(cellAdj)){
