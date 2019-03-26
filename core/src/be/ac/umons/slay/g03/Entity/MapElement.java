@@ -40,6 +40,9 @@ public abstract class MapElement {
 
     public void setHasMoved(boolean hasMoved) {
         this.hasMoved = hasMoved;
+        if(this instanceof Boat && !hasMoved){
+            ((Boat) this).setT(5);
+        }
     }
 
     protected void checkNewTerritory(Map map, Cell newCell, Cell oldCell) {

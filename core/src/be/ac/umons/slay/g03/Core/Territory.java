@@ -113,7 +113,7 @@ public class Territory {
         accesibleCellToCreateUnit.addAll(cells);
         for (Cell cell: cells
              ) {
-            for (Cell cellAdj: cell.adjacentCell(map,cell)
+            for (Cell cellAdj: cell.adjacentCell(map,cell, false)
                  ) {
                 if (!accesibleCellToCreateUnit.contains(cellAdj)){
                     if(cellAdj.getOwner() == null) accesibleCellToCreateUnit.add(cellAdj);

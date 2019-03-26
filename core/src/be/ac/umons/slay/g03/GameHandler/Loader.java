@@ -142,7 +142,8 @@ public class Loader {
                         boolean hasMoved = Boolean.parseBoolean(node.getAttributes().getNamedItem("hasmoved").getTextContent());
                         Soldier soldier = null;
                         if(level >=0 && level<4){
-                            soldier = new Soldier(owner, level, hasMoved);
+                            soldier = new Soldier(owner, level);
+                            soldier.setHasMoved(hasMoved);
                         }
                         cell.setElementOn(soldier);
                     }
@@ -166,13 +167,18 @@ public class Loader {
                                 int level = Integer.parseInt(soldierData.getAttributes().getNamedItem("level").getTextContent());
                                 boolean soldierHasMoved = Boolean.parseBoolean(soldierData.getAttributes().getNamedItem("hasmoved").getTextContent());
                                 Soldier soldier = null;
-                                if(level >=0 && level < 4) soldier = new Soldier(owner, level, soldierHasMoved);
+                                if(level >=0 && level < 4) {
+                                    soldier = new Soldier(owner, level);
+                                    soldier.setHasMoved(soldierHasMoved);
+                                }
                                 soldiers.add(soldier);
+
                             }
 
                         }
-                        Boat boat = new Boat(owner, hasMoved);
+                        Boat boat = new Boat(owner);
                         boat.setSoldiers(soldiers);
+                        boat.setT(distMax);
                         cell.setElementOn(boat);
                     }
                 } else if (type.equals("attacktower") && cell != null) {

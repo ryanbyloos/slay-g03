@@ -170,7 +170,7 @@ public class GameState {
                                 int level = Integer.parseInt(cellData.getAttribute("level"));
                                 boolean hasMoved = Boolean.parseBoolean(cellData.getAttribute("hasmoved"));
                                 Soldier soldier = null;
-                                if (level >= 0 && level < 4) soldier = new Soldier(cell.getOwner(), level, hasMoved);
+                                if (level >= 0 && level < 4) soldier = new Soldier(cell.getOwner(), level);
                                 cell.setElementOn(soldier);
                                 break;
                             }
@@ -195,11 +195,11 @@ public class GameState {
                                         boolean soldierHasMoved = Boolean.parseBoolean(soldierData.getAttributes().getNamedItem("hasmoved").getTextContent());
                                         Soldier soldier = null;
                                         if (level >= 0 && level < 4)
-                                            soldier = new Soldier(cell.getOwner(), level, soldierHasMoved);
+                                            soldier = new Soldier(cell.getOwner(), level);
                                         soldiers.add(soldier);
                                     }
                                 }
-                                Boat boat = new Boat(cell.getOwner(), hasMoved);
+                                Boat boat = new Boat(cell.getOwner());
                                 boat.setSoldiers(soldiers);
                                 cell.setElementOn(boat);
                                 break;
@@ -281,7 +281,7 @@ public class GameState {
             } else {
                 if (cell.isWater() && states.isCreationMode() && (elementToBuild.equals("boat") || elementToBuild.equals("mine"))) {
                     boolean p1 = false, p2 = false;
-                    for (Cell adjCell : cell.adjacentCell(map, cell)) {
+                    for (Cell adjCell : cell.adjacentCell(map, cell, false)) {
                         if (adjCell.getOwner() == map.getPlayer1())
                             p1 = true;
                         else if (adjCell.getOwner() == map.getPlayer2())
@@ -378,19 +378,19 @@ public class GameState {
     private MapElement newElement(String elementToBuild, Player player) {
         switch (elementToBuild) {
             case "soldier0":
-                return new Soldier(player, 0, false);
+                return new Soldier(player, 0);
             case "soldier1":
-                return new Soldier(player, 1, false);
+                return new Soldier(player, 1);
             case "soldier2":
-                return new Soldier(player, 2, false);
+                return new Soldier(player, 2);
             case "soldier3":
-                return new Soldier(player, 3, false);
+                return new Soldier(player, 3);
             case "defenceTower":
                 return new DefenceTower(player, 0);
             case "attackTower":
                 return new AttackTower(player, 0);
             case "boat":
-                return new Boat(player, false);
+                return new Boat(player);
             case "mine":
                 return new Mine(player);
         }

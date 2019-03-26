@@ -83,8 +83,9 @@ public class Replay {
                                                 boolean hasMoved = Boolean.parseBoolean(cellData.getAttribute("hasmoved"));
                                                 Soldier soldier = null;
                                                 if (level >= 0 && level < 4) {
-                                                    soldier = new Soldier(cell.getOwner(), level, hasMoved);
+                                                    soldier = new Soldier(cell.getOwner(), level);
                                                 }
+                                                soldier.setHasMoved(hasMoved);
                                                 cell.setElementOn(soldier);
                                                 break;
                                             }
@@ -99,6 +100,7 @@ public class Replay {
                                             }
                                             case "boat": {
                                                 boolean hasMoved = Boolean.parseBoolean(cellData.getAttribute("hasmoved"));
+                                                int distMax = Integer.parseInt(node.getAttributes().getNamedItem("distmax").getTextContent());
                                                 ArrayList<Soldier> soldiers = new ArrayList<Soldier>();
                                                 NodeList soldiersData = cellData.getChildNodes();
                                                 for (int l = 0; l < soldiersData.getLength(); l++) {
@@ -109,13 +111,16 @@ public class Replay {
                                                         boolean soldierHasMoved = Boolean.parseBoolean(soldierData.getAttributes().getNamedItem("hasmoved").getTextContent());
                                                         Soldier soldier = null;
                                                         if (level >= 0 && level < 4) {
-                                                            soldier = new Soldier(cell.getOwner(), level, soldierHasMoved);
+                                                            soldier = new Soldier(cell.getOwner(), level);
+                                                            soldier.setHasMoved(soldierHasMoved);
                                                         }
                                                         cell.setElementOn(soldier);
                                                         soldiers.add(soldier);
                                                     }
                                                 }
-                                                Boat boat = new Boat(cell.getOwner(), hasMoved);
+                                                Boat boat = new Boat(cell.getOwner());
+                                                boat.setHasMoved(hasMoved);
+                                                boat.setT(distMax);
                                                 boat.setSoldiers(soldiers);
                                                 cell.setElementOn(boat);
                                                 break;

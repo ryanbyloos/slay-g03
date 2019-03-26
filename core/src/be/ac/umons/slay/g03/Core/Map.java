@@ -36,15 +36,6 @@ public class Map {
         return null;
     }
 
-    public static int getWaterTilesNumber(Map map) {
-        int waterTilesNumber = 0;
-        for (Cell cell: map.getCells()
-             ) {
-            if (cell.isWater()) waterTilesNumber++;
-        }
-        return waterTilesNumber;
-    }
-
     public int getWidth() {
         return width;
     }
