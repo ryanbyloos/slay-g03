@@ -1,5 +1,6 @@
 package be.ac.umons.slay.g03;
 
+import be.ac.umons.slay.g03.Entity.Infrastructure;
 import be.ac.umons.slay.g03.GUI.Slay;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -20,11 +21,11 @@ public class Initializer extends Game {
         Slay.buttonH = Slay.h / 12;
 
         preferences = Gdx.app.getPreferences("settings");
-//        preferences.putBoolean("infrastructures", preferences.getBoolean("infrastructures", false));
         skin = new Skin(Gdx.files.internal("assets/pixel-theme/skin/skin.json"));
         skin.addRegions(skin.getAtlas());
         font = skin.getFont("default");
         Gdx.graphics.setWindowedMode(Slay.w, Slay.h);
         setScreen(Slay.home);
+        Infrastructure.setAvailability(Slay.game.preferences.getBoolean("infrastructures", false));
     }
 }
