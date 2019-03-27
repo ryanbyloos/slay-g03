@@ -36,15 +36,6 @@ public class Map {
         return null;
     }
 
-    public ArrayList<Cell> getWaterCells(){
-        ArrayList<Cell> waterCells = new ArrayList<>();
-        for (Cell cell: cells
-             ) {
-            if(cell.isWater()) waterCells.add(cell);
-        }
-        return waterCells;
-    }
-
     public int getWidth() {
         return width;
     }

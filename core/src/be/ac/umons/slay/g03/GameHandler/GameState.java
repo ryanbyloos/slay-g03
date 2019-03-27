@@ -306,9 +306,7 @@ public class GameState {
             if (states.isCreationMode()) {
                 states.setDestination(map.findCell(x, y));
                 if (states.getDestination() != null && map.playingPlayer() != null && states.getDestination().getElementOn() == null) {
-                    if (states.getTerritory().getCellsForMine().contains(states.getDestination())) {
 
-                    }
                     if (!states.getTerritory().getCells().contains(states.getDestination())) {
                         states.getDestination().setOwner(map.playingPlayer());
                         states.getTerritory().addCell(states.getDestination());
@@ -318,6 +316,7 @@ public class GameState {
                     if (m != null) {
                         states.getTerritory().findCapital().addMoney(-m.getCreationCost());
                     }
+
                 }
                 if (states.getDestination() != null && states.getDestination().getElementOn() instanceof Tree) {
                     m = newElement(elementToBuild, map.playingPlayer());
