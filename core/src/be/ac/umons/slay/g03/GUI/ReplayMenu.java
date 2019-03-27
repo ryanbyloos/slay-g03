@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public class ReplayMenu extends MenuScreen {
 
     Replay replay = new Replay(0);
+    ReplayRenderer replayScreen;
 
     @Override
     public void show() {
@@ -28,10 +29,9 @@ public class ReplayMenu extends MenuScreen {
                 button.addListener(new ClickListener() {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
-                        if (Slay.replayScreen == null) {
-                            Slay.replayScreen = new ReplayRenderer(replay, "assets/Replays/" + replayName);
-                            Slay.setScreen(Slay.replayScreen);
-                        }
+                        replay = new Replay(0);
+                        replayScreen = new ReplayRenderer(replay, "assets/Replays/" + replayName);
+                        Slay.setScreen(replayScreen);
                     }
                 });
             }

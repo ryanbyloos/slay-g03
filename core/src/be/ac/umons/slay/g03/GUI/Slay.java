@@ -16,7 +16,7 @@ public class Slay {
     static HallOfFame hof;
     static AuthenticatorScreen authScreen;
     static ReplayMenu replay;
-    static ReplayRenderer replayScreen;
+    //    static ReplayRenderer replayScreen;
     static WorldScreen worldScreen;
 
     static void setScreen(Screen screen) {
