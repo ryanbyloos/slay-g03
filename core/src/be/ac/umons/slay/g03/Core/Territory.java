@@ -150,7 +150,15 @@ public class Territory {
         return gainThisTurn;
     }
 
-    public ArrayList<Cell> getCellsForMine() {
-        return null;
+    public ArrayList<Cell> getCellsForCreateWaterUnit(Map map) {
+        ArrayList<Cell> cellsForCreateWaterUnit= new ArrayList<>();
+        for (Cell cell: cells
+             ) {
+            for (Cell celladj:cell.adjacentCell(map,cell,true)
+                 ) {
+                if(!cellsForCreateWaterUnit.contains(celladj) && celladj.getElementOn() == null) cellsForCreateWaterUnit.add(celladj);
+            }
+        }
+        return cellsForCreateWaterUnit;
     }
 }

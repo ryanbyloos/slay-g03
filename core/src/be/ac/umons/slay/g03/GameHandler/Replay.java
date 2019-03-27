@@ -100,8 +100,12 @@ public class Replay {
                                             }
                                             case "boat": {
                                                 boolean hasMoved = Boolean.parseBoolean(cellData.getAttribute("hasmoved"));
-                                                int distMax = Integer.parseInt(node.getAttributes().getNamedItem("distmax").getTextContent());
+                                                int distMax = Integer.parseInt(node.getAttributes().getNamedItem("t").getTextContent());
                                                 ArrayList<Soldier> soldiers = new ArrayList<Soldier>();
+                                                Boat boat = new Boat(cell.getOwner());
+                                                boat.setHasMoved(hasMoved);
+                                                boat.setT(distMax);
+                                                cell.setElementOn(boat);
                                                 NodeList soldiersData = cellData.getChildNodes();
                                                 for (int l = 0; l < soldiersData.getLength(); l++) {
                                                     Node node1 = soldiersData.item(j);
@@ -111,18 +115,13 @@ public class Replay {
                                                         boolean soldierHasMoved = Boolean.parseBoolean(soldierData.getAttributes().getNamedItem("hasmoved").getTextContent());
                                                         Soldier soldier = null;
                                                         if (level >= 0 && level < 4) {
-                                                            soldier = new Soldier(cell.getOwner(), level);
+                                                            soldier = new Soldier(cell.getElementOn().getOwner(), level);
                                                             soldier.setHasMoved(soldierHasMoved);
                                                         }
-                                                        cell.setElementOn(soldier);
                                                         soldiers.add(soldier);
                                                     }
                                                 }
-                                                Boat boat = new Boat(cell.getOwner());
-                                                boat.setHasMoved(hasMoved);
-                                                boat.setT(distMax);
                                                 boat.setSoldiers(soldiers);
-                                                cell.setElementOn(boat);
                                                 break;
                                             }
                                             case "capital":
