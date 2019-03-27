@@ -20,7 +20,8 @@ public class Settings extends MenuScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 Infrastructure.setAvailability(!Infrastructure.isAvailable);
-//                Slay.game.prefs.putBoolean("infrastructures", Infrastructure.isAvailable);
+                Slay.game.preferences.putBoolean("infrastructures", Infrastructure.isAvailable);
+                Slay.game.preferences.flush();
             }
         });
         table.add(box);

@@ -3,6 +3,7 @@ package be.ac.umons.slay.g03.GUI;
 import be.ac.umons.slay.g03.Core.Cell;
 import be.ac.umons.slay.g03.Core.Map;
 import be.ac.umons.slay.g03.Core.Player;
+import be.ac.umons.slay.g03.Entity.Infrastructure;
 import be.ac.umons.slay.g03.GameHandler.GameState;
 import be.ac.umons.slay.g03.GameHandler.Loader;
 import be.ac.umons.slay.g03.GameHandler.ReplayParserException;
@@ -48,7 +49,7 @@ public class World extends MapRenderer implements InputProcessor {
         }  catch (TransformerException | SAXException| ParserConfigurationException | IOException  | ReplayParserException e) {
             e.printStackTrace();
         }
-//        Infrastructure.setAvailability(Slay.game.prefs.getBoolean("infrastructures"));
+        Infrastructure.setAvailability(Slay.game.preferences.getBoolean("infrastructures"));
         setViewport(camera, map);
     }
 
