@@ -25,7 +25,6 @@ public class Boat extends Infrastructure implements Controlable {
         if (source.adjacentCell(map,source,false).contains(destination) && soldiers.size()>0){
             Soldier soldier = soldiers.get(soldiers.size()-1);
             soldiers.remove(soldier);
-            System.out.println("ok");
             soldier.move(new Cell(source.getX(),source.getY(), false,true,getOwner(),null),destination,map);
         }
     }
