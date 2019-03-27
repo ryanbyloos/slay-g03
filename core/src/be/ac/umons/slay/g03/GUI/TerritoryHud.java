@@ -1,6 +1,7 @@
 package be.ac.umons.slay.g03.GUI;
 
 import be.ac.umons.slay.g03.Core.Territory;
+import be.ac.umons.slay.g03.Entity.Infrastructure;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -120,9 +121,13 @@ class TerritoryHud extends Stage {
             public void clicked(InputEvent event, float x, float y) {
                 if (world.gameState.getStates().isTerritorySelected() && world.gameState.getStates().getTerritory().findCapital().getMoney() >= cost){
                     world.gameState.getStates().setCreationMode(!world.gameState.getStates().isCreationMode());
-                    world.gameState.getStates().setCreatableCells(world.gameState.getStates().getTerritory().accesibleCellToCreateUnit(world.gameState.getMap()));
-                }
+                    if(Infrastructure.isAvailable && (name.equals("mine") || (name.equals("boat")))){
+                    }
+                    else {
+                        world.gameState.getStates().setCreatableCells(world.gameState.getStates().getTerritory().accesibleCellToCreateUnit(world.gameState.getMap()));
+                    }
 
+                }
                 world.gameState.setElementToBuild(name);
             }
         };

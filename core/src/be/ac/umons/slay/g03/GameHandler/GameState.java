@@ -183,10 +183,23 @@ public class GameState {
                             }
                             case "boat": {
                                 int t = Integer.parseInt(cellData.getAttribute("t"));
-
                                 boolean hasMoved = Boolean.parseBoolean(cellData.getAttribute("hasmoved"));
                                 ArrayList<Soldier> soldiers = new ArrayList<>();
                                 NodeList soldiersData = cellData.getChildNodes();
+                                Boat boat = new Boat(cell.getOwner());
+                                boat.setHasMoved(hasMoved);
+                                boat.setT(t);
+                                cell.setElementOn(boat);
+                                switch (playerId){
+                                    case 1:
+                                        cell.getElementOn().setOwner(map.getPlayer1());
+                                        break;
+                                    case 2:
+                                        cell.getElementOn().setOwner(map.getPlayer2());
+                                        break;
+                                    default:
+                                        break;
+                                }
                                 for (int j = 0; j < soldiersData.getLength(); j++) {
                                     Node node1 = soldiersData.item(j);
                                     if (node1.getNodeType() == Node.ELEMENT_NODE) {
@@ -201,21 +214,7 @@ public class GameState {
                                         soldiers.add(soldier);
                                     }
                                 }
-                                Boat boat = new Boat(cell.getOwner());
-                                boat.setHasMoved(hasMoved);
-                                boat.setT(t);
                                 boat.setSoldiers(soldiers);
-                                cell.setElementOn(boat);
-                                switch (playerId){
-                                    case 1:
-                                        cell.getElementOn().setOwner(map.getPlayer1());
-                                        break;
-                                    case 2:
-                                        cell.getElementOn().setOwner(map.getPlayer2());
-                                        break;
-                                    default:
-                                        break;
-                                }
                                 break;
                             }
                             case "capital":
@@ -376,7 +375,7 @@ public class GameState {
                         if (!states.getSource().getElementOn().isHasMoved()) {
                             ((Soldier) states.getSource().getElementOn()).move(states.getSource(), states.getDestination(), map);
                         }
-                        states.setSoldierSelected(false);
+//                        states.setSoldierSelected(false);
 
                     } else if (states.getSource().getElementOn() instanceof Boat) {
                         Boat boat = (Boat) states.getSource().getElementOn();
@@ -388,6 +387,7 @@ public class GameState {
                                 boat.move(states.getSource(), states.getDestination(), map);
                                 if (states.getDestination().getElementOn().getOwner() == map.playingPlayer()) {
                                     try {
+                                        System.out.println("1");
                                         storeMove(map.playingPlayer());
                                     } catch (ReplayParserException e) {
                                         e.printStackTrace();
@@ -408,7 +408,7 @@ public class GameState {
                     }
                 }
                 if (states.getDestination() != null) {
-                    if (states.getDestination().getOwner() == map.playingPlayer()) {
+                    if (states.getDestination().getOwner() == map.playingPlayer() || (states.getDestination().getElementOn()!=null && states.getDestination().getElementOn() instanceof Boat && states.isSoldierSelected()&& states.getDestination().getElementOn().getOwner() == map.playingPlayer())) {
                         try {
                             storeMove(map.playingPlayer());
                         } catch (ReplayParserException e) {
@@ -418,6 +418,7 @@ public class GameState {
                     states.setTerritory(states.getDestination().findTerritory());
                     states.setTerritorySelected(true);
                 }
+                states.setSoldierSelected(false);
                 states.reset();
             } else {
 
