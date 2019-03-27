@@ -100,7 +100,13 @@ public class States {
 
     @Override
     public String toString() {
-        return "[creationMode][territorySelected][soldierSelected][boatSelected][upgradeMode]" + "[" + creationMode + "]" + "[" + territorySelected + "]" + "[" + soldierSelected + "]" + "[" + boatSelected + "]" + "[" + upgradeMode + "]";
+        return "[selectionMode][creationMode][territorySelected][upgradeMode][SOURCE][DESTINATION]" +
+                "["+ isSelectionMode()+"]" +
+                "[" + creationMode + "]" +
+                "[" + territorySelected + "]" +
+                "[" + upgradeMode + "]" +
+                "[" + source + "]" +
+                "[" + destination + "]";
     }
 
     public boolean isUpgradeMode() {

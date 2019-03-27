@@ -42,7 +42,7 @@ public class EntityTest {
         Assert.assertEquals(1, boat.getDefence());
     }
     @Test
-    public void boatCaptureHight() {
+    public void boatCaptureHeight() {
         Player player0 = new Player("Danial", 1, 0, false, 0, new ArrayList<>());
         Player player1 = new Player("Alex", 2, 0, false, 0, new ArrayList<>());
         Boat boat = new Boat(player0);

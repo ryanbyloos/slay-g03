@@ -10,6 +10,7 @@ public class DesktopLauncher {
         config.resizable = false;
         config.width = 800;
         config.height = 600;
+        config.title = "Slay";
         new LwjglApplication(Slay.game, config);
     }
 }

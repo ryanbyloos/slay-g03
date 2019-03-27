@@ -129,13 +129,10 @@ public class LoaderTest extends GameStageTest {
         } catch (WrongFormatException e) {
         }
         Boat boat = new Boat(map.getPlayer1());
-        boat.setT(3);
         ArrayList<Soldier> soldiers = new ArrayList<Soldier>();
         soldiers.add(new Soldier(map.getPlayer1(), 1));
         boat.setSoldiers(soldiers);
         Assert.assertEquals(boat, map.getCells().get(0).getElementOn());
-
-
     }
 
     @Test

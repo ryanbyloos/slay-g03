@@ -148,12 +148,12 @@ public class Loader {
                         cell.setElementOn(soldier);
                     }
 
-                } else if (type.equals("boat") && cell != null) {
+                } else if (type.equals("boat") && cell != null && Infrastructure.isAvailable) {
                     ArrayList<Soldier> soldiers = new ArrayList<Soldier>();
                     NodeList soldiersData = node.getChildNodes();
                     int playerId = Integer.parseInt(node.getAttributes().getNamedItem("playerId").getTextContent());
                     boolean hasMoved = Boolean.parseBoolean(node.getAttributes().getNamedItem("hasmoved").getTextContent());
-                    if (cell.isWater() && Infrastructure.isAvailable) {
+                    if (cell.isWater()) {
                         Player owner;
                         if (playerId == 1) {
                             owner = map.getPlayer1();
@@ -179,6 +179,7 @@ public class Loader {
                         Boat boat = new Boat(owner);
                         boat.setSoldiers(soldiers);
                         boat.setT(distMax);
+                        boat.setHasMoved(hasMoved);
                         cell.setElementOn(boat);
                     }
                 } else if (type.equals("attacktower") && cell != null) {
