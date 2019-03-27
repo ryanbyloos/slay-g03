@@ -131,7 +131,7 @@ class TerritoryHud extends Stage {
                     }
                     if(name.equals("soldier0") || name.equals("soldier1") || name.equals("soldier2") || name.equals("soldier3") || name.equals("attackTower") || name.equals("defenceTower")){
                         world.gameState.getStates().setOtherCreation(true);
-                        world.gameState.getStates().setDisplayCells(world.gameState.getStates().getTerritoryLoaded().accesibleCellToCreateUnit(world.gameState.getMap()));
+                        world.gameState.getStates().setDisplayCells(world.gameState.getStates().getTerritoryLoaded().accesibleCellToCreateUnit());
                     }
                 }
                 world.gameState.setElementToBuild(name);

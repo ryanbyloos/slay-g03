@@ -108,7 +108,7 @@ public class Territory {
         }
     }
 
-    public ArrayList<Cell> accesibleCellToCreateUnit(Map map){
+    public ArrayList<Cell> accesibleCellToCreateUnit(){
         ArrayList<Cell> accesibleCellToCreateUnit = new ArrayList<>();
         accesibleCellToCreateUnit.addAll(cells);
         for (Cell cell : cells) {
