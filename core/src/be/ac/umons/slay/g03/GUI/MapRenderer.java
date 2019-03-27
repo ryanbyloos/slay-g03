@@ -52,19 +52,25 @@ public class MapRenderer extends Game {
                 else if (cell.getOwner() == map.getPlayer1()) drawSprite(parity, yellowHex, cell);
                 else drawSprite(parity, redHex, cell);
                 if (gameState != null) {
-                    if ((gameState.getStates().isSelectionMode()) && gameState.getStates().getSource().getElementOn() != null){
-                        if(gameState.getStates().getSource().getElementOn() instanceof Soldier){
-                            drawHighlights(gameState.getStates().getSource().accessibleCell(map));
+                    if (gameState.getStates().isTerritorySelected()) {
+                        if (!(gameState.getStates().isBoatCreation() || gameState.getStates().isMineCreation())) {
+                            if(gameState.getStates().getTerritoryLoaded().getCells() != null) drawHighlights(gameState.getStates().getTerritoryLoaded().getCells());
+                            if (gameState.getStates().isOtherCreation()) {
+                                if(gameState.getStates().getDisplayCells()!=null) drawHighlights(gameState.getStates().getDisplayCells());
+                            }
                         }
-                        else if(gameState.getStates().getSource().getElementOn() instanceof Boat){
-                            drawHighlights(gameState.getStates().getSource().adjacentCell(map, gameState.getStates().getSource(), true));
+                        else if(gameState.getStates().isBoatCreation() ||gameState.getStates().isMineCreation()){
+                            if(gameState.getStates().getDisplayCells()!=null) drawHighlights(gameState.getStates().getDisplayCells());
                         }
                     }
-                    if (gameState.getStates().getTerritory() != null)
-                        drawHighlights(gameState.getStates().getTerritory().getCells());
-                    if (gameState.getStates().isCreationMode() && gameState.getStates().getCreatableCells() != null) {
-                        drawHighlights(gameState.getStates().getCreatableCells());
+                    if (gameState.getStates().isSoldierSelected()) {
+                        drawHighlights(gameState.getStates().getHold().accessibleCell(map));
+                    }else if (gameState.getStates().isBoatSelected()) {
+                        drawHighlights(gameState.getStates().getHold().adjacentCell(map, gameState.getStates().getHold(), true));
+                    }else if(gameState.getStates().isAttackTowerSelected()){
+                        //drawHighlights(gameState.getStates().getHold().getElementOn().towerRange(map));
                     }
+
                 }
             }
         }

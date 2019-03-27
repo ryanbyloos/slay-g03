@@ -6,18 +6,32 @@ import be.ac.umons.slay.g03.Core.Territory;
 import java.util.ArrayList;
 
 public class States {
-    private boolean over;
+    private boolean boatCreation;
+    private boolean mineCreation;
+    private boolean otherCreation;
     private boolean territorySelected;
     private boolean soldierSelected;
     private boolean boatSelected;
     private boolean attackTowerSelected;
-    private boolean creationMode;
-    private boolean upgradeMode;
-    private Cell destination;
-    private Cell source;
-    private Territory territory;
+    private boolean defenceTowerSelected;
+    private boolean upgradeAble;
+    private boolean over;
+    private Cell hold;
+    private ArrayList<Cell> displayCells;
     private ArrayList<Cell> creatableCells;
+    private Territory territoryLoaded;
 
+    public boolean isOtherCreation() {
+        return otherCreation;
+    }
+
+    public void setOtherCreation(boolean otherCreation) {
+        this.otherCreation = otherCreation;
+    }
+    public boolean isEverythingFalse(){
+        return !(boatCreation || mineCreation || otherCreation || territorySelected || soldierSelected || boatSelected || attackTowerSelected
+                || defenceTowerSelected || upgradeAble);
+    }
     public boolean isBoatSelected() {
         return boatSelected;
     }
@@ -50,79 +64,46 @@ public class States {
         this.soldierSelected = soldierSelected;
     }
 
-    public boolean isCreationMode() {
-        return creationMode;
-    }
-
-    public void setCreationMode(boolean creationMode) {
-        this.creationMode = creationMode;
-    }
 
     public boolean isSelectionMode() {
         return isAttackTowerSelected() || isSoldierSelected() || isBoatSelected();
     }
 
     public void reset() {
+        setBoatCreation(false);
+        setMineCreation(false);
+        setOtherCreation(false);
         setTerritorySelected(false);
-        setSoldierSelected(false);
+        setBoatSelected(false);
         setAttackTowerSelected(false);
-        setCreationMode(false);
-        setTerritory(null);
-        setUpgradeMode(false);
-        setCreatableCells(null);
-
-
+        setDefenceTowerSelected(false);
+        setUpgradeAble(false);
+    }
+    public Cell getHold() {
+        return hold;
     }
 
-    public Cell getDestination() {
-        return destination;
+    public void setHold(Cell hold) {
+        this.hold = hold;
     }
 
-    public void setDestination(Cell destination) {
-        this.destination = destination;
+    public ArrayList<Cell> getDisplayCells() {
+        return displayCells;
     }
 
-    public Cell getSource() {
-        return source;
-    }
-
-    public void setSource(Cell source) {
-        this.source = source;
-    }
-
-    public Territory getTerritory() {
-        return territory;
-    }
-
-    public void setTerritory(Territory territory) {
-        this.territory = territory;
+    public void setDisplayCells(ArrayList<Cell> displayCells) {
+        this.displayCells = displayCells;
     }
 
     @Override
     public String toString() {
-        return "[selectionMode][creationMode][territorySelected][upgradeMode][SOURCE][DESTINATION]" +
+        return "[selectionMode][creationMode][territorySelected][upgradeMode][soldierCreation][boatCreation][mineCreation][SOURCE][DESTINATION]" +
                 "["+ isSelectionMode()+"]" +
-                "[" + creationMode + "]" +
                 "[" + territorySelected + "]" +
-                "[" + upgradeMode + "]" +
-                "[" + source + "]" +
-                "[" + destination + "]";
-    }
-
-    public boolean isUpgradeMode() {
-        return upgradeMode;
-    }
-
-    public void setUpgradeMode(boolean upgradeMode) {
-        this.upgradeMode = upgradeMode;
-    }
-
-    public ArrayList<Cell> getCreatableCells() {
-        return creatableCells;
-    }
-
-    public void setCreatableCells(ArrayList<Cell> creatableCells) {
-        this.creatableCells = creatableCells;
+                "[" + otherCreation + "]" +
+                "[" + boatCreation + "]" +
+                "[" + mineCreation + "]" +
+                "[" + hold + "]";
     }
 
     public boolean isOver() {
@@ -131,5 +112,48 @@ public class States {
 
     public void setOver(boolean over) {
         this.over = over;
+    }
+
+    public boolean isMineCreation() {
+        return mineCreation;
+    }
+
+    public void setMineCreation(boolean mineCreation) {
+        this.mineCreation = mineCreation;
+    }
+
+
+
+
+    public boolean isBoatCreation() {
+        return boatCreation;
+    }
+
+    public void setBoatCreation(boolean boatCreation) {
+        this.boatCreation = boatCreation;
+    }
+
+    public boolean isDefenceTowerSelected() {
+        return defenceTowerSelected;
+    }
+
+    public void setDefenceTowerSelected(boolean defenceTowerSelected) {
+        this.defenceTowerSelected = defenceTowerSelected;
+    }
+
+    public boolean isUpgradeAble() {
+        return upgradeAble;
+    }
+
+    public void setUpgradeAble(boolean upgradeAble) {
+        this.upgradeAble = upgradeAble;
+    }
+
+    public Territory getTerritoryLoaded() {
+        return territoryLoaded;
+    }
+
+    public void setTerritoryLoaded(Territory territoryLoaded) {
+        this.territoryLoaded = territoryLoaded;
     }
 }
