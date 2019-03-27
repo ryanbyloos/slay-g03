@@ -322,10 +322,19 @@ public class GameState {
             else if(states.isTerritorySelected()){ // si le territoire est selectionne
                 if(states.isOtherCreation()){//si on est en cours de creation d'un soldat, d'une tour attaque ou bien une tour de défense(ces états sont défini à partir de TerritoryHUD)
                     if(!cell.isWater() && (cell.getElementOn() == null || cell.getElementOn() instanceof Tree)){
-                        cell.setElementOn(newElement(elementToBuild, map.playingPlayer()));
-                        cell.setOwner(map.playingPlayer());
-                        states.getTerritoryLoaded().addCell(cell);
-                        states.getTerritoryLoaded().findCapital().addMoney(-cell.getElementOn().getCreationCost());
+                        if(states.getDisplayCells().contains(cell)){
+                            cell.setElementOn(newElement(elementToBuild, map.playingPlayer()));
+                            cell.setOwner(map.playingPlayer());
+                            states.getTerritoryLoaded().addCell(cell);
+                            states.getTerritoryLoaded().findCapital().addMoney(-cell.getElementOn().getCreationCost());
+                        }
+                        else {
+                            states.setTerritoryLoaded(null);
+                            states.setDisplayCells(null);
+                            states.setHold(null);
+                            states.reset();
+                        }
+
                     }
                 }
                 else if(states.isMineCreation()){
