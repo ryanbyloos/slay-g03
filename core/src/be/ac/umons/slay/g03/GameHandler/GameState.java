@@ -387,7 +387,6 @@ public class GameState {
                                 boat.move(states.getSource(), states.getDestination(), map);
                                 if (states.getDestination().getElementOn().getOwner() == map.playingPlayer()) {
                                     try {
-                                        System.out.println("1");
                                         storeMove(map.playingPlayer());
                                     } catch (ReplayParserException e) {
                                         e.printStackTrace();
