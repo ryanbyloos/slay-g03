@@ -22,8 +22,8 @@ public class LoaderTest extends GameStageTest {
 
     @Test(expected = SerializationException.class)
     public void loadFromTmxTestExceptionHandler() {
-        Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, 0, new ArrayList<Territory>()),
-                new Player("Alex", 2, 0, false, 0, new ArrayList<Territory>()));
+        Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, new ArrayList<Territory>()),
+                new Player("Alex", 2, 0, false, new ArrayList<Territory>()));
         Loader loader = new Loader(tmxFileIncorrect, "unneeded", "");
         try {
             loader.loadFromTmxFile(map, false);
@@ -33,8 +33,8 @@ public class LoaderTest extends GameStageTest {
 
     @Test
     public void loadFromTmxTestAllElementAvailable() {
-        Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, 0, new ArrayList<Territory>()),
-                new Player("Alex", 2, 0, false, 0, new ArrayList<Territory>()));
+        Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, new ArrayList<Territory>()),
+                new Player("Alex", 2, 0, false, new ArrayList<Territory>()));
         Loader loader = new Loader(tmxFileCorrect, "unneeded", "");
         try {
             loader.loadFromTmxFile(map, false);
@@ -45,8 +45,8 @@ public class LoaderTest extends GameStageTest {
 
     @Test
     public void loadFromTmxTestPosXOfCell() {
-        Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, 0, new ArrayList<Territory>()),
-                new Player("Alex", 2, 0, false, 0, new ArrayList<Territory>()));
+        Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, new ArrayList<Territory>()),
+                new Player("Alex", 2, 0, false, new ArrayList<Territory>()));
         Loader loader = new Loader(tmxFileCorrect, "unneeded", "");
         try {
             loader.loadFromTmxFile(map, false);
@@ -58,8 +58,8 @@ public class LoaderTest extends GameStageTest {
 
     @Test
     public void loadFromTmxTestLoadingWaterCell() {
-        Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, 0, new ArrayList<Territory>()),
-                new Player("Alex", 2, 0, false, 0, new ArrayList<Territory>()));
+        Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, new ArrayList<Territory>()),
+                new Player("Alex", 2, 0, false, new ArrayList<Territory>()));
         Loader loader = new Loader(tmxFileCorrect, "unneeded", "");
         try {
             loader.loadFromTmxFile(map, false);
@@ -71,8 +71,8 @@ public class LoaderTest extends GameStageTest {
 
     @Test
     public void loadFromTmxTestLoadingLandCell() {
-        Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, 0, new ArrayList<Territory>()),
-                new Player("Alex", 2, 0, false, 0, new ArrayList<Territory>()));
+        Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, new ArrayList<Territory>()),
+                new Player("Alex", 2, 0, false, new ArrayList<Territory>()));
         Loader loader = new Loader(tmxFileCorrect, "unneeded", "");
         try {
             loader.loadFromTmxFile(map, false);
@@ -84,16 +84,16 @@ public class LoaderTest extends GameStageTest {
 
     @Test(expected = WrongFormatException.class)
     public void loadFromXmlTestExceptionHandler() throws WrongFormatException {
-        Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, 0, new ArrayList<Territory>()),
-                new Player("Alex", 2, 0, false, 0, new ArrayList<Territory>()));
+        Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, new ArrayList<Territory>()),
+                new Player("Alex", 2, 0, false, new ArrayList<Territory>()));
         Loader loader = new Loader(tmxFileCorrect, xmlFileIncorrect, "");
         loader.loadFromXmlFile(map, false);
     }
 
     @Test
     public void loadFromXmlTestUnitLoading() {
-        Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, 0, new ArrayList<Territory>()),
-                new Player("Alex", 2, 0, false, 0, new ArrayList<Territory>()));
+        Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, new ArrayList<Territory>()),
+                new Player("Alex", 2, 0, false, new ArrayList<Territory>()));
         Loader loader = new Loader(tmxFileCorrect, xmlFileCorrect, "");
         map.getCells().add(new Cell(1, 1, false, false, map.getPlayer1(), null));
         try {
@@ -106,8 +106,8 @@ public class LoaderTest extends GameStageTest {
 
     @Test
     public void loadFromXmlTestItemLoading() {
-        Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, 0, new ArrayList<Territory>()),
-                new Player("Alex", 2, 0, false, 0, new ArrayList<Territory>()));
+        Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, new ArrayList<Territory>()),
+                new Player("Alex", 2, 0, false, new ArrayList<Territory>()));
         Loader loader = new Loader(tmxFileCorrect, xmlFileCorrect, "");
         map.getCells().add(new Cell(0, 0, false, false, map.getPlayer1(), null));
         try {
@@ -119,8 +119,8 @@ public class LoaderTest extends GameStageTest {
 
     @Test
     public void loadFromXmlTestInfrastructureLoadingIfAvailable() {
-        Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, 0, new ArrayList<>()),
-                new Player("Alex", 2, 0, false, 0, new ArrayList<>()));
+        Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, new ArrayList<>()),
+                new Player("Alex", 2, 0, false, new ArrayList<>()));
         Loader loader = new Loader(tmxFileCorrect, xmlFileCorrect, "");
         map.getCells().add(new Cell(0, 1, false, true, map.getPlayer1(), null));
         Infrastructure.setAvailability(true);
@@ -137,8 +137,8 @@ public class LoaderTest extends GameStageTest {
 
     @Test
     public void loadFromXmlTestInfrastructureLoadingIfDisable() {
-        Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, 0, new ArrayList<Territory>()),
-                new Player("Alex", 2, 0, false, 0, new ArrayList<Territory>()));
+        Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, new ArrayList<Territory>()),
+                new Player("Alex", 2, 0, false, new ArrayList<Territory>()));
         map.getCells().add(new Cell(0, 1, false, true, map.getPlayer1(), null));
         Loader loader = new Loader(tmxFileCorrect, xmlFileCorrect, "");
         Infrastructure.setAvailability(false);
@@ -151,8 +151,8 @@ public class LoaderTest extends GameStageTest {
 
     @Test
     public void loadFromXmlTestElementLoadingOnExistingWrongCell() {
-        Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, 0, new ArrayList<Territory>()),
-                new Player("Alex", 2, 0, false, 0, new ArrayList<Territory>()));
+        Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, new ArrayList<Territory>()),
+                new Player("Alex", 2, 0, false, new ArrayList<Territory>()));
         Loader loader = new Loader(tmxFileCorrect, xmlFileCorrect, "");
         map.getCells().add(new Cell(2, 2, false, true, map.getPlayer1(), null));
         try {
@@ -165,8 +165,8 @@ public class LoaderTest extends GameStageTest {
 
     @Test
     public void loadFromXmlTestElementLoadingWhenWrongPlayer() {
-        Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, 0, new ArrayList<Territory>()),
-                new Player("Alex", 2, 0, false, 0, new ArrayList<Territory>()));
+        Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, new ArrayList<Territory>()),
+                new Player("Alex", 2, 0, false, new ArrayList<Territory>()));
         Loader loader = new Loader(tmxFileCorrect, xmlFileCorrect, "");
         map.getCells().add(new Cell(2, 1, false, false, map.getPlayer1(), null));
         try {
@@ -178,8 +178,8 @@ public class LoaderTest extends GameStageTest {
 
     @Test
     public void loadFromXmlTestElementLoadingWhenCellNotExist() {
-        Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, 0, new ArrayList<Territory>()),
-                new Player("Alex", 2, 0, false, 0, new ArrayList<Territory>()));
+        Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, new ArrayList<Territory>()),
+                new Player("Alex", 2, 0, false, new ArrayList<Territory>()));
         Loader loader = new Loader(tmxFileCorrect, xmlFileCorrect, "");
         try {
             loader.loadFromXmlFile(map, false);

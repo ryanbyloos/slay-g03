@@ -57,6 +57,11 @@ public class Cell {
         }
     }
 
+    public void levelUpTower(){
+        if(elementOn instanceof  AttackTower && elementOn.getLevel()<3) elementOn = new AttackTower(elementOn.getOwner(),elementOn.getLevel()+1);
+
+        else if( elementOn instanceof DefenceTower && elementOn.getLevel()<3) elementOn = new DefenceTower(elementOn.getOwner(),elementOn.getLevel()+1);
+    }
 
     public ArrayList<Cell> accessibleCell(Map map) {
         ArrayList<Cell> adjacentCell = new ArrayList<>();

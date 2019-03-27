@@ -41,8 +41,8 @@ public class Replay {
             Document doc = dBuilder.parse(file);
             doc.getDocumentElement().normalize();
             NodeList turns = doc.getDocumentElement().getChildNodes();
-            p1 = new Player("yellow", 1, 0, false, 0, null);
-            p2 = new Player("red", 2, 0, false, 0, null);
+            p1 = new Player("yellow", 1, 0, false, null);
+            p2 = new Player("red", 2, 0, false, null);
             for (int i = 0; i < turns.getLength(); i++) {
                 Node turn = turns.item(i);
                 if (turn.getNodeType() == Node.ELEMENT_NODE) {
