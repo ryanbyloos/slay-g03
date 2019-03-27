@@ -94,18 +94,10 @@ public class Boat extends Infrastructure implements Controlable {
         this.soldiers = soldiers;
     }
 
-
-    @Override
-    public boolean belongsTo() {
-        return getOwner().isTurn();
-    }
-
-
-
     @Override
     public boolean select() {
 
-        return t>0 && belongsTo() && !isHasMoved();
+        return t>0 && getOwner().isTurn() && !isHasMoved();
     }
 
     @Override

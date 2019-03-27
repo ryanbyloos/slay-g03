@@ -7,41 +7,38 @@ import java.util.ArrayList;
 
 public class AttackTower extends Infrastructure{
     private int level;
+    private boolean hasAttack;
     public AttackTower(Player owner, int level) {
         super(owner);
         this.level = level;
         switch (level) {
             case 0:
-                this.creationCost = 10;
+                this.creationCost = 20;
                 this.maintenanceCost = 2;
                 break;
             case 1:
-                this.creationCost = 20;
+                this.creationCost = 40;
                 this.maintenanceCost = 6;
                 break;
             case 2:
-                this.creationCost = 40;
+                this.creationCost = 80;
                 this.maintenanceCost = 12;
                 break;
             case 3:
-                this.creationCost = 80;
+                this.creationCost = 160;
                 this.maintenanceCost = 36;
                 break;
         }
     }
 
 
-    public boolean belongsTo() {
-        return getOwner().isTurn();
-    }
 
     public ArrayList<Cell> reachableCells() {
         return null;
     }
 
     public boolean select() {
-        // TODO: 21-03-19  
-        return false;
+        return getOwner().isTurn() && !hasAttack;
     }
     @Override
     public int getLevel() {
@@ -56,5 +53,9 @@ public class AttackTower extends Infrastructure{
                 cell.setElementOn(null);
             }
         }
+    }
+
+    public void setHasAttack(boolean hasAttack) {
+        this.hasAttack = hasAttack;
     }
 }
