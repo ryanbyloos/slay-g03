@@ -1,7 +1,6 @@
 package be.ac.umons.slay.g03.Core;
 
 import be.ac.umons.slay.g03.Entity.Grave;
-import be.ac.umons.slay.g03.Entity.Soldier;
 
 import java.util.ArrayList;
 
@@ -11,15 +10,13 @@ public class Player {
     private int moveNumber;
     private int maxMoveNumber;
     private boolean guest;
-    private int score;
     private boolean turn;
     private ArrayList<Territory> territories;
 
-    public Player(String name, int id, int moveNumber, boolean guest, int score, ArrayList<Territory> territories) {
+    public Player(String name, int id, int moveNumber, boolean guest, ArrayList<Territory> territories) {
         this.name = name;
         this.moveNumber = moveNumber;
         this.guest = guest;
-        this.score = score;
         this.territories = territories;
         this.id = id;
     }
@@ -32,28 +29,12 @@ public class Player {
     }
 
     public boolean isOver() {
-        for (Territory territory: territories
-             ) {
-            for (Cell cell: territory.getCells()
-                 ) {
-                if(cell.getElementOn() instanceof Soldier) return false;
-            }
-        }
-        for (Territory territory: territories
-             ) {
-            if(territory.findCapital().getMoney() >= 10) return false;
-        }
+        if(territories.size() == 0) return true;
 
-        return true;
+        return false;
     }
 
-    public void computeScore() {
 
-    }
-
-    public void surrend() {
-
-    }
 
     public void cleanGrave(){
         for (Territory territory: territories
@@ -95,9 +76,6 @@ public class Player {
         return guest;
     }
 
-    public int getScore() {
-        return score;
-    }
 
     public ArrayList<Territory> getTerritories() {
         return territories;

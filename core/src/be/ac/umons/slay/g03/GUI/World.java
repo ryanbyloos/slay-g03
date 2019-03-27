@@ -23,8 +23,8 @@ public class World extends MapRenderer implements InputProcessor {
     @Override
     public void create() {
         super.create();
-        map = new Map(new ArrayList<>(), new Player("Yellow", 1, -1, false, 0, new ArrayList<>()),
-                new Player("Red", 2, -1, false, 0, new ArrayList<>()));
+        map = new Map(new ArrayList<>(), new Player("Yellow", 1, -1, false, new ArrayList<>()),
+                new Player("Red", 2, -1, false, new ArrayList<>()));
         map.getPlayer1().setTurn(true);
         map.getPlayer1().setMaxMoveNumber(-1);
         map.getPlayer2().setMaxMoveNumber(-1);

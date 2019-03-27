@@ -12,8 +12,8 @@ public class EntityTest {
 
     @Test
     public void towerAttack() {
-        Player player0 = new Player("Danial", 1, 0, false, 0, new ArrayList<>());
-        Player player1 = new Player("Alex", 2, 0, false, 0, new ArrayList<>());
+        Player player0 = new Player("Danial", 1, 0, false, new ArrayList<>());
+        Player player1 = new Player("Alex", 2, 0, false, new ArrayList<>());
         Cell c = new Cell(0, 0, false, false, player0, new Soldier(player0, 3));
         AttackTower attackTower = new AttackTower(player1, 3);
         attackTower.attack(c);
@@ -22,8 +22,8 @@ public class EntityTest {
 
     @Test
     public void boatCapture() {
-        Player player0 = new Player("Danial", 1, 0, false, 0, new ArrayList<>());
-        Player player1 = new Player("Alex", 2, 0, false, 0, new ArrayList<>());
+        Player player0 = new Player("Danial", 1, 0, false, new ArrayList<>());
+        Player player1 = new Player("Alex", 2, 0, false, new ArrayList<>());
         Boat boat = new Boat(player0);
         Soldier soldier = new Soldier(player1, 1);
         Cell cell1 = new Cell(0, 0, false, false, player1, soldier);
@@ -43,8 +43,8 @@ public class EntityTest {
     }
     @Test
     public void boatCaptureHeight() {
-        Player player0 = new Player("Danial", 1, 0, false, 0, new ArrayList<>());
-        Player player1 = new Player("Alex", 2, 0, false, 0, new ArrayList<>());
+        Player player0 = new Player("Danial", 1, 0, false, new ArrayList<>());
+        Player player1 = new Player("Alex", 2, 0, false, new ArrayList<>());
         Boat boat = new Boat(player0);
         Soldier soldier1 = new Soldier(player0,2);
         boat.bord(soldier1);
@@ -67,7 +67,7 @@ public class EntityTest {
     }
     @Test
     public void boatMove(){
-        Player player = new Player("palyer", 1, 0, false, 0, new ArrayList<>());
+        Player player = new Player("palyer", 1, 0, false, new ArrayList<>());
         Boat boat = new Boat(player);
         Cell cell1 = new Cell(0, 0, false, true, null, null);
         Cell cell2 = new Cell(1, 0, false, true, null, boat);
@@ -81,7 +81,7 @@ public class EntityTest {
     }
     @Test
     public void boatToMine() {
-        Player player = new Player("palyer", 1, 0, false, 0, new ArrayList<>());
+        Player player = new Player("palyer", 1, 0, false, new ArrayList<>());
         Boat boat = new Boat(player);
         Cell cell1 = new Cell(0, 0, false, true, null, new Mine(player));
         Cell cell2 = new Cell(1, 0, false, true, null, boat);
@@ -95,7 +95,7 @@ public class EntityTest {
     }
     @Test
     public void boatBoarding() {
-        Player player = new Player("palyer", 1, 0, false, 0, new ArrayList<>());
+        Player player = new Player("palyer", 1, 0, false, new ArrayList<>());
         Boat boat = new Boat(player);
         Soldier soldier = new Soldier(player, 1);
         Cell cell1 = new Cell(0, 0, false, false, player, soldier);
@@ -115,7 +115,7 @@ public class EntityTest {
 
     @Test
     public void boardDeploy(){
-        Player player = new Player("palyer", 1, 0, false, 0, new ArrayList<>());
+        Player player = new Player("palyer", 1, 0, false, new ArrayList<>());
         Boat boat = new Boat(player);
         Soldier soldier = new Soldier(player, 1);
         boat.bord(soldier);
@@ -135,7 +135,7 @@ public class EntityTest {
     @Test
     public void simpleMove() {
 
-        Player player = new Player("player1", 0, 0, false, 0, new ArrayList<>());
+        Player player = new Player("player1", 0, 0, false, new ArrayList<>());
         Soldier soldier = new Soldier(player, 1);
         Cell cell1 = new Cell(0, 0, false, false, player, soldier);
         Cell cell2 = new Cell(1, 0, false, false, null, null);
@@ -156,7 +156,7 @@ public class EntityTest {
 
     @Test
     public void attackNullOwnerElement() {
-        Player player = new Player("player1", 0, 0, false, 0, new ArrayList<>());
+        Player player = new Player("player1", 0, 0, false, new ArrayList<>());
         Soldier soldier = new Soldier(player, 1);
         Cell cell1 = new Cell(0, 0, false, false, player, soldier);
         Cell cell2 = new Cell(1, 0, false, false, null, new Grave(0));
@@ -175,8 +175,8 @@ public class EntityTest {
 
     @Test
     public void attackLowerSoldier() {
-        Player player1 = new Player("player1", 0, 0, false, 0, new ArrayList<>());
-        Player player2 = new Player("player2", 1, 0, false, 0, new ArrayList<>());
+        Player player1 = new Player("player1", 0, 0, false, new ArrayList<>());
+        Player player2 = new Player("player2", 1, 0, false, new ArrayList<>());
         Soldier soldierLow = new Soldier(player1, 1);
         Soldier soldierHigh = new Soldier(player2, 2);
         Cell cell1 = new Cell(0, 0, false, false, player1, soldierLow);
@@ -199,8 +199,8 @@ public class EntityTest {
 
     @Test
     public void attackHigherSoldier() {
-        Soldier soldierLow = new Soldier(new Player("player1", 0, 0, false, 0, new ArrayList<>()), 1);
-        Soldier soldierHigh = new Soldier(new Player("player2", 1, 0, false, 0, new ArrayList<>()), 2);
+        Soldier soldierLow = new Soldier(new Player("player1", 0, 0, false, new ArrayList<>()), 1);
+        Soldier soldierHigh = new Soldier(new Player("player2", 1, 0, false, new ArrayList<>()), 2);
         Cell cell1 = new Cell(0, 0, false, false, null, soldierLow);
         Cell cell2 = new Cell(1, 0, false, false, null, soldierHigh);
         ArrayList<Cell> mapCell = new ArrayList<>();
@@ -215,8 +215,8 @@ public class EntityTest {
 
     @Test
     public void attackEqualSoldier() {
-        Soldier soldier1 = new Soldier(new Player("player1", 0, 0, false, 0, new ArrayList<>()), 1);
-        Soldier soldier2 = new Soldier(new Player("player2", 1, 0, false, 0, new ArrayList<>()), 1);
+        Soldier soldier1 = new Soldier(new Player("player1", 0, 0, false, new ArrayList<>()), 1);
+        Soldier soldier2 = new Soldier(new Player("player2", 1, 0, false, new ArrayList<>()), 1);
         Cell cell1 = new Cell(0, 0, false, false, null, soldier1);
         Cell cell2 = new Cell(1, 0, false, false, null, soldier2);
         ArrayList<Cell> mapCell = new ArrayList<>();
@@ -230,8 +230,8 @@ public class EntityTest {
 
     @Test
     public void attackEqualHighSoldier() {
-        Player player1 = new Player("player1", 0, 0, false, 0, new ArrayList<>());
-        Player player2 = new Player("player2", 1, 0, false, 0, new ArrayList<>());
+        Player player1 = new Player("player1", 0, 0, false, new ArrayList<>());
+        Player player2 = new Player("player2", 1, 0, false, new ArrayList<>());
         Soldier soldier1 = new Soldier(player1, 3);
         Soldier soldier2 = new Soldier(player2, 3);
         Cell cell1 = new Cell(0, 0, false, false, player1, soldier1);
@@ -252,8 +252,8 @@ public class EntityTest {
     }
     @Test
     public void moveToLowerSoldier() {
-        Player player1 = new Player("player1", 0, 0, false, 0, new ArrayList<>());
-        Player player2 = new Player("player2", 1, 0, false, 0, new ArrayList<>());
+        Player player1 = new Player("player1", 0, 0, false, new ArrayList<>());
+        Player player2 = new Player("player2", 1, 0, false, new ArrayList<>());
         Soldier soldierLow = new Soldier(player1, 1);
         Soldier soldierHigh = new Soldier(player2, 2);
         Cell cell1 = new Cell(0, 0, false, false, player1, soldierLow);
@@ -279,8 +279,8 @@ public class EntityTest {
 
     @Test
     public void movToHigherSoldier() {
-        Player player1 = new Player("player1", 0, 0, false, 0, new ArrayList<>());
-        Player player2 = new Player("player2", 1, 0, false, 0, new ArrayList<>());
+        Player player1 = new Player("player1", 0, 0, false, new ArrayList<>());
+        Player player2 = new Player("player2", 1, 0, false, new ArrayList<>());
         Soldier soldierLow = new Soldier(player1, 1);
         Soldier soldierHigh = new Soldier(player2, 2);
         Cell cell1 = new Cell(0, 0, false, false, player1, soldierLow);
@@ -306,8 +306,8 @@ public class EntityTest {
 
     @Test
     public void moveNextToEqualSoldier() {
-        Player player1 = new Player("player1", 0, 0, false, 0, new ArrayList<>());
-        Player player2 = new Player("player2", 1, 0, false, 0, new ArrayList<>());
+        Player player1 = new Player("player1", 0, 0, false, new ArrayList<>());
+        Player player2 = new Player("player2", 1, 0, false, new ArrayList<>());
         Soldier soldier1 = new Soldier(player1, 1);
         Soldier soldier2 = new Soldier(player2, 1);
         Cell cell1 = new Cell(0, 0, false, false, player1, soldier1);
@@ -333,8 +333,8 @@ public class EntityTest {
 
     @Test
     public void moveToEqualHighSoldier() {
-        Player player1 = new Player("player1", 0, 0, false, 0, new ArrayList<>());
-        Player player2 = new Player("player2", 1, 0, false, 0, new ArrayList<>());
+        Player player1 = new Player("player1", 0, 0, false, new ArrayList<>());
+        Player player2 = new Player("player2", 1, 0, false, new ArrayList<>());
         Soldier soldier1 = new Soldier(player1, 3);
         Soldier soldier2 = new Soldier(player2, 3);
         Cell cell1 = new Cell(0, 0, false, false, player1, soldier1);
@@ -359,7 +359,7 @@ public class EntityTest {
     }
     @Test
     public void mergesoldierSameLevel() {
-        Player player1 = new Player("player1", 0, 0, false, 0, new ArrayList<>());
+        Player player1 = new Player("player1", 0, 0, false, new ArrayList<>());
         Soldier soldier1 = new Soldier(player1, 2);
         Soldier soldier2 = new Soldier(player1, 2);
         Cell cell1 = new Cell(0, 0, false, false, player1, soldier1);
@@ -375,7 +375,7 @@ public class EntityTest {
 
     @Test
     public void mergesoldierMaxLevel() {
-        Player player1 = new Player("player1", 0, 0, false, 0, new ArrayList<>());
+        Player player1 = new Player("player1", 0, 0, false, new ArrayList<>());
         Soldier soldier1 = new Soldier(player1, 3);
         Soldier soldier2 = new Soldier(player1, 3);
         Cell cell1 = new Cell(0, 0, false, false, player1, soldier1);
@@ -392,7 +392,7 @@ public class EntityTest {
 
     @Test
     public void mergesoldierDiffLevel() {
-        Player player1 = new Player("player1", 0, 0, false, 0, new ArrayList<>());
+        Player player1 = new Player("player1", 0, 0, false, new ArrayList<>());
         Soldier soldier1 = new Soldier(player1, 1);
         Soldier soldier2 = new Soldier(player1, 2);
         Cell cell1 = new Cell(0, 0, false, false, player1, soldier1);
@@ -409,7 +409,7 @@ public class EntityTest {
 
     @Test
     public void simpleAccessibleCell() {
-        Player player = new Player("player1", 0, 0, false, 0, new ArrayList<>());
+        Player player = new Player("player1", 0, 0, false, new ArrayList<>());
         Soldier soldier = new Soldier(player, 1);
         Cell cell = new Cell(0, 2, false, false, player, soldier);
         Cell cell1 = new Cell(0, 3, false, false, null, null);
@@ -441,7 +441,7 @@ public class EntityTest {
 
     @Test
     public void complexeAccessibleCell() {
-        Player player = new Player("player1", 0, 0, false, 0, new ArrayList<>());
+        Player player = new Player("player1", 0, 0, false, new ArrayList<>());
         Soldier soldier = new Soldier(player, 1);
         Cell cell = new Cell(0, 2, false, false, player, soldier);
         Cell cell1 = new Cell(0, 3, false, false, null, null);
@@ -486,7 +486,7 @@ public class EntityTest {
 
     @Test
     public void mergeTerritoryTest() {
-        Player player1 = new Player("player1", 0, 0, false, 0, new ArrayList<>());
+        Player player1 = new Player("player1", 0, 0, false, new ArrayList<>());
         Soldier soldier = new Soldier(player1, 1);
         Capital capital1 = new Capital(player1,10);
         Capital capital2 = new Capital(player1,10);
@@ -526,8 +526,8 @@ public class EntityTest {
 
     @Test
     public void doubleSplitTerritoryTest() {
-        Player player1 = new Player("player1", 0, 0, false, 0, new ArrayList<>());
-        Player player2 = new Player("player2", 1, 0, false, 0, new ArrayList<>());
+        Player player1 = new Player("player1", 0, 0, false, new ArrayList<>());
+        Player player2 = new Player("player2", 1, 0, false, new ArrayList<>());
         Soldier soldier = new Soldier(player1, 1);
         Capital capital = new Capital(player2,13);
         Cell cell1 = new Cell(6, 6, false, false, player1, null);
@@ -565,8 +565,8 @@ public class EntityTest {
     }
     @Test
     public void tripleSplitTerritoryTestCas1() {
-        Player player1 = new Player("player1", 0, 0, false, 0, new ArrayList<>());
-        Player player2 = new Player("player2", 1, 0, false, 0, new ArrayList<>());
+        Player player1 = new Player("player1", 0, 0, false, new ArrayList<>());
+        Player player2 = new Player("player2", 1, 0, false, new ArrayList<>());
         Soldier soldier = new Soldier(player2, 1);
         Capital capital = new Capital(player1,13);
         Cell cell1 = new Cell(1, 5, false, false, player1, capital);
@@ -599,8 +599,8 @@ public class EntityTest {
     }
     @Test
     public void tripleSplitTerritoryTestCas2() {
-        Player player1 = new Player("player1", 0, 0, false, 0, new ArrayList<>());
-        Player player2 = new Player("player2", 1, 0, false, 0, new ArrayList<>());
+        Player player1 = new Player("player1", 0, 0, false, new ArrayList<>());
+        Player player2 = new Player("player2", 1, 0, false, new ArrayList<>());
         Soldier soldier = new Soldier(player2, 1);
         Capital capital = new Capital(player1,13);
         Cell cell1 = new Cell(1, 5, false, false, player1, null);
@@ -633,8 +633,8 @@ public class EntityTest {
     }
     @Test
     public void tripleSplitTerritoryTestCas3() {
-        Player player1 = new Player("player1", 0, 0, false, 0, new ArrayList<>());
-        Player player2 = new Player("player2", 1, 0, false, 0, new ArrayList<>());
+        Player player1 = new Player("player1", 0, 0, false, new ArrayList<>());
+        Player player2 = new Player("player2", 1, 0, false, new ArrayList<>());
         Soldier soldier = new Soldier(player2, 1);
         Capital capital = new Capital(player1,13);
         Cell cell1 = new Cell(1, 5, false, false, player1, null);
@@ -668,7 +668,7 @@ public class EntityTest {
 
     @Test
     public void cutTreeNeutral(){
-        Player player1 = new Player("player1", 0, 0, false, 0, new ArrayList<>());
+        Player player1 = new Player("player1", 0, 0, false, new ArrayList<>());
         Soldier soldier = new Soldier(player1, 1);
         Capital capital = new Capital(player1,10);
         Cell cell1 = new Cell(1, 5, false, false, player1, soldier);
@@ -689,7 +689,7 @@ public class EntityTest {
     }
     @Test
     public void cutTreeAlly(){
-        Player player1 = new Player("player1", 0, 0, false, 0, new ArrayList<>());
+        Player player1 = new Player("player1", 0, 0, false, new ArrayList<>());
         Soldier soldier = new Soldier(player1, 1);
         Capital capital = new Capital(player1,10);
         Cell cell1 = new Cell(1, 5, false, false, player1, soldier);
@@ -711,8 +711,8 @@ public class EntityTest {
     }
     @Test
     public void cutTreeEnnemy(){
-        Player player1 = new Player("player1", 0, 0, false, 0, new ArrayList<>());
-        Player player2 = new Player("player2", 1, 0, false, 0, new ArrayList<>());
+        Player player1 = new Player("player1", 0, 0, false, new ArrayList<>());
+        Player player2 = new Player("player2", 1, 0, false, new ArrayList<>());
         Soldier soldier = new Soldier(player1, 1);
         Capital capital = new Capital(player1,10);
         Cell cell1 = new Cell(1, 5, false, false, player1, soldier);
@@ -776,7 +776,7 @@ public class EntityTest {
 
     @Test
     public void bankrupt(){
-        Player player = new Player("player", 0, 0, false, 0, new ArrayList<>());
+        Player player = new Player("player", 0, 0, false, new ArrayList<>());
         Soldier soldier = new Soldier(player, 2);
         Capital capital = new Capital(player,3);
         Cell cellSoldier = new Cell(1, 5, false, false, player, soldier);
@@ -798,7 +798,7 @@ public class EntityTest {
     }
     @Test
     public void noBankrupt(){
-        Player player = new Player("player", 0, 0, false, 0, new ArrayList<>());
+        Player player = new Player("player", 0, 0, false, new ArrayList<>());
         Soldier soldier = new Soldier(player, 2);
         Capital capital = new Capital(player, 13);
         Cell cellSoldier = new Cell(1, 5, false, false, player, soldier);
@@ -821,8 +821,8 @@ public class EntityTest {
 
     @Test
     public void destroyCapital(){
-        Player player1 = new Player("player1", 0, 0, false, 0, new ArrayList<>());
-        Player player2 = new Player("player2", 1, 0, false, 0, new ArrayList<>());
+        Player player1 = new Player("player1", 0, 0, false, new ArrayList<>());
+        Player player2 = new Player("player2", 1, 0, false, new ArrayList<>());
         Soldier soldier = new Soldier(player1, 1);
         Soldier soldier2 = new Soldier(player2, 0);
         Capital capital = new Capital(player1,20);
@@ -855,6 +855,34 @@ public class EntityTest {
         Assert.assertEquals(soldier,cell3.getElementOn());
         Assert.assertEquals(21,capital.getMoney());
         Assert.assertEquals(19,player2.getTerritories().get(0).findCapital().getMoney());
+    }
+
+    @Test
+    public void upTower(){
+        Player player = new Player("player",1,0,false,null);
+        AttackTower lowAttackTower = new AttackTower(player,1);
+        AttackTower hightAttackTower = new AttackTower(player,3);
+        DefenceTower lowDefenceTower = new DefenceTower(player,1);
+        DefenceTower hightDefenceTower = new DefenceTower(player,3);
+        Soldier soldier = new Soldier(player,2);
+        Cell cell1 = new Cell(0,0,false,false,player,lowAttackTower);
+        Cell cell2 = new Cell(1,0,false,false,player,hightAttackTower);
+        Cell cell3 = new Cell(2,0,false,false,player,soldier);
+        Cell cell4 = new Cell(3,0,false,false,player,null);
+        Cell cell5 = new Cell(3,0,false,false,player,lowDefenceTower);
+        Cell cell6 = new Cell(3,0,false,false,player,hightDefenceTower);
+        cell1.levelUpTower();
+        cell2.levelUpTower();
+        cell3.levelUpTower();
+        cell4.levelUpTower();
+        cell5.levelUpTower();
+        cell6.levelUpTower();
+        Assert.assertEquals(2,cell1.getElementOn().getLevel());
+        Assert.assertEquals(3,cell2.getElementOn().getLevel());
+        Assert.assertEquals(2,cell5.getElementOn().getLevel());
+        Assert.assertEquals(3,cell6.getElementOn().getLevel());
+        Assert.assertEquals(2,cell3.getElementOn().getLevel());
+
     }
 
 }

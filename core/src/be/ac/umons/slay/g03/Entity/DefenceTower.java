@@ -19,24 +19,20 @@ public class DefenceTower extends Infrastructure {
                 break;
             case 2:
                 this.creationCost = 40;
-                this.maintenanceCost = 7;
+                this.maintenanceCost = 6;
                 break;
             case 3:
                 this.creationCost = 80;
-                this.maintenanceCost = 20;
+                this.maintenanceCost = 18;
                 break;
         }
     }
 
-    public void levelUp() {
-        if (this.level >= 0 && this.level < 3)
-            level++;
-    }
 
     public boolean belongsTo() {
         return false;
     }
-
+    @Override
     public int getLevel() {
         return this.level;
     }
