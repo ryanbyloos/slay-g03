@@ -74,7 +74,7 @@ class TerritoryHud extends Stage {
             for (HudButton button : buttons)
                 button.setColor(Color.GRAY);
         }
-        if (world.gameState.getStates().isSelectionMode() || world.gameState.getStates().isTerritorySelected()) {
+        if (world.gameState.getStates().isTerritorySelected()) {
 
             shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
             shapeRenderer.setColor(Color.BLACK);

@@ -1,5 +1,6 @@
 package be.ac.umons.slay.g03.GUI;
 
+import be.ac.umons.slay.g03.GameHandler.Authenticator;
 import be.ac.umons.slay.g03.Initializer;
 import com.badlogic.gdx.Screen;
 
@@ -16,8 +17,9 @@ public class Slay {
     static HallOfFame hof;
     static AuthenticatorScreen authScreen;
     static ReplayMenu replay;
-    //    static ReplayRenderer replayScreen;
     static WorldScreen worldScreen;
+    static Authenticator authenticator;
+    static RegisterScreen registerScreen;
 
     static void setScreen(Screen screen) {
         game.setScreen(screen);
