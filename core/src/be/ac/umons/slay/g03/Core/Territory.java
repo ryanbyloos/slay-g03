@@ -112,13 +112,9 @@ public class Territory {
         ArrayList<Cell> accesibleCellToCreateUnit = new ArrayList<>();
         accesibleCellToCreateUnit.addAll(cells);
         for (Cell cell : cells) {
-            for (Cell cellAdj: cell.adjacentCell(map,cell, false)
-                 ) {
-                if (!accesibleCellToCreateUnit.contains(cellAdj)){
-                    if(cellAdj.getOwner() == null) accesibleCellToCreateUnit.add(cellAdj);
-                }
+            if (cell.getElementOn() != null) accesibleCellToCreateUnit.remove(cell);
             }
-        }
+
         return accesibleCellToCreateUnit;
     }
 
