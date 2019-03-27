@@ -25,7 +25,6 @@ public class Boat extends Infrastructure implements Controlable {
         if (source.adjacentCell(map,source,false).contains(destination) && soldiers.size()>0){
             Soldier soldier = soldiers.get(soldiers.size()-1);
             soldiers.remove(soldier);
-            System.out.println("ok");
             soldier.move(new Cell(source.getX(),source.getY(), false,true,getOwner(),null),destination,map);
         }
     }
@@ -95,18 +94,10 @@ public class Boat extends Infrastructure implements Controlable {
         this.soldiers = soldiers;
     }
 
-
-    @Override
-    public boolean belongsTo() {
-        return getOwner().isTurn();
-    }
-
-
-
     @Override
     public boolean select() {
 
-        return t>0 && belongsTo() && !isHasMoved();
+        return t>0 && getOwner().isTurn() && !isHasMoved();
     }
 
     @Override

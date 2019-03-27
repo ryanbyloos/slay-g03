@@ -3,6 +3,7 @@ package be.ac.umons.slay.g03.GUI;
 import be.ac.umons.slay.g03.Core.Cell;
 import be.ac.umons.slay.g03.Core.Map;
 import be.ac.umons.slay.g03.Core.Player;
+import be.ac.umons.slay.g03.Entity.Infrastructure;
 import be.ac.umons.slay.g03.GameHandler.GameState;
 import be.ac.umons.slay.g03.GameHandler.Loader;
 import be.ac.umons.slay.g03.GameHandler.ReplayParserException;
@@ -22,8 +23,8 @@ public class World extends MapRenderer implements InputProcessor {
     @Override
     public void create() {
         super.create();
-        map = new Map(new ArrayList<>(), new Player("Yellow", 1, -1, false, 0, new ArrayList<>()),
-                new Player("Red", 2, -1, false, 0, new ArrayList<>()));
+        map = new Map(new ArrayList<>(), new Player("Yellow", 1, -1, false, new ArrayList<>()),
+                new Player("Red", 2, -1, false, new ArrayList<>()));
         map.getPlayer1().setTurn(true);
         map.getPlayer1().setMaxMoveNumber(-1);
         map.getPlayer2().setMaxMoveNumber(-1);
@@ -48,7 +49,7 @@ public class World extends MapRenderer implements InputProcessor {
         }  catch (TransformerException | SAXException| ParserConfigurationException | IOException  | ReplayParserException e) {
             e.printStackTrace();
         }
-//        Infrastructure.setAvailability(Slay.game.prefs.getBoolean("infrastructures"));
+        Infrastructure.setAvailability(Slay.game.preferences.getBoolean("infrastructures"));
         setViewport(camera, map);
     }
 
@@ -160,16 +161,7 @@ public class World extends MapRenderer implements InputProcessor {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        if (!gameState.getStates().isTerritorySelected() && screenX < Slay.w && (Slay.h - screenY) < Slay.h) {
-            int[] pos = getMouseCoord(camera);
-            Cell cell = map.findCell(pos[0], pos[1]);
-            if (cell != null && cell.getOwner() != null && !(gameState.getStates().isSoldierSelected() || gameState.getStates().isBoatSelected() || gameState.getStates().isAttackTowerSelected())) {
-                gameState.getStates().setTerritory(cell.findTerritory());
-            } else {
-                gameState.getStates().setTerritory(null);
-            }
-        }
-        return true;
+        return false;
     }
 
     @Override

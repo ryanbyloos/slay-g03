@@ -383,7 +383,7 @@ public class GameState {
                 }
                 else if(states.isAttackTowerSelected()){
                     AttackTower attackTower = (AttackTower) states.getHold().getElementOn();
-                    attackTower.attack(cell);
+                    attackTower.attack(map, states.getHold(), cell);
                     states.setAttackTowerSelected(false);
                     states.setHold(null);
                 }
@@ -533,6 +533,7 @@ public class GameState {
                     element.setAttribute("y", Integer.toString(cell.getY()));
                     element.setAttribute("playerId", Integer.toString(entity.getOwner().getId()));
                     element.setAttribute("level", Integer.toString(attackTower.getLevel()));
+                    element.setAttribute("hasattack", Boolean.toString(attackTower.isHasAttack()));
                     infrastructures.appendChild(element);
                 } else if (entity instanceof Boat) {
                     element = document.createElement("infrastructure");
@@ -750,6 +751,7 @@ public class GameState {
                     } else if (entity instanceof AttackTower) {
                         element.setAttribute("element", "attacktower");
                         element.setAttribute("level", Integer.toString(entity.getLevel()));
+                        element.setAttribute("hasattack", Boolean.toString(((AttackTower) entity).isHasAttack()));
                     } else if (entity instanceof Boat) {
                         element.setAttribute("element", "boat");
                         element.setAttribute("t", Integer.toString(((Boat) entity).getT()));

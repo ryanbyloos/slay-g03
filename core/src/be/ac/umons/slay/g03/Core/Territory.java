@@ -156,7 +156,7 @@ public class Territory {
              ) {
             for (Cell celladj:cell.adjacentCell(map,cell,true)
                  ) {
-                if(!cellsForCreateWaterUnit.contains(celladj)) cellsForCreateWaterUnit.add(celladj);
+                if(!cellsForCreateWaterUnit.contains(celladj) && celladj.getElementOn() == null) cellsForCreateWaterUnit.add(celladj);
             }
         }
         return cellsForCreateWaterUnit;

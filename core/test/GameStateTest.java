@@ -14,8 +14,8 @@ import java.util.ArrayList;
 public class GameStateTest extends GameStageTest {
     @Test
     public void undoTest() {
-        Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, 0, new ArrayList<Territory>()),
-                new Player("Alex", 2, 0, false, 0, new ArrayList<Territory>()));
+        Map map = new Map(new ArrayList<Cell>(), new Player("Danial", 1, 0, false, new ArrayList<Territory>()),
+                new Player("Alex", 2, 0, false, new ArrayList<Territory>()));
         Loader loader = new Loader("test1.tmx", "test.xml", "wow");
         try {
             loader.loadFromTmxFile(map, false);

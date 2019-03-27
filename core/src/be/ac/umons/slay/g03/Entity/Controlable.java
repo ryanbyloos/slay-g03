@@ -4,7 +4,6 @@ import be.ac.umons.slay.g03.Core.Cell;
 import be.ac.umons.slay.g03.Core.Map;
 
 public interface Controlable {
-    boolean belongsTo();
 
     void move(Cell source, Cell destination, Map map);
 

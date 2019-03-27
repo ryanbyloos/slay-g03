@@ -184,11 +184,16 @@ public class Loader {
                     }
                 } else if (type.equals("attacktower") && cell != null) {
                     int playerId = Integer.parseInt(node.getAttributes().getNamedItem("playerId").getTextContent());
+
                     if (Infrastructure.isAvailable && !cell.isWater() && cell.getOwner() != null && cell.getOwner().getId() == playerId) {
                         Player owner = cell.getOwner();
                         int level = Integer.parseInt(node.getAttributes().getNamedItem("level").getTextContent());
+                        boolean hasAttack = Boolean.parseBoolean(node.getAttributes().getNamedItem("hasattack").getTextContent());
                         AttackTower attackTower = null;
-                        if(level >=0 && level < 4) attackTower = new AttackTower(owner, level);
+                        if(level >=0 && level < 4) {
+                            attackTower = new AttackTower(owner, level);
+                            attackTower.setHasAttack(hasAttack);
+                        }
                         cell.setElementOn(attackTower);
                     }
 

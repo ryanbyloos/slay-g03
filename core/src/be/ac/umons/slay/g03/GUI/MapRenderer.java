@@ -68,7 +68,7 @@ public class MapRenderer extends Game {
                     }else if (gameState.getStates().isBoatSelected()) {
                         drawHighlights(gameState.getStates().getHold().adjacentCell(map, gameState.getStates().getHold(), true));
                     }else if(gameState.getStates().isAttackTowerSelected()){
-                        //drawHighlights(gameState.getStates().getHold().getElementOn().towerRange(map));
+                        drawHighlights(gameState.getStates().getHold().towerRange(map));
                     }
 
                 }
