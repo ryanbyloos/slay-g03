@@ -13,7 +13,7 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
-import java.io.*;
+import java.io.File;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -22,8 +22,7 @@ public class Authenticator {
     private String hallOfFameFile;
     private String loginFile;
 
-    public Authenticator(GameState gameState,String loginFile) throws AuthenticationError {
-        this.gameState = gameState;
+    public Authenticator(String loginFile) throws AuthenticationError {
 
         if(!Gdx.files.internal(loginFile).exists()) {
             try {
@@ -43,11 +42,9 @@ public class Authenticator {
                 throw new AuthenticationError();
             }
         }
-
         this.loginFile = loginFile;
 
     }
-
 
     public boolean login(String userName, String pwd) throws AuthenticationError {
         try {
@@ -62,7 +59,8 @@ public class Authenticator {
                 Node nNode = nList.item(i);
                 if(nNode.getNodeType() == Node.ELEMENT_NODE){
                     Element eElement = (Element) nNode;
-                    if(eElement.getAttribute("userNme").equals(userName) && eElement.getAttribute("password").equals(hashPassword(pwd))) return true;
+                    if (eElement.getAttribute("userName").equals(userName) && eElement.getAttribute("password").equals(hashPassword(pwd)))
+                        return true;
                 }
             }
             return false;

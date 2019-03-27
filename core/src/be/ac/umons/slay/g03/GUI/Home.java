@@ -1,5 +1,7 @@
 package be.ac.umons.slay.g03.GUI;
 
+import be.ac.umons.slay.g03.GameHandler.AuthenticationError;
+import be.ac.umons.slay.g03.GameHandler.Authenticator;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
@@ -19,7 +21,11 @@ public class Home implements Screen {
 
     @Override
     public void show() {
-
+        try {
+            Slay.authenticator = new Authenticator("assets/Register/register.xml");
+        } catch (AuthenticationError authenticationError) {
+            authenticationError.printStackTrace();
+        }
         stage = new Stage(new FillViewport(Slay.w, Slay.h));
         Gdx.input.setInputProcessor(stage);
 
