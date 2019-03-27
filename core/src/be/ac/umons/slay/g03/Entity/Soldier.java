@@ -205,11 +205,6 @@ public class Soldier extends MapElement implements Controlable {
 
 
     @Override
-    public boolean belongsTo() {
-        return getOwner().isTurn();
-    }
-
-    @Override
     public void move(Cell source, Cell destination, Map map) {
         if (source.accessibleCell(map).contains(destination) && (getLevel() >= levelDefender(map, source, destination))) {
             if (destination.getElementOn() != null) {
@@ -219,7 +214,8 @@ public class Soldier extends MapElement implements Controlable {
                     }
                     destination.setElementOn(null);
                     move(source, destination, map);
-                } else if (destination.getElementOn() instanceof Soldier) {
+                } else if (destination.getElementOn() instanceof Soldier || destination.getElementOn() instanceof DefenceTower
+                        || destination.getElementOn() instanceof  AttackTower) {
                     if (destination.getElementOn().getOwner().equals(this.getOwner())) {
                         mergeSoldier(source, destination);
                     } else {
@@ -255,7 +251,9 @@ public class Soldier extends MapElement implements Controlable {
         int levelDefender = -1;
         Player player = source.getOwner();
         for (Cell defenderCell : adjacentCell) {
-            if ((defenderCell.getElementOn() instanceof Soldier || defenderCell.getElementOn() instanceof Capital) && defenderCell.getElementOn().getOwner() != player) {
+            if ((defenderCell.getElementOn() instanceof Soldier || defenderCell.getElementOn() instanceof Capital
+                    || defenderCell.getElementOn() instanceof DefenceTower || defenderCell.getElementOn() instanceof AttackTower)
+                    && defenderCell.getElementOn().getOwner() != player) {
                 if (levelDefender == -1) {
                     levelDefender = defenderCell.getElementOn().getLevel();
                 } else if (levelDefender < defenderCell.getElementOn().getLevel()) {
@@ -282,7 +280,7 @@ public class Soldier extends MapElement implements Controlable {
 
     @Override
     public boolean select() {
-        return belongsTo() && !isHasMoved();
+        return getOwner().isTurn() && !isHasMoved();
     }
 
     @Override
