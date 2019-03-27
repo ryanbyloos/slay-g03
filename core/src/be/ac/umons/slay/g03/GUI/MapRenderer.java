@@ -53,11 +53,11 @@ public class MapRenderer extends Game {
                 else drawSprite(parity, redHex, cell);
                 if (gameState != null) {
                     if (gameState.getStates().isTerritorySelected()) {
-                        if (!(gameState.getStates().isBoatCreation() || gameState.getStates().isMineCreation())) {
+                        if (!(gameState.getStates().isBoatCreation() || gameState.getStates().isMineCreation() || gameState.getStates().isOtherCreation())) {
                             if(gameState.getStates().getTerritoryLoaded().getCells() != null) drawHighlights(gameState.getStates().getTerritoryLoaded().getCells());
-                            if (gameState.getStates().isOtherCreation()) {
-                                if(gameState.getStates().getDisplayCells()!=null) drawHighlights(gameState.getStates().getDisplayCells());
-                            }
+                        }
+                        if (gameState.getStates().isOtherCreation()) {
+                            if(gameState.getStates().getDisplayCells()!=null) drawHighlights(gameState.getStates().getDisplayCells());
                         }
                         else if(gameState.getStates().isBoatCreation() ||gameState.getStates().isMineCreation()){
                             if(gameState.getStates().getDisplayCells()!=null) drawHighlights(gameState.getStates().getDisplayCells());
