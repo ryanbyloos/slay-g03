@@ -19,8 +19,7 @@ import java.util.ArrayList;
 
 public class Replay {
 
-    private int turnNumber = 0;
-    public int moveNumber = 0;
+    private int turn, move, moveDone;
     private int speed = 1;
     private String replayFileName;
     private ArrayList<ArrayList<ArrayList<Cell>>> replay = new ArrayList<>();
@@ -28,8 +27,10 @@ public class Replay {
 
     private Player p1, p2;
 
-    public Replay(int turnNumber) {
-        this.turnNumber = turnNumber;
+    public Replay() {
+        this.turn = 0;
+        this.move = 0;
+        this.moveDone = 0;
     }
 
     public void setReplay() throws WrongFormatException {
@@ -168,21 +169,21 @@ public class Replay {
 
     public void jump(int turn) {
         if (turn < replay.size() && turn >= 0) {
-            turnNumber = turn;
+            this.turn = turn;
         }
     }
 
     public boolean nextTurn() {
-        if (turnNumber + 1 < replay.size()) {
-            turnNumber++;
+        if (turn + 1 < replay.size()) {
+            turn++;
             return true;
         }
         return false;
     }
 
     public boolean previousTurn() {
-        if (turnNumber - 1 >= 0) {
-            turnNumber--;
+        if (turn - 1 >= 0) {
+            turn--;
             return true;
         }
         return false;
@@ -193,19 +194,23 @@ public class Replay {
     }
 
     public boolean previous() {
-        if (moveNumber - 1 >= 0) {
-            moveNumber--;
+        moveDone--;
+        if (move - 1 >= 0) {
+            move--;
             return true;
         }
+        previousTurn();
+        move = getReplay().get(turn).size() - 1;
         return false;
     }
 
     public boolean next() {
-        if (moveNumber + 1 < replay.get(turnNumber).size()) {
-            moveNumber++;
+        moveDone++;
+        if (move + 1 < replay.get(turn).size()) {
+            move++;
             return true;
         }
-        moveNumber = 0;
+        move = 0;
         nextTurn();
         return false;
     }
@@ -244,12 +249,34 @@ public class Replay {
         this.replay = replay;
     }
 
-    public int getTurnNumber() {
-        return turnNumber;
+    public int getTurn() {
+        return turn;
     }
 
-    public int getMoveNumber() {
-        return moveNumber;
+    public void setTurn(int turn) {
+        this.turn = turn;
+    }
+
+    public int[] getTurnAndMove(int totalMove) {
+        int k = totalMove;
+        int[] res = new int[]{k, 0};
+        for (int i = 0; i < replay.size(); i++) {
+            if (replay.get(i).size() < res[0]) {
+                res[0] -= replay.get(i).size();
+                res[1]++;
+            }
+        }
+        return res;
+    }
+
+    public int getTotalMove() {
+        int res = 0;
+        for (int i = 0; i < replay.size(); i++) {
+            for (int j = 0; j < replay.get(i).size(); j++) {
+                res++;
+            }
+        }
+        return res;
     }
 
     public Player getP1() {
@@ -270,5 +297,25 @@ public class Replay {
 
     public void setAutoDisplay(boolean autoDisplay) {
         this.autoDisplay = autoDisplay;
+    }
+
+    public int getMove() {
+        return move;
+    }
+
+    public void setMove(int move) {
+        this.move = move;
+    }
+
+    public int getMoveDone() {
+        return moveDone;
+    }
+
+    public void setMoveDone(int moveDone) {
+        this.moveDone = moveDone;
+    }
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
     }
 }

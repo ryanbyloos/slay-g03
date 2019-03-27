@@ -11,7 +11,7 @@ import java.util.ArrayList;
 
 public class ReplayMenu extends MenuScreen {
 
-    Replay replay = new Replay(0);
+    Replay replay = new Replay();
     ReplayRenderer replayScreen;
 
     @Override
@@ -29,7 +29,7 @@ public class ReplayMenu extends MenuScreen {
                 button.addListener(new ClickListener() {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
-                        replay = new Replay(0);
+                        replay = new Replay();
                         replayScreen = new ReplayRenderer(replay, "assets/Replays/" + replayName);
                         Slay.setScreen(replayScreen);
                     }
