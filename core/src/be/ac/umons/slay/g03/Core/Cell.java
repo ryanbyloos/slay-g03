@@ -47,7 +47,7 @@ public class Cell {
         if (elementOn == null && !water) {
             int tree = 0;
             for (Cell cell : adjacentCell(map, this, false)
-            ) {
+                    ) {
                 if (cell.getElementOn() instanceof Tree) tree++;
             }
             float random = new Random().nextInt(100);
@@ -57,16 +57,17 @@ public class Cell {
         }
     }
 
-    public void levelUpTower(){
-        if(elementOn instanceof  AttackTower && elementOn.getLevel()<3) elementOn = new AttackTower(elementOn.getOwner(),elementOn.getLevel()+1);
+    public void levelUpTower() {
+        if (elementOn instanceof AttackTower && elementOn.getLevel() < 3)
+            elementOn = new AttackTower(elementOn.getOwner(), elementOn.getLevel() + 1);
 
-        else if( elementOn instanceof DefenceTower && elementOn.getLevel()<3) elementOn = new DefenceTower(elementOn.getOwner(),elementOn.getLevel()+1);
+        else if (elementOn instanceof DefenceTower && elementOn.getLevel() < 3)
+            elementOn = new DefenceTower(elementOn.getOwner(), elementOn.getLevel() + 1);
     }
 
     public ArrayList<Cell> accessibleCell(Map map) {
         ArrayList<Cell> adjacentCell = new ArrayList<>();
         ArrayList<Cell> accessibleCell = new ArrayList<>(adjacentCell(map, this, false));
-
         for (int dist = 3; dist > 0; dist--) {
             for (Cell cell : accessibleCell) {
                 if (cell.getOwner() != null && cell.getOwner().equals(this.getOwner())) {
@@ -83,6 +84,31 @@ public class Cell {
         return accessibleCell;
     }
 
+
+    public ArrayList<Cell> towerRange(Map map) {
+        ArrayList<Cell> accessibleCell = new ArrayList<>(adjacentCell(map, this, true));
+        accessibleCell.addAll(adjacentCell(map, this, false));
+        ArrayList<Cell> adjacentCell = new ArrayList<>();
+        for (int dist = getElementOn().getLevel(); dist > 0; dist--) {
+            for (Cell cell : accessibleCell) {
+                adjacentCell.addAll(adjacentCell(map, cell, false));
+                adjacentCell.addAll(adjacentCell(map, cell, true));
+            }
+            for (Cell cellAdj : adjacentCell) {
+                if (!accessibleCell.contains(cellAdj)) {
+                    accessibleCell.add(cellAdj);
+                }
+            }
+        }
+        ArrayList<Cell> cellsToDelete = new ArrayList<>();
+        for (Cell cell : accessibleCell
+                ) {
+            if (cell.getOwner() != null && cell.getOwner().equals(owner)) cellsToDelete.add(cell);
+        }
+        accessibleCell.removeAll(cellsToDelete);
+        return accessibleCell;
+    }
+
     public ArrayList<Cell> adjacentCell(Map map, Cell himself, boolean water) {
         ArrayList<Cell> adjacentCell = new ArrayList<>();
 
@@ -90,19 +116,19 @@ public class Cell {
         int y = himself.getY();
         int p = (map.getHeight() % 2 == y % 2) ? 0 : 1;
 
-        addCell(adjacentCell, map.findCell(x - p, y - 1),water);
-        addCell(adjacentCell, map.findCell(x + 1 - p, y - 1),water);
-        addCell(adjacentCell, map.findCell(x - 1, y),water);
-        addCell(adjacentCell, map.findCell(x + 1, y),water);
-        addCell(adjacentCell, map.findCell(x, y + 1),water);
-        addCell(adjacentCell, map.findCell(x + 1 - (2 * p), y + 1),water);
+        addCell(adjacentCell, map.findCell(x - p, y - 1), water);
+        addCell(adjacentCell, map.findCell(x + 1 - p, y - 1), water);
+        addCell(adjacentCell, map.findCell(x - 1, y), water);
+        addCell(adjacentCell, map.findCell(x + 1, y), water);
+        addCell(adjacentCell, map.findCell(x, y + 1), water);
+        addCell(adjacentCell, map.findCell(x + 1 - (2 * p), y + 1), water);
 
         return adjacentCell;
     }
 
     private void addCell(ArrayList<Cell> cells, Cell cell, boolean water) {
         if (!water && cell != null && (!cell.isWater() || cell.getElementOn() instanceof Boat)) cells.add(cell);
-        if(water && cell != null && cell.isWater()) cells.add(cell);
+        if (water && cell != null && cell.isWater()) cells.add(cell);
     }
 
     public Territory createTerritory(Map map, Boolean mark, Territory territory) {
@@ -167,7 +193,7 @@ public class Cell {
     @Override
     public String toString() {
         if (owner != null)
-            return "Cell[x][y][owner][checked][elementOn] : " + "[" + x + "]" + "[" + y + "]" + "[" + owner.getClass().getSimpleName() + "]" + "[" + checked + "]" + "[" + elementOn + "]\n";
+            return "Cell[x][y][owner][checked][elementOn] : " + "[" + x + "]" + "[" + y + "]" + "[" + owner + "]" + "[" + checked + "]" + "[" + elementOn + "]\n";
         else
             return "Cell[x][y][owner][checked] : " + "[" + x + "]" + "[" + y + "]" + "[" + owner + "]" + "[" + checked + "]\n";
     }

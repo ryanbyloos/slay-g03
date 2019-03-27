@@ -161,16 +161,7 @@ public class World extends MapRenderer implements InputProcessor {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        if (!gameState.getStates().isTerritorySelected() && screenX < Slay.w && (Slay.h - screenY) < Slay.h) {
-            int[] pos = getMouseCoord(camera);
-            Cell cell = map.findCell(pos[0], pos[1]);
-            if (cell != null && cell.getOwner() != null && !(gameState.getStates().isSoldierSelected() || gameState.getStates().isBoatSelected() || gameState.getStates().isAttackTowerSelected())) {
-                gameState.getStates().setTerritory(cell.findTerritory());
-            } else {
-                gameState.getStates().setTerritory(null);
-            }
-        }
-        return true;
+        return false;
     }
 
     @Override

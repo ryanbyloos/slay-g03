@@ -65,7 +65,7 @@ class TerritoryHud extends Stage {
 
     @Override
     public void draw() {
-        Territory territory = world.gameState.getStates().getTerritory();
+        Territory territory = world.gameState.getStates().getTerritoryLoaded();
         TextureAtlas.AtlasRegion[] buttonImages = {world.soldier0, world.soldier1, world.soldier2, world.soldier3, world.defenceTower, world.attackTower, world.boat, world.mine};
 
         if (territory != null)
@@ -99,7 +99,7 @@ class TerritoryHud extends Stage {
             }
         } else if (world.gameState.getStates().isSoldierSelected()) {
             batch.begin();
-            showTerritoryInfo(batch, world.gameState.getStates().getSource().findTerritory());
+            showTerritoryInfo(batch, world.gameState.getStates().getHold().findTerritory());
             batch.end();
         }
         batch.begin();
@@ -119,14 +119,20 @@ class TerritoryHud extends Stage {
         return new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (world.gameState.getStates().isTerritorySelected() && world.gameState.getStates().getTerritory().findCapital().getMoney() >= cost){
-                    world.gameState.getStates().setCreationMode(!world.gameState.getStates().isCreationMode());
-                    if(Infrastructure.isAvailable && (name.equals("mine") || (name.equals("boat")))){
+                if (world.gameState.getStates().isTerritorySelected() && world.gameState.getStates().getTerritoryLoaded().findCapital().getMoney() >= cost) {
+                    if (Infrastructure.isAvailable) {
+                        if (name.equals("mine")) {
+                            world.gameState.getStates().setMineCreation(true);
+                            world.gameState.getStates().setDisplayCells(world.gameState.getStates().getTerritoryLoaded().getCellsForCreateWaterUnit(world.map));
+                        } else if (name.equals("boat")) {
+                            world.gameState.getStates().setBoatCreation(true);
+                            world.gameState.getStates().setDisplayCells(world.gameState.getStates().getTerritoryLoaded().getCellsForCreateWaterUnit(world.map));
+                        }
                     }
-                    else {
-                        world.gameState.getStates().setCreatableCells(world.gameState.getStates().getTerritory().accesibleCellToCreateUnit(world.gameState.getMap()));
+                    if(name.equals("soldier0") || name.equals("soldier1") || name.equals("soldier2") || name.equals("soldier3") || name.equals("attackTower") || name.equals("defenceTower")){
+                        world.gameState.getStates().setOtherCreation(true);
+                        world.gameState.getStates().setDisplayCells(world.gameState.getStates().getTerritoryLoaded().accesibleCellToCreateUnit(world.gameState.getMap()));
                     }
-
                 }
                 world.gameState.setElementToBuild(name);
             }
