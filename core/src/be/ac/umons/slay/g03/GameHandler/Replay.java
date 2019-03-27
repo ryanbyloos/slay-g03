@@ -206,6 +206,8 @@ public class Replay {
             moveNumber++;
             return true;
         }
+        moveNumber = 0;
+        nextTurn();
         return false;
     }
 
