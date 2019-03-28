@@ -7,11 +7,15 @@ import com.badlogic.gdx.graphics.GL20;
 
 public class WorldScreen implements Screen {
 
-    private World world = new World();
+    private World world;
     private TerritoryHud territoryHud;
     private Hud hud;
 
     private InputMultiplexer multiplexer = new InputMultiplexer();
+
+    public WorldScreen(World world) {
+        this.world = world;
+    }
 
     @Override
     public void show() {

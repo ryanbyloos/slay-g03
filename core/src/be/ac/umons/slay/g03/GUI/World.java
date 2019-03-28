@@ -1,13 +1,10 @@
 package be.ac.umons.slay.g03.GUI;
 
-import be.ac.umons.slay.g03.Core.Cell;
 import be.ac.umons.slay.g03.Core.Map;
-import be.ac.umons.slay.g03.Core.Player;
 import be.ac.umons.slay.g03.Entity.Infrastructure;
 import be.ac.umons.slay.g03.GameHandler.GameState;
 import be.ac.umons.slay.g03.GameHandler.Loader;
 import be.ac.umons.slay.g03.GameHandler.ReplayParserException;
-import be.ac.umons.slay.g03.GameHandler.WrongFormatException;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
@@ -16,32 +13,30 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.IOException;
-import java.util.ArrayList;
 
 public class World extends MapRenderer implements InputProcessor {
 
+    Loader loader;
+
+    public World(Map map, Loader loader) {
+        this.map = map;
+        this.loader = loader;
+    }
     @Override
     public void create() {
         super.create();
-        map = new Map(new ArrayList<>(), new Player("Yellow", 1, -1, false, new ArrayList<>()),
-                new Player("Red", 2, -1, false, new ArrayList<>()));
         map.getPlayer1().setTurn(true);
         map.getPlayer1().setMaxMoveNumber(-1);
         map.getPlayer2().setMaxMoveNumber(-1);
 //        loader = new Loader("g3_2.tmx", "g3_3.xml", "Quicky");
 //        loader = new Loader("g3_4.tmx", "g3_5.xml", "The Star");
 //        loader = new Loader("g3_6.tmx", "g3_7.xml", "The River");
-        loader = new Loader("g3_8.tmx", "g3_9.xml", "The Void");
+//        loader = new Loader("g3_8.tmx", "g3_9.xml", "The Void");
 //        loader = new Loader("g3_10.tmx", "g3_11.xml", "The Gate");
 
-        try {
-            loader.load(map, false);
-        } catch (WrongFormatException e) {
-            e.printStackTrace();
-        }
+
         gameState = new GameState(map, loader, -1, null);
         try {
-
             gameState.saveReplay();
             gameState.storeTurn();
             gameState.storeMove(map.getPlayer1());
@@ -49,6 +44,7 @@ public class World extends MapRenderer implements InputProcessor {
         }  catch (TransformerException | SAXException| ParserConfigurationException | IOException  | ReplayParserException e) {
             e.printStackTrace();
         }
+
         Infrastructure.setAvailability(Slay.game.preferences.getBoolean("infrastructures"));
         setViewport(camera, map);
     }
