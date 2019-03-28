@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.viewport.FillViewport;
 public class MenuScreen implements Screen {
     Stage stage;
     Table table;
+    TextButton returnButton;
 
     @Override
     public void show() {
@@ -24,7 +25,7 @@ public class MenuScreen implements Screen {
         table.setFillParent(true);
         stage.addActor(table);
 
-        TextButton returnButton = new TextButton("RETURN", Slay.game.skin);
+        returnButton = new TextButton("RETURN", Slay.game.skin);
         returnButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {

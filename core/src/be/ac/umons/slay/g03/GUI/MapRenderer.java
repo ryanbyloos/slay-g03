@@ -143,8 +143,9 @@ public class MapRenderer extends Game {
     }
 
     void drawHighlights(ArrayList<Cell> cells) {
-        for (Cell cell : cells)
+        for (Cell cell : cells) {
             drawSprite((map.getHeight() % 2), contour, cell);
+        }
     }
 
     void initTextures(TextureAtlas atlas) {

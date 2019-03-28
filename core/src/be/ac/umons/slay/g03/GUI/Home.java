@@ -43,9 +43,9 @@ public class Home implements Screen {
         resumeButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                if (Slay.worldScreen == null)
-                    Slay.worldScreen = new WorldScreen();
-                Slay.setScreen(Slay.worldScreen);
+//                if (Slay.worldScreen == null)
+//                    Slay.worldScreen = new WorldScreen();
+//                Slay.setScreen(Slay.worldScreen);
             }
         });
 
