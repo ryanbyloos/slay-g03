@@ -1,9 +1,6 @@
 package be.ac.umons.slay.g03.Core;
 
-import be.ac.umons.slay.g03.Entity.Capital;
-import be.ac.umons.slay.g03.Entity.Grave;
-import be.ac.umons.slay.g03.Entity.Soldier;
-import be.ac.umons.slay.g03.Entity.Tree;
+import be.ac.umons.slay.g03.Entity.*;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -55,6 +52,7 @@ public class Territory {
         for (Cell cell : cells
         ) {
             if (cell.getElementOn() instanceof Soldier) cell.setElementOn(new Grave(cell.getElementOn().getLevel()));
+            if (cell.getElementOn() instanceof AttackTower || cell.getElementOn() instanceof DefenceTower) cell.setElementOn(null);
         }
     }
 

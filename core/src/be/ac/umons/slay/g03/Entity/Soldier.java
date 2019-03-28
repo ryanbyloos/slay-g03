@@ -110,7 +110,6 @@ public class Soldier extends MapElement implements Controlable {
         Territory territoryToClean = null;
         for (Territory territory: player.getTerritories()
                 ) {
-            System.out.println(territory);
             if(territory.getCells().size()<2){
                 territoryToClean = territory;
                 cellToClean = territory.getCells().get(0);
