@@ -170,7 +170,7 @@ public class GameState {
                                 int level = Integer.parseInt(cellData.getAttribute("level"));
                                 boolean hasMoved = Boolean.parseBoolean(cellData.getAttribute("hasmoved"));
                                 Soldier soldier = null;
-                                if (level >= 0 && level < 4){
+                                if (level >= 0 && level < 4) {
                                     soldier = new Soldier(cell.getOwner(), level);
                                     soldier.setHasMoved(hasMoved);
                                 }
@@ -237,12 +237,11 @@ public class GameState {
                                 break;
                             case "mine":
                                 boolean visible = Boolean.parseBoolean(cellData.getAttribute("visible"));
-                                Mine mine =null;
+                                Mine mine = null;
                                 int mineOwner = Integer.parseInt(cellData.getAttribute("owner"));
-                                if(mineOwner == 1){
+                                if (mineOwner == 1) {
                                     mine = new Mine(map.getPlayer1());
-                                }
-                                else {
+                                } else {
                                     mine = new Mine(map.getPlayer2());
                                 }
                                 cell.setElementOn(mine);
@@ -386,6 +385,8 @@ public class GameState {
                 states.setTerritoryLoaded(null);
                 states.setDisplayCells(null);
                 states.reset();
+//                states.setTerritorySelected(true);
+//                System.out.println(states);
             } else if (states.isSoldierSelected() || states.isBoatSelected() || states.isAttackTowerSelected()) {//là on est dans le cas où une unité est selectionnée
                 if (states.isSoldierSelected()) {
                     Soldier soldier = (Soldier) states.getHold().getElementOn();
@@ -398,16 +399,19 @@ public class GameState {
                     states.setHold(null);
                 } else if (states.isBoatSelected()) {
                     Boat boat = (Boat) states.getHold().getElementOn();
-                    if(states.isDeployMode()){
-                        if(states.getHold().adjacentCell(map, states.getHold(), false).contains(cell)){
-                            boat.deploy(states.getHold(), states.getHold(), map);
+                    if (states.isDeployMode()) {
+                        if (states.getHold().adjacentCell(map, states.getHold(), false).contains(cell)) {
+                            boat.deploy(states.getHold(), cell, map);
                             try {
                                 storeMove(map.playingPlayer());
                             } catch (ReplayParserException e) {
                             }
+                        } else {
+                            states.setDisplayCells(null);
+                            states.setHold(null);
+                            states.reset();
                         }
-                    }
-                    else {
+                    } else {
                         if ((boat.getT() > 1)) {
                             if (states.getHold().adjacentCell(map, states.getHold(), true).contains(cell)) {
                                 boat.move(states.getHold(), cell, map);

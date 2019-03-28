@@ -86,7 +86,7 @@ class TerritoryHud extends Stage {
             batch.begin();
             int i = 0;
             for (TextureAtlas.AtlasRegion image : buttonImages) {
-                batch.draw(new TextureRegion(image), (float) (w / 14) + i, (float) (h / 65));
+                batch.draw(new TextureRegion(image), (w / 14) + i, (h / 65));
                 i += w / 32 + w / 12;
             }
             batch.end();

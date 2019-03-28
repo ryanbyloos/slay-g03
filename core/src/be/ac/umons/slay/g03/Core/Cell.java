@@ -47,7 +47,7 @@ public class Cell {
         if (elementOn == null && !water) {
             int tree = 0;
             for (Cell cell : adjacentCell(map, this, false)
-                    ) {
+            ) {
                 if (cell.getElementOn() instanceof Tree) tree++;
             }
             float random = new Random().nextInt(100);
@@ -58,11 +58,16 @@ public class Cell {
     }
 
     public void levelUpTower() {
-        if (elementOn instanceof AttackTower && elementOn.getLevel() < 3)
-            elementOn = new AttackTower(elementOn.getOwner(), elementOn.getLevel() + 1);
+        int lv = elementOn.getLevel();
+        int money = findTerritory().findCapital().getMoney();
 
-        else if (elementOn instanceof DefenceTower && elementOn.getLevel() < 3)
-            elementOn = new DefenceTower(elementOn.getOwner(), elementOn.getLevel() + 1);
+        if (money >= elementOn.getCreationCost()) {
+            if (elementOn instanceof AttackTower && lv < 3)
+                elementOn = new AttackTower(elementOn.getOwner(), elementOn.getLevel() + 1);
+            else if (elementOn instanceof DefenceTower && lv < 3)
+                elementOn = new DefenceTower(elementOn.getOwner(), elementOn.getLevel() + 1);
+            findTerritory().findCapital().addMoney(-elementOn.getCreationCost());
+        }
     }
 
     public ArrayList<Cell> accessibleCell(Map map) {
@@ -102,7 +107,7 @@ public class Cell {
         }
         ArrayList<Cell> cellsToDelete = new ArrayList<>();
         for (Cell cell : accessibleCell
-                ) {
+        ) {
             if (cell.getOwner() != null && cell.getOwner().equals(owner)) cellsToDelete.add(cell);
         }
         accessibleCell.removeAll(cellsToDelete);

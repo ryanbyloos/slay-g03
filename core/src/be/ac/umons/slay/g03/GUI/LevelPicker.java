@@ -20,7 +20,7 @@ public class LevelPicker extends MenuScreen {
     @Override
     public void show() {
         super.show();
-        Table table = new Table().center().top();
+        Table table = new Table().center();
         table.setFillParent(true);
         TextButton lv1 = new TextButton("Level 1", Slay.game.skin);
         lv1.addListener(new ClickListener() {

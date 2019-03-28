@@ -9,8 +9,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class Hud extends Stage {
     World world;
-    TextButton nextTurn;
-    Table table;
+    TextButton nextTurn, deployButton, levelUpButton;
+    Table table, boatTable, towerTable;
 
     Hud(World world) {
         this.world = world;
@@ -18,8 +18,17 @@ public class Hud extends Stage {
         table = new Table().bottom().right().padBottom(Slay.h / 12);
         table.setFillParent(true);
 
+
         nextTurn = new TextButton("PASS", Slay.game.skin);
         nextTurn.setColor(Color.LIGHT_GRAY);
+
+        boatTable = new Table().bottom().right().padBottom(Slay.h / 12 + nextTurn.getHeight());
+        boatTable.setFillParent(true);
+
+        towerTable = new Table().bottom().right().padBottom(Slay.h / 12 + nextTurn.getHeight());
+        towerTable.setFillParent(true);
+
+
 
         nextTurn.addListener(new ClickListener() {
             @Override
@@ -30,12 +39,53 @@ public class Hud extends Stage {
         });
 
         table.add(nextTurn);
+        deployButton = new TextButton("DEPLOY", Slay.game.skin);
+        deployButton.setColor(Color.LIGHT_GRAY);
 
+        levelUpButton = new TextButton("LEVEL UP", Slay.game.skin);
+        levelUpButton.setColor(Color.LIGHT_GRAY);
+
+        this.addActor(towerTable);
+        this.addActor(boatTable);
         this.addActor(table);
     }
 
     @Override
     public void draw() {
         super.draw();
+        if (!world.gameState.getStates().isBoatSelected()) {
+            boatTable.clearChildren();
+            deployButton = null;
+        } else if (deployButton == null) {
+            deployButton = new TextButton("DEPLOY", Slay.game.skin);
+            deployButton.setColor(Color.LIGHT_GRAY);
+
+            deployButton.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    world.gameState.getStates().setDeployMode(true);
+                }
+            });
+            boatTable.add(deployButton);
+        }
+
+        if (!world.gameState.getStates().isUpgradeAble()) {
+            towerTable.clearChildren();
+            levelUpButton = null;
+        } else if (levelUpButton == null) {
+            levelUpButton = new TextButton("LEVEL UP", Slay.game.skin);
+            levelUpButton.setColor(Color.LIGHT_GRAY);
+
+            levelUpButton.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    world.gameState.getStates().getHold().levelUpTower();
+                    world.gameState.getStates().reset();
+                    world.gameState.getStates().setHold(null);
+                    world.gameState.getStates().setUpgradeAble(false);
+                }
+            });
+            towerTable.add(levelUpButton);
+        }
     }
 }

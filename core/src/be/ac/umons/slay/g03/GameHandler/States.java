@@ -98,12 +98,11 @@ public class States {
 
     @Override
     public String toString() {
-        return "[selectionMode][creationMode][territorySelected][upgradeMode][soldierCreation][boatCreation][mineCreation][SOURCE][DESTINATION]" +
-                "["+ isSelectionMode()+"]" +
+        return "[territorySelected][attackTowerSelected][defenceTowerSelected][upgradeAble][hold]" +
                 "[" + territorySelected + "]" +
-                "[" + otherCreation + "]" +
-                "[" + boatCreation + "]" +
-                "[" + mineCreation + "]" +
+                "[" + attackTowerSelected + "]" +
+                "[" + defenceTowerSelected + "]" +
+                "[" + upgradeAble + "]" +
                 "[" + hold + "]";
     }
 
