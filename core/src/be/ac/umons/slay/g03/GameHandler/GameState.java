@@ -237,7 +237,15 @@ public class GameState {
                                 break;
                             case "mine":
                                 boolean visible = Boolean.parseBoolean(cellData.getAttribute("visible"));
-                                cell.setElementOn(new Mine(cell.getOwner()));
+                                Mine mine =null;
+                                int mineOwner = Integer.parseInt(cellData.getAttribute("owner"));
+                                if(mineOwner == 1){
+                                    mine = new Mine(map.getPlayer1());
+                                }
+                                else {
+                                    mine = new Mine(map.getPlayer2());
+                                }
+                                cell.setElementOn(mine);
                                 break;
                             case "tree":
                                 cell.setElementOn(new Tree());
@@ -620,7 +628,7 @@ public class GameState {
                     element.setAttribute("type", "defencetower");
                     element.setAttribute("x", Integer.toString(cell.getX()));
                     element.setAttribute("y", Integer.toString(cell.getY()));
-                    element.setAttribute("playerId", Integer.toString(defenceTower.getLevel()));
+                    element.setAttribute("playerId", Integer.toString(defenceTower.getOwner().getId()));
                     element.setAttribute("level", Integer.toString(defenceTower.getLevel()));
                     infrastructures.appendChild(element);
 
@@ -635,6 +643,7 @@ public class GameState {
                     element = document.createElement("infrastructure");
                     Mine mine = (Mine) entity;
                     element.setAttribute("type", "mine");
+                    element.setAttribute("playerId", Integer.toString(mine.getOwner().getId()));
                     element.setAttribute("x", Integer.toString(cell.getX()));
                     element.setAttribute("y", Integer.toString(cell.getY()));
                     infrastructures.appendChild(element);
@@ -845,6 +854,7 @@ public class GameState {
                         element.setAttribute("level", Integer.toString(entity.getLevel()));
                     } else if (entity instanceof Mine) {
                         element.setAttribute("element", "mine");
+                        element.setAttribute("owner", Integer.toString(entity.getOwner().getId()));
                     } else if (entity instanceof Tree) {
                         element.setAttribute("element", "tree");
                     }
