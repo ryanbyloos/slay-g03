@@ -91,9 +91,6 @@ public class Soldier extends MapElement implements Controlable {
     @Override
     protected void checkNewTerritory(Map map, Cell newCell, Cell oldCell) {
         Territory oldTerritoryCell = newCell.findTerritory();
-        if(newCell.getOwner() != null && oldTerritoryCell.getCells().size()<3) {
-            newCell.getOwner().removeTerritory(oldTerritoryCell);
-        }
         if(oldCell.isWater()) {
             Territory territory = new Territory(new ArrayList<>());
             territory.addCell(newCell);
@@ -106,7 +103,25 @@ public class Soldier extends MapElement implements Controlable {
             splitTerritory(map, newCell);
         }
 
+    }
 
+    private void deleteMonoCellTerritory(Player player){
+        Cell cellToClean = null;
+        Territory territoryToClean = null;
+        for (Territory territory: player.getTerritories()
+                ) {
+            System.out.println(territory);
+            if(territory.getCells().size()<2){
+                territoryToClean = territory;
+                cellToClean = territory.getCells().get(0);
+            }
+        }
+        if(cellToClean != null){
+            cellToClean.setElementOn(null);
+            cellToClean.setOwner(null);
+            player.getTerritories().remove(territoryToClean);
+
+        }
     }
 
     private void mergeTerritory(Map map, Cell newCell, Cell oldCell) {
@@ -242,6 +257,7 @@ public class Soldier extends MapElement implements Controlable {
                 source.setElementOn(null);
                 destination.getElementOn().setHasMoved(true);
                 destination.setChecked(source.isChecked());
+                deleteMonoCellTerritory(map.notPlayingPlayer());
             }
         }
     }
