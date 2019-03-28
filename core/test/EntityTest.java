@@ -115,16 +115,19 @@ public class EntityTest {
         Soldier soldier = new Soldier(player, 1);
         boat.bord(soldier);
         Cell cell1 = new Cell(0, 0, false, false, null, null);
+        Cell cell3 = new Cell(0, 1, false, false, null, null);
         Cell cell2 = new Cell(1, 0, false, true, null, boat);
         ArrayList<Cell> mapCell = new ArrayList<>();
         mapCell.add(cell1);
         mapCell.add(cell2);
+        mapCell.add(cell3);
         Map map = new Map(mapCell, player, null);
         boat.deploy(cell2, cell1, map);
         Assert.assertEquals(cell1.getElementOn(), soldier);
         Assert.assertTrue(!boat.getSoldiers().contains(soldier));
         Assert.assertEquals(boat, cell2.getElementOn());
         Assert.assertTrue(cell1.getOwner().equals(player));
+        Assert.assertTrue(cell3.getElementOn() instanceof Capital);
     }
 
     @Test

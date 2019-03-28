@@ -91,14 +91,14 @@ public class Soldier extends MapElement implements Controlable {
     @Override
     protected void checkNewTerritory(Map map, Cell newCell, Cell oldCell) {
         Territory oldTerritoryCell = newCell.findTerritory();
-        if(newCell.getOwner() != null && oldTerritoryCell.getCells().size()<2) {
+        if (newCell.getOwner() != null && oldTerritoryCell.getCells().size() < 2) {
             newCell.getOwner().removeTerritory(oldTerritoryCell);
         }
-        if(oldCell.isWater()) {
-            Territory territory = new Territory(new ArrayList<>());
-            territory.addCell(newCell);
-            oldCell.getOwner().getTerritories().add(territory);
-        }else oldCell.findTerritory().addCell(newCell);
+        if (oldCell.isWater() &&
+                (newCell.getOwner() == null || newCell.getOwner().equals(oldCell.getOwner()))) {
+           newCell.cretaeConqueratorCapital(map,oldCell.getOwner());
+
+        } else oldCell.findTerritory().addCell(newCell);
         mergeTerritory(map, newCell, oldCell);
         if (newCell.getOwner() != null && !newCell.equals(oldCell.getOwner())) {
             oldTerritoryCell.getCells().remove(newCell);
@@ -112,7 +112,7 @@ public class Soldier extends MapElement implements Controlable {
         ArrayList<Cell> cellToTest = newCell.adjacentCell(map, newCell, false);
         cellToTest.remove(oldCell);
         for (Cell cell : cellToTest
-        ) {
+                ) {
             if (cell.getOwner() != null && cell.getOwner().equals(oldCell.getOwner())) {
                 if (!cell.findTerritory().equals(oldCell.findTerritory())) {
                     if (oldCell.findTerritory().getCells().size() - 1 < cell.findTerritory().getCells().size()) {
@@ -123,7 +123,7 @@ public class Soldier extends MapElement implements Controlable {
                     oldCell.findTerritory().getCells().addAll(territory);
                     cell.getOwner().removeTerritory(territoryToDelete);
                     for (Cell resetCell : cell.findTerritory().getCells()
-                    ) {
+                            ) {
                         resetCell.setChecked(true);
                     }
                 }
@@ -214,7 +214,7 @@ public class Soldier extends MapElement implements Controlable {
                     destination.setElementOn(null);
                     move(source, destination, map);
                 } else if (destination.getElementOn() instanceof Soldier || destination.getElementOn() instanceof DefenceTower
-                        || destination.getElementOn() instanceof  AttackTower) {
+                        || destination.getElementOn() instanceof AttackTower) {
                     if (destination.getElementOn().getOwner().equals(this.getOwner())) {
                         mergeSoldier(source, destination);
                     } else {
@@ -226,11 +226,11 @@ public class Soldier extends MapElement implements Controlable {
                 } else if (destination.getElementOn() instanceof Capital && !destination.getOwner().equals(source.getOwner())) {
                     destroyCapital(destination, source);
                     move(source, destination, map);
-                }else if (destination.getElementOn() instanceof Boat){
-                    if(destination.getElementOn().getOwner().equals(source.getOwner())){
-                        if(((Boat) destination.getElementOn()).bord(this)) source.setElementOn(null);
-                    }else {
-                        if(((Boat) destination.getElementOn()).capture(this)) source.setElementOn(null) ;
+                } else if (destination.getElementOn() instanceof Boat) {
+                    if (destination.getElementOn().getOwner().equals(source.getOwner())) {
+                        if (((Boat) destination.getElementOn()).bord(this)) source.setElementOn(null);
+                    } else {
+                        if (((Boat) destination.getElementOn()).capture(this)) source.setElementOn(null);
                     }
                 }
 
@@ -272,7 +272,7 @@ public class Soldier extends MapElement implements Controlable {
         try {
             cellCapital.findTerritory().findCapital().setMoney(money - steal);
 
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
 
         }
     }
