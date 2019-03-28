@@ -1,4 +1,4 @@
-<world name="Quicky" map="g3_2.tmx">
+<world name="The Peninsula" map="g3_2.tmx">
 
     <items>
         <item type="capital" money="10" x="15" y="18" playerId="2" />

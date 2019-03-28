@@ -1,22 +1,22 @@
-<world name="The Star" map="g3_4.tmx">
+<world name="The Islands" map="g3_4.tmx">
 
     <items>
-        <item type="capital" money="10" x="6" y="3" playerId="1" />
-        <item type="capital" money="10" x="43" y="46" playerId="2" />
-        <item type="tree" x="2" y="19" />
-        <item type="tree" x="14" y="30"  />
-        <item type="tree" x="45" y="30"  />
-        <item type="tree" x="34" y="17"  />
-        <item type="tree" x="24" y="24"  />
+        <item type="capital" money="10" x="18" y="2" playerId="2" />
+        <item type="capital" money="10" x="1" y="17" playerId="1" />
+        <item type="tree" x="1" y="18" />
+        <item type="tree" x="18" y="1"  />
+        <item type="tree" x="9" y="10"  />
+        <item type="tree" x="18" y="17"  />
+        <item type="tree" x="1" y="2"  />
     </items>
     <territories>
         <territory playerId="1">
-            <cell x="6" y="3" />
-            <cell x="7" y="3" />
+            <cell x="1" y="17" />
+            <cell x="2" y="17" />
         </territory>
         <territory playerId="2">
-            <cell x="43" y="46" />
-            <cell x="42" y="46" />
+            <cell x="17" y="2" />
+            <cell x="18" y="2" />
         </territory>
     </territories>
     <units>

@@ -1,53 +1,22 @@
 <world name="The Void" map="g3_8.tmx">
 
     <items>
-        <item type="capital" money="10" x="16" y="20" playerId="1" />
-        <item type="capital" money="10" x="42" y="20" playerId="2"/>
-        <item type="tree" x="30" y="8" />
-        <item type="tree" x="31" y="8"  />
-        <item type="tree" x="30" y="10"  />
-        <item type="tree" x="31" y="10" />
-        <item type="tree" x="30" y="12"  />
-        <item type="tree" x="31" y="12"  />
-        <item type="tree" x="30" y="14" />
-        <item type="tree" x="31" y="14"  />
-        <item type="tree" x="30" y="16"  />
-        <item type="tree" x="31" y="16" />
-        <item type="tree" x="30" y="18"  />
-        <item type="tree" x="31" y="18"  />
-        <item type="tree" x="30" y="20" />
-        <item type="tree" x="31" y="20"  />
-        <item type="tree" x="30" y="22"  />
-        <item type="tree" x="31" y="22" />
-        <item type="tree" x="30" y="24"  />
-        <item type="tree" x="31" y="24"  />
-        <item type="tree" x="30" y="26" />
-        <item type="tree" x="13" y="26"  />
-        <item type="tree" x="30" y="28"  />
-        <item type="tree" x="31" y="28" />
-        <item type="tree" x="30" y="30"  />
-        <item type="tree" x="31" y="30"  />
-        <item type="tree" x="31" y="9" />
-        <item type="tree" x="31" y="11"  />
-        <item type="tree" x="31" y="13"  />
-        <item type="tree" x="31" y="15" />
-        <item type="tree" x="31" y="17"  />
-        <item type="tree" x="31" y="19"  />
-        <item type="tree" x="31" y="21" />
-        <item type="tree" x="31" y="23"  />
-        <item type="tree" x="31" y="25"  />
-        <item type="tree" x="31" y="27" />
-        <item type="tree" x="31" y="29"  />
+        <item type="capital" money="10" x="9" y="17" playerId="1" />
+        <item type="capital" money="10" x="10" y="1" playerId="2"/>
+        <item type="tree" x="6" y="8" />
+        <item type="tree" x="6" y="10"  />
+        <item type="tree" x="12" y="8"  />
+        <item type="tree" x="12" y="10" />
 
     </items>
     <territories>
         <territory playerId="1">
-            <cell x="16" y="20" />
-            <cell x="17" y="20" />
+            <cell x="9" y="17" />
+            <cell x="10" y="17" />
         </territory>
         <territory playerId="2">
-            <cell x="41" y="20" />
-            <cell x="42" y="20" />
+            <cell x="9" y="1" />
+            <cell x="10" y="1" />
         </territory>
     </territories>
 
