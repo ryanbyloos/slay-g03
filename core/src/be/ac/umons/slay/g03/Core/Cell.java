@@ -114,6 +114,24 @@ public class Cell {
         return accessibleCell;
     }
 
+    public void cretaeConqueratorCapital(Map map,Player player){
+        Boolean capitalCreated = false;
+        Territory territory = new Territory(new ArrayList<>());
+        ArrayList<Cell> cellForCapital = adjacentCell(map,this,false);
+        territory.addCell(this);
+        for (Cell cell: cellForCapital
+                ) {
+            if(cell.getElementOn()== null){
+                cell.setElementOn(new Capital(player,10));
+                territory.addCell(cell);
+                capitalCreated = true;
+                break;
+            }
+        }
+        if (!capitalCreated) setElementOn(new Capital(player,10));
+        player.getTerritories().add(territory);
+    }
+
     public ArrayList<Cell> adjacentCell(Map map, Cell himself, boolean water) {
         ArrayList<Cell> adjacentCell = new ArrayList<>();
 
