@@ -15,6 +15,7 @@ public class States {
     private boolean attackTowerSelected;
     private boolean defenceTowerSelected;
     private boolean upgradeAble;
+    private boolean deployMode;
     private boolean over;
     private Cell hold;
     private ArrayList<Cell> displayCells;
@@ -77,7 +78,7 @@ public class States {
         setBoatSelected(false);
         setAttackTowerSelected(false);
         setDefenceTowerSelected(false);
-        setUpgradeAble(false);
+        setDeployMode(false);
     }
     public Cell getHold() {
         return hold;
@@ -155,5 +156,13 @@ public class States {
 
     public void setTerritoryLoaded(Territory territoryLoaded) {
         this.territoryLoaded = territoryLoaded;
+    }
+
+    public boolean isDeployMode() {
+        return deployMode;
+    }
+
+    public void setDeployMode(boolean deployMode) {
+        this.deployMode = deployMode;
     }
 }
