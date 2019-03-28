@@ -83,4 +83,12 @@ public class Map {
             return getPlayer2();
         return null;
     }
+
+    public Player notPlayingPlayer(){
+        if (getPlayer1().isTurn())
+            return getPlayer2();
+        if (getPlayer2().isTurn())
+            return getPlayer1();
+        return null;
+    }
 }
