@@ -74,6 +74,7 @@ public class World extends MapRenderer implements InputProcessor {
             Slay.setScreen(Slay.home);
         }
         else if(keycode == Input.Keys.R){
+            System.out.println(map.getPlayer1().getMoveNumber());
         }
 
         else if (keycode == Input.Keys.J) {

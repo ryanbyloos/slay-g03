@@ -157,10 +157,10 @@ public class GameState {
                         Cell cell = new Cell(x, y, checked, isWater, null, null);
                         switch (playerId) {
                             case 1:
-                                if(!isWater)cell.setOwner(map.getPlayer1());
+                                if (!isWater) cell.setOwner(map.getPlayer1());
                                 break;
                             case 2:
-                                if(!isWater)cell.setOwner(map.getPlayer2());
+                                if (!isWater) cell.setOwner(map.getPlayer2());
                                 break;
                             default:
                                 break;
@@ -170,7 +170,10 @@ public class GameState {
                                 int level = Integer.parseInt(cellData.getAttribute("level"));
                                 boolean hasMoved = Boolean.parseBoolean(cellData.getAttribute("hasmoved"));
                                 Soldier soldier = null;
-                                if (level >= 0 && level < 4) soldier = new Soldier(cell.getOwner(), level);
+                                if (level >= 0 && level < 4){
+                                    soldier = new Soldier(cell.getOwner(), level);
+                                    soldier.setHasMoved(hasMoved);
+                                }
                                 cell.setElementOn(soldier);
                                 break;
                             }
@@ -190,7 +193,7 @@ public class GameState {
                                 boat.setHasMoved(hasMoved);
                                 boat.setT(t);
                                 cell.setElementOn(boat);
-                                switch (playerId){
+                                switch (playerId) {
                                     case 1:
                                         cell.getElementOn().setOwner(map.getPlayer1());
                                         break;
@@ -207,7 +210,7 @@ public class GameState {
                                         int level = Integer.parseInt(soldierData.getAttributes().getNamedItem("level").getTextContent());
                                         boolean soldierHasMoved = Boolean.parseBoolean(soldierData.getAttributes().getNamedItem("hasmoved").getTextContent());
                                         Soldier soldier = null;
-                                        if (level >= 0 && level < 4){
+                                        if (level >= 0 && level < 4) {
                                             soldier = new Soldier(cell.getElementOn().getOwner(), level);
                                             soldier.setHasMoved(soldierHasMoved);
                                         }
@@ -282,119 +285,172 @@ public class GameState {
     public void quit() {
 
     }
-    public void handle(int x, int y){
+
+    public void handle(int x, int y) {
         Cell cell;
-        if((cell = map.findCell(x, y)) ==null){// si la  cellule est inexistante on reset les états
+        if ((cell = map.findCell(x, y)) == null) {// si la  cellule est inexistante on reset les états
+            states.setUpgradeAble(false);
+            states.setTerritoryLoaded(null);
+            states.setDisplayCells(null);
+            states.setHold(null);
             states.reset();
-        }
-        else {
-            if(states.isEverythingFalse()){ // si rien ne se passe , tous est à faux.
-                if((cell.getElementOn() == null || cell.getElementOn() instanceof Capital) && cell.getOwner() == map.playingPlayer()){// si il n'y a rien sur la cellule ou qu'il y a une capital et la cellule appartient au joueur qui joue alors il y a un territoire qui est selectionée
+        } else {
+            if (states.isUpgradeAble()) {
+                states.setUpgradeAble(false);
+                states.setHold(null);
+                states.reset();
+            } else if (states.isEverythingFalse()) { // si rien ne se passe , tous est à faux.
+                if ((cell.getElementOn() == null || cell.getElementOn() instanceof Capital) && cell.getOwner() == map.playingPlayer()) {// si il n'y a rien sur la cellule ou qu'il y a une capital et la cellule appartient au joueur qui joue alors il y a un territoire qui est selectionée
                     states.setTerritoryLoaded(cell.findTerritory());//territoire selectionné
                     states.setDisplayCells(states.getTerritoryLoaded().getCells());//cellule à afficher
                     states.setTerritorySelected(true);
-                }
-                else if(cell.getElementOn()!= null){//sinon si il y a un élément dessus
-                    if(cell.getElementOn() instanceof Soldier){
-                        if(((Soldier) cell.getElementOn()).select()){
+                } else if (cell.getElementOn() != null) {//sinon si il y a un élément dessus
+                    if (cell.getElementOn() instanceof Soldier) {
+                        if (((Soldier) cell.getElementOn()).select()) {
                             states.setSoldierSelected(true);
                             states.setHold(cell);
                         }
-                    }
-                    else if (cell.getElementOn() instanceof Boat){
-                        if(cell.getElementOn() instanceof Boat){
-                            if(((Boat) cell.getElementOn()).select()){
+                    } else if (cell.getElementOn() instanceof Boat) {
+                        if (cell.getElementOn() instanceof Boat) {
+                            if (((Boat) cell.getElementOn()).select()) {
                                 states.setBoatSelected(true);
                                 states.setHold(cell);
                             }
                         }
-                    }
-                    else if(cell.getElementOn() instanceof AttackTower){
-                        if(cell.getElementOn() instanceof AttackTower){
-                            if(((AttackTower) cell.getElementOn()).select()){
+                    } else if (cell.getElementOn() instanceof AttackTower) {
+                        if (cell.getElementOn() instanceof AttackTower) {
+                            if (((AttackTower) cell.getElementOn()).select()) {
                                 states.setAttackTowerSelected(true);
+                                states.setHold(cell);
+                            }
+                        }
+                    } else if (cell.getElementOn() instanceof DefenceTower) {
+                        if (cell.getElementOn() instanceof DefenceTower) {
+                            if (((DefenceTower) cell.getElementOn()).select()) {
+                                states.setDefenceTowerSelected(true);
                                 states.setHold(cell);
                             }
                         }
                     }
                 }
-            }
-            else if(states.isTerritorySelected()){ // si le territoire est selectionne
-                if(states.isOtherCreation()){//si on est en cours de creation d'un soldat, d'une tour attaque ou bien une tour de défense(ces états sont défini à partir de TerritoryHUD)
-                    if(!cell.isWater() && (cell.getElementOn() == null || cell.getElementOn() instanceof Tree)){
-                        if(states.getDisplayCells().contains(cell)){
+            } else if (states.isTerritorySelected()) { // si le territoire est selectionne
+                if (states.isOtherCreation()) {//si on est en cours de creation d'un soldat, d'une tour attaque ou bien une tour de défense(ces états sont défini à partir de TerritoryHUD)
+                    if (!cell.isWater() && (cell.getElementOn() == null || cell.getElementOn() instanceof Tree)) {
+                        if (states.getDisplayCells().contains(cell)) {
                             cell.setElementOn(newElement(elementToBuild, map.playingPlayer()));
                             cell.setOwner(map.playingPlayer());
-                            states.getTerritoryLoaded().addCell(cell);
                             states.getTerritoryLoaded().findCapital().addMoney(-cell.getElementOn().getCreationCost());
-                        }
-                        else {
-                            states.setTerritoryLoaded(null);
-                            states.setDisplayCells(null);
-                            states.setHold(null);
-                            states.reset();
+                            try {
+                                storeMove(map.playingPlayer());
+                            } catch (ReplayParserException e) {
+                            }
                         }
 
                     }
-                }
-                else if(states.isMineCreation()){
-                    if(Infrastructure.isAvailable && cell.isWater() && cell.getElementOn() == null ){
-                        cell.setElementOn(newElement(elementToBuild, map.playingPlayer()));
-                        states.getTerritoryLoaded().findCapital().addMoney(-cell.getElementOn().getCreationCost());
+                } else if (states.isMineCreation()) {
+                    if (Infrastructure.isAvailable && cell.isWater() && cell.getElementOn() == null) {
+                        if (states.getDisplayCells().contains(cell)) {
+                            cell.setElementOn(newElement(elementToBuild, map.playingPlayer()));
+                            states.getTerritoryLoaded().findCapital().addMoney(-cell.getElementOn().getCreationCost());
+                            try {
+                                storeMove(map.playingPlayer());
+                            } catch (ReplayParserException e) {
+                            }
+                        }
                     }
-                }
-                else if(states.isBoatCreation()){
-                    if(Infrastructure.isAvailable && cell.isWater() && cell.getElementOn() == null){
-                        cell.setElementOn(newElement(elementToBuild, map.playingPlayer()));
-                        states.getTerritoryLoaded().findCapital().addMoney(-cell.getElementOn().getCreationCost());
+                } else if (states.isBoatCreation()) {
+                    if (Infrastructure.isAvailable && cell.isWater() && cell.getElementOn() == null) {
+                        if (states.getDisplayCells().contains(cell)) {
+                            cell.setElementOn(newElement(elementToBuild, map.playingPlayer()));
+                            states.getTerritoryLoaded().findCapital().addMoney(-cell.getElementOn().getCreationCost());
+                            try {
+                                storeMove(map.playingPlayer());
+                            } catch (ReplayParserException e) {
+                            }
+                        }
+                    }
+                } else if (cell.getElementOn() != null && (cell.getElementOn() instanceof AttackTower || cell.getElementOn() instanceof DefenceTower)) {
+                    if (cell.getElementOn().getLevel() < 3 && cell.getElementOn().getLevel() >= 0) {
+                        states.setUpgradeAble(true);
+                        states.setHold(cell);
                     }
                 }
                 states.setTerritoryLoaded(null);
                 states.setDisplayCells(null);
-                states.setHold(null);
                 states.reset();
-            }
-            else if(states.isSoldierSelected() || states.isBoatSelected() ||states.isAttackTowerSelected()){//là on est dans le cas où une unité est selectionnée
-                if(states.isSoldierSelected()){
+            } else if (states.isSoldierSelected() || states.isBoatSelected() || states.isAttackTowerSelected()) {//là on est dans le cas où une unité est selectionnée
+                if (states.isSoldierSelected()) {
                     Soldier soldier = (Soldier) states.getHold().getElementOn();
                     soldier.move(states.getHold(), cell, map);
+                    try {
+                        storeMove(map.playingPlayer());
+                    } catch (ReplayParserException e) {
+                    }
                     states.setSoldierSelected(false);
                     states.setHold(null);
-                }
-                else if(states.isBoatSelected()){
+                } else if (states.isBoatSelected()) {
                     Boat boat = (Boat) states.getHold().getElementOn();
-                    if((boat.getT()>1)){
-                        if(states.getHold().adjacentCell(map, states.getHold(), true).contains(cell)){
-                            boat.move(states.getHold(), cell, map);
-                            states.setHold(cell);
-                        }
-                        else {
-                            states.setTerritoryLoaded(null);
-                            states.setDisplayCells(null);
-                            states.setHold(null);
-                            states.reset();
+                    if(states.isDeployMode()){
+                        if(states.getHold().adjacentCell(map, states.getHold(), false).contains(cell)){
+                            boat.deploy(states.getHold(), states.getHold(), map);
+                            try {
+                                storeMove(map.playingPlayer());
+                            } catch (ReplayParserException e) {
+                            }
                         }
                     }
                     else {
-                        if(states.getHold().adjacentCell(map, states.getHold(), true).contains(cell)){
-                            boat.move(states.getHold(), cell, map);
-                            states.setHold(cell);
-                            states.setBoatSelected(false);
-                            states.setHold(null);
-                        }
-                        else {
-                            states.setTerritoryLoaded(null);
-                            states.setDisplayCells(null);
-                            states.setHold(null);
-                            states.reset();
+                        if ((boat.getT() > 1)) {
+                            if (states.getHold().adjacentCell(map, states.getHold(), true).contains(cell)) {
+                                boat.move(states.getHold(), cell, map);
+                                states.setHold(cell);
+                                try {
+                                    storeMove(map.playingPlayer());
+                                } catch (ReplayParserException e) {
+                                }
+                            } else {
+                                states.setDisplayCells(null);
+                                states.setHold(null);
+                                states.reset();
+                            }
+                        } else {
+                            if (states.getHold().adjacentCell(map, states.getHold(), true).contains(cell)) {
+                                boat.move(states.getHold(), cell, map);
+                                states.setHold(cell);
+                                states.setBoatSelected(false);
+                                states.setHold(null);
+                                try {
+                                    storeMove(map.playingPlayer());
+                                } catch (ReplayParserException e) {
+                                }
+                            } else {
+                                states.setTerritoryLoaded(null);
+                                states.setDisplayCells(null);
+                                states.setHold(null);
+                                states.reset();
+                            }
                         }
                     }
-                }
-                else if(states.isAttackTowerSelected()){
+
+
+                } else if (states.isAttackTowerSelected()) {
                     AttackTower attackTower = (AttackTower) states.getHold().getElementOn();
-                    attackTower.attack(map, states.getHold(), cell);
-                    states.setAttackTowerSelected(false);
-                    states.setHold(null);
+                    if (states.getHold().towerRange(map).contains(cell)) {
+                        attackTower.attack(map, states.getHold(), cell);
+                        states.setAttackTowerSelected(false);
+                        states.setHold(null);
+                        try {
+                            storeMove(map.playingPlayer());
+                        } catch (ReplayParserException e) {
+                        }
+                    } else {
+                        states.setTerritoryLoaded(null);
+                        states.setDisplayCells(null);
+                        states.setHold(null);
+                        states.reset();
+                    }
+
+
                 }
             }
 
@@ -639,6 +695,12 @@ public class GameState {
         if (map.getPlayer1().isTurn()) {
             map.getPlayer2().cleanGrave();
             if (turnPlayed > 1) map.getPlayer2().checkTerritory();
+            states.setSoldierSelected(false);
+            states.setUpgradeAble(false);
+            states.reset();
+            states.setTerritoryLoaded(null);
+            states.setDisplayCells(null);
+            states.setHold(null);
             resetBoats(map.getPlayer1());
             map.getPlayer1().setTurn(false);
             if (map.getPlayer2().isOver()) {
@@ -661,6 +723,12 @@ public class GameState {
 
 
         } else {
+            states.setSoldierSelected(false);
+            states.setUpgradeAble(false);
+            states.reset();
+            states.setTerritoryLoaded(null);
+            states.setDisplayCells(null);
+            states.setHold(null);
             resetBoats(map.getPlayer2());
             map.getPlayer2().setTurn(false);
             if (map.getPlayer1().isOver()) {
@@ -672,7 +740,6 @@ public class GameState {
                 }
             }
             resetSoldiers(map.getPlayer2());
-
             map.getPlayer1().setTurn(true);
             map.getPlayer2().setMoveNumber(-1);
             map.getPlayer2().setMaxMoveNumber(-1);

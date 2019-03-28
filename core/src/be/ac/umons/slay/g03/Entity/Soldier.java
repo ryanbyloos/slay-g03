@@ -91,7 +91,7 @@ public class Soldier extends MapElement implements Controlable {
     @Override
     protected void checkNewTerritory(Map map, Cell newCell, Cell oldCell) {
         Territory oldTerritoryCell = newCell.findTerritory();
-        if(newCell.getOwner() != null && oldTerritoryCell.getCells().size()<3) {
+        if(newCell.getOwner() != null && oldTerritoryCell.getCells().size()<2) {
             newCell.getOwner().removeTerritory(oldTerritoryCell);
         }
         if(oldCell.isWater()) {
