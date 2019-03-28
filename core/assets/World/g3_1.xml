@@ -1,0 +1,27 @@
+<world name="The River" map="g3_2.tmx">
+
+    <items>
+        <item type="capital" money="10" x="17" y="3" playerId="2" />
+        <item type="capital" money="10" x="2" y="16" playerId="1" />
+        <item type="tree" x="7" y="13" />
+        <item type="tree" x="12" y="6"  />
+
+    </items>
+    <territories>
+        <territory playerId="1">
+            <cell x="2" y="16" />
+            <cell x="3" y="16" />
+        </territory>
+        <territory playerId="2">
+            <cell x="16" y="3" />
+            <cell x="17" y="3" />
+        </territory>
+
+    </territories>
+    <units>
+    </units>
+    <infrastructures>
+    </infrastructures>
+
+
+</world>
