@@ -23,12 +23,6 @@ public class Cell {
         this.owner = owner;
         this.elementOn = elementOn;
     }
-
-    public void kill() {
-        elementOn = new Grave(elementOn.getLevel());
-
-    }
-
     public Territory findTerritory() {
         if (owner != null) {
             for (Territory territory : owner.getTerritories()) {
@@ -112,7 +106,6 @@ public class Cell {
         accessibleCell.removeAll(cellsToDelete);
         return accessibleCell;
     }
-
     public Cell createConqueratorCapital(Map map, Player player){
         Territory territory = new Territory(new ArrayList<>());
         territory.addCell(this);

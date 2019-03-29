@@ -96,8 +96,14 @@ public class Soldier extends MapElement implements Controlable {
         }
         if (oldCell.isWater() ) {
             if(newCell.getOwner() == null || !newCell.getOwner().equals(oldCell.getOwner())){
-                Cell capitalCell = newCell.createConqueratorCapital(map,oldCell.getOwner());
-                mergeTerritory(map,capitalCell,capitalCell);
+                if(mergeAfterDeploy(map,newCell, oldCell.getOwner())){
+                    mergeTerritory(map,newCell,newCell);
+                    System.out.println("ok");
+                }
+                else {
+                    Cell capitalCell = newCell.createConqueratorCapital(map, oldCell.getOwner());
+                    mergeTerritory(map, capitalCell, capitalCell);
+                }
             }
 
         } else {
@@ -112,6 +118,14 @@ public class Soldier extends MapElement implements Controlable {
         }
 
     }
+    private boolean mergeAfterDeploy(Map map, Cell cell, Player player){
+        for (Cell celladj: cell.adjacentCell(map,cell,false)
+             ) {
+            if (celladj.getOwner()!= null && celladj.getOwner().equals(player)) return true;
+        }
+        return false;
+    }
+
 
     private void mergeTerritory(Map map, Cell newCell, Cell oldCell) {
         ArrayList<Cell> cellToTest = newCell.adjacentCell(map, newCell, false);
@@ -242,10 +256,13 @@ public class Soldier extends MapElement implements Controlable {
             } else {
                 checkNewTerritory(map, destination, source);
                 destination.setOwner(getOwner());
-                destination.setElementOn(this);
                 source.setElementOn(null);
-                destination.getElementOn().setHasMoved(true);
-                destination.setChecked(source.isChecked());
+                if(destination.getElementOn() == null){
+                    destination.setElementOn(this);
+                    destination.getElementOn().setHasMoved(true);
+                    destination.setChecked(source.isChecked());
+                }
+
             }
         }
     }
