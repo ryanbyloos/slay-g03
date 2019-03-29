@@ -1,9 +1,7 @@
 package be.ac.umons.slay.g03.GUI;
 
-import be.ac.umons.slay.g03.Core.Map;
 import be.ac.umons.slay.g03.Entity.Infrastructure;
 import be.ac.umons.slay.g03.GameHandler.GameState;
-import be.ac.umons.slay.g03.GameHandler.Loader;
 import be.ac.umons.slay.g03.GameHandler.ReplayParserException;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -16,11 +14,13 @@ import java.io.IOException;
 
 public class World extends MapRenderer implements InputProcessor {
 
-    Loader loader;
+//    Loader loader;
+//    GameState gameState;
 
-    public World(Map map, Loader loader) {
-        this.map = map;
-        this.loader = loader;
+    public World(GameState gameState) {
+        this.gameState = gameState;
+        this.map = gameState.getMap();
+        this.loader = gameState.getLoader();
     }
 
     @Override
@@ -29,22 +29,8 @@ public class World extends MapRenderer implements InputProcessor {
         map.getPlayer1().setTurn(true);
         map.getPlayer1().setMaxMoveNumber(-1);
         map.getPlayer2().setMaxMoveNumber(-1);
-//        loader = new Loader("g3_2.tmx", "g3_3.xml", "Quicky");
-//        loader = new Loader("g3_4.tmx", "g3_5.xml", "The Star");
-//        loader = new Loader("g3_6.tmx", "g3_7.xml", "The River");
-//        loader = new Loader("g3_8.tmx", "g3_9.xml", "The Void");
-//        loader = new Loader("g3_10.tmx", "g3_11.xml", "The Gate");
 
-
-        gameState = new GameState(map, loader, -1, null);
-        try {
-            gameState.saveReplay();
-            gameState.storeTurn();
-            gameState.storeMove(map.getPlayer1());
-            gameState.save();
-        } catch (TransformerException | SAXException | ParserConfigurationException | IOException | ReplayParserException e) {
-            e.printStackTrace();
-        }
+//        gameState = new GameState(map, loader, -1, null);
 
         Infrastructure.setAvailability(Slay.game.preferences.getBoolean("infrastructures"));
         setViewport(camera, map);
@@ -84,7 +70,18 @@ public class World extends MapRenderer implements InputProcessor {
         if (keycode == Input.Keys.P) {
             gameState.nextTurn();
         } else if (keycode == Input.Keys.ESCAPE) {
-            Slay.setScreen(Slay.home);
+            try {
+//                gameState.saveReplay();
+//                gameState.storeTurn();
+//                gameState.storeMove(map.getPlayer1());
+                System.out.println(gameState.getLoader().getTmxFile());
+                gameState.save();
+                System.out.println(gameState.getLoader().getTmxFile());
+            } catch (IOException | TransformerException | ParserConfigurationException | SAXException e) {
+                e.printStackTrace();
+            }
+            Slay.setScreen(Slay.authScreen);
+            Slay.worldScreen = null;
         } else if (keycode == Input.Keys.R) {
             System.out.println(gameState.getStates());
         } else if (keycode == Input.Keys.J) {

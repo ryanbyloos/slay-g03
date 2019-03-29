@@ -1,8 +1,8 @@
 package be.ac.umons.slay.g03.GUI;
 
-import be.ac.umons.slay.g03.Core.Map;
 import be.ac.umons.slay.g03.Core.Player;
 import be.ac.umons.slay.g03.GameHandler.AuthenticationError;
+import be.ac.umons.slay.g03.GameHandler.WrongFormatException;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -38,6 +38,7 @@ public class AuthenticatorScreen extends MenuScreen {
     TextButton register = new TextButton("REGISTER", Slay.game.skin);
 
     TextButton chooseLevel = new TextButton("CHOOSE LEVEL", Slay.game.skin);
+    TextButton resume;
 
     boolean P1logged, P2logged;
 
@@ -85,6 +86,7 @@ public class AuthenticatorScreen extends MenuScreen {
                 try {
                     if (Slay.authenticator.login(loginP1.getText(), passwordP1.getText())) {
                         player1 = new Player(loginP1.getText(), 1, -1, false, new ArrayList<>());
+                        Slay.authenticator.getGameState().getMap().setPlayer1(player1);
                         authTableLeft.clearChildren();
                         authTableLeft.add(new Label("Player 1 logged.", Slay.game.skin));
                         P1logged = true;
@@ -99,6 +101,7 @@ public class AuthenticatorScreen extends MenuScreen {
                 try {
                     if (Slay.authenticator.login(loginP2.getText(), passwordP2.getText())) {
                         player2 = new Player(loginP2.getText(), 2, -1, false, new ArrayList<>());
+                        Slay.authenticator.getGameState().getMap().setPlayer2(player2);
                         authTableRight.clearChildren();
                         authTableRight.add(new Label("Player 2 logged.", Slay.game.skin));
                         P2logged = true;
@@ -112,6 +115,7 @@ public class AuthenticatorScreen extends MenuScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 player1 = new Player("Guest 1", 1, -1, true, new ArrayList<>());
+                Slay.authenticator.getGameState().getMap().setPlayer1(player1);
                 authTableLeft.clearChildren();
                 authTableLeft.add(new Label("Player 1 logged.", Slay.game.skin));
                 P1logged = true;
@@ -122,6 +126,7 @@ public class AuthenticatorScreen extends MenuScreen {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 player2 = new Player("Guest 2", 2, -1, true, new ArrayList<>());
+                Slay.authenticator.getGameState().getMap().setPlayer2(player2);
                 authTableRight.clearChildren();
                 authTableRight.add(new Label("Player 2 logged.", Slay.game.skin));
                 P2logged = true;
@@ -141,18 +146,52 @@ public class AuthenticatorScreen extends MenuScreen {
     @Override
     public void render(float delta) {
         super.render(delta);
-        if (P1logged && P2logged && chooseLevel == null) {
-            Map map = new Map(new ArrayList<>(), player1, player2);
-            Slay.levelPicker = new LevelPicker(map);
-            chooseLevel = new TextButton("CHOOSE LEVEL", Slay.game.skin);
-            chooseLevel.addListener(new ClickListener() {
-                @Override
-                public void clicked(InputEvent event, float x, float y) {
-                    Slay.setScreen(Slay.levelPicker);
+        if (P1logged && P2logged) {
+            if (chooseLevel == null) {
+                Slay.levelPicker = new LevelPicker(Slay.authenticator.getGameState().getMap());
+                chooseLevel = new TextButton("CHOOSE LEVEL", Slay.game.skin);
+                chooseLevel.addListener(new ClickListener() {
+                    @Override
+                    public void clicked(InputEvent event, float x, float y) {
+                        Slay.setScreen(Slay.levelPicker);
+                    }
+                });
+                chooseLevelTable.add(chooseLevel);
+            }
+            try {
+                if (Slay.authenticator.getGameState().checkAndSetPending()) {
+                    if (resume == null) {
+                        resume = new TextButton("RESUME", Slay.game.skin);
+                        resume.addListener(new ClickListener() {
+                            @Override
+                            public void clicked(InputEvent event, float x, float y) {
+                                try {
+                                    Slay.authenticator.getGameState().getLoader().load(Slay.authenticator.getGameState().getMap(), true);
+                                    World world = new World(Slay.authenticator.getGameState());
+//                                    try {
+//                                        Slay.authenticator.getGameState().saveReplay();
+//                                        Slay.authenticator.getGameState().storeTurn();
+//                                        Slay.authenticator.getGameState().storeMove(Slay.authenticator.getGameState().getMap().getPlayer1());
+////                                        Slay.authenticator.getGameState().save();
+//                                    } catch (ReplayParserException e) {
+//                                        e.printStackTrace();
+//                                    }
+                                    if (Slay.worldScreen == null)
+                                        Slay.worldScreen = new WorldScreen(world);
+                                    Slay.setScreen(Slay.worldScreen);
+//                                    System.out.println(Slay.authenticator.getGameState().getLoader().get);
+                                } catch (WrongFormatException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                        chooseLevelTable.add(resume);
+                    }
                 }
-            });
-            chooseLevelTable.add(chooseLevel);
-        } else if (chooseLevel != null && (!P1logged || !P2logged)) {
+            } catch (WrongFormatException e) {
+                e.printStackTrace();
+            }
+        } else if (chooseLevel != null) {
             chooseLevelTable.clearChildren();
             chooseLevel = null;
         }

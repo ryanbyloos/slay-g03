@@ -1,7 +1,7 @@
 package be.ac.umons.slay.g03.GUI;
 
 import be.ac.umons.slay.g03.Core.Map;
-import be.ac.umons.slay.g03.GameHandler.Loader;
+import be.ac.umons.slay.g03.GameHandler.ReplayParserException;
 import be.ac.umons.slay.g03.GameHandler.WrongFormatException;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -22,23 +22,40 @@ public class LevelPicker extends MenuScreen {
         super.show();
         Table table = new Table().center();
         table.setFillParent(true);
-        TextButton lv1 = new TextButton("Level 1", Slay.game.skin);
-        lv1.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Loader loader = new Loader("g3_2.tmx", "g3_3.xml", "Quicky");
-                try {
-                    loader.load(map, false);
-                } catch (WrongFormatException e) {
-                    e.printStackTrace();
+        int j = 1;
+        for (int i = 1; i <= 11; i += 2) {
+            TextButton button = new TextButton("Level " + j, Slay.game.skin);
+            j++;
+//            Loader loader = new Loader("g3_" + (i-1) + ".tmx", "g3_"+i+".xml", "");
+            String tmx = "g3_" + (i - 1) + ".tmx";
+            String xml = "g3_" + i + ".xml";
+            button.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    Slay.authenticator.getGameState().getLoader().setTmxFile(tmx);
+                    Slay.authenticator.getGameState().getLoader().setXmlFile(xml);
+                    try {
+                        Slay.authenticator.getGameState().getLoader().load(Slay.authenticator.getGameState().getMap(), false);
+                        world = new World(Slay.authenticator.getGameState());
+                        try {
+                            Slay.authenticator.getGameState().saveReplay();
+                            Slay.authenticator.getGameState().storeTurn();
+                            Slay.authenticator.getGameState().storeMove(Slay.authenticator.getGameState().getMap().getPlayer1());
+//                                        Slay.authenticator.getGameState().save();
+                        } catch (ReplayParserException e) {
+                            e.printStackTrace();
+                        }
+                        if (Slay.worldScreen == null)
+                            Slay.worldScreen = new WorldScreen(world);
+                        Slay.setScreen(Slay.worldScreen);
+                    } catch (WrongFormatException e) {
+                        e.printStackTrace();
+                    }
                 }
-                world = new World(map, loader);
-                if (Slay.worldScreen == null)
-                    Slay.worldScreen = new WorldScreen(world);
-                Slay.setScreen(Slay.worldScreen);
-            }
-        });
-        table.add(lv1);
+            });
+            table.add(button).pad(10).width(Slay.buttonW).height(Slay.buttonH);
+            table.row();
+        }
         stage.addActor(table);
     }
 }

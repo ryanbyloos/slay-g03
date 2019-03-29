@@ -33,23 +33,14 @@ public class Home implements Screen {
         table.setFillParent(true);
         stage.addActor(table);
 
-        TextButton resumeButton = new TextButton("RESUME", Slay.game.skin);
-        TextButton newGameButton = new TextButton("NEW GAME", Slay.game.skin);
+        TextButton playGameButton = new TextButton("PLAY", Slay.game.skin);
         TextButton replayButton = new TextButton("REPLAY", Slay.game.skin);
         TextButton hofButton = new TextButton("HALL OF FAME", Slay.game.skin);
         TextButton settingsButton = new TextButton("SETTINGS", Slay.game.skin);
         TextButton quitButton = new TextButton("QUIT", Slay.game.skin);
 
-        resumeButton.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-//                if (Slay.worldScreen == null)
-//                    Slay.worldScreen = new WorldScreen();
-//                Slay.setScreen(Slay.worldScreen);
-            }
-        });
 
-        newGameButton.addListener(new ClickListener() {
+        playGameButton.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 if (Slay.authScreen == null)
@@ -89,7 +80,7 @@ public class Home implements Screen {
             }
         });
 
-        addToTable(table, resumeButton, newGameButton, replayButton, hofButton, settingsButton, quitButton);
+        addToTable(table, playGameButton, replayButton, hofButton, settingsButton, quitButton);
     }
 
     @Override

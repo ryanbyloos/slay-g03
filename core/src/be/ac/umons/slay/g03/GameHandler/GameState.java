@@ -503,6 +503,7 @@ public class GameState {
     }
 
     public void save() throws IOException, TransformerException, ParserConfigurationException, SAXException {
+        System.out.println(loader.getTmxFile());
         saveTmxFile();
         String xml = saveXmlFile();
         String tmx = saveTmxFile();
@@ -526,7 +527,8 @@ public class GameState {
         Transformer transformer = transformerFactory.newTransformer();
         StreamResult result = new StreamResult(Gdx.files.getLocalStoragePath().concat("assets/Saves/games.xml"));
         transformer.transform(source, result);
-
+        System.out.println(loader.getTmxFile());
+//        Slay.authenticator.getGameState().getLoader()
     }
 
     private String saveTmxFile() throws IOException {
@@ -539,7 +541,6 @@ public class GameState {
         TiledMapTileLayer tiledLayer = (TiledMapTileLayer) tiledMap.getLayers().get("map");
         if (file.createNewFile()) {
             copyFile(new File(source), file);
-
         }
         for (int i = 0; i < map.getCells().size(); i++) {
             Cell cell = map.getCells().get(i);
@@ -1166,5 +1167,17 @@ public class GameState {
 
     public int getTurnPlayed() {
         return turnPlayed;
+    }
+
+    public Loader getLoader() {
+        return loader;
+    }
+
+    public void setLoader(Loader loader) {
+        this.loader = loader;
+    }
+
+    public String getLogFile() {
+        return logFile;
     }
 }

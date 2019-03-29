@@ -43,6 +43,7 @@ public class Loader {
     }
 
     public void load(Map map, boolean save) throws WrongFormatException {
+        System.out.println(save);
         loadFromTmxFile(map, save);
         loadFromXmlFile(map, save);
     }

@@ -1,15 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?><games>
 
-    <game pending="false" player1="Yellow" player2="Red" replay="Yellow-Red(28.03.2019.10.44.13).xml"
-          tmx="Yellow-Red(28.03.2019.10.44.13)g3_8.tmx" turn="0" xml="Yellow-Red(28.03.2019.10.44.13)g3_9.xml"/>
-    <game pending="false" player1="1" player2="2" replay="1-2(28.03.2019.13.14.51).xml"
-          tmx="1-2(28.03.2019.13.14.51)g3_2.tmx" turn="0" xml="1-2(28.03.2019.13.14.51)g3_3.xml"/>
-    <game pending="true" player1="1" player2="1" replay="1-1(29.03.2019.01.36.19).xml"
-          tmx="1-1(29.03.2019.01.36.19)g3_2.tmx" turn="0" xml="1-1(29.03.2019.01.36.19)g3_3.xml"/>
-    <game pending="true" player1="1" player2="2" replay="1-2(29.03.2019.01.46.04).xml"
-          tmx="1-2(29.03.2019.01.46.04)g3_2.tmx" turn="0" xml="1-2(29.03.2019.01.46.04)g3_3.xml"/>
-    <game pending="false" player1="billy" player2="bobby" replay="billy-bobby(29.03.2019.02.08.09).xml"
-          tmx="billy-bobby(29.03.2019.02.08.09)g3_2.tmx" turn="0" xml="billy-bobby(29.03.2019.02.08.09)g3_3.xml"/>
-    <game pending="true" player1="billy" player2="bobby" replay="billy-bobby(29.03.2019.02.09.06).xml"
-          tmx="billy-bobby(29.03.2019.02.09.06)g3_2.tmx" turn="0" xml="billy-bobby(29.03.2019.02.09.06)g3_3.xml"/>
+    <game pending="true" player1="1" player2="2" replay="1-2(29.03.2019.05.26.00).xml"
+          tmx="1-2(29.03.2019.05.26.00)g3_0.tmx" turn="3" xml="1-2(29.03.2019.05.26.00)g3_1.xml"/>
 </games>

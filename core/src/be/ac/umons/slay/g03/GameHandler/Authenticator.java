@@ -1,5 +1,6 @@
 package be.ac.umons.slay.g03.GameHandler;
 
+import be.ac.umons.slay.g03.Core.Map;
 import be.ac.umons.slay.g03.Core.Player;
 import com.badlogic.gdx.Gdx;
 import org.w3c.dom.Document;
@@ -16,6 +17,7 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.File;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 
 public class Authenticator {
     private GameState gameState;
@@ -43,7 +45,7 @@ public class Authenticator {
             }
         }
         this.loginFile = loginFile;
-
+        this.gameState = new GameState(new Map(new ArrayList<>(), null, null), new Loader(null, null, null), -1, null);
     }
 
     public boolean login(String userName, String pwd) throws AuthenticationError {
@@ -156,5 +158,9 @@ public class Authenticator {
             e.fillInStackTrace();
         }
         return hexString;
+    }
+
+    public GameState getGameState() {
+        return gameState;
     }
 }
