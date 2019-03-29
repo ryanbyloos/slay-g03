@@ -73,7 +73,7 @@ public class MapRenderer extends Game {
                         }
                     }
                     if (gameState.getStates().isSoldierSelected()) {
-                        if (gameState.getStates().getHold().accessibleCell(map) != null) {
+                        if (gameState.getStates().getHold() != null && gameState.getStates().getHold().accessibleCell(map) != null) {
                             drawHighlights(gameState.getStates().getHold().accessibleCell(map));
                         }
                     } else if (gameState.getStates().isBoatSelected()) {

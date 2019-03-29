@@ -78,6 +78,7 @@ public class States {
         setBoatSelected(false);
         setAttackTowerSelected(false);
         setDefenceTowerSelected(false);
+        setSoldierSelected(false);
         setDeployMode(false);
     }
     public Cell getHold() {
