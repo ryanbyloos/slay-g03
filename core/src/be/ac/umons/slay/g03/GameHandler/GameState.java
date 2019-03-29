@@ -510,7 +510,8 @@ public class GameState {
         String path = logFile.substring(splitIndex);
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder = documentBuilderFactory.newDocumentBuilder();
-        Document document = documentBuilder.parse(Gdx.files.getLocalStoragePath().concat("assets/Saves/games.xml"));
+//        Document document = documentBuilder.parse(Gdx.files.getLocalStoragePath().concat("assets/Saves/games.xml"));
+        Document document = documentBuilder.parse("assets/Saves/games.xml");
         Element root = document.getDocumentElement();
         Element game = document.createElement("game");
         game.setAttribute("player1", map.getPlayer1().getName());
@@ -524,7 +525,8 @@ public class GameState {
         DOMSource source = new DOMSource(document);
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
-        StreamResult result = new StreamResult(Gdx.files.getLocalStoragePath().concat("assets/Saves/games.xml"));
+//        StreamResult result = new StreamResult(Gdx.files.getLocalStoragePath().concat("assets/Saves/games.xml"));
+        StreamResult result = new StreamResult("assets/Saves/games.xml");
         transformer.transform(source, result);
 
     }
@@ -532,8 +534,10 @@ public class GameState {
     private String saveTmxFile() throws IOException {
         int splitIndex = logFile.lastIndexOf('/') + 1;
         String path = logFile.substring(splitIndex, logFile.length() - 4);
-        String dest = Gdx.files.getLocalStoragePath().concat("assets/Saves/").concat(path).concat(loader.getTmxFile());
-        String source = Gdx.files.getLocalStoragePath().concat("assets/World/").concat(loader.getTmxFile());
+//        String dest = Gdx.files.getLocalStoragePath().concat("assets/Saves/").concat(path).concat(loader.getTmxFile());
+        String dest = "assets/Saves/" + path + loader.getTmxFile();
+//        String source = Gdx.files.getLocalStoragePath().concat("assets/World/").concat(loader.getTmxFile());
+        String source = "assets/World/" + loader.getTmxFile();
         File file = new File(dest);
         TiledMap tiledMap = new TmxMapLoader().load(source);
         TiledMapTileLayer tiledLayer = (TiledMapTileLayer) tiledMap.getLayers().get("map");
@@ -566,7 +570,8 @@ public class GameState {
     private String saveXmlFile() throws ParserConfigurationException, TransformerException {
         int splitIndex = logFile.lastIndexOf('/') + 1;
         String path = logFile.substring(splitIndex, logFile.length() - 4);
-        String file = Gdx.files.getLocalStoragePath().concat("assets/Saves/").concat(path).concat(loader.getXmlFile());
+//        String file = Gdx.files.getLocalStoragePath().concat("assets/Saves/").concat(path).concat(loader.getXmlFile());
+        String file = "assets/Saves" + path + loader.getXmlFile();
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder;
         documentBuilder = documentBuilderFactory.newDocumentBuilder();
@@ -944,7 +949,8 @@ public class GameState {
 
     public boolean checkAndSetPending() throws WrongFormatException {
         try {
-            File file = new File(Gdx.files.getLocalStoragePath().concat("assets/Saves/games.xml"));
+//            File file = new File(Gdx.files.getLocalStoragePath().concat("assets/Saves/games.xml"));
+            File file = new File("assets/Saves/games.xml");
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(file);
@@ -978,7 +984,8 @@ public class GameState {
 
     public boolean isPending() throws WrongFormatException {
         try {
-            File file = new File(Gdx.files.getLocalStoragePath().concat("assets/Saves/games.xml"));
+//            File file = new File(Gdx.files.getLocalStoragePath().concat("assets/Saves/games.xml"));
+            File file = new File("assets/Saves/games.xml");
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(file);
@@ -1010,7 +1017,8 @@ public class GameState {
 
     public void deleteGame() throws WrongFormatException {
         try {
-            File file = new File(Gdx.files.getLocalStoragePath().concat("assets/Saves/games.xml"));
+//            File file = new File(Gdx.files.getLocalStoragePath().concat("assets/Saves/games.xml"));
+            File file = new File("assets/Saves/games.xml");
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(file);
@@ -1051,7 +1059,8 @@ public class GameState {
 
     public void deleteSaves() throws WrongFormatException {
         try {
-            File file = new File(Gdx.files.getLocalStoragePath().concat("assets/Saves/games.xml"));
+//            File file = new File(Gdx.files.getLocalStoragePath().concat("assets/Saves/games.xml"));
+            File file = new File("assets/Saves/games.xml");
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(file);
@@ -1089,7 +1098,8 @@ public class GameState {
 
     public void deleteGamePending() throws WrongFormatException {
         try {
-            File file = new File(Gdx.files.getLocalStoragePath().concat("assets/Saves/games.xml"));
+//            File file = new File(Gdx.files.getLocalStoragePath().concat("assets/Saves/games.xml"));
+            File file = new File("assets/Saves/games.xml");
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(file);

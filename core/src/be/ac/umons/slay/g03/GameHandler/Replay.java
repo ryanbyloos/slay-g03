@@ -3,7 +3,6 @@ package be.ac.umons.slay.g03.GameHandler;
 import be.ac.umons.slay.g03.Core.Cell;
 import be.ac.umons.slay.g03.Core.Player;
 import be.ac.umons.slay.g03.Entity.*;
-import com.badlogic.gdx.Gdx;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -34,7 +33,8 @@ public class Replay {
     }
 
     public void setReplay() throws WrongFormatException {
-        File file = new File(Gdx.files.getLocalStoragePath().concat(replayFileName));
+//        File file = new File(Gdx.files.getLocalStoragePath().concat(replayFileName));
+        File file = new File(replayFileName);
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder dBuilder = null;
         try {
@@ -218,7 +218,8 @@ public class Replay {
     public ArrayList<String> getReplays() throws WrongFormatException {
         ArrayList<String> replays = new ArrayList<>();
         try {
-            File file = new File(Gdx.files.getLocalStoragePath().concat("assets/Saves/games.xml"));
+//            File file = new File(Gdx.files.getLocalStoragePath().concat("assets/Saves/games.xml"));
+            File file = new File("assets/Saves/games.xml");
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(file);

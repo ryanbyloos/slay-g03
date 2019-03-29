@@ -27,7 +27,8 @@ public class MapRenderer extends Game {
 
     @Override
     public void create() {
-        String atlasPath = Gdx.files.getLocalStoragePath().concat("assets/Sprites/").concat("spritesheet.atlas");
+//        String atlasPath = Gdx.files.getLocalStoragePath().concat("assets/Sprites/").concat("spritesheet.atlas");
+        String atlasPath = "assets/Sprites/spritesheet.atlas";
         atlas = new TextureAtlas(atlasPath);
         initTextures(atlas);
         batch = new SpriteBatch();
@@ -72,7 +73,7 @@ public class MapRenderer extends Game {
                         }
                     }
                     if (gameState.getStates().isSoldierSelected()) {
-
+                        if (gameState.getStates().getHold() == null)
                         if (gameState.getStates().getHold().accessibleCell(map) != null) {
                             drawHighlights(gameState.getStates().getHold().accessibleCell(map));
                         }

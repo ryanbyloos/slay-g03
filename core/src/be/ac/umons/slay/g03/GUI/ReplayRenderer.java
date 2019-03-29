@@ -113,13 +113,13 @@ public class ReplayRenderer extends MapRenderer implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         camera.update();
         elapsed += delta;
-        this.batch.begin();
         if (replay.isAutoDisplay()) {
             if (elapsed >= .05) {
                 slider.setValue(slider.getValue() + 1f);
                 elapsed = 0;
             }
         }
+        this.batch.begin();
         draw(map);
         this.batch.end();
         stage.draw();

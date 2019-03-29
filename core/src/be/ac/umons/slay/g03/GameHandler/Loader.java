@@ -5,7 +5,6 @@ import be.ac.umons.slay.g03.Core.Map;
 import be.ac.umons.slay.g03.Core.Player;
 import be.ac.umons.slay.g03.Core.Territory;
 import be.ac.umons.slay.g03.Entity.*;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -51,9 +50,11 @@ public class Loader {
         try {
             String path;
             if (save) {
-                path = Gdx.files.getLocalStoragePath().concat("assets/Saves/").concat(xmlFile);
+//                path = Gdx.files.getLocalStoragePath().concat("assets/Saves/").concat(xmlFile);
+                path = "assets/Saves/" + xmlFile;
             } else {
-                path = Gdx.files.getLocalStoragePath().concat("assets/World/").concat(xmlFile);
+//                path = Gdx.files.getLocalStoragePath().concat("assets/World/").concat(xmlFile);
+                path = "assets/World/" + xmlFile;
             }
             File file = new File(path);
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -240,9 +241,11 @@ public class Loader {
         try {
             String path;
             if (save) {
-                path = Gdx.files.getLocalStoragePath().concat("assets/Saves/").concat(tmxFile);
+//                path = Gdx.files.getLocalStoragePath().concat("assets/Saves/").concat(tmxFile);
+                path = "assets/Saves/" + tmxFile;
             } else {
-                path = Gdx.files.getLocalStoragePath().concat("assets/World/").concat(tmxFile);
+//                path = Gdx.files.getLocalStoragePath().concat("assets/World/").concat(tmxFile);
+                path = "assets/World/" + tmxFile;
             }
 
             TiledMap tiledMap = new TmxMapLoader().load(path);
