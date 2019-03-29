@@ -25,6 +25,7 @@ public class Boat extends Infrastructure implements Controlable {
         if (source.adjacentCell(map,source,false).contains(destination) && soldiers.size()>0){
             Soldier soldier = soldiers.get(soldiers.size()-1);
             soldiers.remove(soldier);
+            getDefence();
             soldier.move(new Cell(source.getX(),source.getY(), false,true,getOwner(),null),destination,map);
         }
     }
@@ -44,7 +45,7 @@ public class Boat extends Infrastructure implements Controlable {
     public boolean bord(Soldier soldier){
         if(soldiers.size()<6){
             soldiers.add(soldier);
-            defence = defence+soldier.getLevel();
+            getDefence();
             return true;
         }
         return false;
@@ -79,11 +80,14 @@ public class Boat extends Infrastructure implements Controlable {
     }
 
     public int getDefence() {
-        if (soldiers != null && soldiers.size() != 0)
+        if (soldiers != null && soldiers.size() != 0) {
             for (Soldier soldier : soldiers)
                 if (soldier.getLevel() >= this.defence)
                     this.defence = soldier.getLevel();
-        return this.defence;
+            return this.defence;
+        }
+        defence = 0;
+        return 0;
     }
 
     public ArrayList<Soldier> getSoldiers() {

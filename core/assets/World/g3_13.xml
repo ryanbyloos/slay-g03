@@ -1,0 +1,26 @@
+<world name="The BIG Cell" map="g3_12.tmx">
+
+    <items>
+        <item type="capital" money="10" x="5" y="16" playerId="1"/>
+        <item type="capital" money="10" x="14" y="3" playerId="2"/>
+        <item type="tree" x="9" y="10"/>
+        <item type="tree" x="10" y="10"/>
+    </items>
+    <territories>
+        <territory playerId="1">
+            <cell x="5" y="16"/>
+            <cell x="6" y="16"/>
+        </territory>
+        <territory playerId="2">
+            <cell x="14" y="3"/>
+            <cell x="13" y="3"/>
+        </territory>
+    </territories>
+
+    <units>
+    </units>
+    <infrastructures>
+    </infrastructures>
+
+
+</world>

@@ -241,7 +241,6 @@ public class Soldier extends MapElement implements Controlable {
 
             } else {
                 checkNewTerritory(map, destination, source);
-                System.out.println(getOwner().getTerritories());
                 destination.setOwner(getOwner());
                 destination.setElementOn(this);
                 source.setElementOn(null);

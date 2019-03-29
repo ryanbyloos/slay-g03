@@ -39,8 +39,8 @@ public class LevelPicker extends MenuScreen {
                         e.printStackTrace();
                     }
                     world = new World(map, loader);
-                    if (Slay.worldScreen == null)
-                        Slay.worldScreen = new WorldScreen(world);
+                    Slay.worldScreen = new WorldScreen(world);
+                    Slay.setScreen(Slay.worldScreen);
                 }
             });
             table.add(button).pad(10).width(Slay.buttonW).height(Slay.buttonH);
