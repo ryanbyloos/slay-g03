@@ -31,7 +31,7 @@ public class LevelPicker extends MenuScreen {
             j++;
             String tmx = "g3_" + (i - 1) + ".tmx";
             String xml = "g3_" + i + ".xml";
-            if (Infrastructure.isAvailable || (!Infrastructure.isAvailable && (j != 2 && j != 4))) {
+            if (Infrastructure.isAvailable || (j != 2 && j != 4)) {
                 button.addListener(new ClickListener() {
                     @Override
                     public void clicked(InputEvent event, float x, float y) {
