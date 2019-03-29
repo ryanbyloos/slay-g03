@@ -4,6 +4,10 @@ import be.ac.umons.slay.g03.Entity.MapElement;
 
 import java.util.ArrayList;
 
+/**
+ * Classe instanciant une map contenant le 2 Players, les dimensions de celle-ci ainsi qu'une ArrayList de toutes les Cells là composant
+ *
+ */
 public class Map {
     private ArrayList<Cell> cells;
     private Player player1;
@@ -17,6 +21,12 @@ public class Map {
         this.setPlayer2(player2);
     }
 
+    /**
+     * permet de trouver un Cell avec ses coordonées (x,y)
+     * @param x coordonnée x de la Cell cherchée
+     * @param y coordonnée y de la Cell cherchée
+     * @return La Cell cherchée
+     */
     public Cell findCell(int x, int y) {
         for (Cell cell : getCells()) {
             if (cell.getX() == x && cell.getY() == y) {
@@ -26,6 +36,11 @@ public class Map {
         return null;
     }
 
+    /**
+     * permet de trouver la Cell du MapElement mit en parametre
+     * @param mapElement MapElement dont on souhaite connaître la Cell
+     * @return la Cell où se trouve le MapElement
+     */
     public Cell findCell(MapElement mapElement){
         for (Cell cell: cells
              ) {
@@ -33,6 +48,17 @@ public class Map {
                 return cell;
             }
         }
+        return null;
+    }
+
+    /**
+     * @return le Player qui est en train de jouer
+     */
+    public Player playingPlayer() {
+        if (getPlayer1().isTurn())
+            return getPlayer1();
+        if (getPlayer2().isTurn())
+            return getPlayer2();
         return null;
     }
 
@@ -76,19 +102,4 @@ public class Map {
         this.player2 = player2;
     }
 
-    public Player playingPlayer() {
-        if (getPlayer1().isTurn())
-            return getPlayer1();
-        if (getPlayer2().isTurn())
-            return getPlayer2();
-        return null;
-    }
-
-    public Player notPlayingPlayer(){
-        if (getPlayer1().isTurn())
-            return getPlayer2();
-        if (getPlayer2().isTurn())
-            return getPlayer1();
-        return null;
-    }
 }
