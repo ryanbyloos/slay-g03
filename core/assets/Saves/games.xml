@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <games>
 
+    <game pending="true" player1="Guest 1" player2="Guest 2" replay="Guest 1-Guest 2(29.03.2019.17.26.07).xml"
+          tmx="Guest 1-Guest 2(29.03.2019.17.26.07)g3_2.tmx" turn="0"
+          xml="Guest 1-Guest 2(29.03.2019.17.26.07)g3_3.xml"/>
 </games>

@@ -3,13 +3,21 @@ package be.ac.umons.slay.g03.GUI;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class WorldScreen implements Screen {
 
     private World world;
     private TerritoryHud territoryHud;
     private Hud hud;
+    private TextButton textButton = new TextButton("PAUSE", Slay.game.skin);
+    private Stage stage = new Stage();
 
     private InputMultiplexer multiplexer = new InputMultiplexer();
 
@@ -20,12 +28,28 @@ public class WorldScreen implements Screen {
     @Override
     public void show() {
         world.create();
+        textButton.setPosition(0, Slay.h / 12);
+        textButton.setColor(Color.LIGHT_GRAY);
         territoryHud = new TerritoryHud(world);
         hud = new Hud(world);
+        stage.addActor(textButton);
+        multiplexer.addProcessor(stage);
         multiplexer.addProcessor(hud);
         multiplexer.addProcessor(territoryHud);
         multiplexer.addProcessor(world);
         Gdx.input.setInputProcessor(multiplexer);
+        textButton.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                if (Gdx.input.getInputProcessor() == multiplexer) {
+                    Gdx.input.setInputProcessor(stage);
+                    textButton.setLabel(new Label("RESUME", Slay.game.skin));
+                } else {
+                    Gdx.input.setInputProcessor(multiplexer);
+                    textButton.setLabel(new Label("PAUSE", Slay.game.skin));
+                }
+            }
+        });
     }
 
     @Override
@@ -35,6 +59,7 @@ public class WorldScreen implements Screen {
         world.render();
         territoryHud.draw();
         hud.draw();
+        stage.draw();
     }
 
     @Override

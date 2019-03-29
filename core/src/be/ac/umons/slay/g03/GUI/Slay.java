@@ -22,6 +22,7 @@ public class Slay {
     static RegisterScreen registerScreen;
     static LevelPicker levelPicker;
     static VictoryScreen victoryScreen;
+    static PlayerModificationScreen playerModificationScreen;
 
     static void setScreen(Screen screen) {
         game.setScreen(screen);
