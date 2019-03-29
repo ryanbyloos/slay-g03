@@ -22,6 +22,7 @@ public class World extends MapRenderer implements InputProcessor {
         this.map = map;
         this.loader = loader;
     }
+
     @Override
     public void create() {
         super.create();
@@ -41,7 +42,7 @@ public class World extends MapRenderer implements InputProcessor {
             gameState.storeTurn();
             gameState.storeMove(map.getPlayer1());
             gameState.save();
-        }  catch (TransformerException | SAXException| ParserConfigurationException | IOException  | ReplayParserException e) {
+        } catch (TransformerException | SAXException | ParserConfigurationException | IOException | ReplayParserException e) {
             e.printStackTrace();
         }
 
@@ -51,8 +52,20 @@ public class World extends MapRenderer implements InputProcessor {
 
     @Override
     public void render() {
-        if(gameState.getStates().isOver()){
-            Slay.setScreen(Slay.home);
+
+        if (gameState.getStates().isOver()) {
+            String winner;
+            String loser;
+            int turn = gameState.getTurnPlayed();
+            if (map.getPlayer1().isOver()) {
+                winner = map.getPlayer2().getName();
+                loser = map.getPlayer1().getName();
+            } else {
+                winner = map.getPlayer1().getName();
+                loser = map.getPlayer2().getName();
+            }
+            Slay.victoryScreen = new VictoryScreen(winner, loser, turn);
+            Slay.setScreen(Slay.victoryScreen);
         }
         camera.update();
         batch.setProjectionMatrix(camera.combined);
@@ -70,14 +83,11 @@ public class World extends MapRenderer implements InputProcessor {
     public boolean keyDown(int keycode) {
         if (keycode == Input.Keys.P) {
             gameState.nextTurn();
-        } else if (keycode == Input.Keys.ESCAPE){
+        } else if (keycode == Input.Keys.ESCAPE) {
             Slay.setScreen(Slay.home);
-        }
-        else if(keycode == Input.Keys.R){
+        } else if (keycode == Input.Keys.R) {
             System.out.println(gameState.getStates());
-        }
-
-        else if (keycode == Input.Keys.J) {
+        } else if (keycode == Input.Keys.J) {
             if (map.getPlayer1().isTurn()) {
                 try {
                     gameState.undo(map.getPlayer1());

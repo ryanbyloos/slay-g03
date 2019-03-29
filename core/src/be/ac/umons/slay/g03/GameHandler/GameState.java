@@ -307,7 +307,7 @@ public class GameState {
                 states.setHold(null);
                 states.reset();
             } else if (states.isEverythingFalse()) { // si rien ne se passe , tous est à faux.
-                if ((cell.getElementOn() == null || cell.getElementOn() instanceof Capital) && cell.getOwner() == map.playingPlayer()) {// si il n'y a rien sur la cellule ou qu'il y a une capital et la cellule appartient au joueur qui joue alors il y a un territoire qui est selectionée
+                if ((cell.getElementOn() == null || cell.getElementOn() instanceof Capital || cell.getElementOn() instanceof DefenceTower) && cell.getOwner() == map.playingPlayer()) {// si il n'y a rien sur la cellule ou qu'il y a une capital et la cellule appartient au joueur qui joue alors il y a un territoire qui est selectionée
                     states.setTerritoryLoaded(cell.findTerritory());//territoire selectionné
                     states.setDisplayCells(states.getTerritoryLoaded().getCells());//cellule à afficher
                     states.setTerritorySelected(true);
@@ -405,35 +405,52 @@ public class GameState {
                             states.reset();
                         }
                     } else {
-                        if ((boat.getT() > 1)) {
-                            if (states.getHold().adjacentCell(map, states.getHold(), true).contains(cell)) {
-                                boat.move(states.getHold(), cell, map);
-                                states.setHold(cell);
-                                try {
-                                    storeMove(map.playingPlayer());
-                                } catch (ReplayParserException e) {
+                        if (boat != null) {
+                            if ((boat.getT() > 1)) {
+                                if (states.getHold().adjacentCell(map, states.getHold(), true).contains(cell)) {
+                                    boat.move(states.getHold(), cell, map);
+                                    if (cell.getElementOn() != null)
+                                        states.setHold(cell);
+                                    else {
+                                        states.setDisplayCells(null);
+                                        states.setHold(null);
+                                        states.reset();
+                                    }
+                                    try {
+                                        storeMove(map.playingPlayer());
+                                    } catch (ReplayParserException e) {
+                                    }
+                                } else {
+                                    states.setDisplayCells(null);
+                                    states.setHold(null);
+                                    states.reset();
                                 }
                             } else {
-                                states.setDisplayCells(null);
-                                states.setHold(null);
-                                states.reset();
+                                if (states.getHold().adjacentCell(map, states.getHold(), true).contains(cell)) {
+                                    boat.move(states.getHold(), cell, map);
+                                    if (cell.getElementOn() != null)
+                                        states.setHold(cell);
+                                    else {
+                                        states.setDisplayCells(null);
+                                        states.setHold(null);
+                                        states.reset();
+                                    }
+                                    states.setBoatSelected(false);
+                                    states.setHold(null);
+                                    try {
+                                        storeMove(map.playingPlayer());
+                                    } catch (ReplayParserException e) {
+                                    }
+                                } else {
+                                    states.setDisplayCells(null);
+                                    states.setHold(null);
+                                    states.reset();
+                                }
                             }
                         } else {
-                            if (states.getHold().adjacentCell(map, states.getHold(), true).contains(cell)) {
-                                boat.move(states.getHold(), cell, map);
-                                states.setHold(cell);
-                                states.setBoatSelected(false);
-                                states.setHold(null);
-                                try {
-                                    storeMove(map.playingPlayer());
-                                } catch (ReplayParserException e) {
-                                }
-                            } else {
-                                states.setTerritoryLoaded(null);
-                                states.setDisplayCells(null);
-                                states.setHold(null);
-                                states.reset();
-                            }
+                            states.setDisplayCells(null);
+                            states.setHold(null);
+                            states.reset();
                         }
                     }
 
@@ -1145,5 +1162,9 @@ public class GameState {
 
     public Map getMap() {
         return map;
+    }
+
+    public int getTurnPlayed() {
+        return turnPlayed;
     }
 }

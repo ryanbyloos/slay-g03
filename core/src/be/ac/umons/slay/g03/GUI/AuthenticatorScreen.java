@@ -16,7 +16,7 @@ public class AuthenticatorScreen extends MenuScreen {
 
     Player player1, player2;
 
-    Table authTableLeft, authTableRight;
+    Table authTableLeft, authTableRight, chooseLevelTable;
 
     Label labelLoginP1 = new Label("Username:", Slay.game.skin);
     Label labelPasswordP1 = new Label("Password:", Slay.game.skin);
@@ -33,6 +33,8 @@ public class AuthenticatorScreen extends MenuScreen {
 
     TextButton register = new TextButton("REGISTER", Slay.game.skin);
 
+    TextButton chooseLevel = new TextButton("CHOOSE LEVEL", Slay.game.skin);
+
     boolean P1logged = false;
     boolean P2logged = false;
 
@@ -41,6 +43,7 @@ public class AuthenticatorScreen extends MenuScreen {
         super.show();
         authTableLeft = new Table();
         authTableRight = new Table();
+        chooseLevelTable = new Table().center().bottom().padBottom(32);
         authTableLeft.setSize(Slay.w / 2, Slay.h);
         authTableLeft.setPosition(0, 0);
         authTableRight.setSize(Slay.w / 2, Slay.h);
@@ -111,11 +114,13 @@ public class AuthenticatorScreen extends MenuScreen {
     @Override
     public void render(float delta) {
         super.render(delta);
-        if (P1logged && P2logged) {
+        if (P1logged && P2logged && chooseLevel == null) {
             Map map = new Map(new ArrayList<>(), player1, player2);
-//            if (Slay.levelPicker == null)
             Slay.levelPicker = new LevelPicker(map);
-            Slay.setScreen(Slay.levelPicker);
+//            Slay.setScreen(Slay.levelPicker);
+            chooseLevelTable.add(chooseLevel);
+        } else {
+            chooseLevelTable.clearChildren();
         }
     }
 }
