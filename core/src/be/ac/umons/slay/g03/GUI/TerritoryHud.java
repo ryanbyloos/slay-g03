@@ -35,16 +35,22 @@ class TerritoryHud extends Stage {
         soldier1 = new HudButton(20, Slay.game.skin);
         soldier2 = new HudButton(40, Slay.game.skin);
         soldier3 = new HudButton(80, Slay.game.skin);
-        attackTower = new HudButton(20, Slay.game.skin);
-        defenceTower = new HudButton(10, Slay.game.skin);
-        boat = new HudButton(25, Slay.game.skin);
-        mine = new HudButton(20, Slay.game.skin);
+        if (Infrastructure.isAvailable) {
+            attackTower = new HudButton(20, Slay.game.skin);
+            defenceTower = new HudButton(10, Slay.game.skin);
+            boat = new HudButton(25, Slay.game.skin);
+            mine = new HudButton(20, Slay.game.skin);
+        }
 
         table = new Table().center().bottom().padBottom(h / 150);
         table.setFillParent(true);
         this.addActor(table);
 
-        this.buttons = new HudButton[]{soldier0, soldier1, soldier2, soldier3, defenceTower, attackTower, boat, mine};
+        if (Infrastructure.isAvailable)
+            this.buttons = new HudButton[]{soldier0, soldier1, soldier2, soldier3, defenceTower, attackTower, boat, mine};
+        else
+            this.buttons = new HudButton[]{soldier0, soldier1, soldier2, soldier3};
+
         shapeRenderer = new ShapeRenderer();
         batch = new SpriteBatch();
 
@@ -57,16 +63,22 @@ class TerritoryHud extends Stage {
         soldier1.addListener(createClickListener("soldier1", soldier1.getCost()));
         soldier2.addListener(createClickListener("soldier2", soldier2.getCost()));
         soldier3.addListener(createClickListener("soldier3", soldier3.getCost()));
-        defenceTower.addListener(createClickListener("defenceTower", defenceTower.getCost()));
-        attackTower.addListener(createClickListener("attackTower", attackTower.getCost()));
-        boat.addListener(createClickListener("boat", boat.getCost()));
-        mine.addListener(createClickListener("mine", mine.getCost()));
+        if (Infrastructure.isAvailable) {
+            defenceTower.addListener(createClickListener("defenceTower", defenceTower.getCost()));
+            attackTower.addListener(createClickListener("attackTower", attackTower.getCost()));
+            boat.addListener(createClickListener("boat", boat.getCost()));
+            mine.addListener(createClickListener("mine", mine.getCost()));
+        }
     }
 
     @Override
     public void draw() {
         Territory territory = world.gameState.getStates().getTerritoryLoaded();
-        TextureAtlas.AtlasRegion[] buttonImages = {world.soldier0, world.soldier1, world.soldier2, world.soldier3, world.defenceTower, world.attackTower, world.boat, world.mine};
+        TextureAtlas.AtlasRegion[] buttonImages;
+        if (Infrastructure.isAvailable)
+            buttonImages = new TextureAtlas.AtlasRegion[]{world.soldier0, world.soldier1, world.soldier2, world.soldier3, world.defenceTower, world.attackTower, world.boat, world.mine};
+        else
+            buttonImages = new TextureAtlas.AtlasRegion[]{world.soldier0, world.soldier1, world.soldier2, world.soldier3};
 
         if (territory != null)
             checkPrice(buttons, territory);
@@ -84,7 +96,11 @@ class TerritoryHud extends Stage {
             super.draw();
 
             batch.begin();
-            int i = 0;
+            int i;
+            if (Infrastructure.isAvailable)
+                i = 0;
+            else
+                i = (int) (2 * (w / 32 + w / 12));
             for (TextureAtlas.AtlasRegion image : buttonImages) {
                 batch.draw(new TextureRegion(image), (w / 14) + i, (h / 65));
                 i += w / 32 + w / 12;
@@ -130,7 +146,7 @@ class TerritoryHud extends Stage {
                             world.gameState.getStates().setDisplayCells(world.gameState.getStates().getTerritoryLoaded().getCellsForCreateWaterUnit(world.map));
                         }
                     }
-                    if(name.equals("soldier0") || name.equals("soldier1") || name.equals("soldier2") || name.equals("soldier3") || name.equals("attackTower") || name.equals("defenceTower")){
+                    if (name.equals("soldier0") || name.equals("soldier1") || name.equals("soldier2") || name.equals("soldier3") || name.equals("attackTower") || name.equals("defenceTower")) {
                         world.gameState.getStates().setOtherCreation(true);
                         world.gameState.getStates().setDisplayCells(world.gameState.getStates().getTerritoryLoaded().accesibleCellToCreateUnit());
                     }
