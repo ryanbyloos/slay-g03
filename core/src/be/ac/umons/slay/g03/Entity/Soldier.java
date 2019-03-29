@@ -104,12 +104,23 @@ public class Soldier extends MapElement implements Controlable {
             newCell.getOwner().removeTerritory(oldTerritoryCell);
         }
         if (oldCell.isWater() ) {
+
             if(newCell.getOwner() == null || !newCell.getOwner().equals(oldCell.getOwner())){
                 if(mergeAfterDeploy(map,newCell, oldCell.getOwner())){
+                    Territory territory = new Territory(new ArrayList<>());
+                    newCell.setOwner(oldCell.getOwner());
+                    territory.addCell(newCell);
+                    oldCell.getOwner().getTerritories().add(territory);
+                    Cell fakeCapital = new Cell(-2,-2, false,false,oldCell.getOwner(),new Capital(oldCell.getOwner(),0));
+                    territory.addCell(fakeCapital);
+                    map.getCells().add(fakeCapital);
                     mergeTerritory(map,newCell,newCell);
+                    newCell.findTerritory().getCells().remove(fakeCapital);
+                    map.getCells().remove(fakeCapital);
                 }
                 else {
                     Cell capitalCell = newCell.createConqueratorCapital(map, oldCell.getOwner());
+                    newCell.setOwner(oldCell.getOwner());
                     mergeTerritory(map, capitalCell, capitalCell);
                 }
             }
@@ -268,9 +279,9 @@ public class Soldier extends MapElement implements Controlable {
 
             } else {
                 checkNewTerritory(map, destination, source);
-                destination.setOwner(getOwner());
                 source.setElementOn(null);
                 if(destination.getElementOn() == null){
+                    destination.setOwner(getOwner());
                     destination.setElementOn(this);
                     destination.getElementOn().setHasMoved(true);
                     destination.setChecked(source.isChecked());

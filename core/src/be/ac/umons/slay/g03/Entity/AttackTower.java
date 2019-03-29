@@ -4,6 +4,8 @@ import be.ac.umons.slay.g03.Core.Cell;
 import be.ac.umons.slay.g03.Core.Map;
 import be.ac.umons.slay.g03.Core.Player;
 
+import java.util.Random;
+
 /**
  * Classe instanciant une AttackTower, contenat un level, et un boolean qui dit si l' AttackTower a attaque ou non
  * Ainsi qu'une methoide pour attaquer
@@ -59,6 +61,11 @@ public class AttackTower extends Infrastructure {
                 hasAttack = true;
             } else if (!(enemy.getElementOn() instanceof Mine) && enemy.getElementOn().getLevel() < level) {
                 enemy.setElementOn(null);
+                hasAttack = true;
+
+            }else if (level ==3){
+                int rand = new Random().nextInt(2);
+                if (rand == 1) enemy.setElementOn(null);
                 hasAttack = true;
 
             }
