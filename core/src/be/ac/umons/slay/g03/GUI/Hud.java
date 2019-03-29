@@ -7,11 +7,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+/**
+ * Hud permettant d'afficher le bouton pour passer son tour ainsi que les boutons pour les infrastructures
+ */
 public class Hud extends Stage {
     World world;
     TextButton nextTurn, deployButton, levelUpButton;
     Table table, boatTable, towerTable;
 
+    /**
+     * @param world Monde sur lequel les boutons du hud feront effet.
+     */
     Hud(World world) {
         this.world = world;
 
@@ -27,7 +33,6 @@ public class Hud extends Stage {
 
         towerTable = new Table().bottom().right().padBottom(Slay.h / 12 + nextTurn.getHeight());
         towerTable.setFillParent(true);
-
 
 
         nextTurn.addListener(new ClickListener() {

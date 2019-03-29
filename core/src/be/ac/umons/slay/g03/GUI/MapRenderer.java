@@ -4,7 +4,6 @@ import be.ac.umons.slay.g03.Core.Cell;
 import be.ac.umons.slay.g03.Core.Map;
 import be.ac.umons.slay.g03.Entity.*;
 import be.ac.umons.slay.g03.GameHandler.GameState;
-import be.ac.umons.slay.g03.GameHandler.Loader;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -14,20 +13,22 @@ import com.badlogic.gdx.math.Vector3;
 
 import java.util.ArrayList;
 
+/**
+ * Classe gérant l'affichage des niveaux.
+ */
 public class MapRenderer extends Game {
 
     Map map;
     TextureAtlas.AtlasRegion soldier0, soldier1, soldier2, soldier3, defenceTower, attackTower, boat, mine;
     SpriteBatch batch;
-    TextureAtlas.AtlasRegion blueHex, greenHex, yellowHex, redHex, tree, grave, contour, capital;
     OrthographicCamera camera;
-    TextureAtlas atlas;
-    Loader loader;
     GameState gameState;
+
+    private TextureAtlas.AtlasRegion blueHex, greenHex, yellowHex, redHex, tree, grave, contour, capital;
+    private TextureAtlas atlas;
 
     @Override
     public void create() {
-//        String atlasPath = Gdx.files.getLocalStoragePath().concat("assets/Sprites/").concat("spritesheet.atlas");
         String atlasPath = "assets/Sprites/spritesheet.atlas";
         atlas = new TextureAtlas(atlasPath);
         initTextures(atlas);
@@ -35,6 +36,9 @@ public class MapRenderer extends Game {
         camera = new OrthographicCamera();
     }
 
+    /**
+     * @param map Dessine les éléments contenus dans map.
+     */
     void draw(Map map) {
         int parity = map.getHeight() % 2;
         for (int i = 0; i < map.getCells().size(); i++) {
@@ -122,6 +126,10 @@ public class MapRenderer extends Game {
         }
     }
 
+    /**
+     * @param camera Camera utilisée en jeu.
+     * @return Renvoie les coordonnées de la souris par rapport au plateau.
+     */
     int[] getMouseCoord(OrthographicCamera camera) {
         Vector3 vector = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
         vector.x -= 32;
@@ -136,6 +144,10 @@ public class MapRenderer extends Game {
         return new int[]{(int) r, (int) q};
     }
 
+    /**
+     * @param camera Caméra utilisée en jeu.
+     * @param map    La carte avec laquelle la caméra est calibrée
+     */
     void setViewport(OrthographicCamera camera, Map map) {
         int mapH = map.getHeight();
         int width = (map.getWidth() * 32) + 16;
@@ -143,11 +155,11 @@ public class MapRenderer extends Game {
         camera.setToOrtho(false, width, height);
     }
 
-    void drawSprite(int parity, TextureAtlas.AtlasRegion sprite, Cell cell) {
+    private void drawSprite(int parity, TextureAtlas.AtlasRegion sprite, Cell cell) {
         drawSprite(parity, 0, sprite, cell);
     }
 
-    void drawSprite(int parity, int offset, TextureAtlas.AtlasRegion sprite, Cell cell) {
+    private void drawSprite(int parity, int offset, TextureAtlas.AtlasRegion sprite, Cell cell) {
         int EVEN = 0;
         int ODD = 1;
         if (cell.getY() % 2 == 0) {
@@ -157,14 +169,14 @@ public class MapRenderer extends Game {
         }
     }
 
-    void drawHighlights(ArrayList<Cell> cells) {
+    private void drawHighlights(ArrayList<Cell> cells) {
         for (Cell cell : cells) {
             if (cell != null)
                 drawSprite((map.getHeight() % 2), contour, cell);
         }
     }
 
-    void initTextures(TextureAtlas atlas) {
+    private void initTextures(TextureAtlas atlas) {
         greenHex = atlas.findRegion("tile000");
         blueHex = atlas.findRegion("tile001");
         yellowHex = atlas.findRegion("tile002");

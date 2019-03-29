@@ -12,6 +12,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import java.util.ArrayList;
 
+/**
+ * Endroit a partir duquel les joueurs vont se connecter.
+ */
 public class AuthenticatorScreen extends MenuScreen {
 
     Player player1, player2;

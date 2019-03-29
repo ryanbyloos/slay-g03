@@ -16,11 +16,14 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 import java.io.IOException;
 
+/**
+ * Classe permettant d'afficher les cartes durant une partie via MapRenderer et de gérer les entrées.
+ */
 public class World extends MapRenderer implements InputProcessor {
 
-    Loader loader;
+    private Loader loader;
 
-    public World(Map map, Loader loader) {
+    World(Map map, Loader loader) {
         this.map = map;
         this.loader = loader;
     }
@@ -31,13 +34,6 @@ public class World extends MapRenderer implements InputProcessor {
         map.getPlayer1().setTurn(true);
         map.getPlayer1().setMaxMoveNumber(-1);
         map.getPlayer2().setMaxMoveNumber(-1);
-//        loader = new Loader("g3_2.tmx", "g3_3.xml", "Quicky");
-//        loader = new Loader("g3_4.tmx", "g3_5.xml", "The Star");
-//        loader = new Loader("g3_6.tmx", "g3_7.xml", "The River");
-//        loader = new Loader("g3_8.tmx", "g3_9.xml", "The Void");
-//        loader = new Loader("g3_10.tmx", "g3_11.xml", "The Gate");
-
-
         gameState = new GameState(map, loader, -1, null);
         try {
             gameState.saveReplay();

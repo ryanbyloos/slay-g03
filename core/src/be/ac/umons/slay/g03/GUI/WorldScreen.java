@@ -11,6 +11,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+/**
+ * Classe permettant de superposer les divers Hud et le monde lors d'une partie.
+ */
 public class WorldScreen implements Screen {
 
     private World world;

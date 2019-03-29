@@ -7,6 +7,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 
 import java.util.ArrayList;
 
+/**
+ * Tableau des scores dans lequel sont affichés les dix meilleurs joueurs.
+ */
 public class HallOfFame extends MenuScreen {
     Table hofTable;
     ArrayList<Score> scores;

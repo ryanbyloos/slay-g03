@@ -7,14 +7,17 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+/**
+ * Menu permettant de modifier les options. (Changer son mot de passe, son avatar ou activer l'extension Infrastructures.
+ */
 public class Settings extends MenuScreen {
-    TextButton changePassword, changeAvatar;
+
     @Override
     public void show() {
         super.show();
         Table table = new Table().center();
-        changePassword = new TextButton("Change password", Slay.game.skin);
-        changeAvatar = new TextButton("Change Avatar", Slay.game.skin);
+        TextButton changePassword = new TextButton("Change password", Slay.game.skin);
+        TextButton changeAvatar = new TextButton("Change Avatar", Slay.game.skin);
         table.setFillParent(true);
         stage.addActor(table);
 
