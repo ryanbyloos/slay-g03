@@ -49,6 +49,4 @@ public abstract class MapElement {
 
     }
 
-    public void levelUp() {
-    }
 }

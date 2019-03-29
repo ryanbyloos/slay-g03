@@ -2,6 +2,9 @@ package be.ac.umons.slay.g03.Entity;
 
 import be.ac.umons.slay.g03.Core.Player;
 
+/**
+ * Classe instanciant une DefenceTower, contenant son level
+ */
 public class DefenceTower extends Infrastructure {
     private int level;
 
@@ -28,10 +31,6 @@ public class DefenceTower extends Infrastructure {
         }
     }
 
-
-    public boolean select() {
-        return getOwner().isTurn();
-    }
 
     @Override
     public int getLevel() {

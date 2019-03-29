@@ -21,19 +21,21 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 import java.util.ArrayList;
 
+/**
+ * Classe permettant de rendre un replay.
+ */
 public class ReplayRenderer extends MapRenderer implements Screen {
 
-    Replay replay;
-    String replayFileName;
-    ArrayList<ArrayList<ArrayList<Cell>>> replayMap;
-    float elapsed;
+    private Replay replay;
+    private String replayFileName;
+    private ArrayList<ArrayList<ArrayList<Cell>>> replayMap;
+    private float elapsed;
 
     private Stage stage = new Stage();
-    private Table table;
-    private TextButton playButton, returnButton;
+    private TextButton playButton;
     private Slider slider;
 
-    public ReplayRenderer(Replay replay, String replayFileName) {
+    ReplayRenderer(Replay replay, String replayFileName) {
         this.replay = replay;
         this.replayFileName = replayFileName;
     }
@@ -42,8 +44,8 @@ public class ReplayRenderer extends MapRenderer implements Screen {
     public void show() {
         create();
         playButton = new TextButton("PLAY", Slay.game.skin);
-        returnButton = new TextButton("RETURN", Slay.game.skin);
-        table = new Table(Slay.game.skin).top().left().pad(10);
+        TextButton returnButton = new TextButton("RETURN", Slay.game.skin);
+        Table table = new Table(Slay.game.skin).top().left().pad(10);
         table.setFillParent(true);
 
         replay.setReplayFileName(this.replayFileName);
@@ -93,10 +95,9 @@ public class ReplayRenderer extends MapRenderer implements Screen {
         });
 
 
-
         table.add(returnButton).pad(5).padRight(returnButton.getWidth());
         table.add(playButton).pad(5);
-        table.add(slider).padLeft(Slay.w / 8).width(Slay.w / 2);
+        table.add(slider).padLeft((float) Slay.w / 8).width((float) Slay.w / 2);
         stage.addActor(table);
         Gdx.input.setInputProcessor(stage);
 

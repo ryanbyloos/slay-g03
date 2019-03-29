@@ -233,10 +233,6 @@ public class Cell {
         return water;
     }
 
-    public void setWater(boolean water) {
-        this.water = water;
-    }
-
     public Player getOwner() {
         return owner;
     }
