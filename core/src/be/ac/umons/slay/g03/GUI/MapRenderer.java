@@ -14,7 +14,7 @@ import com.badlogic.gdx.math.Vector3;
 import java.util.ArrayList;
 
 /**
- * Classe gérant l'affichage des niveaux.
+ * Classe gerant l'affichage des niveaux.
  */
 public class MapRenderer extends Game {
 
@@ -37,7 +37,7 @@ public class MapRenderer extends Game {
     }
 
     /**
-     * @param map Dessine les éléments contenus dans map.
+     * @param map Dessine les elements contenus dans map.
      */
     void draw(Map map) {
         int parity = map.getHeight() % 2;
@@ -127,8 +127,8 @@ public class MapRenderer extends Game {
     }
 
     /**
-     * @param camera Camera utilisée en jeu.
-     * @return Renvoie les coordonnées de la souris par rapport au plateau.
+     * @param camera Camera utilisee en jeu.
+     * @return Renvoie les coordonnees de la souris par rapport au plateau.
      */
     int[] getMouseCoord(OrthographicCamera camera) {
         Vector3 vector = camera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
@@ -145,8 +145,8 @@ public class MapRenderer extends Game {
     }
 
     /**
-     * @param camera Caméra utilisée en jeu.
-     * @param map    La carte avec laquelle la caméra est calibrée
+     * @param camera Camera utilise en jeu.
+     * @param map    La carte avec laquelle la camera est calibree
      */
     void setViewport(OrthographicCamera camera, Map map) {
         int mapH = map.getHeight();

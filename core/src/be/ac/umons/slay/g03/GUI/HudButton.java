@@ -4,7 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 /**
- * Bouton personnalisé contenant un cout.
+ * Bouton personnalise contenant un cout.
  */
 class HudButton extends TextButton {
     private int cost;

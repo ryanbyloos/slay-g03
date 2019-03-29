@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Cette classe s'occupe de gerer la sauvegarde necessaire pour le replay, pour reprendre une partie, ainsi que l'état de jeu de la partie
+ * Cette classe s'occupe de gerer la sauvegarde necessaire pour le replay, pour reprendre une partie, ainsi que l'etat de jeu de la partie
  */
 public class GameState {
 
@@ -47,8 +47,8 @@ public class GameState {
     private String elementToBuild;
 
     /**
-     * @param map la map qui va être chargée
-     * @param loader le loader qui va être utlisee pour charge une map
+     * @param map la map qui va etre chargee
+     * @param loader le loader qui va etre utlisee pour charge une map
      * @param turnPlayed le tour actuel
      * @param logFile le path vers le fichier du replay
      */
@@ -142,7 +142,7 @@ public class GameState {
     }
 
     /**
-     * Cette methode charge dans la map les cellules du tour turn et après move mouvement
+     * Cette methode charge dans la map les cellules du tour turn et apres move mouvement
      *
      * @param doc  le document charge,  contenant l'historique du jeu
      * @param turn le tour qu'on souhaite charge
@@ -339,10 +339,10 @@ public class GameState {
                 states.setUpgradeAble(false);
                 states.setHold(null);
                 states.reset();
-            } else if (states.isEverythingFalse()) { // si rien ne se passe , tous est à faux.
+            } else if (states.isEverythingFalse()) { // si rien ne se passe , tous est a faux.
                 if ((cell.getElementOn() == null || cell.getElementOn() instanceof Capital || cell.getElementOn() instanceof DefenceTower) && cell.getOwner() == map.playingPlayer()) {// si il n'y a rien sur la cellule ou qu'il y a une capital et la cellule appartient au joueur qui joue alors il y a un territoire qui est selectionee
                     states.setTerritoryLoaded(cell.findTerritory());//territoire selectionne
-                    states.setDisplayCells(states.getTerritoryLoaded().getCells());//cellule à afficher
+                    states.setDisplayCells(states.getTerritoryLoaded().getCells());//cellule a afficher
                     states.setTerritorySelected(true);
                 } else if (cell.getElementOn() != null) {//sinon si il y a un element dessus
                     if (cell.getElementOn() instanceof Soldier) {// si c'est un soldat, celui a ete selectionnee si possible
@@ -365,14 +365,14 @@ public class GameState {
                     }
                 }
             } else if (states.isTerritorySelected()) { // si le territoire est selectionne
-                if (states.isOtherCreation()) {//si on est en cours de creation d'un soldat, d'une tour attaque ou bien une tour de defense(ces etats sont defini à partir de TerritoryHUD)
+                if (states.isOtherCreation()) {//si on est en cours de creation d'un soldat, d'une tour attaque ou bien une tour de defense(ces etats sont defini a partir de TerritoryHUD)
                     if (!cell.isWater() && (cell.getElementOn() == null || cell.getElementOn() instanceof Tree)) {// si la cellule n'est pas une cellule d'eau et la celulle est vide ou il y a un arbre dessus, on creer l'element
                         if (states.getDisplayCells().contains(cell)) {
                             cell.setElementOn(newElement(elementToBuild, map.playingPlayer()));
                             cell.setOwner(map.playingPlayer());
                             states.getTerritoryLoaded().findCapital().addMoney(-cell.getElementOn().getCreationCost());
                             try {
-                                storeMove(map.playingPlayer()); //sauvegarde la map après le mouvement
+                                storeMove(map.playingPlayer()); //sauvegarde la map apres le mouvement
                             } catch (ReplayParserException e) {
                             }
                         }
@@ -409,7 +409,7 @@ public class GameState {
                 states.setTerritoryLoaded(null);
                 states.setDisplayCells(null);
                 states.reset();
-            } else if (states.isSoldierSelected() || states.isBoatSelected() || states.isAttackTowerSelected()) {//là on est dans le cas où une unite est selectionnee
+            } else if (states.isSoldierSelected() || states.isBoatSelected() || states.isAttackTowerSelected()) {//la on est dans le cas ou une unite est selectionnee
                 if (states.isSoldierSelected()) {
                     Soldier soldier = (Soldier) states.getHold().getElementOn();
                     soldier.move(states.getHold(), cell, map);
@@ -510,7 +510,7 @@ public class GameState {
 
 
     /**
-     * Va instancier une entite en fonction des paramètres
+     * Va instancier une entite en fonction des parametres
      *
      * @param elementToBuild
      * @param player
@@ -828,7 +828,7 @@ public class GameState {
     }
 
     /**
-     * rend deplacable les soldats du joueur passe en paramètre
+     * rend deplacable les soldats du joueur passe en parametre
      *
      * @param player
      */
@@ -845,7 +845,7 @@ public class GameState {
     }
 
     /**
-     * rend deplacable les bateaux du joueur passe en paramètre
+     * rend deplacable les bateaux du joueur passe en parametre
      *
      * @param player
      */
@@ -861,7 +861,7 @@ public class GameState {
     }
 
     /**
-     * permet au tour de pouvoir re-attaquer au tour du joueur passe en paramètre
+     * permet au tour de pouvoir re-attaquer au tour du joueur passe en parametre
      *
      * @param player
      */
@@ -876,7 +876,7 @@ public class GameState {
     }
 
     /**
-     * sauvegarde l'historique dans le logfile(attribut de cette classe) le mouvement du joueur passe en paramètre.
+     * sauvegarde l'historique dans le logfile(attribut de cette classe) le mouvement du joueur passe en parametre.
      *
      * @param player
      * @throws ReplayParserException
@@ -1191,7 +1191,7 @@ public class GameState {
     }
 
     /**
-     * sauvegarde le replay ainsi que attribue son path à l'attribut logfile de cette classe
+     * sauvegarde le replay ainsi que attribue son path a l'attribut logfile de cette classe
      * @throws ReplayParserException
      */
     public void saveReplay() throws ReplayParserException {
@@ -1204,7 +1204,7 @@ public class GameState {
         Date today = new Date();
         SimpleDateFormat changeFormat = new SimpleDateFormat("dd.MM.yyyy.HH.mm.ss");
         String date = changeFormat.format(today);
-        file = Gdx.files.getLocalStoragePath().concat("assets/Replays/").concat(map.getPlayer1().getName() + "-" + map.getPlayer2().getName() + "(" + date + ")").concat(".xml"); // TODO: 02-03-19 à changer par la suite (le nom, les 2 cas possible si(la partie repris est une sauvegarde ou pas ect ..)
+        file = Gdx.files.getLocalStoragePath().concat("assets/Replays/").concat(map.getPlayer1().getName() + "-" + map.getPlayer2().getName() + "(" + date + ")").concat(".xml"); // TODO: 02-03-19 a changer par la suite (le nom, les 2 cas possible si(la partie repris est une sauvegarde ou pas ect ..)
         logFile = file;
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder;

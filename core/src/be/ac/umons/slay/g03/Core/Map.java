@@ -5,7 +5,7 @@ import be.ac.umons.slay.g03.Entity.MapElement;
 import java.util.ArrayList;
 
 /**
- * Classe instanciant une map contenant le 2 Players, les dimensions de celle-ci ainsi qu'une ArrayList de toutes les Cells là composant
+ * Classe instanciant une map contenant le 2 Players, les dimensions de celle-ci ainsi qu'une ArrayList de toutes les Cells la composant
  *
  */
 public class Map {
@@ -22,10 +22,10 @@ public class Map {
     }
 
     /**
-     * permet de trouver un Cell avec ses coordonées (x,y)
-     * @param x coordonnée x de la Cell cherchée
-     * @param y coordonnée y de la Cell cherchée
-     * @return La Cell cherchée
+     * permet de trouver un Cell avec ses coordonees (x,y)
+     * @param x coordonnee x de la Cell cherchee
+     * @param y coordonnee y de la Cell cherchee
+     * @return La Cell cherchee
      */
     public Cell findCell(int x, int y) {
         for (Cell cell : getCells()) {
@@ -38,8 +38,8 @@ public class Map {
 
     /**
      * permet de trouver la Cell du MapElement mit en parametre
-     * @param mapElement MapElement dont on souhaite connaître la Cell
-     * @return la Cell où se trouve le MapElement
+     * @param mapElement MapElement dont on souhaite connaitre la Cell
+     * @return la Cell ou se trouve le MapElement
      */
     public Cell findCell(MapElement mapElement){
         for (Cell cell: cells

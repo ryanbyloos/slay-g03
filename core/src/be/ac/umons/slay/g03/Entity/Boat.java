@@ -26,7 +26,7 @@ public class Boat extends Infrastructure implements Controlable {
     }
 
     /**
-     * permet de deployer le dernier soldat monté dns le Boat
+     * permet de deployer le dernier soldat monte dns le Boat
      *
      * @param source      Cell du bateau
      * @param destination Cell du deployment
@@ -61,7 +61,7 @@ public class Boat extends Infrastructure implements Controlable {
     /**
      * permeet de faire embarquer un Soldier dans un Boat
      * @param soldier Soldier qui souhaite embrquer dns le Boat
-     * @return vrai si le Soldier a embarqué, faux sinon
+     * @return vrai si le Soldier a embarque, faux sinon
      */
     public boolean bord(Soldier soldier){
         if(soldiers.size()<6){
@@ -73,7 +73,7 @@ public class Boat extends Infrastructure implements Controlable {
     }
 
     /** permet de deplacer un Boat
-     * @param source Cell de départ du Boat
+     * @param source Cell de depart du Boat
      * @param destination Cell de destintion de Bot
      * @param map
      */

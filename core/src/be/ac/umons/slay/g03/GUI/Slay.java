@@ -5,7 +5,7 @@ import be.ac.umons.slay.g03.Initializer;
 import com.badlogic.gdx.Screen;
 
 /**
- * Classe principale du jeu, gérant les Screen et l'initialisation via Initializer.
+ * Classe principale du jeu, gerant les Screen et l'initialisation via Initializer.
  */
 public class Slay {
     public static int w;

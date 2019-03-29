@@ -4,7 +4,7 @@ import be.ac.umons.slay.g03.Core.Player;
 
 /**
  * Classe instanciant une Capital, qui contient de l'argent
- * Elle dispose de methode permetant de gerer l'argent après un split de territoire
+ * Elle dispose de methode permetant de gerer l'argent apres un split de territoire
  */
 public class Capital extends MapElement {
     private int money;
@@ -15,7 +15,7 @@ public class Capital extends MapElement {
     }
 
     /**gere la redistribution de l'argent apres un slpit
-     * @param newCapital Capital cree après un slipt
+     * @param newCapital Capital cree apres un slipt
      * @param nbCellTot nombre de Cell de l'ancien Territory
      * @param nbCellOldCapital nombre de Cell du nouveu Territory de l'ancienne capital
      * @param nbCellNewCapital nombre de Cell du nouveu Territory de la nouvelle capital

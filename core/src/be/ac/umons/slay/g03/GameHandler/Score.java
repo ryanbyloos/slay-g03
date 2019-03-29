@@ -1,7 +1,7 @@
 package be.ac.umons.slay.g03.GameHandler;
 
 /**
- * Classe qui permet de stocker le pseudo d'un joueur ,un tableau contenant son nombre de partie jouée,gagnée,perdu
+ * Classe qui permet de stocker le pseudo d'un joueur ,un tableau contenant son nombre de partie jouee,gagnee,perdu
  * et son pourcentage de victoire ainsi que le path de l'avatar du joueur
  */
 public class Score {

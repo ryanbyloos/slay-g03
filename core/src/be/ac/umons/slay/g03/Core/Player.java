@@ -5,7 +5,7 @@ import be.ac.umons.slay.g03.Entity.Grave;
 import java.util.ArrayList;
 
 /**
- * Classe instanciant un Player, contenant son pseudo, son id, son nombre de mouvement, si il est un invité et si c'est à son tour
+ * Classe instanciant un Player, contenant son pseudo, son id, son nombre de mouvement, si il est un invite et si c'est a son tour
  */
 public class Player {
     private String name;

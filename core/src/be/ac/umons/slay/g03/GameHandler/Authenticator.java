@@ -84,7 +84,7 @@ public class Authenticator {
      * @param userName nom de compte du joueur
      * @param oldPassword ancien mot de passe du joueur
      * @param newPassword vieu mot de passe du joueur
-     * @return vrai si le mot de passe à ete modifie
+     * @return vrai si le mot de passe a ete modifie
      * @throws AuthenticationError
      */
     public boolean changePassword(String userName, String oldPassword, String newPassword) throws AuthenticationError {
@@ -161,7 +161,7 @@ public class Authenticator {
     }
 
     /**
-     * recupère le pseudo du joueur à partir de son nom de compte
+     * recupere le pseudo du joueur a partir de son nom de compte
      * @param userName
      * @return le pseudo du joueur
      * @throws AuthenticationError
@@ -276,8 +276,8 @@ public class Authenticator {
         }
     }
 
-    /** recupere le score de tout les joueurs enregistrés
-     * @return Une ArrayList contenant le score de tout les joueurs enregistrés
+    /** recupere le score de tout les joueurs enregistres
+     * @return Une ArrayList contenant le score de tout les joueurs enregistres
      * @throws AuthenticationError
      */
     public ArrayList<Score> getScore() throws AuthenticationError {

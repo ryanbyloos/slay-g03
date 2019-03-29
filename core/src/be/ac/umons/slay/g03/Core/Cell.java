@@ -7,11 +7,11 @@ import java.util.Random;
 
 
 /**
- * Classe qui instancie une cellule de coordonée (x,y).
+ * Classe qui instancie une cellule de coordonee (x,y).
  * Elle contient egalement : un boolean water qui dit si la cellule est de l'eau ou non,
  * son proprietaire , l'element present dessus
- * ainsi qu'un boolean qui permet de creer un Territory à partir d'une Cell grâce à la methode createTerritory()
- * (ce boolean doit être identique pour toutes les Cells d'un même Territory).
+ * ainsi qu'un boolean qui permet de creer un Territory a partir d'une Cell grace a la methode createTerritory()
+ * (ce boolean doit etre identique pour toutes les Cells d'un meme Territory).
  * Elle possede toutes les methodes qui touchent aux Cells.
  */
 public class Cell {
@@ -50,7 +50,7 @@ public class Cell {
         return null;
     }
 
-    /** place un arbre sur la Cell avec une probabilite de 1/100 + (n * log10(n+1)) / 100 où n est le nombre d'arbres adjacent
+    /** place un arbre sur la Cell avec une probabilite de 1/100 + (n * log10(n+1)) / 100 ou n est le nombre d'arbres adjacent
      * @param map
      */
     public void spwanTree(Map map) {
@@ -68,7 +68,7 @@ public class Cell {
     }
 
     /**
-     * augmente le level de la Tower sur la cell si elle peut être upgrade et si la capital a assez d'argent,
+     * augmente le level de la Tower sur la cell si elle peut etre upgrade et si la capital a assez d'argent,
      * retire egalement le cout de creation si l'upgrade s'est effectue
      */
     public void levelUpTower() {
@@ -138,7 +138,7 @@ public class Cell {
     /** creer une Capital apres un deploy qui cree un nouveau territoire
      * @param map
      * @param player
-     * @return La Cell où la Capital a ete cree
+     * @return La Cell ou la Capital a ete cree
      */
     public Cell createConqueratorCapital(Map map, Player player){
         Territory territory = new Territory(new ArrayList<>());
@@ -164,7 +164,7 @@ public class Cell {
      * @param map
      * @param cell Cell dont on veut voir les Cells adjacentes
      * @param water boolen qui defini si la methode doit retourner des Cells d'eau ou de terre
-     * @return Une ArrayList qui contient toutes les Cells adjacentes à la cell mise en paramètre
+     * @return Une ArrayList qui contient toutes les Cells adjacentes a la cell mise en parametre
      */
     public ArrayList<Cell> adjacentCell(Map map, Cell cell, boolean water) {
         ArrayList<Cell> adjacentCell = new ArrayList<>();
@@ -188,7 +188,7 @@ public class Cell {
         if (water && cell != null && cell.isWater()) cells.add(cell);
     }
 
-    /** cree un Territory à partir d'une Cell
+    /** cree un Territory a partir d'une Cell
      * @param map
      * @param mark boolean qui represente l'attribut checked initial de la Cell qui lance la methode
      * @param territory

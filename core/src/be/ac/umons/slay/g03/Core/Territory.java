@@ -7,7 +7,7 @@ import java.util.Random;
 
 /**
  * Classe instanciant un Territory, contenat une ArrayList de Cells et l'argent gagne ce tour
- * Possède egalement des methodes pour gerer la faillite et trouver sa capital
+ * Possede egalement des methodes pour gerer la faillite et trouver sa capital
  */
 public class Territory {
     private ArrayList<Cell> cells;
@@ -95,7 +95,7 @@ public class Territory {
     }
 
     /**
-     * place une Capital aléatoirement sur le Territory
+     * place une Capital aleatoirement sur le Territory
      */
     public void placeCapital() {
         ArrayList<Cell> cellPossible = new ArrayList<>();

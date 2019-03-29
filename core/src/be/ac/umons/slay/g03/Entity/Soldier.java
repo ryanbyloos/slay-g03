@@ -10,7 +10,7 @@ import java.util.Random;
 
 /**
  * Classe instanciant un Soldier, qui contient son level
- * Elle contien des methodes permetant de gerer les Territory après un Move (Merge/split)
+ * Elle contien des methodes permetant de gerer les Territory apres un Move (Merge/split)
  */
 public class Soldier extends MapElement implements Controlable {
     private int level;
@@ -230,9 +230,9 @@ public class Soldier extends MapElement implements Controlable {
     }
 
 
-    /**permet de faire bouger un Soldier et gere les differentes situtions possibles après un deplacement
+    /**permet de faire bouger un Soldier et gere les differentes situtions possibles apres un deplacement
      * @param source Cell du Soldier souhaitant bouger
-     * @param destination Cell où le Soldier souhaite bouger
+     * @param destination Cell ou le Soldier souhaite bouger
      * @param map
      */
     @Override

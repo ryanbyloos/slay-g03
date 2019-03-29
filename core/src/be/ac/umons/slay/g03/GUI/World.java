@@ -17,7 +17,7 @@ import javax.xml.transform.TransformerException;
 import java.io.IOException;
 
 /**
- * Classe permettant d'afficher les cartes durant une partie via MapRenderer et de gérer les entrées.
+ * Classe permettant d'afficher les cartes durant une partie via MapRenderer et de gerer les entrees.
  */
 public class World extends MapRenderer implements InputProcessor {
 

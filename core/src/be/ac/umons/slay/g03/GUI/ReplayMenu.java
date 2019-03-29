@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import java.util.ArrayList;
 
 /**
- * Menu permettant d'afficher et de choisir une partie a rejouée.
+ * Menu permettant d'afficher et de choisir une partie a rejouee.
  */
 public class ReplayMenu extends MenuScreen {
 

@@ -14,7 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
 /**
- * Hud circonstantiel ne s'affichant que lorsque un territoire est sélectionné.
+ * Hud circonstantiel ne s'affichant que lorsque un territoire est selectionne.
  */
 class TerritoryHud extends Stage {
 
