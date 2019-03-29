@@ -868,7 +868,6 @@ public class GameState {
     private void resetAttackTower(Player player) {
         for (Cell cell : map.getCells()
         ) {
-            System.out.println(cell);
             if (cell.getElementOn() != null && map.playingPlayer().equals(player) && cell.getElementOn() instanceof AttackTower
                     && cell.getElementOn().getOwner() != null && cell.getElementOn().getOwner().equals(player))
                 ((AttackTower) cell.getElementOn()).setHasAttack(false);
