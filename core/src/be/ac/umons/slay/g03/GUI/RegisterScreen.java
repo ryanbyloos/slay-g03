@@ -7,8 +7,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
 public class RegisterScreen extends MenuScreen {
-    Label userName, pwd, pseudo;
-    TextField userNamef, pwdf, pseudof;
+    Label userName, pwd, pseudo, image;
+    TextField userNamef, pwdf, pseudof, imagef;
     TextButton registerButton;
     private Table registerTable;
 
@@ -21,10 +21,12 @@ public class RegisterScreen extends MenuScreen {
         userName = new Label("Username:", Slay.game.skin);
         pseudo = new Label("Pseudo:", Slay.game.skin);
         pwd = new Label("Password:", Slay.game.skin);
+        image = new Label("Avatar:", Slay.game.skin);
 
         userNamef = new TextField("", Slay.game.skin);
         pwdf = new TextField("", Slay.game.skin);
         pseudof = new TextField("", Slay.game.skin);
+        imagef = new TextField("", Slay.game.skin);
 
         pwdf.setPasswordMode(true);
         pwdf.setPasswordCharacter('*');
@@ -36,6 +38,8 @@ public class RegisterScreen extends MenuScreen {
         registerTable.add(pwd, pwdf);
         registerTable.row();
         registerTable.add(pseudo, pseudof);
+        registerTable.row();
+        registerTable.add(image, imagef);
         registerTable.row();
         registerTable.add(new Label("", Slay.game.skin));
         registerTable.add(registerButton).pad(20);
@@ -58,7 +62,7 @@ public class RegisterScreen extends MenuScreen {
                 });
 
                 try {
-                    if (Slay.authenticator.register(userNamef.getText(), pwdf.getText(), pseudof.getText(), "")) {
+                    if (Slay.authenticator.register(userNamef.getText(), pwdf.getText(), pseudof.getText(), imagef.getText())) {
                         dialog.text("Successfully registered.");
                     } else {
                         dialog.text("Username already used.");
