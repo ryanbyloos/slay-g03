@@ -1,4 +1,4 @@
-<world name="The Forest" map="g3_10.tmx">
+<world name="The Forest" map="g3_14.tmx">
 
     <items>
         <item type="capital" money="10" x="2" y="17" playerId="1"/>

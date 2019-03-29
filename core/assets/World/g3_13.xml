@@ -1,4 +1,4 @@
-<world name="The BIG Cell" map="g3_10.tmx">
+<world name="The BIG Cell" map="g3_12.tmx">
 
     <items>
         <item type="capital" money="10" x="5" y="16" playerId="1"/>
