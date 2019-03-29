@@ -8,6 +8,10 @@ import be.ac.umons.slay.g03.Core.Territory;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * Classe instanciant un Soldier, qui contient son level
+ * Elle contien des methodes permetant de gerer les Territory après un Move (Merge/split)
+ */
 public class Soldier extends MapElement implements Controlable {
     private int level;
 
@@ -35,6 +39,11 @@ public class Soldier extends MapElement implements Controlable {
         }
     }
 
+    /**permet de faire attaquer un Soldier
+     * @param source Cell du soldat attaquant
+     * @param destination Cell attaque
+     * @return vrai si l'attaque a marche, faux sinon
+     */
     private boolean attack(Cell source, Cell destination) {
         int sourceLevel = getLevel();
         int destinationLevel = destination.getElementOn().getLevel();
@@ -221,6 +230,11 @@ public class Soldier extends MapElement implements Controlable {
     }
 
 
+    /**permet de faire bouger un Soldier et gere les differentes situtions possibles après un deplacement
+     * @param source Cell du Soldier souhaitant bouger
+     * @param destination Cell où le Soldier souhaite bouger
+     * @param map
+     */
     @Override
     public void move(Cell source, Cell destination, Map map) {
         if (source.accessibleCell(map).contains(destination) && (getLevel() >= levelDefender(map, source, destination))) {

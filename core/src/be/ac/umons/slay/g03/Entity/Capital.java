@@ -2,6 +2,10 @@ package be.ac.umons.slay.g03.Entity;
 
 import be.ac.umons.slay.g03.Core.Player;
 
+/**
+ * Classe instanciant une Capital, qui contient de l'argent
+ * Elle dispose de methode permetant de gerer l'argent après un split de territoire
+ */
 public class Capital extends MapElement {
     private int money;
 
@@ -10,6 +14,12 @@ public class Capital extends MapElement {
         this.money = money;
     }
 
+    /**gere la redistribution de l'argent apres un slpit
+     * @param newCapital Capital cree après un slipt
+     * @param nbCellTot nombre de Cell de l'ancien Territory
+     * @param nbCellOldCapital nombre de Cell du nouveu Territory de l'ancienne capital
+     * @param nbCellNewCapital nombre de Cell du nouveu Territory de la nouvelle capital
+     */
     public void splitMoney(Capital newCapital, int nbCellTot, int nbCellOldCapital, int nbCellNewCapital) {
         double money = this.money;
         newCapital.setMoney((int) Math.round(money * nbCellNewCapital / nbCellTot));
@@ -22,6 +32,11 @@ public class Capital extends MapElement {
         }
     }
 
+    /**
+     * gere l'argent de la Capital cree lors d'un triple split
+     * @param capital1 ancienne Capital
+     * @param capital2 l'autre ancienne Capital
+     */
     public void addMoneyThirdCapital(Capital capital1, Capital capital2) {
         if (capital1.getMoney() > capital2.getMoney()) {
             setMoney(capital2.getMoney());
