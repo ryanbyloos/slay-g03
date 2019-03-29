@@ -1,0 +1,26 @@
+<world name="The Lake" map="g3_20.tmx">
+
+    <items>
+        <item type="capital" money="10" x="19" y="1" playerId="2" />
+        <item type="capital" money="10" x="0" y="18" playerId="1" />
+    </items>
+    <territories>
+        <territory playerId="1">
+            <cell x="0" y="18" />
+            <cell x="1" y="17" />
+            <cell x="1" y="18" />
+        </territory>
+        <territory playerId="2">
+            <cell x="18" y="1" />
+            <cell x="18" y="2" />
+            <cell x="19" y="1" />
+        </territory>
+
+    </territories>
+    <units>
+    </units>
+    <infrastructures>
+    </infrastructures>
+
+
+</world>
