@@ -129,6 +129,7 @@ public class EntityTest {
         Assert.assertEquals(boat, cell2.getElementOn());
         Assert.assertTrue(cell1.getOwner().equals(player));
         Assert.assertTrue(cell3.getElementOn() instanceof Capital);
+        Assert.assertEquals(0,boat.getDefence());
     }
 
     @Test
