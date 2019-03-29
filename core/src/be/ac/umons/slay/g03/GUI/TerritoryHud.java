@@ -99,7 +99,8 @@ class TerritoryHud extends Stage {
             }
         } else if (world.gameState.getStates().isSoldierSelected()) {
             batch.begin();
-            showTerritoryInfo(batch, world.gameState.getStates().getHold().findTerritory());
+            if (world.gameState.getStates().getHold() != null)
+                showTerritoryInfo(batch, world.gameState.getStates().getHold().findTerritory());
             batch.end();
         }
         batch.begin();
