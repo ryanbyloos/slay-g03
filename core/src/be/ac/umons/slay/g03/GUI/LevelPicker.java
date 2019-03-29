@@ -26,7 +26,7 @@ public class LevelPicker extends MenuScreen {
         lv1.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                Loader loader = new Loader("g3_2.tmx", "g3_3.xml", "Quicky");
+                Loader loader = new Loader("g3_14.tmx", "g3_15.xml", "Quicky");
                 try {
                     loader.load(map, false);
                 } catch (WrongFormatException e) {
