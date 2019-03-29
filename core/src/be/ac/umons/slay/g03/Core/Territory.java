@@ -158,9 +158,6 @@ public class Territory {
         return cells;
     }
 
-    public void setCells(ArrayList<Cell> cells) {
-        this.cells = cells;
-    }
 
 
     @Override

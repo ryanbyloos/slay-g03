@@ -32,10 +32,6 @@ public class DefenceTower extends Infrastructure {
     }
 
 
-    public boolean select() {
-        return getOwner().isTurn();
-    }
-
     @Override
     public int getLevel() {
         return this.level;
