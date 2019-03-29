@@ -6,6 +6,9 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+/**
+ * Menu utilisé pour modifié un attribut d'un joueur.
+ */
 public class PlayerModificationScreen extends MenuScreen {
     boolean password;
     Label userName, oldValue, newValue;
@@ -13,6 +16,9 @@ public class PlayerModificationScreen extends MenuScreen {
     TextButton changeButton;
     private Table changeTable;
 
+    /**
+     * @param password Défini si le parametre modifié est le mot de passe (vrai) ou l'avatar (faux).
+     */
     PlayerModificationScreen(boolean password) {
         this.password = password;
     }

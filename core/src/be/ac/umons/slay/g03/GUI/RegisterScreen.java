@@ -6,6 +6,9 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+/**
+ * Menu dans lequel il est possible de créé un nouvel utilisateur.
+ */
 public class RegisterScreen extends MenuScreen {
     Label userName, pwd, pseudo, image;
     TextField userNamef, pwdf, pseudof, imagef;

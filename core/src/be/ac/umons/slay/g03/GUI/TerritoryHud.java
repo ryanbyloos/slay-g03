@@ -13,6 +13,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 
+/**
+ * Hud circonstantiel ne s'affichant que lorsque un territoire est sélectionné.
+ */
 class TerritoryHud extends Stage {
 
     HudButton soldier0, soldier1, soldier2, soldier3, defenceTower, attackTower, boat, mine;
@@ -25,6 +28,9 @@ class TerritoryHud extends Stage {
     private float w = Slay.w;
     private float h = Slay.h;
 
+    /**
+     * @param world Monde sur lequel les boutons du hud feront effet.
+     */
     TerritoryHud(World world) {
         this.world = world;
         initActors();

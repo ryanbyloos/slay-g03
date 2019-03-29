@@ -11,6 +11,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FillViewport;
 
+/**
+ * Modele duquel la plupart des menus héritent.
+ */
 public class MenuScreen implements Screen {
     Stage stage;
     Table table;

@@ -8,6 +8,9 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
+/**
+ * Classe permettant d'initialiser les préférences utilisateur et les assets.
+ */
 public class Initializer extends Game {
     public Skin skin;
     public BitmapFont font;

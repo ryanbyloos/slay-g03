@@ -11,12 +11,18 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 
+/**
+ * Menu a partir duquel un niveau sera sélectionné.
+ */
 public class LevelPicker extends MenuScreen {
 
-    Map map;
-    World world;
+    private Map map;
+    private World world;
 
-    public LevelPicker(Map map) {
+    /**
+     * @param map La map qui sera chargée avec le niveau sélectionné.
+     */
+    LevelPicker(Map map) {
         this.map = map;
     }
 
