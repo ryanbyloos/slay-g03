@@ -94,13 +94,18 @@ public class Soldier extends MapElement implements Controlable {
         if (newCell.getOwner() != null && oldTerritoryCell.getCells().size() < 2) {
             newCell.getOwner().removeTerritory(oldTerritoryCell);
         }
-        if (oldCell.isWater() &&
-                (newCell.getOwner() == null || newCell.getOwner().equals(oldCell.getOwner()))) {
-           newCell.cretaeConqueratorCapital(map,oldCell.getOwner());
+        if (oldCell.isWater() ) {
+            if(newCell.getOwner() == null || !newCell.getOwner().equals(oldCell.getOwner())){
+                Cell capitalCell = newCell.createConqueratorCapital(map,oldCell.getOwner());
+                mergeTerritory(map,capitalCell,capitalCell);
+            }
 
-        } else oldCell.findTerritory().addCell(newCell);
-        mergeTerritory(map, newCell, oldCell);
-        if (newCell.getOwner() != null && !newCell.equals(oldCell.getOwner())) {
+        } else {
+            oldCell.findTerritory().addCell(newCell);
+            mergeTerritory(map, newCell, oldCell);
+
+        }
+        if (newCell.getOwner() != null && !newCell.getOwner().equals(oldCell.getOwner())) {
             oldTerritoryCell.getCells().remove(newCell);
             newCell.setOwner(oldCell.getOwner());
             splitTerritory(map, newCell);
@@ -236,6 +241,7 @@ public class Soldier extends MapElement implements Controlable {
 
             } else {
                 checkNewTerritory(map, destination, source);
+                System.out.println(getOwner().getTerritories());
                 destination.setOwner(getOwner());
                 destination.setElementOn(this);
                 source.setElementOn(null);

@@ -7,6 +7,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.concurrent.Callable;
 
 public class EntityTest {
 
@@ -1359,29 +1360,32 @@ public class EntityTest {
 
     @Test
     public void upTower() {
-        Player player = new Player("player", 1, 0, false, null);
+        Player player = new Player("player", 1, 0, false, new ArrayList<>());
         AttackTower lowAttackTower = new AttackTower(player, 1);
         AttackTower hightAttackTower = new AttackTower(player, 3);
         DefenceTower lowDefenceTower = new DefenceTower(player, 1);
         DefenceTower hightDefenceTower = new DefenceTower(player, 3);
-        Soldier soldier = new Soldier(player, 2);
+        Capital capital = new Capital(player,1000);
         Cell cell1 = new Cell(0, 0, false, false, player, lowAttackTower);
         Cell cell2 = new Cell(1, 0, false, false, player, hightAttackTower);
-        Cell cell3 = new Cell(2, 0, false, false, player, soldier);
-        Cell cell4 = new Cell(3, 0, false, false, player, null);
-        Cell cell5 = new Cell(3, 0, false, false, player, lowDefenceTower);
-        Cell cell6 = new Cell(3, 0, false, false, player, hightDefenceTower);
-        cell1.levelUpTower();
+        Cell cell4 = new Cell(3, 0, false, false, player, capital);
+        Cell cell5 = new Cell(2, 0, false, false, player, lowDefenceTower);
+        Cell cell6 = new Cell(4, 0, false, false, player, hightDefenceTower);
+        ArrayList<Cell> territory = new ArrayList<>();
+        territory.add(cell1);
+        territory.add(cell2);
+        territory.add(cell4);
+        territory.add(cell5);
+        territory.add(cell6);
+        player.getTerritories().add(new Territory(territory));
         cell2.levelUpTower();
-        cell3.levelUpTower();
-        cell4.levelUpTower();
+        cell1.levelUpTower();
         cell5.levelUpTower();
         cell6.levelUpTower();
         Assert.assertEquals(2, cell1.getElementOn().getLevel());
         Assert.assertEquals(3, cell2.getElementOn().getLevel());
         Assert.assertEquals(2, cell5.getElementOn().getLevel());
         Assert.assertEquals(3, cell6.getElementOn().getLevel());
-        Assert.assertEquals(2, cell3.getElementOn().getLevel());
 
     }
 
