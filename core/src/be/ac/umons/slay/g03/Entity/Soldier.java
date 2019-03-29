@@ -98,7 +98,6 @@ public class Soldier extends MapElement implements Controlable {
             if(newCell.getOwner() == null || !newCell.getOwner().equals(oldCell.getOwner())){
                 if(mergeAfterDeploy(map,newCell, oldCell.getOwner())){
                     mergeTerritory(map,newCell,newCell);
-                    System.out.println("ok");
                 }
                 else {
                     Cell capitalCell = newCell.createConqueratorCapital(map, oldCell.getOwner());
