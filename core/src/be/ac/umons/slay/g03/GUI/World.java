@@ -1,7 +1,9 @@
 package be.ac.umons.slay.g03.GUI;
 
 import be.ac.umons.slay.g03.Core.Map;
+import be.ac.umons.slay.g03.Core.Player;
 import be.ac.umons.slay.g03.Entity.Infrastructure;
+import be.ac.umons.slay.g03.GameHandler.AuthenticationError;
 import be.ac.umons.slay.g03.GameHandler.GameState;
 import be.ac.umons.slay.g03.GameHandler.Loader;
 import be.ac.umons.slay.g03.GameHandler.ReplayParserException;
@@ -54,17 +56,22 @@ public class World extends MapRenderer implements InputProcessor {
     public void render() {
 
         if (gameState.getStates().isOver()) {
-            String winner;
-            String loser;
+            Player winner;
+            Player loser;
             int turn = gameState.getTurnPlayed();
             if (map.getPlayer1().isOver()) {
-                winner = map.getPlayer2().getName();
-                loser = map.getPlayer1().getName();
+                winner = map.getPlayer2();
+                loser = map.getPlayer1();
             } else {
-                winner = map.getPlayer1().getName();
-                loser = map.getPlayer2().getName();
+                winner = map.getPlayer1();
+                loser = map.getPlayer2();
             }
-            Slay.victoryScreen = new VictoryScreen(winner, loser, turn);
+            try {
+                Slay.authenticator.addScore(winner, loser);
+            } catch (AuthenticationError authenticationError) {
+                authenticationError.printStackTrace();
+            }
+            Slay.victoryScreen = new VictoryScreen(winner.getName(), loser.getName(), turn);
             Slay.setScreen(Slay.victoryScreen);
         }
         camera.update();

@@ -84,7 +84,8 @@ public class AuthenticatorScreen extends MenuScreen {
             public void clicked(InputEvent event, float x, float y) {
                 try {
                     if (Slay.authenticator.login(loginP1.getText(), passwordP1.getText())) {
-                        player1 = new Player(loginP1.getText(), 1, -1, false, new ArrayList<>());
+                        String pseudo = Slay.authenticator.getPseudo(loginP1.getText());
+                        player1 = new Player(pseudo, 1, -1, false, new ArrayList<>());
                         authTableLeft.clearChildren();
                         authTableLeft.add(new Label("Player 1 logged.", Slay.game.skin));
                         P1logged = true;
@@ -98,7 +99,8 @@ public class AuthenticatorScreen extends MenuScreen {
             public void clicked(InputEvent event, float x, float y) {
                 try {
                     if (Slay.authenticator.login(loginP2.getText(), passwordP2.getText())) {
-                        player2 = new Player(loginP2.getText(), 2, -1, false, new ArrayList<>());
+                        String pseudo = Slay.authenticator.getPseudo(loginP2.getText());
+                        player2 = new Player(pseudo, 2, -1, false, new ArrayList<>());
                         authTableRight.clearChildren();
                         authTableRight.add(new Label("Player 2 logged.", Slay.game.skin));
                         P2logged = true;
