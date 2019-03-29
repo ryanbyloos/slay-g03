@@ -80,6 +80,35 @@ public class Authenticator {
     }
 
     /**
+     * recupère le pseudo du joueur à partir de son nom de compte
+     * @param userName
+     * @return le pseudo du joueur
+     * @throws AuthenticationError
+     */
+    public String getPseudo(String userName) throws AuthenticationError {
+        try {
+            File inputFile = new File(loginFile);
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(inputFile);
+            doc.getDocumentElement().normalize();
+            NodeList nList = doc.getElementsByTagName("user");
+
+            for (int i = 0; i < nList.getLength(); i++) {
+                Node nNode = nList.item(i);
+                if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                    Element eElement = (Element) nNode;
+                    if (eElement.getAttribute("userName").equals(userName))
+                        return eElement.getAttribute("pseudo");
+                }
+            }
+            return null;
+        } catch (Exception e) {
+            throw new AuthenticationError();
+        }
+    }
+
+    /**
      * @param userName Nom de compte du joueur
      * @param pwd Mot de passe du joueur
      * @param pseudo Pseudo du joueur
