@@ -6,14 +6,17 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.File;
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -138,8 +141,32 @@ public class Authenticator {
         }
     }
 
-    public boolean start(String xmlFile, String tmxFile) {
-        return false;
+    public int[] getScore(Player player) throws AuthenticationError {
+        int[] score = new int[4];
+        try{
+            File inputFile = new File(loginFile);
+            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+            Document doc = dBuilder.parse(inputFile);
+            doc.getDocumentElement().normalize();
+            NodeList nList = doc.getElementsByTagName("user");
+            for (int i = 0; i < nList.getLength() ; i++) {
+                Node nNode = nList.item(i);
+                if(nNode.getNodeType() == Node.ELEMENT_NODE){
+                    Element eElement = (Element) nNode;
+                    if(eElement.getAttribute("pseudo").equals(player.getName())){
+                        score[0] = Integer.parseInt(eElement.getAttribute("game"));
+                        score[1] = Integer.parseInt(eElement.getAttribute("gameWin"));
+                        score[2] = Integer.parseInt(eElement.getAttribute("gameLose"));
+                        if(score[0] != 0) score[3] = (score[1]/score[0]) * 100;
+                        else score[3] = 0;
+                    }
+                }
+            }
+            return null;
+        } catch (Exception e) {
+            throw new AuthenticationError();
+        }
     }
 
     private String hashPassword(String password){
