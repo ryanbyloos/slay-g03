@@ -6,6 +6,10 @@ import be.ac.umons.slay.g03.Core.Player;
 
 import java.util.ArrayList;
 
+/**
+ * Classe instanciant un Boat contenant la distance qu'il peut encore parcourir et sa defence.
+ * Contient des methodes permetent de capturer un Boat et de faire embarquer/deplyer des Soldier
+ */
 public class Boat extends Infrastructure implements Controlable {
 
     private int t;
@@ -21,6 +25,13 @@ public class Boat extends Infrastructure implements Controlable {
         this.creationCost = 25;
     }
 
+    /**
+     * permet de deployer le dernier soldat monté dns le Boat
+     *
+     * @param source      Cell du bateau
+     * @param destination Cell du deployment
+     * @param map
+     */
     public void deploy(Cell source, Cell destination, Map map) {
         if (source.adjacentCell(map,source,false).contains(destination) && soldiers.size()>0){
             Soldier soldier = soldiers.get(soldiers.size()-1);
@@ -31,6 +42,11 @@ public class Boat extends Infrastructure implements Controlable {
     }
 
 
+    /**
+     * permet d'attquer un Bot avec un Soldier
+     * @param soldier Soldier attaquant le Boat
+     * @return
+     */
     public boolean capture(Soldier soldier) {
         if(soldier.getLevel() > defence){
             this.setOwner(soldier.getOwner());
@@ -42,6 +58,11 @@ public class Boat extends Infrastructure implements Controlable {
         return false;
     }
 
+    /**
+     * permeet de faire embarquer un Soldier dans un Boat
+     * @param soldier Soldier qui souhaite embrquer dns le Boat
+     * @return vrai si le Soldier a embarqué, faux sinon
+     */
     public boolean bord(Soldier soldier){
         if(soldiers.size()<6){
             soldiers.add(soldier);
@@ -51,6 +72,11 @@ public class Boat extends Infrastructure implements Controlable {
         return false;
     }
 
+    /** permet de deplacer un Boat
+     * @param source Cell de départ du Boat
+     * @param destination Cell de destintion de Bot
+     * @param map
+     */
     @Override
     public void move(Cell source, Cell destination, Map map) {
         if(t>0){
@@ -65,8 +91,7 @@ public class Boat extends Infrastructure implements Controlable {
                     source.setElementOn(null);
                 }
             }
-        }
-        else {
+        } else {
             this.setHasMoved(true);
         }
     }

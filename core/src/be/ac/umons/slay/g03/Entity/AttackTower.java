@@ -4,8 +4,10 @@ import be.ac.umons.slay.g03.Core.Cell;
 import be.ac.umons.slay.g03.Core.Map;
 import be.ac.umons.slay.g03.Core.Player;
 
-import java.util.ArrayList;
-
+/**
+ * Classe instanciant une AttackTower, contenat un level, et un boolean qui dit si l' AttackTower a attaque ou non
+ * Ainsi qu'une methoide pour attaquer
+ */
 public class AttackTower extends Infrastructure {
     private int level;
     private boolean hasAttack;
@@ -43,6 +45,13 @@ public class AttackTower extends Infrastructure {
         return this.level;
     }
 
+    /**
+     * permet de faire attaquer une AttackTower
+     *
+     * @param map
+     * @param tower la Cell de la tour qui attaque
+     * @param enemy la Cell l'ennemi qui est attaque
+     */
     public void attack(Map map, Cell tower, Cell enemy) {
         if (tower.towerRange(map).contains(enemy) && enemy.getElementOn() != null) {
             if (enemy.getElementOn().getOwner() == null) {
