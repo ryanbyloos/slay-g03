@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * Ajoute les fonctionnalités du Replay
+ * Ajoute les fonctionnalites du Replay
  */
 public class Replay {
 
@@ -266,7 +266,7 @@ public class Replay {
     }
 
     /**
-     * @return le nombre total de mouvement efféctué
+     * @return le nombre total de mouvement effectue
      */
     public int getTotalMove() {
         int res = 0;

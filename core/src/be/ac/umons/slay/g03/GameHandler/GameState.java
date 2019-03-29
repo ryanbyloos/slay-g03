@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 /**
- * Cette classe s'occupe de gerer la sauvegarde nécessaire pour le replay, pour reprendre une partie, ainsi que l'état de jeu de la partie
+ * Cette classe s'occupe de gerer la sauvegarde necessaire pour le replay, pour reprendre une partie, ainsi que l'état de jeu de la partie
  */
 public class GameState {
 
@@ -48,7 +48,7 @@ public class GameState {
 
     /**
      * @param map la map qui va être chargée
-     * @param loader le loader qui va être utlisée pour chargé une map
+     * @param loader le loader qui va être utlisee pour charge une map
      * @param turnPlayed le tour actuel
      * @param logFile le path vers le fichier du replay
      */
@@ -144,9 +144,9 @@ public class GameState {
     /**
      * Cette methode charge dans la map les cellules du tour turn et après move mouvement
      *
-     * @param doc  le document chargé,  contenant l'historique du jeu
-     * @param turn le tour qu'on souhaite chargé
-     * @param move le mouvement qu'on veut chargé
+     * @param doc  le document charge,  contenant l'historique du jeu
+     * @param turn le tour qu'on souhaite charge
+     * @param move le mouvement qu'on veut charge
      */
     private void refreshMap(Document doc, int turn, int move) {
         ArrayList<Cell> newCells = new ArrayList<>();
@@ -321,42 +321,42 @@ public class GameState {
 
 
     /**
-     * S'occupe de gerer les différents états du jeu
+     * S'occupe de gerer les differents etats du jeu
      *
      * @param x position en axe x
      * @param y position en axe y
      */
     public void handle(int x, int y) {
         Cell cell;
-        if ((cell = map.findCell(x, y)) == null) {// si la  cellule est inexistante on reset les états
+        if ((cell = map.findCell(x, y)) == null) {// si la  cellule est inexistante on reset les etats
             states.setUpgradeAble(false);
             states.setTerritoryLoaded(null);
             states.setDisplayCells(null);
             states.setHold(null);
             states.reset();
         } else {
-            if (states.isUpgradeAble()) { // si on est dans le mode upgradeable, on reste les états
+            if (states.isUpgradeAble()) { // si on est dans le mode upgradeable, on reste les etats
                 states.setUpgradeAble(false);
                 states.setHold(null);
                 states.reset();
             } else if (states.isEverythingFalse()) { // si rien ne se passe , tous est à faux.
-                if ((cell.getElementOn() == null || cell.getElementOn() instanceof Capital || cell.getElementOn() instanceof DefenceTower) && cell.getOwner() == map.playingPlayer()) {// si il n'y a rien sur la cellule ou qu'il y a une capital et la cellule appartient au joueur qui joue alors il y a un territoire qui est selectionée
-                    states.setTerritoryLoaded(cell.findTerritory());//territoire selectionné
+                if ((cell.getElementOn() == null || cell.getElementOn() instanceof Capital || cell.getElementOn() instanceof DefenceTower) && cell.getOwner() == map.playingPlayer()) {// si il n'y a rien sur la cellule ou qu'il y a une capital et la cellule appartient au joueur qui joue alors il y a un territoire qui est selectionee
+                    states.setTerritoryLoaded(cell.findTerritory());//territoire selectionne
                     states.setDisplayCells(states.getTerritoryLoaded().getCells());//cellule à afficher
                     states.setTerritorySelected(true);
-                } else if (cell.getElementOn() != null) {//sinon si il y a un élément dessus
-                    if (cell.getElementOn() instanceof Soldier) {// si c'est un soldat, celui a été sélectionnée si possible
+                } else if (cell.getElementOn() != null) {//sinon si il y a un element dessus
+                    if (cell.getElementOn() instanceof Soldier) {// si c'est un soldat, celui a ete selectionnee si possible
                         if (((Soldier) cell.getElementOn()).select()) {
                             states.setSoldierSelected(true);
                             states.setHold(cell);
                         }
-                    } else if (cell.getElementOn() instanceof Boat) { // si c'est un bateau, celui a été sélectionnée si possible
+                    } else if (cell.getElementOn() instanceof Boat) { // si c'est un bateau, celui a ete selectionnee si possible
                         if (((Boat) cell.getElementOn()).select()) {
                             states.setBoatSelected(true);
                             states.setHold(cell);
                         }
 
-                    } else if (cell.getElementOn() instanceof AttackTower) { // si c'est une tour d'attaque, celui-ci a été sélectionnée si possible
+                    } else if (cell.getElementOn() instanceof AttackTower) { // si c'est une tour d'attaque, celui-ci a ete selectionnee si possible
                         if (((AttackTower) cell.getElementOn()).select()) {
                             states.setAttackTowerSelected(true);
                             states.setHold(cell);
@@ -365,8 +365,8 @@ public class GameState {
                     }
                 }
             } else if (states.isTerritorySelected()) { // si le territoire est selectionne
-                if (states.isOtherCreation()) {//si on est en cours de creation d'un soldat, d'une tour attaque ou bien une tour de défense(ces états sont défini à partir de TerritoryHUD)
-                    if (!cell.isWater() && (cell.getElementOn() == null || cell.getElementOn() instanceof Tree)) {// si la cellule n'est pas une cellule d'eau et la celulle est vide ou il y a un arbre dessus, on creer l'élément
+                if (states.isOtherCreation()) {//si on est en cours de creation d'un soldat, d'une tour attaque ou bien une tour de defense(ces etats sont defini à partir de TerritoryHUD)
+                    if (!cell.isWater() && (cell.getElementOn() == null || cell.getElementOn() instanceof Tree)) {// si la cellule n'est pas une cellule d'eau et la celulle est vide ou il y a un arbre dessus, on creer l'element
                         if (states.getDisplayCells().contains(cell)) {
                             cell.setElementOn(newElement(elementToBuild, map.playingPlayer()));
                             cell.setOwner(map.playingPlayer());
@@ -409,7 +409,7 @@ public class GameState {
                 states.setTerritoryLoaded(null);
                 states.setDisplayCells(null);
                 states.reset();
-            } else if (states.isSoldierSelected() || states.isBoatSelected() || states.isAttackTowerSelected()) {//là on est dans le cas où une unité est selectionnée
+            } else if (states.isSoldierSelected() || states.isBoatSelected() || states.isAttackTowerSelected()) {//là on est dans le cas où une unite est selectionnee
                 if (states.isSoldierSelected()) {
                     Soldier soldier = (Soldier) states.getHold().getElementOn();
                     soldier.move(states.getHold(), cell, map);
@@ -510,7 +510,7 @@ public class GameState {
 
 
     /**
-     * Va instancier une entité en fonction des paramètres
+     * Va instancier une entite en fonction des paramètres
      *
      * @param elementToBuild
      * @param player
@@ -539,7 +539,7 @@ public class GameState {
     }
 
     /**
-     * sauvegarde dans le fichier games.xml les nom des replays des parties qui ont étées lancées et indique si la parti avait été finie ou pas.
+     * sauvegarde dans le fichier games.xml les nom des replays des parties qui ont etees lancees et indique si la parti avait ete finie ou pas.
      *
      * @throws IOException
      * @throws TransformerException
@@ -747,7 +747,7 @@ public class GameState {
     }
 
     /**
-     * passe le tour et donc réinitialise les états du jeu et sauvegarde le tour.
+     * passe le tour et donc reinitialise les etats du jeu et sauvegarde le tour.
      */
     public void nextTurn() {
         for (Cell cell : map.getCells()
@@ -828,7 +828,7 @@ public class GameState {
     }
 
     /**
-     * rend déplacable les soldats du joueur passé en paramètre
+     * rend deplacable les soldats du joueur passe en paramètre
      *
      * @param player
      */
@@ -845,7 +845,7 @@ public class GameState {
     }
 
     /**
-     * rend déplacable les bateaux du joueur passé en paramètre
+     * rend deplacable les bateaux du joueur passe en paramètre
      *
      * @param player
      */
@@ -861,7 +861,7 @@ public class GameState {
     }
 
     /**
-     * permet au tour de pouvoir re-attaquer au tour du joueur passé en paramètre
+     * permet au tour de pouvoir re-attaquer au tour du joueur passe en paramètre
      *
      * @param player
      */
@@ -876,7 +876,7 @@ public class GameState {
     }
 
     /**
-     * sauvegarde l'historique dans le logfile(attribut de cette classe) le mouvement du joueur passé en paramètre.
+     * sauvegarde l'historique dans le logfile(attribut de cette classe) le mouvement du joueur passe en paramètre.
      *
      * @param player
      * @throws ReplayParserException
@@ -1029,7 +1029,7 @@ public class GameState {
     }
 
     /**
-     * si il y a une partie en cours, cette méthode va attribué les chemin de fichier dans les attributs du loader de cette classe.
+     * si il y a une partie en cours, cette methode va attribue les chemin de fichier dans les attributs du loader de cette classe.
      * @return vrai si il a une partie en cours. autrement faux
      * @throws WrongFormatException
      */

@@ -50,8 +50,8 @@ public class Loader {
     }
 
     /**
-     * lit le fichier xml et charge les entitées en fonction de celui-ci
-     * @param map map dans laquelle on charge les entitées sur les cellules
+     * lit le fichier xml et charge les entitees en fonction de celui-ci
+     * @param map map dans laquelle on charge les entitees sur les cellules
      * @param save determine si il s'agit de charger une sauvegarde ou non
      * @throws WrongFormatException
      */
