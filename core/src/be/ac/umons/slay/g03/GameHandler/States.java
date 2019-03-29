@@ -5,6 +5,9 @@ import be.ac.umons.slay.g03.Core.Territory;
 
 import java.util.ArrayList;
 
+/**
+ * classe contenant les états du jeu
+ */
 public class States {
     private boolean boatCreation;
     private boolean mineCreation;

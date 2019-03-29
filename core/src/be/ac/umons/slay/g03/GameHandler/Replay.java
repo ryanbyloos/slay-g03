@@ -16,6 +16,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * Ajoute les fonctionnalités du Replay
+ */
 public class Replay {
 
     private int turn, move, moveDone;
@@ -32,6 +35,10 @@ public class Replay {
         this.moveDone = 0;
     }
 
+    /**
+     * Charge pour chaque tour i et le mouvement j, les cellules de la map obtenu du fichier replay
+     * @throws WrongFormatException
+     */
     public void setReplay() throws WrongFormatException {
 //        File file = new File(Gdx.files.getLocalStoragePath().concat(replayFileName));
         File file = new File(replayFileName);
@@ -258,18 +265,9 @@ public class Replay {
         this.turn = turn;
     }
 
-    public int[] getTurnAndMove(int totalMove) {
-        int k = totalMove;
-        int[] res = new int[]{k, 0};
-        for (int i = 0; i < replay.size(); i++) {
-            if (replay.get(i).size() < res[0]) {
-                res[0] -= replay.get(i).size();
-                res[1]++;
-            }
-        }
-        return res;
-    }
-
+    /**
+     * @return le nombre total de mouvement efféctué
+     */
     public int getTotalMove() {
         int res = 0;
         for (int i = 0; i < replay.size(); i++) {

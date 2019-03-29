@@ -34,6 +34,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * Cette classe s'occupe de gerer la sauvegarde nécessaire pour le replay, pour reprendre une partie, ainsi que l'état de jeu de la partie
+ */
 public class GameState {
 
     private Map map;
@@ -43,6 +46,12 @@ public class GameState {
     private int turnPlayed;
     private String elementToBuild;
 
+    /**
+     * @param map la map qui va être chargée
+     * @param loader le loader qui va être utlisée pour chargé une map
+     * @param turnPlayed le tour actuel
+     * @param logFile le path vers le fichier du replay
+     */
     public GameState(Map map, Loader loader, int turnPlayed, String logFile) {
         this.map = map;
         this.loader = loader;
@@ -53,7 +62,6 @@ public class GameState {
 
     /**
      * copie le contenue d'un fichier dans un autre fichier
-     *
      * @param source fichier source
      * @param dest   fichier destination
      * @throws IOException
@@ -506,7 +514,7 @@ public class GameState {
      *
      * @param elementToBuild
      * @param player
-     * @return
+     * @return l'instance de MapElement
      */
     private MapElement newElement(String elementToBuild, Player player) {
         switch (elementToBuild) {
@@ -530,6 +538,14 @@ public class GameState {
         return null;
     }
 
+    /**
+     * sauvegarde dans le fichier games.xml les nom des replays des parties qui ont étées lancées et indique si la parti avait été finie ou pas.
+     *
+     * @throws IOException
+     * @throws TransformerException
+     * @throws ParserConfigurationException
+     * @throws SAXException
+     */
     public void save() throws IOException, TransformerException, ParserConfigurationException, SAXException {
         saveTmxFile();
         String xml = saveXmlFile();
@@ -730,6 +746,9 @@ public class GameState {
 
     }
 
+    /**
+     * passe le tour et donc réinitialise les états du jeu et sauvegarde le tour.
+     */
     public void nextTurn() {
         for (Cell cell : map.getCells()
         ) {
@@ -808,6 +827,11 @@ public class GameState {
         states.reset();
     }
 
+    /**
+     * rend déplacable les soldats du joueur passé en paramètre
+     *
+     * @param player
+     */
     private void resetSoldiers(Player player) {
         for (Territory t : player.getTerritories()
         ) {
@@ -820,6 +844,11 @@ public class GameState {
         }
     }
 
+    /**
+     * rend déplacable les bateaux du joueur passé en paramètre
+     *
+     * @param player
+     */
     private void resetBoats(Player player) {
         for (Cell cell : map.getCells()) {
 
@@ -831,6 +860,11 @@ public class GameState {
         }
     }
 
+    /**
+     * permet au tour de pouvoir re-attaquer au tour du joueur passé en paramètre
+     *
+     * @param player
+     */
     private void resetAttackTower(Player player) {
         for (Cell cell : map.getCells()
         ) {
@@ -841,6 +875,12 @@ public class GameState {
         }
     }
 
+    /**
+     * sauvegarde l'historique dans le logfile(attribut de cette classe) le mouvement du joueur passé en paramètre.
+     *
+     * @param player
+     * @throws ReplayParserException
+     */
     public void storeMove(Player player) throws ReplayParserException {
         player.setMoveNumber(player.getMoveNumber() + 1);
         player.setMaxMoveNumber(player.getMoveNumber() + 1);
@@ -955,6 +995,11 @@ public class GameState {
 
     }
 
+    /**
+     * ajoute le noeud du nouveau tour dans le logfile
+     *
+     * @throws ReplayParserException
+     */
     public void storeTurn() throws ReplayParserException {
         turnPlayed++;
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
@@ -983,6 +1028,11 @@ public class GameState {
 
     }
 
+    /**
+     * si il y a une partie en cours, cette méthode va attribué les chemin de fichier dans les attributs du loader de cette classe.
+     * @return vrai si il a une partie en cours. autrement faux
+     * @throws WrongFormatException
+     */
     public boolean checkAndSetPending() throws WrongFormatException {
         try {
             File file = new File("assets/Saves/games.xml");
@@ -1017,6 +1067,10 @@ public class GameState {
 
     }
 
+    /**
+     * @return vrai si il a une partie en cours. autrement faux
+     * @throws WrongFormatException
+     */
     public boolean isPending() throws WrongFormatException {
         try {
             File file = new File("assets/Saves/games.xml");
@@ -1049,6 +1103,10 @@ public class GameState {
         }
     }
 
+    /**
+     * supprime le fichier xml, tmx, et replay.
+     * @throws WrongFormatException
+     */
     public void deleteGame() throws WrongFormatException {
         try {
             File file = new File("assets/Saves/games.xml");
@@ -1090,6 +1148,10 @@ public class GameState {
         }
     }
 
+    /**
+     * supprime le fichier xml, tmx.
+     * @throws WrongFormatException
+     */
     public void deleteSaves() throws WrongFormatException {
         try {
             File file = new File("assets/Saves/games.xml");
@@ -1128,9 +1190,13 @@ public class GameState {
         }
     }
 
+    /**
+     * sauvegarde le replay ainsi que attribue son path à l'attribut logfile de cette classe
+     * @throws ReplayParserException
+     */
     public void saveReplay() throws ReplayParserException {
         try {
-            if (isPending()) deleteGame();
+            if (isPending()) deleteGame(); // si il y avait une partie en cours avec les 2 joueurs obtenu dans le fichier xml, on supprime les sauvegarde ainsi que le replay.
         } catch (WrongFormatException e) {
             e.printStackTrace();
         }
@@ -1160,11 +1226,6 @@ public class GameState {
     public States getStates() {
         return states;
     }
-
-    public String getElementToBuild() {
-        return elementToBuild;
-    }
-
     public void setElementToBuild(String elementToBuild) {
         this.elementToBuild = elementToBuild;
     }

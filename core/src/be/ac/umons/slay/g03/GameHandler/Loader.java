@@ -22,6 +22,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+/**
+ * Cette classe traite les chargements d'une partie
+ */
 public class Loader {
     private String name;
     private String tmxFile;
@@ -46,6 +49,12 @@ public class Loader {
         loadFromXmlFile(map, save);
     }
 
+    /**
+     * lit le fichier xml et charge les entitées en fonction de celui-ci
+     * @param map map dans laquelle on charge les entitées sur les cellules
+     * @param save determine si il s'agit de charger une sauvegarde ou non
+     * @throws WrongFormatException
+     */
     public void loadFromXmlFile(Map map, boolean save) throws WrongFormatException {
         try {
             String path;
@@ -237,6 +246,12 @@ public class Loader {
         }
     }
 
+    /**
+     * lit le fichier tmx et charge les cellules en fonctionne de celui-ci
+     * @param map charge dans celle-ci les cellules
+     * @param save determine si il s'agit de charger une sauvegarde ou non
+     * @throws WrongFormatException
+     */
     public void loadFromTmxFile(Map map, boolean save) throws WrongFormatException {
         try {
             String path;
