@@ -33,7 +33,6 @@ public class LevelPicker extends MenuScreen {
                     e.printStackTrace();
                 }
                 world = new World(map, loader);
-//                world.gameState.getStates().
                 if (Slay.worldScreen == null)
                     Slay.worldScreen = new WorldScreen(world);
                 Slay.setScreen(Slay.worldScreen);

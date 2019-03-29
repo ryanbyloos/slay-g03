@@ -28,22 +28,28 @@ public class AuthenticatorScreen extends MenuScreen {
     TextField loginP2 = new TextField("", Slay.game.skin);
     TextField passwordP2 = new TextField("", Slay.game.skin);
 
-    TextButton authP1 = new TextButton("Sign in", Slay.game.skin);
-    TextButton authP2 = new TextButton("Sign in", Slay.game.skin);
+    TextButton authP1 = new TextButton("Log in", Slay.game.skin);
+    TextButton authP2 = new TextButton("Log in", Slay.game.skin);
+
+    TextButton guestP1 = new TextButton("Log as guest", Slay.game.skin);
+    TextButton guestP2 = new TextButton("Log as guest", Slay.game.skin);
+
 
     TextButton register = new TextButton("REGISTER", Slay.game.skin);
 
     TextButton chooseLevel = new TextButton("CHOOSE LEVEL", Slay.game.skin);
 
-    boolean P1logged = false;
-    boolean P2logged = false;
+    boolean P1logged, P2logged;
 
     @Override
     public void show() {
         super.show();
+        P1logged = false;
+        P2logged = false;
         authTableLeft = new Table();
         authTableRight = new Table();
         chooseLevelTable = new Table().center().bottom().padBottom(32);
+        chooseLevelTable.setFillParent(true);
         authTableLeft.setSize(Slay.w / 2, Slay.h);
         authTableLeft.setPosition(0, 0);
         authTableRight.setSize(Slay.w / 2, Slay.h);
@@ -64,13 +70,14 @@ public class AuthenticatorScreen extends MenuScreen {
         passwordP2.setPasswordCharacter('*');
         authTableLeft.row();
         authTableRight.row();
-        authTableLeft.add(new Label("", Slay.game.skin));
+        authTableLeft.add(guestP1);
         authTableLeft.add(authP1).pad(10);
-        authTableRight.add(new Label("", Slay.game.skin));
+        authTableRight.add(guestP2);
         authTableRight.add(authP2).pad(10);
         table.add(register).padLeft(Slay.w - 2 * Slay.buttonW - 20).width(Slay.buttonW).height(Slay.buttonH);
         stage.addActor(authTableLeft);
         stage.addActor(authTableRight);
+        stage.addActor(chooseLevelTable);
 
         authP1.addListener(new ClickListener() {
             @Override
@@ -101,6 +108,26 @@ public class AuthenticatorScreen extends MenuScreen {
             }
         });
 
+        guestP1.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                player1 = new Player("Guest 1", 1, -1, true, new ArrayList<>());
+                authTableLeft.clearChildren();
+                authTableLeft.add(new Label("Player 1 logged.", Slay.game.skin));
+                P1logged = true;
+            }
+        });
+
+        guestP2.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                player2 = new Player("Guest 2", 2, -1, true, new ArrayList<>());
+                authTableRight.clearChildren();
+                authTableRight.add(new Label("Player 2 logged.", Slay.game.skin));
+                P2logged = true;
+            }
+        });
+
         register.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -117,10 +144,17 @@ public class AuthenticatorScreen extends MenuScreen {
         if (P1logged && P2logged && chooseLevel == null) {
             Map map = new Map(new ArrayList<>(), player1, player2);
             Slay.levelPicker = new LevelPicker(map);
-//            Slay.setScreen(Slay.levelPicker);
+            chooseLevel = new TextButton("CHOOSE LEVEL", Slay.game.skin);
+            chooseLevel.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    Slay.setScreen(Slay.levelPicker);
+                }
+            });
             chooseLevelTable.add(chooseLevel);
-        } else {
+        } else if (chooseLevel != null && (!P1logged || !P2logged)) {
             chooseLevelTable.clearChildren();
+            chooseLevel = null;
         }
     }
 }
