@@ -80,6 +80,87 @@ public class Authenticator {
     }
 
     /**
+     * change le mot de passe du joueur
+     * @param userName nom de compte du joueur
+     * @param oldPassword ancien mot de passe du joueur
+     * @param newPassword vieu mot de passe du joueur
+     * @return vrai si le mot de passe à ete modifie
+     * @throws AuthenticationError
+     */
+    public boolean changePassword(String userName, String oldPassword, String newPassword) throws AuthenticationError {
+        try {
+            if(login(userName,oldPassword)){
+                File inputFile = new File(loginFile);
+                DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+                Document doc = dBuilder.parse(inputFile);
+                doc.getDocumentElement().normalize();
+                NodeList nList = doc.getElementsByTagName("user");
+
+                for (int i = 0; i < nList.getLength(); i++) {
+                    Node nNode = nList.item(i);
+                    if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                        Element eElement = (Element) nNode;
+                        if (eElement.getAttribute("userName").equals(userName) ){
+                            eElement.setAttribute("password", hashPassword(newPassword));
+                            DOMSource source = new DOMSource(doc);
+                            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+                            Transformer transformer = transformerFactory.newTransformer();
+                            StreamResult result = new StreamResult(loginFile);
+                            transformer.transform(source, result);
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }catch (Exception e){
+            throw new AuthenticationError();
+        }
+    }
+
+
+    /**
+     * change l'avatar du joueur
+     * @param userName le nom de compte du joueur
+     * @param password le mot de passe du joueur
+     * @param newAvatar le nouvel avatar du joueur
+     * @return
+     * @throws AuthenticationError
+     */
+    public boolean changeAvatar(String userName, String password, String newAvatar) throws AuthenticationError {
+        try {
+            if(login(userName,password)){
+                File inputFile = new File(loginFile);
+                DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+                Document doc = dBuilder.parse(inputFile);
+                doc.getDocumentElement().normalize();
+                NodeList nList = doc.getElementsByTagName("user");
+
+                for (int i = 0; i < nList.getLength(); i++) {
+                    Node nNode = nList.item(i);
+                    if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+                        Element eElement = (Element) nNode;
+                        if (eElement.getAttribute("userName").equals(userName) ){
+                            eElement.setAttribute("avatar", newAvatar);
+                            DOMSource source = new DOMSource(doc);
+                            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+                            Transformer transformer = transformerFactory.newTransformer();
+                            StreamResult result = new StreamResult(loginFile);
+                            transformer.transform(source, result);
+                            return true;
+                        }
+                    }
+                }
+            }
+            return false;
+        }catch (Exception e){
+            throw new AuthenticationError();
+        }
+    }
+
+    /**
      * recupère le pseudo du joueur à partir de son nom de compte
      * @param userName
      * @return le pseudo du joueur

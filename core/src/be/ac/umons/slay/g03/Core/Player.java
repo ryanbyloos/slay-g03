@@ -4,6 +4,9 @@ import be.ac.umons.slay.g03.Entity.Grave;
 
 import java.util.ArrayList;
 
+/**
+ * Classe instanciant un Player, contenant son pseudo, son id, son nombre de mouvement, si il est un invité et si c'est à son tour
+ */
 public class Player {
     private String name;
     private int id;
@@ -21,6 +24,9 @@ public class Player {
         this.id = id;
     }
 
+    /**
+     * check si les Teritory du Player sont en faillite
+     */
     public void checkTerritory() {
         for (Territory territory : territories
         ) {
@@ -28,6 +34,10 @@ public class Player {
         }
     }
 
+    /**
+     * permet de savoir si le joueur a perdu ou non
+     * @return vrai si le joueur a perdu
+     */
     public boolean isOver() {
         if(territories.size() == 0) return true;
 
@@ -35,7 +45,9 @@ public class Player {
     }
 
 
-
+    /**
+     * retire toutes les tombes de la map
+     */
     public void cleanGrave(){
         for (Territory territory: territories
              ) {
@@ -48,6 +60,10 @@ public class Player {
         }
     }
 
+    /**
+     * retire le Territory des territories du Player
+     * @param territory Territory a retirer
+     */
     public void removeTerritory(Territory territory) {
         territories.remove(territory);
     }
