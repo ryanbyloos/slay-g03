@@ -1203,7 +1203,7 @@ public class GameState {
         Date today = new Date();
         SimpleDateFormat changeFormat = new SimpleDateFormat("dd.MM.yyyy.HH.mm.ss");
         String date = changeFormat.format(today);
-        file = Gdx.files.getLocalStoragePath().concat("assets/Replays/").concat(map.getPlayer1().getName() + "-" + map.getPlayer2().getName() + "(" + date + ")").concat(".xml"); // TODO: 02-03-19 a changer par la suite (le nom, les 2 cas possible si(la partie repris est une sauvegarde ou pas ect ..)
+        file = Gdx.files.getLocalStoragePath().concat("assets/Replays/").concat(map.getPlayer1().getName() + "-" + map.getPlayer2().getName() + "(" + date + ")").concat(".xml");
         logFile = file;
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder;
