@@ -22,23 +22,31 @@ public class LevelPicker extends MenuScreen {
         super.show();
         Table table = new Table().center();
         table.setFillParent(true);
-        TextButton lv1 = new TextButton("Level 1", Slay.game.skin);
-        lv1.addListener(new ClickListener() {
-            @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Loader loader = new Loader("g3_2.tmx", "g3_3.xml", "Quicky");
-                try {
-                    loader.load(map, false);
-                } catch (WrongFormatException e) {
-                    e.printStackTrace();
+        int j = 1;
+        for (int i = 1; i <= 21; i += 2) {
+            TextButton button = new TextButton("Level " + j, Slay.game.skin);
+            j++;
+//            Loader loader = new Loader("g3_" + (i-1) + ".tmx", "g3_"+i+".xml", "");
+            String tmx = "g3_" + (i - 1) + ".tmx";
+            String xml = "g3_" + i + ".xml";
+            button.addListener(new ClickListener() {
+                @Override
+                public void clicked(InputEvent event, float x, float y) {
+                    Loader loader = new Loader(tmx, xml, "");
+                    try {
+                        loader.load(map, false);
+                    } catch (WrongFormatException e) {
+                        e.printStackTrace();
+                    }
+                    world = new World(map, loader);
+                    if (Slay.worldScreen == null)
+                        Slay.worldScreen = new WorldScreen(world);
                 }
-                world = new World(map, loader);
-                if (Slay.worldScreen == null)
-                    Slay.worldScreen = new WorldScreen(world);
-                Slay.setScreen(Slay.worldScreen);
-            }
-        });
-        table.add(lv1);
+            });
+            table.add(button).pad(10).width(Slay.buttonW).height(Slay.buttonH);
+            if (j % 2 != 0)
+                table.row();
+        }
         stage.addActor(table);
     }
 }
