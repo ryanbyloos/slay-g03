@@ -51,6 +51,13 @@ public class GameState {
         this.states = new States();
     }
 
+    /**
+     * copie le contenue d'un fichier dans un autre fichier
+     *
+     * @param source fichier source
+     * @param dest   fichier destination
+     * @throws IOException
+     */
     private static void copyFile(File source, File dest) throws IOException {
         FileChannel sourceChannel = null;
         FileChannel destChannel = null;
@@ -59,10 +66,6 @@ public class GameState {
         destChannel.transferFrom(sourceChannel, 0, sourceChannel.size());
         sourceChannel.close();
         destChannel.close();
-    }
-
-    public void pause() {
-
     }
 
     public void resume() {
@@ -75,6 +78,12 @@ public class GameState {
         }
     }
 
+    /**
+     * permet au joueur qui joue de revenir en arriere si possible
+     *
+     * @param player
+     * @throws ReplayParserException
+     */
     public void undo(Player player) throws ReplayParserException {
         if (player.getMoveNumber() - 1 >= 0) {
             player.setMoveNumber(player.getMoveNumber() - 1);
@@ -96,6 +105,12 @@ public class GameState {
         }
     }
 
+    /**
+     * permet au joueur qui joue d'aller en avant si possible
+     *
+     * @param player
+     * @throws ReplayParserException
+     */
     public void redo(Player player) throws ReplayParserException {
         if (player.getMoveNumber() + 1 < player.getMaxMoveNumber()) {
             player.setMoveNumber(player.getMoveNumber() + 1);
@@ -118,6 +133,13 @@ public class GameState {
         }
     }
 
+    /**
+     * Cette methode charge dans la map les cellules du tour turn et après move mouvement
+     *
+     * @param doc  le document chargé,  contenant l'historique du jeu
+     * @param turn le tour qu'on souhaite chargé
+     * @param move le mouvement qu'on veut chargé
+     */
     private void refreshMap(Document doc, int turn, int move) {
         ArrayList<Cell> newCells = new ArrayList<>();
         ArrayList<Territory> player1 = new ArrayList<>();
@@ -289,10 +311,13 @@ public class GameState {
         map.getPlayer2().setTerritories(player2);
     }
 
-    public void quit() {
 
-    }
-
+    /**
+     * S'occupe de gerer les différents états du jeu
+     *
+     * @param x position en axe x
+     * @param y position en axe y
+     */
     public void handle(int x, int y) {
         Cell cell;
         if ((cell = map.findCell(x, y)) == null) {// si la  cellule est inexistante on reset les états
@@ -302,7 +327,7 @@ public class GameState {
             states.setHold(null);
             states.reset();
         } else {
-            if (states.isUpgradeAble()) {
+            if (states.isUpgradeAble()) { // si on est dans le mode upgradeable, on reste les états
                 states.setUpgradeAble(false);
                 states.setHold(null);
                 states.reset();
@@ -312,36 +337,34 @@ public class GameState {
                     states.setDisplayCells(states.getTerritoryLoaded().getCells());//cellule à afficher
                     states.setTerritorySelected(true);
                 } else if (cell.getElementOn() != null) {//sinon si il y a un élément dessus
-                    if (cell.getElementOn() instanceof Soldier) {
+                    if (cell.getElementOn() instanceof Soldier) {// si c'est un soldat, celui a été sélectionnée si possible
                         if (((Soldier) cell.getElementOn()).select()) {
                             states.setSoldierSelected(true);
                             states.setHold(cell);
                         }
-                    } else if (cell.getElementOn() instanceof Boat) {
-                        if (cell.getElementOn() instanceof Boat) {
-                            if (((Boat) cell.getElementOn()).select()) {
-                                states.setBoatSelected(true);
-                                states.setHold(cell);
-                            }
+                    } else if (cell.getElementOn() instanceof Boat) { // si c'est un bateau, celui a été sélectionnée si possible
+                        if (((Boat) cell.getElementOn()).select()) {
+                            states.setBoatSelected(true);
+                            states.setHold(cell);
                         }
-                    } else if (cell.getElementOn() instanceof AttackTower) {
-                        if (cell.getElementOn() instanceof AttackTower) {
-                            if (((AttackTower) cell.getElementOn()).select()) {
-                                states.setAttackTowerSelected(true);
-                                states.setHold(cell);
-                            }
+
+                    } else if (cell.getElementOn() instanceof AttackTower) { // si c'est une tour d'attaque, celui-ci a été sélectionnée si possible
+                        if (((AttackTower) cell.getElementOn()).select()) {
+                            states.setAttackTowerSelected(true);
+                            states.setHold(cell);
                         }
+
                     }
                 }
             } else if (states.isTerritorySelected()) { // si le territoire est selectionne
                 if (states.isOtherCreation()) {//si on est en cours de creation d'un soldat, d'une tour attaque ou bien une tour de défense(ces états sont défini à partir de TerritoryHUD)
-                    if (!cell.isWater() && (cell.getElementOn() == null || cell.getElementOn() instanceof Tree)) {
+                    if (!cell.isWater() && (cell.getElementOn() == null || cell.getElementOn() instanceof Tree)) {// si la cellule n'est pas une cellule d'eau et la celulle est vide ou il y a un arbre dessus, on creer l'élément
                         if (states.getDisplayCells().contains(cell)) {
                             cell.setElementOn(newElement(elementToBuild, map.playingPlayer()));
                             cell.setOwner(map.playingPlayer());
                             states.getTerritoryLoaded().findCapital().addMoney(-cell.getElementOn().getCreationCost());
                             try {
-                                storeMove(map.playingPlayer());
+                                storeMove(map.playingPlayer()); //sauvegarde la map après le mouvement
                             } catch (ReplayParserException e) {
                             }
                         }
@@ -378,8 +401,6 @@ public class GameState {
                 states.setTerritoryLoaded(null);
                 states.setDisplayCells(null);
                 states.reset();
-//                states.setTerritorySelected(true);
-//                System.out.println(states);
             } else if (states.isSoldierSelected() || states.isBoatSelected() || states.isAttackTowerSelected()) {//là on est dans le cas où une unité est selectionnée
                 if (states.isSoldierSelected()) {
                     Soldier soldier = (Soldier) states.getHold().getElementOn();
@@ -480,6 +501,13 @@ public class GameState {
     }
 
 
+    /**
+     * Va instancier une entité en fonction des paramètres
+     *
+     * @param elementToBuild
+     * @param player
+     * @return
+     */
     private MapElement newElement(String elementToBuild, Player player) {
         switch (elementToBuild) {
             case "soldier0":
@@ -503,7 +531,6 @@ public class GameState {
     }
 
     public void save() throws IOException, TransformerException, ParserConfigurationException, SAXException {
-        System.out.println(loader.getTmxFile());
         saveTmxFile();
         String xml = saveXmlFile();
         String tmx = saveTmxFile();
@@ -1073,38 +1100,6 @@ public class GameState {
                             xmlFile.delete();
                             tmxFile.delete();
                             game.setAttribute("pending", "false");
-                        }
-                    }
-                }
-            }
-            DOMSource source = new DOMSource(doc);
-            TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            Transformer transformer = transformerFactory.newTransformer();
-            StreamResult result = new StreamResult(file);
-            transformer.transform(source, result);
-        } catch (ParserConfigurationException | IOException | SAXException | TransformerException e) {
-            throw new WrongFormatException();
-        }
-    }
-
-    public void deleteGamePending() throws WrongFormatException {
-        try {
-            File file = new File("assets/Saves/games.xml");
-            DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-            Document doc = dBuilder.parse(file);
-            doc.getDocumentElement().normalize();
-            NodeList games = doc.getElementsByTagName("game");
-            for (int i = 0; i < games.getLength(); i++) {
-                Node node = games.item(i);
-                if (node.getNodeType() == Node.ELEMENT_NODE) {
-                    Element game = (Element) node;
-                    boolean pending = Boolean.parseBoolean(game.getAttribute("pending"));
-                    if (pending) {
-                        String p1 = game.getAttribute("player1");
-                        String p2 = game.getAttribute("player2");
-                        if (map.getPlayer1().getName().equals(p1) && map.getPlayer2().getName().equals(p2)) {
-                            game.getParentNode().removeChild(game);
                         }
                     }
                 }
