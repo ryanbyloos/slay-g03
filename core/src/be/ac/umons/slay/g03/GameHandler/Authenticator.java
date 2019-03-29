@@ -184,6 +184,11 @@ public class Authenticator {
                     }
                 }
             }
+            DOMSource source = new DOMSource(doc);
+            TransformerFactory transformerFactory = TransformerFactory.newInstance();
+            Transformer transformer = transformerFactory.newTransformer();
+            StreamResult result = new StreamResult(loginFile);
+            transformer.transform(source, result);
 
         } catch (Exception e) {
             throw new AuthenticationError();
