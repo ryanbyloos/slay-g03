@@ -1,12 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><games>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<games>
 
-    <game pending="false" player1="Guest 1" player2="Guest 2" replay="Guest 1-Guest 2(29.03.2019.11.10.51).xml"
-          tmx="Guest 1-Guest 2(29.03.2019.11.10.51)g3_10.tmx" turn="0"
-          xml="Guest 1-Guest 2(29.03.2019.11.10.51)g3_11.xml"/>
-    <game pending="false" player1="Guest 1" player2="Guest 2" replay="Guest 1-Guest 2(29.03.2019.11.40.47).xml"
-          tmx="Guest 1-Guest 2(29.03.2019.11.40.47)g3_10.tmx" turn="0"
-          xml="Guest 1-Guest 2(29.03.2019.11.40.47)g3_11.xml"/>
-    <game pending="true" player1="Guest 1" player2="Guest 2" replay="Guest 1-Guest 2(29.03.2019.12.06.55).xml"
-          tmx="Guest 1-Guest 2(29.03.2019.12.06.55)g3_0.tmx" turn="0"
-          xml="Guest 1-Guest 2(29.03.2019.12.06.55)g3_1.xml"/>
 </games>

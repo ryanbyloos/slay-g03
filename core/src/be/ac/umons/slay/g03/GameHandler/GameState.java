@@ -328,6 +328,9 @@ public class GameState {
                         if (cell.getElementOn() instanceof AttackTower) {
                             if (((AttackTower) cell.getElementOn()).select()) {
                                 states.setAttackTowerSelected(true);
+                                if (cell.getElementOn().getLevel() < 3 && cell.getElementOn().getLevel() >= 0) {
+                                    states.setUpgradeAble(true);
+                                }
                                 states.setHold(cell);
                             }
                         }
@@ -471,12 +474,10 @@ public class GameState {
                         states.setHold(null);
                         states.reset();
                     }
-
-
                 }
             }
-
         }
+
     }
 
 
@@ -571,7 +572,7 @@ public class GameState {
         int splitIndex = logFile.lastIndexOf('/') + 1;
         String path = logFile.substring(splitIndex, logFile.length() - 4);
 //        String file = Gdx.files.getLocalStoragePath().concat("assets/Saves/").concat(path).concat(loader.getXmlFile());
-        String file = "assets/Saves" + path + loader.getXmlFile();
+        String file = "assets/Saves/" + path + loader.getXmlFile();
         DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder documentBuilder;
         documentBuilder = documentBuilderFactory.newDocumentBuilder();

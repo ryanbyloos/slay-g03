@@ -60,7 +60,7 @@ public class Cell {
     public void levelUpTower() {
         int lv = elementOn.getLevel();
         int money = findTerritory().findCapital().getMoney();
-        if (money >= elementOn.getCreationCost()) {
+        if (money >= elementOn.getCreationCost() * 2) {
             if (elementOn instanceof AttackTower && lv < 3)
                 elementOn = new AttackTower(elementOn.getOwner(), elementOn.getLevel() + 1);
             else if (elementOn instanceof DefenceTower && lv < 3)

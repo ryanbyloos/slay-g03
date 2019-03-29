@@ -35,7 +35,7 @@ class TerritoryHud extends Stage {
         soldier1 = new HudButton(20, Slay.game.skin);
         soldier2 = new HudButton(40, Slay.game.skin);
         soldier3 = new HudButton(80, Slay.game.skin);
-        attackTower = new HudButton(25, Slay.game.skin);
+        attackTower = new HudButton(20, Slay.game.skin);
         defenceTower = new HudButton(10, Slay.game.skin);
         boat = new HudButton(25, Slay.game.skin);
         mine = new HudButton(20, Slay.game.skin);
@@ -104,7 +104,7 @@ class TerritoryHud extends Stage {
             batch.end();
         }
         batch.begin();
-        Slay.game.font.draw(batch, "Player: " + world.map.playingPlayer().getName(), (float) (w - w / 8), h);
+        Slay.game.font.draw(batch, "Player: " + world.map.playingPlayer().getName(), (w - w / 8), h);
         batch.end();
     }
 

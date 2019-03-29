@@ -73,8 +73,12 @@ public class Hud extends Stage {
             towerTable.clearChildren();
             levelUpButton = null;
         } else if (levelUpButton == null) {
-            levelUpButton = new TextButton("LEVEL UP", Slay.game.skin);
-            levelUpButton.setColor(Color.LIGHT_GRAY);
+            int cost = world.gameState.getStates().getHold().getElementOn().getCreationCost() * 2;
+            levelUpButton = new TextButton("LEVEL UP FOR " + cost, Slay.game.skin);
+            if (cost > world.gameState.getStates().getHold().findTerritory().findCapital().getMoney())
+                levelUpButton.setColor(Color.RED);
+            else
+                levelUpButton.setColor(Color.LIGHT_GRAY);
 
             levelUpButton.addListener(new ClickListener() {
                 @Override
