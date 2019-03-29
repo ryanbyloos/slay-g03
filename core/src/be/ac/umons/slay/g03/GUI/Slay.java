@@ -21,6 +21,7 @@ public class Slay {
     static Authenticator authenticator;
     static RegisterScreen registerScreen;
     static LevelPicker levelPicker;
+    static VictoryScreen victoryScreen;
 
     static void setScreen(Screen screen) {
         game.setScreen(screen);
