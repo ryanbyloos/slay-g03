@@ -331,13 +331,6 @@ public class GameState {
                                 states.setHold(cell);
                             }
                         }
-                    } else if (cell.getElementOn() instanceof DefenceTower) {
-                        if (cell.getElementOn() instanceof DefenceTower) {
-                            if (((DefenceTower) cell.getElementOn()).select()) {
-                                states.setDefenceTowerSelected(true);
-                                states.setHold(cell);
-                            }
-                        }
                     }
                 }
             } else if (states.isTerritorySelected()) { // si le territoire est selectionne

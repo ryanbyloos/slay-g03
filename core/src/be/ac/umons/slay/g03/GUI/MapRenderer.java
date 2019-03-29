@@ -54,32 +54,36 @@ public class MapRenderer extends Game {
                 if (gameState != null) {
                     if (gameState.getStates().isTerritorySelected()) {
                         if (!(gameState.getStates().isBoatCreation() || gameState.getStates().isMineCreation() || gameState.getStates().isOtherCreation())) {
-                            if(gameState.getStates().getTerritoryLoaded().getCells() != null) drawHighlights(gameState.getStates().getTerritoryLoaded().getCells());
+                            if (gameState.getStates().getTerritoryLoaded().getCells() != null)
+                                drawHighlights(gameState.getStates().getTerritoryLoaded().getCells());
                         }
                         if (gameState.getStates().isOtherCreation()) {
-                            if(gameState.getStates().getDisplayCells()!=null) drawHighlights(gameState.getStates().getDisplayCells());
+                            if (gameState.getStates().getDisplayCells() != null)
+                                drawHighlights(gameState.getStates().getDisplayCells());
+                        } else if (gameState.getStates().isBoatCreation() || gameState.getStates().isMineCreation()) {
+                            if (gameState.getStates().getDisplayCells() != null)
+                                drawHighlights(gameState.getStates().getDisplayCells());
                         }
-                        else if(gameState.getStates().isBoatCreation() ||gameState.getStates().isMineCreation()){
-                            if(gameState.getStates().getDisplayCells()!=null) drawHighlights(gameState.getStates().getDisplayCells());
-                        }
-                        else if(gameState.getStates().isUpgradeAble()){
-                            ArrayList<Cell> hold = new ArrayList<>();
-                            if(gameState.getStates().getHold() != null){
-                                hold.add(gameState.getStates().getHold());
-                                drawHighlights(hold);
-                            }
+                    } else if (gameState.getStates().isUpgradeAble()) {
+                        ArrayList<Cell> hold = new ArrayList<>();
+                        if (gameState.getStates().getHold() != null) {
+                            hold.add(gameState.getStates().getHold());
+                            drawHighlights(hold);
                         }
                     }
                     if (gameState.getStates().isSoldierSelected()) {
 
-                        if(gameState.getStates().getHold().accessibleCell(map) != null){
+                        if (gameState.getStates().getHold().accessibleCell(map) != null) {
                             drawHighlights(gameState.getStates().getHold().accessibleCell(map));
                         }
-                    }else if (gameState.getStates().isBoatSelected()) {
-                        if(gameState.getStates().isDeployMode() && gameState.getStates().getHold().adjacentCell(map, gameState.getStates().getHold(), false) != null) drawHighlights(gameState.getStates().getHold().adjacentCell(map, gameState.getStates().getHold(), false));
-                        else if(gameState.getStates().getHold().adjacentCell(map, gameState.getStates().getHold(), true) != null) drawHighlights(gameState.getStates().getHold().adjacentCell(map, gameState.getStates().getHold(), true));
-                    }else if(gameState.getStates().isAttackTowerSelected()){
-                        if(gameState.getStates().getHold().towerRange(map) != null) drawHighlights(gameState.getStates().getHold().towerRange(map));
+                    } else if (gameState.getStates().isBoatSelected()) {
+                        if (gameState.getStates().isDeployMode() && gameState.getStates().getHold().adjacentCell(map, gameState.getStates().getHold(), false) != null)
+                            drawHighlights(gameState.getStates().getHold().adjacentCell(map, gameState.getStates().getHold(), false));
+                        else if (gameState.getStates().getHold().adjacentCell(map, gameState.getStates().getHold(), true) != null)
+                            drawHighlights(gameState.getStates().getHold().adjacentCell(map, gameState.getStates().getHold(), true));
+                    } else if (gameState.getStates().isAttackTowerSelected()) {
+                        if (gameState.getStates().getHold().towerRange(map) != null)
+                            drawHighlights(gameState.getStates().getHold().towerRange(map));
                     }
 
                 }
