@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<users>
+
+    <user game="0" gameLose="0" gameWin="0" image=""
+          password="6b86b273ff34fce19d6b804eff5a3f5747ada4eaa22f1d49c01e52ddb7875b4b" pseudo="1" userName="1"/>
+    <user game="0" gameLose="0" gameWin="0" image=""
+          password="d4735e3a265e16eee03f59718b9b5d319c7d8b6c51f90da3a666eec13ab35" pseudo="2" userName="2"/>
+    <user game="0" gameLose="0" gameWin="0" image=""
+          password="a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3" pseudo="sid" userName="Sidkha"/>
+</users>
