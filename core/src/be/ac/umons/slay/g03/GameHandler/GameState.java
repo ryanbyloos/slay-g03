@@ -725,6 +725,8 @@ public class GameState {
             states.setDisplayCells(null);
             states.setHold(null);
             resetBoats(map.getPlayer1());
+            resetSoldiers(map.getPlayer1());
+            resetAttackTower(map.getPlayer1());
             map.getPlayer1().setTurn(false);
             if (map.getPlayer2().isOver()) {
                 states.setOver(true);
@@ -734,7 +736,6 @@ public class GameState {
                     e.printStackTrace();
                 }
             }
-            resetSoldiers(map.getPlayer1());
             map.getPlayer2().setTurn(true);
             map.getPlayer1().setMoveNumber(-1);
             map.getPlayer1().setMaxMoveNumber(-1);
@@ -753,6 +754,8 @@ public class GameState {
             states.setDisplayCells(null);
             states.setHold(null);
             resetBoats(map.getPlayer2());
+            resetAttackTower(map.getPlayer2());
+            resetSoldiers(map.getPlayer2());
             map.getPlayer2().setTurn(false);
             if (map.getPlayer1().isOver()) {
                 states.setOver(true);
@@ -762,7 +765,7 @@ public class GameState {
                     e.printStackTrace();
                 }
             }
-            resetSoldiers(map.getPlayer2());
+
             map.getPlayer1().setTurn(true);
             map.getPlayer2().setMoveNumber(-1);
             map.getPlayer2().setMaxMoveNumber(-1);
@@ -793,10 +796,21 @@ public class GameState {
     private void resetBoats(Player player) {
         for (Cell cell : map.getCells()) {
 
-            if (cell.getElementOn() != null && map.playingPlayer().equals(player) && cell.getElementOn() instanceof Boat && cell.getElementOn().getOwner() != null && cell.getElementOn().getOwner().equals(player)) {
+            if (cell.getElementOn() != null && map.playingPlayer().equals(player) && cell.getElementOn() instanceof Boat
+                    && cell.getElementOn().getOwner() != null && cell.getElementOn().getOwner().equals(player)) {
                 ((Boat) cell.getElementOn()).setT(5);
                 cell.getElementOn().setHasMoved(false);
             }
+        }
+    }
+
+    private void resetAttackTower(Player player){
+        for (Cell cell: map.getCells()
+             ) {
+            System.out.println(cell);
+            if(cell.getElementOn() != null && map.playingPlayer().equals(player) && cell.getElementOn() instanceof AttackTower
+                    && cell.getElementOn().getOwner() != null && cell.getElementOn().getOwner().equals(player))
+                ((AttackTower) cell.getElementOn()).setHasAttack(false);
         }
     }
 

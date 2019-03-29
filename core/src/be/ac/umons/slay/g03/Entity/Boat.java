@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 /**
  * Classe instanciant un Boat contenant la distance qu'il peut encore parcourir et sa defence.
- * Contient des methodes permetent de capturer un Boat et de faire embarquer/deplyer des Soldir
+ * Contient des methodes permetent de capturer un Boat et de faire embarquer/deplyer des Soldier
  *
  */
 public class Boat extends Infrastructure implements Controlable {
